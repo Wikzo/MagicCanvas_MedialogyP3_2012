@@ -1,4 +1,4 @@
-Clone
+First clone the repo from Github
 Create folder
 git init
 git remote add origin https://github.com/Wikzo/MagicCanvas_MedialogyP3_2012.git
