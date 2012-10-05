@@ -1,12 +1,4 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# Ignore all files except for cpp
+*
+!*.cpp
 
-# Compiled Dynamic libraries
-*.so
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
