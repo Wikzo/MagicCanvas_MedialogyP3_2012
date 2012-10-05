@@ -1,4 +1,8 @@
-# Ignore all files except for cpp
-*
-!*.cpp
+# Ignore the following file types
 
+*.sdf
+*.ipc
+*.iphc
+*.exe
+*.pdb
+*.ilk
