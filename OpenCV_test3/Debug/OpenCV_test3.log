@@ -1,0 +1,17 @@
+﻿Build started 05-10-2012 23:45:45.
+     1>Project "C:\Users\Wikzo\Desktop\Procedural Programming\MagicCanvas\OpenCV_test3\OpenCV_test3.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\OpenCV_test3.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         OpenCV_test3.vcxproj -> C:\Users\Wikzo\Desktop\Procedural Programming\MagicCanvas\Debug\OpenCV_test3.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\OpenCV_test3.unsuccessfulbuild".
+         Touching "Debug\OpenCV_test3.lastbuildstate".
+     1>Done Building Project "C:\Users\Wikzo\Desktop\Procedural Programming\MagicCanvas\OpenCV_test3\OpenCV_test3.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.04
