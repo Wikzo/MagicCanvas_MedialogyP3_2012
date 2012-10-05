@@ -6,3 +6,8 @@
 *.exe
 *.pdb
 *.ilk
+*.sln
+*.suo
+*.vcxproj
+*.filters
+*.user
