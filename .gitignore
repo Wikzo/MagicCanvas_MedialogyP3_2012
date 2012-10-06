@@ -3,6 +3,7 @@
 *.sdf
 *.ipc
 *.iphc
+*.ipch
 *.exe
 *.pdb
 *.ilk
