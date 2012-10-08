@@ -4,11 +4,10 @@ git config --global user.name = "Bob"
 git config --global color.ui true
 
 To get the repo:
-First clone the repo from Github
+FIrst make a user on Github.com
+Then setup your SSH key: https://help.github.com/articles/generating-ssh-keys
 Create local folder
-git init
-git remote add origin https://github.com/Wikzo/MagicCanvas_MedialogyP3_2012.git
-git pull origin master
+git clone https://github.com/Wikzo/MagicCanvas_MedialogyP3_2012.git
 
 touch test.txt
 git add test.txt
