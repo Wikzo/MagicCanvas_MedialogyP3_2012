@@ -1,0 +1,32 @@
+blasdalsdasdlasdl
+
+
+sadasd
+
+sadasd
+
+Getting started:
+git config --global user.email "bla@bla.dk"
+git config --global user.name "Bob"
+git config --global color.ui true
+
+To get the repo:
+FIrst make a user on Github.com
+Then setup your SSH key: https://help.github.com/articles/generating-ssh-keys
+Create local folder
+git clone https://github.com/Wikzo/MagicCanvas_MedialogyP3_2012.git
+
+touch test.txt
+git add test.txt
+git commit -m "comment
+git push -u origin master
+
+ENJOY!
+
+Hej Gustav
+
+<<<<<<< HEAD
+Nej jo det har jeg ikkeHar du det goHer er kagedt?
+=======
+Har du det flot?
+>>>>>>> d2a3d23d18b4e67471e2d238f45afcd39fc597c8
