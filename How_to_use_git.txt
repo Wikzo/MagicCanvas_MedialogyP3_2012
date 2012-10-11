@@ -1,3 +1,10 @@
+blasdalsdasdlasdl
+
+
+sadasd
+
+sadasd
+
 Getting started:
 git config --global user.email "bla@bla.dk"
 git config --global user.name "Bob"
