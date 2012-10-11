@@ -24,3 +24,5 @@ git push -u origin master
 ENJOY!
 
 Hej Gustav
+
+Har du det godt?
