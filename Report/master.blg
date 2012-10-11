@@ -1,0 +1,14 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: master.aux
+The style file: sources/harvard.bst
+A level-1 auxiliary file: frontpage.aux
+A level-1 auxiliary file: task.aux
+A level-1 auxiliary file: theory.aux
+A level-1 auxiliary file: code.aux
+url: is an unknown function---line 320 of file sources/harvard.bst
+Database file #1: sources/litterature.bib
+Warning--there's a number but no series in visual_story
+1 is an integer literal, not a string, for entry visual_story
+while executing---line 1485 of file sources/harvard.bst
+1 is an integer literal, not a string, for entry ip_book
+while executing---line 1485 of file sources/harvard.bst
+(There were 3 error messages)

@@ -1,0 +1,21 @@
+\thispagestyle{empty} %fjerner sidetal 
+\hspace{6cm} \vspace{6cm}
+\begin{center}
+\textbf{\Huge {Image Processing mini project}\\ \vspace{1cm}
+\huge{Diagonal Edge Detection in C++}}
+
+\begin{figure} [H]
+\includegraphics[width=0.5\textwidth]{C:/Users/Wikzo/Desktop/"Procedural Programming"/Edge_detecting/MyOpenCV/OpenCV_test3/diagonal_plus_vertical_horizontal.jpg}
+  \centering
+\end{figure}
+\end{center}
+%\vspace{1.0cm}
+\begin{center}
+\Large{\textbf{Gustav Dahl, studienummer}}
+\end{center}
+\vfill
+Image Processing and Procedural Programming\\
+Medialogy 3rd semester\\
+Aalborg Universty October 2012\\
+\thispagestyle{empty}
+\setcounter{page}{0}

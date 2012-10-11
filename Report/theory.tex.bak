@@ -1,0 +1,7 @@
+\chapter{Theory about edge Detection}
+\section{Edge definition}
+An edge in an image is basically a place in an image where there is a contrast.
+
+\citet{visual_story} describes an edge as the apparent line around the borders of a two-dimensional object.
+
+Another definition is given by \citep{ip_book} who writes that an edge in an image is defined as a position where there is a significant change in gray-level values.

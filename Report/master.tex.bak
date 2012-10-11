@@ -1,0 +1,20 @@
+\input{preamble_ida12}
+\raggedbottom
+\begin{document}
+
+
+
+\include{frontpage}
+\include{task}
+
+\tableofcontents*
+
+\include{theory}
+\include{code}
+
+\begingroup
+	\raggedright
+	\bibliography{sources/litterature}
+\endgroup
+
+\end{document}
