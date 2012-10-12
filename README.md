@@ -1,7 +1,7 @@
 MagicCanvas_MedialogyP3_2012
 ============================
 
-(http://desmond.imageshack.us/Himg442/scaled.php?server=442&filename=deployallthebranches.png&res=medium)
+(![Magic Canvas(http://i.imgur.com/LpAGA.png)
 
 3rd semester project at Aalborg Universty 2012. Theme: Visual Computing
 
