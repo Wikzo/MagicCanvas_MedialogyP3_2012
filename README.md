@@ -1,7 +1,7 @@
 MagicCanvas_MedialogyP3_2012
 ============================
 
-(![Magic Canvas(http://i.imgur.com/LpAGA.png)
+(![Magic Canvas](http://i.imgur.com/LpAGA.png)
 
 3rd semester project at Aalborg Universty 2012. Theme: Visual Computing
 
