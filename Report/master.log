@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.9)  11 OCT 2012 13:55
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2012.10.9)  12 OCT 2012 09:31
 entering extended mode
 **master.tex
 ("C:\Users\Wikzo\Desktop\Procedural Programming\MagicCanvas\Report\master.tex"
@@ -1785,7 +1785,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 25.
 Here is how much of TeX's memory you used:
  31742 strings out of 493921
  589389 string characters out of 3144876
- 838181 words of memory out of 3000000
+ 838182 words of memory out of 3000000
  34403 multiletter control sequences out of 15000+200000
  33451 words of font info for 100 fonts, out of 3000000 for 9000
  843 hyphenation exceptions out of 8191

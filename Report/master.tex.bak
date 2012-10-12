@@ -3,15 +3,20 @@
 \begin{document}
 
 
-
+%%% Fron page and abstract %%%
 \include{frontpage}
-\include{task}
-
 \tableofcontents*
 
+%%% Introduction %%%
+\include{task}
 \include{theory}
+
+%%% Problem statement %%%
+
+%%% Appendix %%%
 \include{code}
 
+%%% Bibliography %%%
 \begingroup
 	\raggedright
 	\bibliography{sources/litterature}

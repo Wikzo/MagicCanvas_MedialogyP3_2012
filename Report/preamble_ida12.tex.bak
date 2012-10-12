@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,fleqn,dvipsnames,oneside,openright]{memoir} 	% Openright aabner kapitler paa hoejresider (openany begge)
+\documentclass[a4paper,11pt,fleqn,dvipsnames,twoside,openright]{memoir} 	% Openright aabner kapitler paa hoejresider (openany begge)
 
 %%%% PACKAGES %%%%
 
@@ -65,7 +65,7 @@
 
 % ¤¤ Litteraturlisten ¤¤ %
 \bibpunct[,]{[}{]}{;}{a}{,}{,} 				% Definerer de 6 parametre ved Harvard henvisning (bl.a. parantestype og seperatortegn)
-\bibliographystyle{bibtex/harvard}			% Udseende af litteraturlisten.
+\bibliographystyle{sources/harvard}			% Udseende af litteraturlisten.
 
 % ¤¤ Indholdsfortegnelse ¤¤ %
 \setsecnumdepth{subsection}		 			% Dybden af nummerede overkrifter (part/chapter/section/subsection)
@@ -150,8 +150,8 @@
 
 
 % Definerer lige siders sidehoved \makeevenhead{Navn}{Venstre}{Center}{Hoejre})
-\makeoddhead{AAU}{Gustav Dahl}{}{Medialogy 2012}
-\makeevenhead{AAU}{Gustav Dahl}{}{Medialogy 2012}
+\makeoddhead{AAU}{Group MTA12338}{Aalborg University}{Medialogy 2012}
+\makeevenhead{AAU}{Group MTA12338}{Aalborg University}{Medialogy 2012}
 
 \usepackage{lastpage}
 
