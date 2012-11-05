@@ -5,10 +5,11 @@ STEP 2:
 Make user on https://github.com/
 
 STEP 3:
-Open Git Bash:
+Open Git Bash and type in the following lines (one at a time):
 git config --global user.email "Bob@BobIsAwesome.com"
 git config --global user.name "Bob"
 git config --global color.ui true
+git config --global push.default simple
 
 STEP 4:
 Generate a SSH key: https://help.github.com/articles/generating-ssh-keys
