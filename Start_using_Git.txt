@@ -1,0 +1,21 @@
+STEP 1:
+Install Git from http://git-scm.com/
+
+STEP 2:
+Make user on https://github.com/
+
+STEP 3:
+Open Git Bash:
+git config --global user.email "Bob@BobIsAwesome.com"
+git config --global user.name "Bob"
+git config --global color.ui true
+
+STEP 4:
+Generate a SSH key: https://help.github.com/articles/generating-ssh-keys
+
+STEP 5:
+Give username to to Gustav
+
+STEP 6:
+Navigate to the folder you want to use by typing in "cd Desktop/folderToUse"
+git clone https://github.com/Wikzo/MagicCanvas_MedialogyP3_2012.git
