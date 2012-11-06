@@ -10,7 +10,7 @@ using namespace std;
 int main()
 {
 	VideoCapture capture;
-	capture.open(0);
+	capture.open(1);
 
 	if (!capture.isOpened())
 	{
