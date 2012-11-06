@@ -15,11 +15,16 @@ int main()
     imshow("Image", im);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// This is my comment. Marta
+=======
+	// Simon
+>>>>>>> af2a2f1e73a74d1b6b5770f084d2f7616204453b
 =======
 	// gustav
 >>>>>>> 2b66d0417e8b173e4c85499a16a6d46502a9c617
 
+>>>>>>> 2b66d0417e8b173e4c85499a16a6d46502a9c617
 
     waitKey(0);
 }
