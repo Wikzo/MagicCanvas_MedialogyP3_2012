@@ -17,6 +17,7 @@ int main()
 	VideoCapture capture;
 	bool isMac = false;
 	
+	// Mac or PC
 	if (isMac==true)
 	{
 		capture.open(1);
@@ -60,11 +61,19 @@ int main()
 	// PROFIT!!!
 }
 
-Mat GetBackground()
+Mat GetBackground(bool isMac)
 {
 	Mat background;
 
-	//capture >> background;
+	VideoCapture backgroundCapture;
+
+	if (isMac)
+		backgroundCapture.open(1);
+	else
+		backgroundCapture.open(0);
+
+	// Grab 1 frame and return it
+	backgroundCapture >> background;
 
 	return background;
 }
