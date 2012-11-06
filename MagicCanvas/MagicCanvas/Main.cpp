@@ -7,8 +7,16 @@ using namespace std;
 // Fighting Mongooses
 // Marco, Simon, Gustav
 
+// TODO:
+// Grab background
+// Grab current video
+// Subtract current video from background
+// Use local threshold and make binary
+// Remove noise with erosion
+// PROFIT!!!
+
 // Function prototypes
-Mat GetBackground(bool isMac);
+Mat GetBackground(VideoCapture capture);
 
 int main()
 {
@@ -16,8 +24,10 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	VideoCapture capture;
-	bool isMac = false;
+	bool isMac = 0;
 	
+	capture.open(isMac);
+
 	//safety check
 	if (!capture.isOpened())
 	{
@@ -27,9 +37,7 @@ int main()
 
 	// Get background
 	//background = GetBackground(isMac);
-	
 
-	capture.open(0);
 	// Grab current frame
 	while(true)
 	{
@@ -44,30 +52,13 @@ int main()
 	}
 
 	return 0;
-
-	// TODO:
-	// Grab background
-	// Grab current video
-	// Subtract current video from background
-	// Use local threshold and make binary
-	// Remove noise with erosion
-	// PROFIT!!!
 }
 
-Mat GetBackground(bool isMac)
+Mat GetBackground(VideoCapture capture)
 {
-	// PC = 0; Mac = 1
-
 	Mat background;
-
-	VideoCapture backgroundCapture;
-	//backgroundCapture.open(isMac);
-
 	// Grab 1 frame and return it as the background
-	backgroundCapture >> background;
-
-
-	//backgroundCapture.release();
+	capture >> background;
 
 	return background;
 }
