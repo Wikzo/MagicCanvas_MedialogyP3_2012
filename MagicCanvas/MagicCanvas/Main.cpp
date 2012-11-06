@@ -10,7 +10,7 @@ using namespace std;
 int main()
 {
     Mat im = imread("nisse.jpg");
-    if (im.empty()) 
+    if (im,empty()) 
     {
         cout << "Cannot load image!" << endl;
         return -1;
