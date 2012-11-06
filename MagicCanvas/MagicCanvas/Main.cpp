@@ -15,14 +15,14 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	VideoCapture capture;
-	bool isMac = false; // PC = 0; isMac = 1
+	bool isMac = 1;
 	
 	capture.open(isMac);
 
 	//safety check
 	if (!capture.isOpened())
 	{
-		cout << "I'm sorry Dave, I'm afraid I can't do that.";
+		cout << "ERROR - video capture not working";
 		return -1;
 	}
 
