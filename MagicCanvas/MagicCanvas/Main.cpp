@@ -57,13 +57,13 @@ Mat GetBackground(bool isMac)
 {
 	// PC = 0; Mac = 1
 
-	Mat background;
+	Mat baggrund;
 
 	VideoCapture backgroundCapture;
-	backgroundCapture.open(isMac);
+	backgroundCapture.open(false);
 
 	// Grab 1 frame and return it
-	backgroundCapture >> background;
+	backgroundCapture >> baggrund;
 
-	return background;
+	return baggrund;
 }
