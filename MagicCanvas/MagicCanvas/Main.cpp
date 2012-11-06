@@ -1,4 +1,5 @@
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/core/core.hpp>
 #include <iostream>
 
 using namespace cv;
@@ -56,6 +57,7 @@ int main()
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
+		imshow("Background substraction", substration;
 	}
 
 	return 0;
@@ -69,4 +71,17 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 	capture >> tempBackground;
 	imwrite("background.png", tempBackground);
 	backgroundToWriteTo = imread("background.png");
+}
+
+	// Function to substract background 			   
+void BackgroundSubstracted(currentFrame, background)
+{
+	Mat substraction;
+	Mat GrayScale_substraction;
+	im.create(GrayScale_substraction, CV8_U1);
+			  
+	Substration = currentFrame - background)
+	cvtColor(Substration, GrayScale_substraction, CV_RGB2GRAY);
+	
+
 }
