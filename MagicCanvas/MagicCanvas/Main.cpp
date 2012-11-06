@@ -18,12 +18,14 @@ using namespace std;
 
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
+void BackgroundSubstracted(Mat currentFrame, Mat background);
 
 int main()
 {
 	// Fields
 	Mat background;
 	Mat currentFrame;
+	Mat substraction;
 	VideoCapture capture;
 	bool isMac = 0;
 	
@@ -57,7 +59,7 @@ int main()
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
-		imshow("Background substraction", substration;
+		//imshow("Background substraction", substraction);
 	}
 
 	return 0;
@@ -74,14 +76,13 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 }
 
 	// Function to substract background 			   
-void BackgroundSubstracted(currentFrame, background)
+void BackgroundSubstracted(Mat currentFrame, Mat background)
 {
-	Mat substraction;
+	/*Mat substraction;
 	Mat GrayScale_substraction;
 	im.create(GrayScale_substraction, CV8_U1);
 			  
-	Substration = currentFrame - background)
+	Substration = currentFrame - background;
 	cvtColor(Substration, GrayScale_substraction, CV_RGB2GRAY);
-	
-
+	*/
 }
