@@ -9,9 +9,20 @@ using namespace std;
 
 int main()
 {
+	bool isMac = false;
 	VideoCapture capture;
-	capture.open(1);
-
+	
+	
+	if (isMac==true);
+	{
+		capture.open(1);
+	}
+	else
+	{
+		capture.open(0);
+	}
+	
+	
 	if (!capture.isOpened())
 	{
 		cout << "I'm sorry Dave, I can't do that.";
