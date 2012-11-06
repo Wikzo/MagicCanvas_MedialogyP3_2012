@@ -14,7 +14,7 @@ int main()
 
 	if (!capture.isOpened())
 	{
-		cout << "Error, cannot open";
+		cout << "I'm sorry Dave, I can't do that.";
 		return -1;
 	}
 
