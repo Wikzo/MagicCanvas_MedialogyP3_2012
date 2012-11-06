@@ -4,6 +4,9 @@
 using namespace cv;
 using namespace std;
 
+// Team1
+// Johannes, Max, Marta
+
 int main()
 {
     Mat im = imread("nisse.jpg");
@@ -14,18 +17,4 @@ int main()
     }
     imshow("Image", im);
     waitKey(0);
-
-	// Team1
-	// Marta's comment
-	//Max 
-<<<<<<< HEAD
-	
-	
-	
-	// HAHAHAH NUUUUBS! :D
->>>>>>> 26e11a39b4edef65751b1e2ccc32d1d5f58e025e
-=======
-
-	// Johannes
->>>>>>> 03995d6421e3e41ee3b20d98f1e4c506711e692f
 }
