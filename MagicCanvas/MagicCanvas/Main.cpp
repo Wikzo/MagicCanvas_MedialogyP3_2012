@@ -30,7 +30,7 @@ int main()
 	bool isMac = 0;
 	
 	capture.open(isMac);
-
+	
 	//safety check
 	if (!capture.isOpened())
 	{
@@ -55,13 +55,16 @@ int main()
 		// Grab new background screenshot
 		if ((char)waitKey(1) == 's')
 			GetBackground(capture, background);
-
+/*
+		//Function call
+		substraction = BackgroundSubstracted(VideoCapture capture, GetBackground);
+*/
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
 		//imshow("Background substraction", substraction);
 	}
-
+	
 	return 0;
 }
 
