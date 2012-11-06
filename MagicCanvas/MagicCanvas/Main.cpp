@@ -16,7 +16,7 @@ using namespace std;
 // PROFIT!!!
 
 // Function prototypes
-Mat GetBackground(VideoCapture capture);
+void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
 
 int main()
 {
@@ -36,7 +36,7 @@ int main()
 	}
 
 	// Get background
-	//background = GetBackground(isMac);
+	GetBackground(capture, background);
 
 	// Grab current frame
 	while(true)
@@ -45,20 +45,28 @@ int main()
 		if (currentFrame.empty())
 			break;
 
+		// Exit
 		if ((char)waitKey(30) == 'q')
 			break;
 
+		// Grab new background screenshot
+		if ((char)waitKey(30) == 's')
+			GetBackground(capture, background);
+
+
+		imshow("Background", background);
 		imshow("Video", currentFrame);
 	}
 
 	return 0;
 }
 
-Mat GetBackground(VideoCapture capture)
+void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 {
-	Mat background;
 	// Grab 1 frame and return it as the background
-	capture >> background;
-
-	return background;
+	Mat tempBackground;
+	
+	capture >> tempBackground;
+	imwrite("background.png", tempBackground);
+	backgroundToWriteTo = imread("background.png");
 }
