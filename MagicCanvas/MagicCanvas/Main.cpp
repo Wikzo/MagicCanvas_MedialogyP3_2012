@@ -4,19 +4,32 @@
 using namespace cv;
 using namespace std;
 
-
 // Fighting Mongooses
 // Marco, Simon, Gustav
 
 int main()
 {
-    Mat im = imread("nisse.jpg");
-    if (im.empty()) 
-    {
-        cout << "Cannot load image!" << endl;
-        return -1;
-    }
-    imshow("Image", im);
-    waitKey(0);
+	VideoCapture capture;
+	capture.open(0);
 
+	if (!capture.isOpened())
+	{
+		cout << "Error, cannot open";
+		return -1;
+	}
+
+	Mat frame;
+	while(true)
+	{
+		capture >> frame;
+		if (frame.empty())
+			break;
+
+		if ((char)waitKey(30) == 'q')
+			break;
+
+		imshow("video", frame);
+	}
+
+	return 0;
 }
