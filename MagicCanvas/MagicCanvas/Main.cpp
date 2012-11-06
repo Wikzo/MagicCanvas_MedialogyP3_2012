@@ -7,7 +7,8 @@ using namespace std;
 // Fighting Mongooses
 // Marco, Simon, Gustav
 
-Mat GetBackground();
+// Function prototypes
+Mat GetBackground(bool isMac);
 
 int main()
 {
@@ -15,10 +16,8 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	VideoCapture capture;
-	bool isMac = 1;
+	bool isMac = false;
 	
-	capture.open(isMac);
-
 	//safety check
 	if (!capture.isOpened())
 	{
@@ -27,8 +26,10 @@ int main()
 	}
 
 	// Get background
-	background = GetBackground();
+	//background = GetBackground(isMac);
 	
+
+	capture.open(0);
 	// Grab current frame
 	while(true)
 	{
@@ -60,10 +61,13 @@ Mat GetBackground(bool isMac)
 	Mat background;
 
 	VideoCapture backgroundCapture;
-	backgroundCapture.open(isMac);
+	//backgroundCapture.open(isMac);
 
 	// Grab 1 frame and return it as the background
 	backgroundCapture >> background;
+
+
+	//backgroundCapture.release();
 
 	return background;
 }
