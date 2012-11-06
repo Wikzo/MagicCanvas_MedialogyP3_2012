@@ -15,21 +15,9 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	VideoCapture capture;
-	bool isMac = false;
+	bool isMac = false; // PC = 0; isMac = 1
 	
-<<<<<<< HEAD
-	// Mac or PC
-	if (isMac==true)
-	{
-		capture.open(1);
-	}
-	else
-	{
-		capture.open(0);
-	}
-=======
-	capture.open(isMac);	
->>>>>>> 9ab99b49f65781be89cc111b58813eaaa812db8a
+	capture.open(isMac);
 
 	//safety check
 	if (!capture.isOpened())
@@ -67,14 +55,12 @@ int main()
 
 Mat GetBackground(bool isMac)
 {
+	// PC = 0; Mac = 1
+
 	Mat background;
 
 	VideoCapture backgroundCapture;
-
-	if (isMac)
-		backgroundCapture.open(1);
-	else
-		backgroundCapture.open(0);
+	backgroundCapture.open(isMac);
 
 	// Grab 1 frame and return it
 	backgroundCapture >> background;
