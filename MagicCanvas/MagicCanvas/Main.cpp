@@ -14,7 +14,7 @@ int main()
 
 	if (!capture.isOpened())
 	{
-		cout << "I'm sorry Dave, I can't do that.";
+		cout << "I'm sorry Dave, I'm afraid I can't do that.";
 		return -1;
 	}
 
