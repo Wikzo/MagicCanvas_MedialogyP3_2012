@@ -19,4 +19,8 @@ int main()
 	// Simons comment!
 	// Hej Gustav
 	// Hej Simon
+
+	// Here is a new comment
+
+	// Here is a new commnt
 }
