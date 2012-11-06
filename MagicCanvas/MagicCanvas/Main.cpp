@@ -4,6 +4,8 @@
 using namespace cv;
 using namespace std;
 
+// Master original
+
 int main()
 {
     Mat im = imread("nisse.jpg");
