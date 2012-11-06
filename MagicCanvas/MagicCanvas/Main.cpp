@@ -14,15 +14,6 @@ int main()
     }
     imshow("Image", im);
 
-	//experiment here
-
-	// simon is awesome
-
-	//sadasdasd
-
-	// asdasdasdasdasd
-	// simon is here
-
 
     waitKey(0);
 }
