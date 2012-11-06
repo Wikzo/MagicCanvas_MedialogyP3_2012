@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    Mat im = imread("nissess.jpg");
+    Mat im = imread("nisse.jpg");
     if (im.empty()) 
     {
         cout << "Cannot load image!" << endl;
@@ -14,6 +14,6 @@ int main()
     }
     imshow("Image", im);
 
-
+	//Max you forgot to bring cake today.. :(
     waitKey(0);
 }
