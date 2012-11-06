@@ -39,4 +39,5 @@ int main()
 	// Subtract current video from background
 	// Use local threshold and make binary
 	// Remove noise with erosion
+	// PROFIT!!!
 }
