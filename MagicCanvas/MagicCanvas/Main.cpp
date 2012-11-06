@@ -13,7 +13,7 @@ int main()
 	VideoCapture capture;
 	
 	
-	if (isMac==true);
+	if (isMac==true)
 	{
 		capture.open(1);
 	}
