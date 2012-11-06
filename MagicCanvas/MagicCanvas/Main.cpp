@@ -6,13 +6,15 @@ using namespace std;
 
 int main()
 {
-    Mat im = imread("nissess.jpg");
+    Mat im = imread("nisse.jpg");
     if (im.empty()) 
     {
         cout << "Cannot load image!" << endl;
         return -1;
     }
     imshow("Image", im);
+
+	// This is my comment. Marta
 
 
     waitKey(0);
