@@ -13,3 +13,4 @@
 *.filters
 *.user
 Debug*
+*.opensdf

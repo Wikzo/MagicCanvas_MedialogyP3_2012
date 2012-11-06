@@ -4,6 +4,10 @@
 using namespace cv;
 using namespace std;
 
+
+// Fighting Mongooses
+// Marco, Simon, Gustav
+
 int main()
 {
     Mat im = imread("nisse.jpg");
@@ -15,12 +19,4 @@ int main()
     imshow("Image", im);
     waitKey(0);
 
-	// Fighting FTW!
-	// Simons comment!
-	// Hej Gustav
-	// Hej Simon
-
-	// Here is a new comment
-
-	// Here is a new commnt
 }
