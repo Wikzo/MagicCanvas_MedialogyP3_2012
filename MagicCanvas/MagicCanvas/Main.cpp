@@ -7,30 +7,51 @@ using namespace std;
 // Fighting Mongooses
 // Marco, Simon, Gustav
 
+Mat GetBackground();
+
 int main()
 {
-	bool isMac = false;
+	// Fields
+	Mat background;
+	Mat currentFrame;
 	VideoCapture capture;
+	bool isMac = false;
 	
+<<<<<<< HEAD
 	capture.open(isMac);	
 	
+=======
+	if (isMac==true)
+	{
+		capture.open(1);
+	}
+	else
+	{
+		capture.open(0);
+	}
+
+	// Safety check
+>>>>>>> 398fd4fccbbd1ca8839ef75decf86f40d8458cf9
 	if (!capture.isOpened())
 	{
-		cout << "I'm sorry Dave, I'm afraid I can't do that.";
+		cout << "ERROR - video capture not working";
 		return -1;
 	}
 
-	Mat frame;
+	// Get background
+	background = GetBackground();
+	
+	// Grab current frame
 	while(true)
 	{
-		capture >> frame;
-		if (frame.empty())
+		capture >> currentFrame;
+		if (currentFrame.empty())
 			break;
 
 		if ((char)waitKey(30) == 'q')
 			break;
 
-		imshow("Video", frame);
+		imshow("Video", currentFrame);
 	}
 
 	return 0;
@@ -42,4 +63,13 @@ int main()
 	// Use local threshold and make binary
 	// Remove noise with erosion
 	// PROFIT!!!
+}
+
+Mat GetBackground()
+{
+	Mat background;
+
+	//capture >> background;
+
+	return background;
 }
