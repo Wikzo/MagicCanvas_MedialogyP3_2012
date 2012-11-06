@@ -53,17 +53,17 @@ int main()
 	// PROFIT!!!
 }
 
-Mat GetBackground(bool isMac)
+Mat GetBackground(bool areYouAMac)
 {
 	// PC = 0; Mac = 1
 
-	Mat background;
+	Mat tempBackground;
 
 	VideoCapture backgroundCapture;
-	backgroundCapture.open(isMac);
+	backgroundCapture.open(areYouAMac);
 
-	// Grab 1 frame and return it
-	backgroundCapture >> background;
+	// Grab 1 frame and return it as the background
+	backgroundCapture >> tempBackground;
 
-	return background;
+	return tempBackground;
 }
