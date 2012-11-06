@@ -17,21 +17,9 @@ int main()
 	VideoCapture capture;
 	bool isMac = false;
 	
-<<<<<<< HEAD
 	capture.open(isMac);	
-	
-=======
-	if (isMac==true)
-	{
-		capture.open(1);
-	}
-	else
-	{
-		capture.open(0);
-	}
 
-	// Safety check
->>>>>>> 398fd4fccbbd1ca8839ef75decf86f40d8458cf9
+	//safety check
 	if (!capture.isOpened())
 	{
 		cout << "ERROR - video capture not working";
