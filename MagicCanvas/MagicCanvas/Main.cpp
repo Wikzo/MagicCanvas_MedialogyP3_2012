@@ -17,6 +17,11 @@ int main()
 
 	// Fighting FTW!
 	// Simons comment!
+<<<<<<< HEAD
 
 	// Now I have invaded your branch... muhahahaha!!!
+=======
+	// Hej Gustav
+	// Hej Simon
+>>>>>>> 0c866ed8024339ed38a6af9dd84f6d8561d72248
 }
