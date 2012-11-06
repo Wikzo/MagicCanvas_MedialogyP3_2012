@@ -12,16 +12,7 @@ int main()
 	bool isMac = false;
 	VideoCapture capture;
 	
-	
-	if (isMac==true);
-	{
-		capture.open(1);
-	}
-	else
-	{
-		capture.open(0);
-	}
-	
+	capture.open(isMac);	
 	
 	if (!capture.isOpened())
 	{
