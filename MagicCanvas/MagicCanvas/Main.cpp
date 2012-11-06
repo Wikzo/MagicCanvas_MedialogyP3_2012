@@ -51,7 +51,7 @@ int main()
 			break;
 
 		// Grab new background screenshot
-		if ((char)waitKey(30) == 's')
+		if ((char)waitKey(1) == 's')
 			GetBackground(capture, background);
 
 
