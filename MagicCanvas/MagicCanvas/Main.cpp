@@ -16,9 +16,8 @@ int main()
     waitKey(0);
 
 	// Team1
-<<<<<<< HEAD
 	// Marta's comment
-=======
 	//Max 
->>>>>>> 26e11a39b4edef65751b1e2ccc32d1d5f58e025e
+
+	// Johannes
 }
