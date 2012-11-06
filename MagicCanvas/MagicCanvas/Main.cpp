@@ -28,8 +28,15 @@ int main()
 		if ((char)waitKey(30) == 'q')
 			break;
 
-		imshow("video", frame);
+		imshow("Video", frame);
 	}
 
 	return 0;
+
+	// TODO:
+	// Grab background
+	// Grab current video
+	// Subtract current video from background
+	// Use local threshold and make binary
+	// Remove noise with erosion
 }
