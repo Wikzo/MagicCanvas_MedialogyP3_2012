@@ -16,7 +16,7 @@ using namespace std;
 
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
-Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold);
+Mat PerformImagesubtraction(Mat currentFrame, Mat background, int threshold);
 Mat Threshold(Mat image, int threshold);
 Mat MeanFilter(Mat input);
 
@@ -28,12 +28,9 @@ int main()
 	// Fields
 	Mat background;
 	Mat currentFrame;
-	Mat substraction;
-<<<<<<< HEAD
+	Mat subtraction;
 	Mat MedianValue;
-=======
 
->>>>>>> 8cc480287a6941f09653d0cff116b505ab5cb27e
 	VideoCapture capture;
 	bool isMac = 0;
 	
@@ -60,22 +57,22 @@ int main()
 		cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
 
 		// Substract background from current frame
-		substraction = PerformImageSubstraction(currentFrame, background, 100);
+		subtraction = PerformImagesubtraction(currentFrame, background, 100);
 		
 		// Median blur (built-in function)
-		cv::medianBlur(substraction, substraction, 5);
+		cv::medianBlur(subtraction, subtraction, 5);
 
 		/*// Morphology (VERY SLOW)
 		// Closing --> opening
 		// closing = Dilation + erosion
 		// Opening = Erosion + dilation
-		substraction = Dilation(substraction, 1);
-		substraction = Erosion(substraction, 1);
-		substraction = Erosion(substraction, 1);
-		substraction = Dilation(substraction, 1);*/
+		subtraction = Dilation(subtraction, 1);
+		subtraction = Erosion(subtraction, 1);
+		subtraction = Erosion(subtraction, 1);
+		subtraction = Dilation(subtraction, 1);*/
 
 
-		// -------- DEBUG FEATURES --------------
+		// -------- DEBUG FEATURES START --------------
 		// Exit
 		if ((char)waitKey(30) == 'q')
 			break;
@@ -84,11 +81,13 @@ int main()
 		if ((char)waitKey(1) == 's')
 			GetBackground(capture, background);
 
-		// -------- DEBUG FEATURES --------------
+		// -------- DEBUG FEATURES END --------------
 
+		// -------- SHOW OUTPUT START --------------
 		imshow("Background", background);
 		imshow("Video", currentFrame);
-		imshow("Background substraction", substraction);
+		imshow("Background subtraction", subtraction);
+		// -------- SHOW OUTPUT END --------------
 	}
 	
 	return 0;
@@ -115,11 +114,8 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 }
 
 // Function to substract background 			   
-Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold)
+Mat PerformImagesubtraction(Mat currentFrame, Mat background, int threshold)
 {
-	// Old way
-	/*Mat substraction = (background - currentFrame);
-	return substraction;*/
 
 	// Don't get overflow
 	Mat output = currentFrame.clone();
@@ -154,8 +150,7 @@ Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold)
 Mat Threshold(Mat image, int threshold)
 {
 	// OLD - we don't use this anymore
-	// Thresholding is part of PerformImageSubstraction() now
-
+	// Thresholding is part of PerformImagesubtraction() now
 
 	// TODO: Make local threshold (p. 125 in book)
 	// Use on binary image only
@@ -217,7 +212,7 @@ Mat MeanFilter(Mat input)
 		}
 	}
 
-//	return image;
+	return mean;
 }
 
 Mat Erosion(Mat input, int radius)
