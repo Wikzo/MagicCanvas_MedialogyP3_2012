@@ -26,6 +26,12 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	Mat substraction;
+
+	/*// Convert to grayscale - DOES NOT WORK
+	cvtColor(background, background, CV_RGB2GRAY);
+	cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
+	cvtColor(substraction, substraction, CV_RGB2GRAY);*/
+
 	VideoCapture capture;
 	bool isMac = 0;
 	
@@ -80,10 +86,12 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 	Mat tempBackground;
 	
 	capture >> tempBackground;
+	
 	cvtColor(tempBackground, tempBackground, CV_RGB2GRAY);
 	imwrite("background.png", tempBackground);
 	backgroundToWriteTo = imread("background.png");
 
+	// Make grayscale
 	cvtColor(backgroundToWriteTo, backgroundToWriteTo, CV_RGB2GRAY);
 }
 
@@ -91,7 +99,6 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 Mat PerformImageSubstraction(Mat currentFrame, Mat background)
 {
 	Mat substraction = (background - currentFrame);
-	Mat GrayScale_substraction;
 	
 	return substraction;
 }
