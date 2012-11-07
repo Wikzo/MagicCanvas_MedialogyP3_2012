@@ -60,12 +60,7 @@ int main()
 			GetBackground(capture, background);
 
 		// Removing background from output
-<<<<<<< HEAD
-		substraction = PerformImageSubstraction(currentFrame, imread("background.png"));
-=======
 		substraction = PerformImageSubstraction(currentFrame, background);
->>>>>>> 9c1e9795d1351c0781577d478e922abc14a520dc
-
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
