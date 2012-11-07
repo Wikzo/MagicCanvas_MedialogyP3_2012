@@ -17,8 +17,8 @@ using namespace std;
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
 Mat PerformImageSubstraction(Mat currentFrame, Mat background);
-Mat Threshold(int threshold);
-Mat MeanFilter(Mat image, int threshold);
+Mat Threshold(Mat image, int threshold);
+Mat MeanFilter(Mat input);
 
 int main()
 {
@@ -54,9 +54,16 @@ int main()
 		if (currentFrame.empty())
 			break;
 
-		// Convert to grayscale
+		// Convert current frame to grayscale
 		cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
 
+		// Substract background from current frame
+		substraction = PerformImageSubstraction(currentFrame, background);
+
+		// Threshold
+		substraction = Threshold(substraction, 1);
+
+		// -------- DEBUG FEATURES --------------
 		// Exit
 		if ((char)waitKey(30) == 'q')
 			break;
@@ -65,8 +72,7 @@ int main()
 		if ((char)waitKey(1) == 's')
 			GetBackground(capture, background);
 
-		// Removing background from output
-		substraction = PerformImageSubstraction(currentFrame, background);
+		// -------- DEBUG FEATURES --------------
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
@@ -79,7 +85,6 @@ int main()
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 {
 	// Grab 1 frame and return it as the background
-
 	// Maybe optimize so not neccessary to save image as png
 
 	Mat tempBackground;
@@ -118,10 +123,11 @@ Mat Threshold(Mat image, int threshold)
 			else
 				value = image.at<uchar>(y, x);
 
-			if (value >= threshold)
-				image.at<uchar>(y, x) = 255;
-			else
+			// Make binary
+			if (value <= threshold)
 				image.at<uchar>(y, x) = 0;
+			else
+				image.at<uchar>(y, x) = 255;
 
 		}
 	}
