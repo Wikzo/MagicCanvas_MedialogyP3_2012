@@ -60,7 +60,7 @@ int main()
 			GetBackground(capture, background);
 
 		// Removing background from output
-		substraction = BackgroundSubstracted(currentFrame, imread("background.png"));
+		substraction = PerformImageSubstraction(currentFrame, background);
 
 
 		imshow("Background", background);
@@ -74,15 +74,20 @@ int main()
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 {
 	// Grab 1 frame and return it as the background
+
+	// Maybe optimize so not neccessary to save image as png
+
 	Mat tempBackground;
 	
 	capture >> tempBackground;
 	cvtColor(tempBackground, tempBackground, CV_RGB2GRAY);
 	imwrite("background.png", tempBackground);
 	backgroundToWriteTo = imread("background.png");
+
+	cvtColor(backgroundToWriteTo, backgroundToWriteTo, CV_RGB2GRAY);
 }
 
-	// Function to substract background 			   
+// Function to substract background 			   
 Mat PerformImageSubstraction(Mat currentFrame, Mat background)
 {
 	Mat substraction = (background - currentFrame);
