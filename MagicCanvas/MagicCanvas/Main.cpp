@@ -17,6 +17,7 @@ public:
 	void binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int threshhold);
 	void output();
 	void reset();
+	void findFirstRow(int minRowLength, int minRowWidth);
 private:
 	bool isBW;
 	int height;
@@ -34,10 +35,11 @@ int main(){
 	while(true){
 		testPicture.openCamera(camera1);
 		testPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,50);
+		testPicture.findFirstRow(50, 5);
 		testPicture.output();
 		testPicture.reset();
 		int keyInput = waitKey(10);
-		cout << keyInput;
+		//cout << keyInput;
 		if (keyInput == 115)
 		{
 			BG.reset();
@@ -179,4 +181,44 @@ void Picture::binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int t
 		}
 	}
 	
+}
+void Picture::findFirstRow(int minRowLength, int minRowWidth)
+{
+	bool found = false;
+	for(int y = 0; y < height && !found; y++)
+	{
+		for(int x = 0; x < width-minRowLength && !found; x++)
+		{
+			found = true;
+			for(int i = minRowLength; i > 0; i--)
+			{
+				for(int j = 0; j < minRowWidth; j++){
+					if(pixelR[x+i][y+j] == 0)
+						found = false;
+				}
+			}
+
+			if(found)
+			{
+				cout<< "x: " << x << "y: " << y;
+				/*for(int x = 0; x < width; x++)
+				{
+					pixelR[x][y] = 255;
+					pixelG[x][y] = 0;
+					pixelB[x][y] = 0;
+				}
+				*/
+				
+				while((pixelG[x+1][y] == 255 || pixelG[x+2][y] == 255 || pixelG[x+3][y] == 255) && x < width-4)
+				{
+					
+					pixelR[x][y] = 255;
+					pixelG[x][y] = 0;
+					pixelB[x][y] = 0;
+					x++;
+						
+				}
+			}
+		}
+	}
 }
