@@ -20,17 +20,15 @@ Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold);
 Mat Threshold(Mat image, int threshold);
 Mat MeanFilter(Mat input);
 
+Mat Erosion(Mat input, int radius);
+Mat Dilation(Mat input, int radius);
+
 int main()
 {
 	// Fields
 	Mat background;
 	Mat currentFrame;
 	Mat substraction;
-
-	/*// Convert to grayscale - DOES NOT WORK
-	cvtColor(background, background, CV_RGB2GRAY);
-	cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
-	cvtColor(substraction, substraction, CV_RGB2GRAY);*/
 
 	VideoCapture capture;
 	bool isMac = 0;
@@ -59,12 +57,18 @@ int main()
 
 		// Substract background from current frame
 		substraction = PerformImageSubstraction(currentFrame, background, 100);
-
-		// Mean filter (should be replaced with MEAN filter later)
-		//substraction = MeanFilter(substraction);
 		
 		// Median blur (built-in function)
-		cv::medianBlur(substraction, substraction, 3);
+		cv::medianBlur(substraction, substraction, 5);
+
+		/*// Morphology (VERY SLOW)
+		// Closing --> opening
+		// closing = Dilation + erosion
+		// Opening = Erosion + dilation
+		substraction = Dilation(substraction, 1);
+		substraction = Erosion(substraction, 1);
+		substraction = Erosion(substraction, 1);
+		substraction = Dilation(substraction, 1);*/
 
 
 		// -------- DEBUG FEATURES --------------
@@ -121,7 +125,7 @@ Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold)
 	{
 		for (int x = 0; x < output.cols; x++)
 		{
-			int difference = background.at<uchar>(y, x) - currentFrame.at<uchar>(y, x);
+			int difference = currentFrame.at<uchar>(y, x) - background.at<uchar>(y, x);
 			
 			// Absolute value
 			if (difference < 0)
@@ -210,4 +214,61 @@ Mat MeanFilter(Mat input)
 	}
 
 	return mean;
+}
+
+Mat Erosion(Mat input, int radius)
+{
+	Mat output = input.clone();
+
+	for(int x = radius; x < input.cols-radius; x++)
+	{
+		for(int y = radius; y < input.rows-radius; y++)
+		{
+			bool pixelIsaccepted = true;
+			for(int filterX = x - radius; pixelIsaccepted && filterX <= x + radius; filterX++)
+			{
+				for(int filterY = y - radius; pixelIsaccepted && filterY <= y + radius; filterY++)
+				{
+					if (input.at<uchar>(filterY,filterX) == 0)
+					{
+						pixelIsaccepted = false;
+					}
+				}
+			}
+			if (pixelIsaccepted == true)
+				output.at<uchar>(y,x) = 255;
+			else
+				output.at<uchar>(y,x) = 0;
+		}
+	}
+
+	return output;
+}
+
+Mat Dilation(Mat input, int radius)
+{
+	Mat output = input.clone();
+
+	for(int x = radius; x < input.cols-radius; x++)
+		{
+			for(int y = radius; y < input.rows-radius; y++)
+			{
+				bool pixelIsaccepted = false;
+				for(int filterX = x - radius; !pixelIsaccepted && filterX <= x + radius; filterX++)
+				{
+					for(int filterY = y - radius; !pixelIsaccepted && filterY <= y + radius; filterY++)
+					{
+						if (input.at<uchar>(filterY,filterX) == 255)
+						{
+							pixelIsaccepted = true;
+						}
+					}
+				}
+				if (pixelIsaccepted == true)
+					output.at<uchar>(y,x) = 255;
+				else
+					output.at<uchar>(y,x) = 0;
+			}
+		}
+	return output;
 }
