@@ -29,7 +29,11 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	Mat substraction;
+<<<<<<< HEAD
+	Mat MedianValue;
+=======
 
+>>>>>>> 8cc480287a6941f09653d0cff116b505ab5cb27e
 	VideoCapture capture;
 	bool isMac = 0;
 	
@@ -213,7 +217,7 @@ Mat MeanFilter(Mat input)
 		}
 	}
 
-	return mean;
+//	return image;
 }
 
 Mat Erosion(Mat input, int radius)
@@ -272,3 +276,32 @@ Mat Dilation(Mat input, int radius)
 		}
 	return output;
 }
+Mat MedianFilter(Mat input)
+	{		
+	// 3x3 kernel
+		
+	// Make a temporary clone of the input image
+	Mat MedianValue = input.clone();
+		
+	// Loop through all pixels
+	for (int y = 0; y < input.rows-2; y++)
+	{
+		for (int x = 0; x < input.cols-2; x++)
+		{
+			if (x - 2 < 0 || y - 2 < 0) // don't go out of bounds
+				continue;
+				
+					// Apply the kernel
+					MedianValue.at<uchar>(y, x) = (
+					input.at<uchar>(y-1, x-1) + input.at<uchar>(y-1, x)
+					+ input.at<uchar>(y-1, x+1) + input.at<uchar>(y, x-1)
+					+ input.at<uchar>(y, x) + input.at<uchar>(y, x+1)
+					+ input.at<uchar>(y+1, x-1) + input.at<uchar>(y+1, x)
+					+ input.at<uchar>(y+1, x+1)
+					) /9;
+
+			}
+		}
+		
+		return MedianValue;
+	}
