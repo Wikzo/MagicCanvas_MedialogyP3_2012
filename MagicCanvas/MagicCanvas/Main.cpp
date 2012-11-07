@@ -40,7 +40,7 @@ int main()
 	//safety check
 	if (!capture.isOpened())
 	{
-		cout << "ERROR - video capture not working";
+		cout << "I'm sorry Dave, I'm afraid I can't do that.";
 		return -1;
 	}
 
