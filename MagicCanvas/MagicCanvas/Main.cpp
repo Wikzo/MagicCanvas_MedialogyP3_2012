@@ -60,7 +60,7 @@ int main()
 			GetBackground(capture, background);
 
 		// Removing background from output
-		substraction = BackgroundSubstracted(currentFrame, imread("background.png"));
+		substraction = PerformImageSubstraction(currentFrame, imread("background.png"));
 
 
 		imshow("Background", background);
