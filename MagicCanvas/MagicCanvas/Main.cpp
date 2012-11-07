@@ -16,7 +16,7 @@ using namespace std;
 
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
-Mat PerformImageSubstraction(Mat currentFrame, Mat background);
+Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold);
 Mat Threshold(Mat image, int threshold);
 Mat MeanFilter(Mat input);
 
@@ -58,10 +58,7 @@ int main()
 		cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
 
 		// Substract background from current frame
-		substraction = PerformImageSubstraction(currentFrame, background);
-
-		// Threshold
-		substraction = Threshold(substraction, 1);
+		substraction = PerformImageSubstraction(currentFrame, background, 100);
 
 		// -------- DEBUG FEATURES --------------
 		// Exit
@@ -100,15 +97,48 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 }
 
 // Function to substract background 			   
-Mat PerformImageSubstraction(Mat currentFrame, Mat background)
+Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold)
 {
-	Mat substraction = (background - currentFrame);
+	// Old way
+	/*Mat substraction = (background - currentFrame);
+	return substraction;*/
+
+	// Don't get overflow
+	Mat output = currentFrame.clone();
+
+	// Loop through all pixels and substract background from current frame
+	for (int y = 0; y < output.rows; y++)
+	{
+		for (int x = 0; x < output.cols; x++)
+		{
+			int difference = background.at<uchar>(y, x) - currentFrame.at<uchar>(y, x);
+			
+			// Absolute value
+			if (difference < 0)
+				difference *= -1;
+
+			// Threshold
+			// TODO: USE LOCAL THRESHOLD INSTEAD
+			if (difference <= threshold)
+				difference = 0;
+			else
+				difference = 255;
+
+			// New image with difference
+			output.at<uchar>(y, x) = difference;
+		}
+	}
+
+	return output;
 	
-	return substraction;
 }
 
 Mat Threshold(Mat image, int threshold)
 {
+	// OLD - we don't use this anymore
+	// Thresholding is part of PerformImageSubstraction() now
+
+
 	// TODO: Make local threshold (p. 125 in book)
 	// Use on binary image only
 
