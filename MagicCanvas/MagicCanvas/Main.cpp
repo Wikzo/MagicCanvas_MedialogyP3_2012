@@ -68,7 +68,6 @@ int main()
 		// Removing background from output
 		substraction = PerformImageSubstraction(currentFrame, background);
 
-
 		imshow("Background", background);
 		imshow("Video", currentFrame);
 		imshow("Background substraction", substraction);
