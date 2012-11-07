@@ -1,5 +1,5 @@
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 
 using namespace cv;
@@ -18,7 +18,7 @@ using namespace std;
 
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
-void BackgroundSubstracted(Mat currentFrame, Mat background);
+Mat BackgroundSubstracted(Mat currentFrame, Mat background);
 
 int main()
 {
@@ -55,14 +55,14 @@ int main()
 		// Grab new background screenshot
 		if ((char)waitKey(1) == 's')
 			GetBackground(capture, background);
-/*
-		//Function call
-		substraction = BackgroundSubstracted(VideoCapture capture, GetBackground);
-*/
+
+		// Removing background from output
+		substraction = BackgroundSubstracted(currentFrame, imread("background.png"));
+
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
-		//imshow("Background substraction", substraction);
+		imshow("Background substraction", substraction);
 	}
 	
 	return 0;
@@ -74,18 +74,17 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 	Mat tempBackground;
 	
 	capture >> tempBackground;
+	cvtColor(tempBackground, tempBackground, CV_RGB2GRAY);
 	imwrite("background.png", tempBackground);
 	backgroundToWriteTo = imread("background.png");
 }
 
 	// Function to substract background 			   
-void BackgroundSubstracted(Mat currentFrame, Mat background)
+Mat BackgroundSubstracted(Mat currentFrame, Mat background)
 {
-	/*Mat substraction;
+	Mat substraction = (background - currentFrame);
 	Mat GrayScale_substraction;
-	im.create(GrayScale_substraction, CV8_U1);
-			  
-	Substration = currentFrame - background;
-	cvtColor(Substration, GrayScale_substraction, CV_RGB2GRAY);
-	*/
+	//cvtColor(Substration, GrayScale_substraction, CV_RGB2GRAY);
+	
+	return substraction;
 }
