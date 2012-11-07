@@ -66,6 +66,7 @@ int main()
 		// Median blur (built-in function)
 		cv::medianBlur(substraction, substraction, 3);
 
+
 		// -------- DEBUG FEATURES --------------
 		// Exit
 		if ((char)waitKey(30) == 'q')
@@ -89,6 +90,9 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 {
 	// Grab 1 frame and return it as the background
 	// Maybe optimize so not neccessary to save image as png
+
+	// TODO: Image differencing (taking the last frame and calculate average, "learning") [book p. 125]
+	// Example: http://stackoverflow.com/questions/7765877/background-subtraction-in-opencvc
 
 	Mat tempBackground;
 	
