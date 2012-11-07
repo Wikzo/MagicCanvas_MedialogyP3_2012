@@ -84,7 +84,6 @@ Mat BackgroundSubstracted(Mat currentFrame, Mat background)
 {
 	Mat substraction = (background - currentFrame);
 	Mat GrayScale_substraction;
-	//cvtColor(Substration, GrayScale_substraction, CV_RGB2GRAY);
 	
 	return substraction;
 }
