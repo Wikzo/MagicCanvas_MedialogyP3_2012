@@ -16,9 +16,9 @@ using namespace std;
 
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
-Mat PerformImageSubstraction(Mat currentFrame, Mat background);
-Mat Threshold(int threshold);
-Mat MeanFilter(Mat image, int threshold);
+Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold);
+Mat Threshold(Mat image, int threshold);
+Mat MeanFilter(Mat input);
 
 int main()
 {
@@ -26,7 +26,16 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	Mat substraction;
+<<<<<<< HEAD
 	Mat MedianValue;
+=======
+
+	/*// Convert to grayscale - DOES NOT WORK
+	cvtColor(background, background, CV_RGB2GRAY);
+	cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
+	cvtColor(substraction, substraction, CV_RGB2GRAY);*/
+
+>>>>>>> 8cc480287a6941f09653d0cff116b505ab5cb27e
 	VideoCapture capture;
 	bool isMac = 0;
 	
@@ -49,9 +58,20 @@ int main()
 		if (currentFrame.empty())
 			break;
 
-		// Convert to grayscale
+		// Convert current frame to grayscale
 		cvtColor(currentFrame, currentFrame, CV_RGB2GRAY);
 
+		// Substract background from current frame
+		substraction = PerformImageSubstraction(currentFrame, background, 100);
+
+		// Mean filter (should be replaced with MEAN filter later)
+		//substraction = MeanFilter(substraction);
+		
+		// Median blur (built-in function)
+		cv::medianBlur(substraction, substraction, 3);
+
+
+		// -------- DEBUG FEATURES --------------
 		// Exit
 		if ((char)waitKey(30) == 'q')
 			break;
@@ -60,8 +80,7 @@ int main()
 		if ((char)waitKey(1) == 's')
 			GetBackground(capture, background);
 
-		// Removing background from output
-		substraction = PerformImageSubstraction(currentFrame, background);
+		// -------- DEBUG FEATURES --------------
 
 		imshow("Background", background);
 		imshow("Video", currentFrame);
@@ -74,30 +93,66 @@ int main()
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 {
 	// Grab 1 frame and return it as the background
-
 	// Maybe optimize so not neccessary to save image as png
+
+	// TODO: Image differencing (taking the last frame and calculate average, "learning") [book p. 125]
+	// Example: http://stackoverflow.com/questions/7765877/background-subtraction-in-opencvc
 
 	Mat tempBackground;
 	
 	capture >> tempBackground;
+	
 	cvtColor(tempBackground, tempBackground, CV_RGB2GRAY);
 	imwrite("background.png", tempBackground);
 	backgroundToWriteTo = imread("background.png");
 
+	// Make grayscale
 	cvtColor(backgroundToWriteTo, backgroundToWriteTo, CV_RGB2GRAY);
 }
 
 // Function to substract background 			   
-Mat PerformImageSubstraction(Mat currentFrame, Mat background)
+Mat PerformImageSubstraction(Mat currentFrame, Mat background, int threshold)
 {
-	Mat substraction = (background - currentFrame);
-	Mat GrayScale_substraction;
+	// Old way
+	/*Mat substraction = (background - currentFrame);
+	return substraction;*/
+
+	// Don't get overflow
+	Mat output = currentFrame.clone();
+
+	// Loop through all pixels and substract background from current frame
+	for (int y = 0; y < output.rows; y++)
+	{
+		for (int x = 0; x < output.cols; x++)
+		{
+			int difference = background.at<uchar>(y, x) - currentFrame.at<uchar>(y, x);
+			
+			// Absolute value
+			if (difference < 0)
+				difference *= -1;
+
+			// Threshold
+			// TODO: USE LOCAL THRESHOLD INSTEAD
+			if (difference <= threshold)
+				difference = 0;
+			else
+				difference = 255;
+
+			// New image with difference
+			output.at<uchar>(y, x) = difference;
+		}
+	}
+
+	return output;
 	
-	return substraction;
 }
 
 Mat Threshold(Mat image, int threshold)
 {
+	// OLD - we don't use this anymore
+	// Thresholding is part of PerformImageSubstraction() now
+
+
 	// TODO: Make local threshold (p. 125 in book)
 	// Use on binary image only
 
@@ -112,10 +167,11 @@ Mat Threshold(Mat image, int threshold)
 			else
 				value = image.at<uchar>(y, x);
 
-			if (value >= threshold)
-				image.at<uchar>(y, x) = 255;
-			else
+			// Make binary
+			if (value <= threshold)
 				image.at<uchar>(y, x) = 0;
+			else
+				image.at<uchar>(y, x) = 255;
 
 		}
 	}
