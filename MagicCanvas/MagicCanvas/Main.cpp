@@ -60,6 +60,12 @@ int main()
 		// Substract background from current frame
 		substraction = PerformImageSubstraction(currentFrame, background, 100);
 
+		// Mean filter (should be replaced with MEAN filter later)
+		//substraction = MeanFilter(substraction);
+		
+		// Median blur (built-in function)
+		cv::medianBlur(substraction, substraction, 3);
+
 		// -------- DEBUG FEATURES --------------
 		// Exit
 		if ((char)waitKey(30) == 'q')
