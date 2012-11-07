@@ -16,7 +16,7 @@ using namespace std;
 
 // Function prototypes
 void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
-Mat BackgroundSubstracted(Mat currentFrame, Mat background);
+Mat PerformImageSubstraction(Mat currentFrame, Mat background);
 Mat Threshold(int threshold);
 Mat MeanFilter(Mat image, int threshold);
 
@@ -83,7 +83,7 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo)
 }
 
 	// Function to substract background 			   
-Mat BackgroundSubstracted(Mat currentFrame, Mat background)
+Mat PerformImageSubstraction(Mat currentFrame, Mat background)
 {
 	Mat substraction = (background - currentFrame);
 	Mat GrayScale_substraction;
