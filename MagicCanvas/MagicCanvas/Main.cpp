@@ -18,6 +18,7 @@ public:
 	void output();
 	void reset();
 	void findFirstRow(int minRowLength, int minRowWidth);
+	void Picture::contours(Picture refPic);
 private:
 	bool isBW;
 	int height;
@@ -218,6 +219,20 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth)
 					x++;
 						
 				}
+			}
+		}
+	}
+}
+
+void Picture::contours(Picture refPic)
+{
+	for(int x = 0; x < refPic.width; x++)
+	{
+		for(int y = 0; y < refPic.height; y++)
+		{
+			if(refPix.pixel[x][y] = 255)
+			{
+
 			}
 		}
 	}
