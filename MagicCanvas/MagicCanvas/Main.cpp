@@ -300,6 +300,4 @@ Mat MedianFilter(Mat input)
 
 			}
 		}
-		
-		return MedianValue;
 }
