@@ -67,7 +67,10 @@ int main()
 		subtraction = PerformImagesubtraction(currentFrame, background, 100);
 		
 		// Median blur (built-in function)
-		cv::medianBlur(subtraction, subtraction, 5);
+		//cv::medianBlur(subtraction, subtraction, 5);
+
+		// Manual subtraction
+		subtraction = MedianFilter(subtraction);
 
 		nissehue_noise = MedianFilter(nissehue_noise);
 
@@ -100,6 +103,7 @@ int main()
 		imshow("Nisse_noise", nissehue_noise);
 		// -------- SHOW OUTPUT END --------------
 	}
+
 	
 	return 0;
 }
