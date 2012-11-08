@@ -38,7 +38,7 @@ int main(){
 
 	VideoCapture camera1;
 	camera1.open(0);
-	Picture testPicture;
+	Picture currentPicture;
 	Picture BG;
 	BG.openCamera(camera1);
 	Picture tmpPicture;
@@ -51,40 +51,37 @@ int main(){
 
 
 	while(true){
-		testPicture.openCamera(camera1);
-		testPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,50);
-		testPicture.erode(3, tmpPicture);
-		testPicture.dilate(3, tmpPicture);
-		testPicture.dilate(3, tmpPicture);
-		testPicture.erode(3, tmpPicture);
-		testPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat);
+		currentPicture.openCamera(camera1);
+		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,50);
+		
+		// Opening + closing
+		/*currentPicture.erode(3, tmpPicture);
+		currentPicture.dilate(3, tmpPicture);
+		currentPicture.dilate(3, tmpPicture);
+		currentPicture.erode(3, tmpPicture);
+		*/
+		// Hat size + draw
+		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat);
 		if(widthOfHat > 0)
-			testPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
+			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		widthOfHat = 0;
-		testPicture.output();
-		testPicture.reset();
+		
+		currentPicture.output();
+		currentPicture.reset();
 		int keyInput = waitKey(10);
 		//cout << keyInput;
-		if (keyInput == 115)
+		if (keyInput == 115) // s
 		{
 			BG.reset();
 			BG.openCamera(camera1);
 		}
-		else if (keyInput == 27) 
+		else if (keyInput == 27) // escape
 		{
 			cout << "\nEsc was pressed\nThe program exits when you press a key.";
 			waitKey(0);
 			return 0;
 		}
-	}
-	/*
-	for(int i = 0; i < 3; i++)
-	{
-		delete [] testPicture.pixel[i];
-	}
-	delete [] testPicture.pixel;
-	*/
-	
+	}	
 }
 
 void Picture::openFile(string name)
@@ -223,6 +220,7 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 				}
 			}
 
+			// Found left corner
 			if(found)
 			{
 				//cout<< "x: " << x << "y: " << y;
@@ -236,6 +234,8 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 				}
 				*/
 				
+				// Strech
+				// RGB are all the same, so it doesn't matter what color channel is used
 				while((pixelG[x+1][y] == 255 || pixelG[x+2][y] == 255 || pixelG[x+3][y] == 255) && x < width-4)
 				{
 					
@@ -259,7 +259,7 @@ void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture picture
 
 	cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
 	
-	
+	// Draw
 	for(int x = 0; x < newwidth; x++){
 		for(int y = 0; y < newheight; y++){
 			if((lowerLeftCorner.y - newheight + y) >= 0){ 
