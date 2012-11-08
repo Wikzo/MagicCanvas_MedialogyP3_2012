@@ -30,8 +30,6 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	Mat subtraction;
-	Mat MedianValue;
-	Mat MedianFilter;
 
 	VideoCapture capture;
 	bool isMac = 0;
@@ -89,7 +87,7 @@ int main()
 		imshow("Background", background);
 		imshow("Video", currentFrame);
 		imshow("Background subtraction", subtraction);
-		imshow("Median Filther", MedianFilter);
+	//	imshow("Median Filther", MedianFilter);
 		// -------- SHOW OUTPUT END --------------
 	}
 	
@@ -305,45 +303,3 @@ Mat MedianFilter(Mat input)
 		
 		return MedianValue;
 }
-
-// Experimenting with MedianFiltering and bubblesort algorithm
-MedianFilter = BubbleSort(MedianValue, SizeOfMedianFilter);
-
-// Creating int array to store pixel values from Mat MedianValue
-int MedianIntValues[] = Medianvalue;
-
-int BubbleSort(int a[], int size)
-{
-	
-//	for (int i = 0; i < size; i++)
-//		cout << a[i] << endl;
-	
-	// Bubble list
-	int index = 0;
-	bool swapped = true;
-	
-	
-	while (swapped)
-	{
-		swapped = false;
-		for (int i = 1; i < size; i++)
-		{
-			if (a[i-1] > a[i])
-			{
-				// Sort numbers
-				int temp = a[i-1];
-				a[i-1] = a[i];
-                a[i] = temp;
-				
-                swapped = true;
-				
-	int answer[];
-	int picker = answer[4];
-				return picker;
-				
-				
-			}
-		}
-	}
-}
-
