@@ -252,9 +252,10 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 }
 void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture pictureToDraw)
 {
+	// max bla bla bla
 	float sf = (float)pictureToDraw.width/newwidth;
 
-	int newheight = pictureToDraw.height/sf;
+	int newheight_gustav = pictureToDraw.height/sf;
 
 
 	cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
