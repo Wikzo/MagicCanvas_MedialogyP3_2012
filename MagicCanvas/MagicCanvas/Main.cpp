@@ -33,11 +33,6 @@ int main()
 	Mat currentFrame;
 	Mat subtraction;
 
-	Mat nissehue;
-	nissehue = imread("nisse.jpg", 0);
-	Mat nissehue_noise;
-	nissehue_noise = imread("nisse_noise.jpg", 0);
-
 	VideoCapture capture;
 	bool isMac = 0;
 	
@@ -46,7 +41,7 @@ int main()
 	//safety check
 	if (!capture.isOpened())
 	{
-		cout << "I'm sorry Dave, I'm afraid I can't do that.";
+		cout << "ERROR - camera not working";
 		return -1;
 	}
 
@@ -71,8 +66,6 @@ int main()
 
 		// Manual subtraction
 		subtraction = MedianFilter(subtraction);
-
-		nissehue_noise = MedianFilter(nissehue_noise);
 
 		/*// Morphology (VERY SLOW)
 		// Closing --> opening
@@ -99,8 +92,6 @@ int main()
 		imshow("Background", background);
 		imshow("Video", currentFrame);
 		imshow("Background subtraction", subtraction);
-		imshow("Nisse", nissehue);
-		imshow("Nisse_noise", nissehue_noise);
 		// -------- SHOW OUTPUT END --------------
 	}
 
