@@ -5,6 +5,7 @@
 using namespace cv;
 using namespace std;
 
+//Testing GIT
 // Fighting Mongooses
 // Marco, Simon, Gustav
 
@@ -31,7 +32,6 @@ int main()
 	Mat background;
 	Mat currentFrame;
 	Mat subtraction;
-	Mat MedianValue;
 
 	Mat nissehue;
 	nissehue = imread("nisse.jpg", 0);
@@ -46,7 +46,7 @@ int main()
 	//safety check
 	if (!capture.isOpened())
 	{
-		cout << "ERROR - video capture not working";
+		cout << "I'm sorry Dave, I'm afraid I can't do that.";
 		return -1;
 	}
 
@@ -281,6 +281,7 @@ Mat Dilation(Mat input, int radius)
 			}
 		}
 	return output;
+	
 }
 
 Mat MedianFilter(Mat input)
