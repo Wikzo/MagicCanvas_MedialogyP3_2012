@@ -55,11 +55,11 @@ int main(){
 		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,50);
 		
 		// Opening + closing
-		/*currentPicture.erode(3, tmpPicture);
+		currentPicture.erode(3, tmpPicture);
 		currentPicture.dilate(3, tmpPicture);
 		currentPicture.dilate(3, tmpPicture);
 		currentPicture.erode(3, tmpPicture);
-		*/
+
 		// Hat size + draw
 		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat);
 		if(widthOfHat > 0)
