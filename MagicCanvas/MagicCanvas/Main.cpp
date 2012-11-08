@@ -250,12 +250,12 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 		}
 	}
 }
-void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture pictureToDraw)
+void Picture::drawPictureAtGustav(point lowerLeftCorner, int newwidth, Picture pictureToDraw)
 {
-	//r 0, g 255, b 0
+	//r 0, g 255, b 0 hejsada sd sad g asd asd asd
 	float sf = (float)pictureToDraw.width/newwidth;
 
-	int newheight = pictureToDraw.height/sf;
+	int newheight_hey = pictureToDraw.height/sf*21;
 
 
 	cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
