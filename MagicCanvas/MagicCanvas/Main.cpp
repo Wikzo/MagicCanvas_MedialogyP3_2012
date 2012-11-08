@@ -250,12 +250,12 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 		}
 	}
 }
-void Picture::drawPictureAtMaxIsCool(point lowerLeftCorner, int newwidth, Picture pictureToDraw)
+void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture pictureToDraw)
 {
-	//r 0, g 255, b 0bla bla  bla lalala
+	//r 0, g 255, b 0
 	float sf = (float)pictureToDraw.width/newwidth;
 
-	int newheight = pictureToDraw.height/sfkakaka;
+	int newheight = pictureToDraw.height/sf;
 
 
 	cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
