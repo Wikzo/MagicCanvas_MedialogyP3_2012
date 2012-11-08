@@ -6,6 +6,10 @@
 using namespace std;
 using namespace cv;
 
+struct kernel
+{
+
+}
 struct point
 {
 	int x;
