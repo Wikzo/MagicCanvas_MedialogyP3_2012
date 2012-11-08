@@ -19,6 +19,8 @@ void GetBackground(VideoCapture capture, Mat &backgroundToWriteTo);
 Mat PerformImagesubtraction(Mat currentFrame, Mat background, int threshold);
 Mat Threshold(Mat image, int threshold);
 Mat MeanFilter(Mat input);
+uchar BubbleSort(uchar a[], int size);
+Mat MedianFilter(Mat input);
 
 Mat Erosion(Mat input, int radius);
 Mat Dilation(Mat input, int radius);
@@ -30,6 +32,11 @@ int main()
 	Mat currentFrame;
 	Mat subtraction;
 	Mat MedianValue;
+
+	Mat nissehue;
+	nissehue = imread("nisse.jpg", 0);
+	Mat nissehue_noise;
+	nissehue_noise = imread("nisse_noise.jpg", 0);
 
 	VideoCapture capture;
 	bool isMac = 0;
@@ -62,6 +69,8 @@ int main()
 		// Median blur (built-in function)
 		cv::medianBlur(subtraction, subtraction, 5);
 
+		nissehue_noise = MedianFilter(nissehue_noise);
+
 		/*// Morphology (VERY SLOW)
 		// Closing --> opening
 		// closing = Dilation + erosion
@@ -87,6 +96,8 @@ int main()
 		imshow("Background", background);
 		imshow("Video", currentFrame);
 		imshow("Background subtraction", subtraction);
+		imshow("Nisse", nissehue);
+		imshow("Nisse_noise", nissehue_noise);
 		// -------- SHOW OUTPUT END --------------
 	}
 	
@@ -271,32 +282,71 @@ Mat Dilation(Mat input, int radius)
 		}
 	return output;
 }
+
 Mat MedianFilter(Mat input)
 	{		
 	// 3x3 kernel
 		
 	// Make a temporary clone of the input image
 	Mat MedianValue = input.clone();
+	uchar arrayOfMedians[9];
 		
 	// Loop through all pixels
-	for (int y = 0; y < input.rows-2; y++)
+	for (int y = 0; y < input.rows-1; y++)
 	{
-		for (int x = 0; x < input.cols-2; x++)
+		for (int x = 0; x < input.cols-1; x++)
 		{
-			if (x - 2 < 0 || y - 2 < 0) // don't go out of bounds
+			if (x - 1 < 0 || y - 1 < 0) // don't go out of bounds
 				continue;
 				
-					// Apply the kernel
-					MedianValue.at<uchar>(y, x) = (
-					input.at<uchar>(y-1, x-1) + input.at<uchar>(y-1, x)
-					+ input.at<uchar>(y-1, x+1) + input.at<uchar>(y, x-1)
-					+ input.at<uchar>(y, x) + input.at<uchar>(y, x+1)
-					+ input.at<uchar>(y+1, x-1) + input.at<uchar>(y+1, x)
-					+ input.at<uchar>(y+1, x+1)
-					) /9;
-
+			// Apply the kernel
+			int index = 0;
+			arrayOfMedians[index] = MedianValue.at<uchar>(y-1, x-1);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y-1, x);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y-1, x+1);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y, x-1);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y, x);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y, x+1);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y+1, x-1);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y+1, x);
+			arrayOfMedians[++index] = MedianValue.at<uchar>(y+1, x+1);
+			
+			MedianValue.at<uchar>(y,x) = BubbleSort(arrayOfMedians, 9);
+	
 			}
 		}
-		
 		return MedianValue;
+}
+
+uchar BubbleSort(uchar a[], int size)
+{
+	
+	//	for (int i = 0; i < size; i++)
+	//		cout << a[i] << endl;
+	
+	// Bubble list
+	int index = 0;
+	bool swapped = true;
+	
+	
+	while (swapped)
+	{
+		swapped = false;
+		for (int i = 1; i < size; i++)
+		{
+			if (a[i-1] > a[i])
+			{
+				// Sort numbers
+				uchar temp = a[i-1];
+				a[i-1] = a[i];
+                a[i] = temp;
+				
+                swapped = true;
+				
+				
+			}
+		}
 	}
+	
+	return a[4];
+}
