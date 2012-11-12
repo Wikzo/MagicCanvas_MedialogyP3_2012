@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-//lalalamax
 using namespace std;
 using namespace cv;
 
