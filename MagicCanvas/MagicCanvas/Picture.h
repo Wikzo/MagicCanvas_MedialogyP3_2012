@@ -25,14 +25,14 @@ public:
 	void openFile(string name);
 	void openCamera(VideoCapture captureToStoreCamra);
 	void binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int threshhold);
-	void output();
+	void output(string name);
 	void reset();
 	void findFirstRow(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine);
 	void drawPictureAt(point lowerLeftCorner, int newidth, Picture pictureToDraw);
 	void erode(int radius, Picture &tmpPicture);
 	void dilate(int radius, Picture &tmpPicture);
 	void makeBlack();
-	void ConvertColorImageToGrayScale(Picture &picture);
+	void BLOB_GrassBurn(int x, int y, Picture &currentImage, Picture &output);
 	bool isBW;
 	int height;
 	int width;

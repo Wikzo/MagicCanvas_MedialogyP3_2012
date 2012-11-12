@@ -16,34 +16,79 @@ int main(){
 	Picture currentPicture; 
 	Picture BG; // 
 	BG.openCamera(camera1);
-	Picture tmpPicture;
-	//This tmpPicture is used to temporarrily store the picture at different moments
+	Picture tmpPicture; //This tmpPicture is used to temporarrily store the picture at different moments
 	tmpPicture.openCamera(camera1);
 	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
 	Picture hat;
 	hat.openFile("nisse.jpg");
+
+	// gustav ---------------------------------------------------------------- !!!!!!!!!!!!!
+	Picture outputFile;
+	outputFile.width = 480;
+	outputFile.height = 640;
+	outputFile.openFile("head1.jpg");
+	outputFile.makeBlack();
+
+	Picture head;
+	head.openFile("head1.jpg");
+
+	// working!
 	
+	int i = 0;
+	bool firstTime = true;
+
+	for (int x = 2; x < 480; x++)
+	{
+			for (int y = 2; y < 640; y++)
+			{
+				head.BLOB_GrassBurn(x, y, head, outputFile);
+			}
+	}
+
+	while (true)
+	{
+		head.output("coins");
+		outputFile.output("black");
+
+		if (waitKey() == 'q')
+			break;
+	}
 
 
-	while(true){ //To be played all the time.
+	
+	bool aldrigTrue = false;
+
+	// gustav ---------------------------------------------------------------- !!!!!!!!!!!!!
+
+	while(aldrigTrue == true){ //To be played all the time.
 		currentPicture.openCamera(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
 		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,50);
 		
 		// Opening + closing
-		currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
+		/*currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
 		currentPicture.dilate(3, tmpPicture);
 		currentPicture.dilate(3, tmpPicture);
-		currentPicture.erode(3, tmpPicture);
+		currentPicture.erode(3, tmpPicture);*/
 
 		// Hat size + draw
-		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
+		/*currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
 		if(widthOfHat > 0)
 			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
-		widthOfHat = 0;
-		
-		currentPicture.output();
+		widthOfHat = 0;*/
+
+		/*for (int y = 2; y < 470; y++)
+		{
+			for (int x = 2; y < 630; x++)
+			{
+				head.BLOB_GrassBurn(x, y, currentPicture, outputFile);
+			}
+		}*/
+
+		currentPicture.output("current");
+		outputFile.output("outputFile");
 		currentPicture.reset();
+		
 		int keyInput = waitKey(10);
 		//cout << keyInput;
 		if (keyInput == 115) // s

@@ -37,7 +37,7 @@ void Picture::openFile(string name)
 			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
 	}
 }
-void Picture::output()
+void Picture::output(string name)
 {
 	if(height == 0||width == 0){
 		cout << "No picture is loaded";
@@ -55,7 +55,7 @@ void Picture::output()
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
 			out.at<Vec3b>(y,x)[0] = pixelB[x][y];			
-	imshow("output", out);
+	imshow(name, out);
 }
 void Picture::reset()
 {
@@ -174,24 +174,24 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 }
 void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture pictureToDraw)
 {
-	//r 0, g 255, b 0
-	float sf = (float)pictureToDraw.width/newwidth;
+	// color for nissehue: r = 0, g = 255, b = 0
 
-	int newheight = pictureToDraw.height/sf;
+	float scalingFactor = (float)pictureToDraw.width/newwidth;
 
+	int newheight = pictureToDraw.height/scalingFactor;
 
-// Master original
-	//cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
+	// Print out stuff
+	//cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " scalingFactor: " << scalingFactor <<"\n";
 	
 	// Draw
 	for(int x = 0; x < newwidth; x++){
 		for(int y = 0; y < newheight; y++){
 			if((lowerLeftCorner.y - newheight + y) >= 0){ 
 
-				if(pictureToDraw.pixelR[(int)(x*sf)][(int)(y*sf)] != 0 && pictureToDraw.pixelG[(int)(x*sf)][(int)(y*sf)] != 255 && pictureToDraw.pixelB[(int)(x*sf)][(int)(y*sf)] != 0){
-					pixelR[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelR[(int)(x*sf)][(int)(y*sf)];
-					pixelG[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelG[(int)(x*sf)][(int)(y*sf)];
-					pixelB[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelB[(int)(x*sf)][(int)(y*sf)];
+				if(pictureToDraw.pixelR[(int)(x*scalingFactor)][(int)(y*scalingFactor)] != 0 && pictureToDraw.pixelG[(int)(x*scalingFactor)][(int)(y*scalingFactor)] != 255 && pictureToDraw.pixelB[(int)(x*scalingFactor)][(int)(y*scalingFactor)] != 0){
+					pixelR[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelR[(int)(x*scalingFactor)][(int)(y*scalingFactor)];
+					pixelG[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelG[(int)(x*scalingFactor)][(int)(y*scalingFactor)];
+					pixelB[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelB[(int)(x*scalingFactor)][(int)(y*scalingFactor)];
 				}
 			}
 		}
@@ -270,30 +270,46 @@ void Picture::makeBlack()
 	}
 }
 
-void Picture::ConvertColorImageToGrayScale(Picture &picture)
+void Picture::BLOB_GrassBurn(int x, int y, Picture &currentImage, Picture &output)
 {
-	// DOES NOT WORK WITH CURRENT OUTPUT FUNCTION (because it uses 3 channels instead of 1)
+	// 1 = right; 2 = down; 3 = left; 4 = up
 
-	// Common weight values used in TV production to calculate to grayscale
-	float RedWeight = 0.299;
-	float GreenWeight = 0.587;
-	float BlueWeight = 0.114;
+	if (x >= currentImage.width || y >= currentImage.height)
+		return;
 
-	// Iterate through all the pixels and apply the formula for grayscale
-	for (int x = 0; x < width; x++) // rows
+
+	// Check to see if RIGHT pixel is an object pixel and is not yet burned
+	if (currentImage.pixelR[x+1][y] == 255 && output.pixelR[x+1][y] != 255)
 	{
-		for (int y = 0; x < height; y++)
-		{
-			// Calculate grayscale value
-			float grayValue = pixelR[x][y] * RedWeight
-				+ pixelG[x][y] * GreenWeight
-				+ pixelB[x][y] * BlueWeight;
+		output.pixelR[x][y] = 255; // burn
+		x++;
 
-			// Apply the grayscale value (0-255)
-			pixelR[x][y] = (uchar)grayValue;
-			pixelG[x][y] = (uchar)grayValue;
-			pixelB[x][y] = (uchar)grayValue;
-
-		}
+		Picture::BLOB_GrassBurn(x, y, currentImage, output);
 	}
+	// Check to see if DOWN pixel is an object pixel and is not yet burned
+	else if (currentImage.pixelR[x][y+1] == 255 && output.pixelR[x][y+1] != 255)
+	{
+		output.pixelR[x][y] = 255; // burn
+		y++;
+
+		Picture::BLOB_GrassBurn(x, y, currentImage, output);
+	}
+	// Check to see if LEFT pixel is an object pixel and is not yet burned
+	else if (currentImage.pixelR[x-1][y] == 255 && output.pixelR[x-1][y] != 255)
+	{
+		output.pixelR[x][y] = 255; // burn
+		x--;
+		
+		Picture::BLOB_GrassBurn(x, y, currentImage, output);
+	}
+	// Check to see if UP pixel is an object pixel and is not yet burned
+	else if (currentImage.pixelR[x][y-1] == 255 && output.pixelR[x][y-1] != 255)
+	{
+			output.pixelR[x][y] = 255; // burn
+			y--;
+		
+		Picture::BLOB_GrassBurn(x, y, currentImage, output);
+	}
+	else
+		return;
 }
