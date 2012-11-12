@@ -244,9 +244,9 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 				while((pixelG[x+1][y] == 255 || pixelG[x+2][y] == 255 || pixelG[x+3][y] == 255) && x < width-4)
 				{
 					
-					pixelR[x][y] = 255;
-					pixelG[x][y] = 0;
-					pixelB[x][y] = 0;
+					//pixelR[x][y] = 255;
+					//pixelG[x][y] = 0;
+					//pixelB[x][y] = 0;
 					x++;
 						
 				}
@@ -269,9 +269,12 @@ void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture picture
 	for(int x = 0; x < newwidth; x++){
 		for(int y = 0; y < newheight; y++){
 			if((lowerLeftCorner.y - newheight + y) >= 0){ 
-				pixelR[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelR[(int)(x*sf)][(int)(y*sf)];
-				pixelG[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelG[(int)(x*sf)][(int)(y*sf)];
-				pixelB[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelB[(int)(x*sf)][(int)(y*sf)];
+
+				if(pictureToDraw.pixelR[(int)(x*sf)][(int)(y*sf)] != 0 && pictureToDraw.pixelG[(int)(x*sf)][(int)(y*sf)] != 255 && pictureToDraw.pixelB[(int)(x*sf)][(int)(y*sf)] != 0){
+					pixelR[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelR[(int)(x*sf)][(int)(y*sf)];
+					pixelG[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelG[(int)(x*sf)][(int)(y*sf)];
+					pixelB[lowerLeftCorner.x + x][lowerLeftCorner.y - newheight + y] = pictureToDraw.pixelB[(int)(x*sf)][(int)(y*sf)];
+				}
 			}
 		}
 	}
