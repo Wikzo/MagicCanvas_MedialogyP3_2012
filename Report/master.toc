@@ -1,8 +1,8 @@
 \changetocdepth {2}
 \select@language {english}
 \contentsline {chapter}{\chapternumberline {1}Problem definition}{3}{chapter.1}
-\contentsline {section}{\numberline {1.1}This is awesome}{3}{section.1.1}
-\contentsline {subsection}{\numberline {1.1.1}Subway is good}{3}{subsection.1.1.1}
+\contentsline {section}{\numberline {1.1}This is awesome}{4}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Subway is good}{4}{subsection.1.1.1}
 \contentsline {chapter}{\chapternumberline {2}Theory}{5}{chapter.2}
 \contentsline {section}{\numberline {2.1}Her er noget sejt}{5}{section.2.1}
 \contentsline {chapter}{\chapternumberline {3}The code}{7}{chapter.3}
