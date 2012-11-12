@@ -47,7 +47,7 @@ int main(){
 	Picture tmpPicture;
 	//This tmpPicture is used to temporarrily store the picture at different moments
 	tmpPicture.openCamera(camera1);
-	tmpPicture.makeBlack(); // function to avoid colored pixels on the sides of the transformed image.
+	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
 	Picture hat;
 	hat.openFile("nisse.jpg");
 	
