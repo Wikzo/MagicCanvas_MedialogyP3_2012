@@ -272,6 +272,8 @@ void Picture::makeBlack()
 
 void Picture::ConvertColorImageToGrayScale(Picture &picture)
 {
+	// DOES NOT WORK WITH CURRENT OUTPUT FUNCTION (because it uses 3 channels instead of 1)
+
 	// Common weight values used in TV production to calculate to grayscale
 	float RedWeight = 0.299;
 	float GreenWeight = 0.587;
