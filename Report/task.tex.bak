@@ -1,12 +1,15 @@
-\chapter*{Task definition}
-The theme for the 3rd semester of Medialogy is Visual Computing. Here subjects about how humans and machines perceive images were taught. In the course \textbf{Image Processing} it was shown how it is possible to process and manipulate digital images in theory and concept, while the course \textbf{Procedural Programming} was about learning the \verb!C++! programming language, as well as the OpenCV framework. To apply the knowledge about image processing in practice, each student were tasked with writing a small program that could process an image in a certain way. Everything should be implemented from scratch; OpenCV should only be used to load in an image and nothing more.
+\chapter{Problem definition}
+Etc etc
 
-Each mini project was meant as an individual task, and everybody in the group received a different task. The following is the description of the task I received.
+\section{This is awesome}
+Yep yep
 
-\begin{fancyquotes}Topic \#5: Diagonal Edge Detection
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/IMG_1477.jpg}
+\caption{Picture from Testing the Inferred Camera}
+\label{fig:Picture from Testing the Inferred Camera}
+\end{figure}
 
-Make a C/C++ program that can find diagonal edges in an image.
-
-Input: Greyscale image
-Output: Binary image where the diagonal edges are white (255) and the rest of the pixels black (0)
-\end{fancyquotes}
+\subsection{Subway is good}
+Nah...

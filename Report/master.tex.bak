@@ -3,7 +3,7 @@
 \begin{document}
 
 
-%%% Fron page and abstract %%%
+%%% Front page and abstract %%%
 \include{frontpage}
 \tableofcontents*
 
