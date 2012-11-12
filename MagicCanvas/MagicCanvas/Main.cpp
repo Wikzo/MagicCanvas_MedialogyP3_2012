@@ -262,7 +262,7 @@ void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture picture
 	int newheight = pictureToDraw.height/sf;
 
 
-	cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
+	//cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
 	
 	// Draw
 	for(int x = 0; x < newwidth; x++){
