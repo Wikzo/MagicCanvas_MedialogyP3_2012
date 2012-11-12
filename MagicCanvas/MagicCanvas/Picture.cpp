@@ -269,3 +269,29 @@ void Picture::makeBlack()
 		}
 	}
 }
+
+void Picture::ConvertColorImageToGrayScale(Picture &picture)
+{
+	// Common weight values used in TV production to calculate to grayscale
+	float RedWeight = 0.299;
+	float GreenWeight = 0.587;
+	float BlueWeight = 0.114;
+
+	// Iterate through all the pixels and apply the formula for grayscale
+	for (int x = 0; x < width; x++) // rows
+	{
+		for (int y = 0; x < height; y++)
+		{
+			// Calculate grayscale value
+			float grayValue = pixelR[x][y] * RedWeight
+				+ pixelG[x][y] * GreenWeight
+				+ pixelB[x][y] * BlueWeight;
+
+			// Apply the grayscale value (0-255)
+			pixelR[x][y] = (uchar)grayValue;
+			pixelG[x][y] = (uchar)grayValue;
+			pixelB[x][y] = (uchar)grayValue;
+
+		}
+	}
+}
