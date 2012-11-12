@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.11.8)  12 NOV 2012 11:16
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.11.8)  12 NOV 2012 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1781,10 +1781,17 @@ line 5.
  (./task.tex [2
 
 
-]) [3]
+] <Pictures/IMG_1477.jpg, id=69, 2601.72pt x 1943.26pt>
+File: Pictures/IMG_1477.jpg Graphic file (type jpg)
+
+<use Pictures/IMG_1477.jpg>
+Package pdftex.def Info: Pictures/IMG_1477.jpg used on input line 9.
+(pdftex.def)             Requested size: 426.0pt x 318.16298pt.
+) [3 <./Pictures/IMG_1477.jpg>]
 \openout2 = `theory.aux'.
 
- (./theory.tex [4
+ (./theory.tex
+[4
 
 
 
@@ -1795,11 +1802,11 @@ line 5.
 
 
 
-]
-(./master.bbl [8
+] (./master.bbl [8
 
 
-]) 
+])
+
 AED: lastpage setting LastPage
 [9]
 \tf@toc=\write6
@@ -1815,32 +1822,34 @@ Package rerunfilecheck Info: File `master.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 25.
  ) 
 Here is how much of TeX's memory you used:
- 31346 strings out of 493488
- 575199 string characters out of 3141326
- 834516 words of memory out of 3000000
- 34018 multiletter control sequences out of 15000+200000
- 33451 words of font info for 100 fonts, out of 3000000 for 9000
+ 31369 strings out of 493488
+ 575546 string characters out of 3141326
+ 834628 words of memory out of 3000000
+ 34034 multiletter control sequences out of 15000+200000
+ 35691 words of font info for 103 fonts, out of 3000000 for 9000
  959 hyphenation exceptions out of 8191
  63i,12n,122p,447b,779s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 {/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
-live/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texli
-ve/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive
-/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2
-012/texmf-dist/fonts/type1/public/cm-super/sfbx2074.pfb></usr/local/texlive/201
-2/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2012/
-texmf-dist/fonts/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2012/te
-xmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2012/texm
-f-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2012/texmf-
-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2012/texmf-di
-st/fonts/type1/public/cm-super/sfss0900.pfb></usr/local/texlive/2012/texmf-dist
-/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2012/texmf-dist/f
-onts/type1/urw/bookman/ubkd8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/typ
-e1/urw/bookman/ubkl8a.pfb>
-Output written on master.pdf (10 pages, 189721 bytes).
+live/2012/texmf-dist/fonts/type1/public/cm-super/sfbi1000.pfb></usr/local/texli
+ve/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive
+/2012/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2
+012/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/201
+2/texmf-dist/fonts/type1/public/cm-super/sfbx2074.pfb></usr/local/texlive/2012/
+texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2012/te
+xmf-dist/fonts/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2012/texm
+f-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2012/texmf-
+dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2012/texmf-di
+st/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2012/texmf-dist
+/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2012/texmf-dist/f
+onts/type1/public/cm-super/sfss0900.pfb></usr/local/texlive/2012/texmf-dist/fon
+ts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2012/texmf-dist/fonts
+/type1/urw/bookman/ubkd8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/u
+rw/bookman/ubkl8a.pfb>
+Output written on master.pdf (10 pages, 1743270 bytes).
 PDF statistics:
- 164 PDF objects out of 1000 (max. 8388607)
- 137 compressed objects within 2 object streams
- 22 named destinations out of 1000 (max. 500000)
- 69 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 174 PDF objects out of 1000 (max. 8388607)
+ 144 compressed objects within 2 object streams
+ 23 named destinations out of 1000 (max. 500000)
+ 74 words of extra memory for PDF output out of 10000 (max. 10000000)
 
