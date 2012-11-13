@@ -37,7 +37,7 @@ void Picture::openFile(string name)
 			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
 	}
 }
-void Picture::output()
+void Picture::output(string windowName)
 {
 	if(height == 0||width == 0){
 		cout << "No picture is loaded";
@@ -55,7 +55,7 @@ void Picture::output()
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
 			out.at<Vec3b>(y,x)[0] = pixelB[x][y];			
-	imshow("output", out);
+	imshow(windowName, out);
 }
 void Picture::reset()
 {
@@ -180,7 +180,6 @@ void Picture::drawPictureAt(point lowerLeftCorner, int newwidth, Picture picture
 	int newheight = pictureToDraw.height/sf;
 
 
-// Master original
 	//cout << "x: " << lowerLeftCorner.x << " y: " << lowerLeftCorner.y << " width: " << newwidth << " height: " << newheight << " sf: " << sf <<"\n";
 	
 	// Draw

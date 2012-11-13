@@ -42,7 +42,7 @@ int main(){
 			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		widthOfHat = 0;
 		
-		currentPicture.output();
+		currentPicture.output("video");
 		currentPicture.reset();
 		int keyInput = waitKey(10);
 		//cout << keyInput;
