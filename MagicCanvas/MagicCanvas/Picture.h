@@ -32,7 +32,6 @@ public:
 	void erode(int radius, Picture &tmpPicture);
 	void dilate(int radius, Picture &tmpPicture);
 	void makeBlack();
-	void ConvertColorImageToGrayScale(Picture &picture);
 	bool isBW;
 	int height;
 	int width;
