@@ -16,26 +16,46 @@ To determine which pixels that should be completely black and which should be co
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
 When choosing the threshold value it is important to think about what the wanted output is. It differs a lot from picture to picture how effective threshold is based on the difference between the object and the background. If the background and the object you want to find is very different in color then it is easy to distinguish between them and choose an effective threshold value. However if the object and background is very similar then it becomes a lot harder since you will have to chose between losing some information from the wanted object to remove background noise, or keep the object clear but have more background noise. \\
-To get a better understanding of this look at the two histograms below showing two grey-scale pictures. It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different while the rightmost histogram has very similar object and backgrounds.
+To get a better understanding of this look at the two histograms below showing the histograms of two grey-scale pictures. It is easy to tell that the leftmost histogram \eqref{fig:SimpleThreshold} is more ideal to threshold because the object and background are very different while the rightmost histogram \eqref{fig:ComplicatedThreshold} has very similar object and backgrounds.
 
-%%% INSERT TWO HISTOGRAMS!!! %%%
 \begin{figure}[htbp] \centering
-\begin{minipage}[b]{0.48\textwidth} \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/SimpleThresholdPicture} % Venstre billede
 \end{minipage} \hfill
-\begin{minipage}[b]{0.48\textwidth} \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdPicture} % Højre billede
 \end{minipage} \\ % Captions og labels
-\begin{minipage}[t]{0.48\textwidth}
-\caption{Venstre figurtekst.} % Venstre caption og label
-\label{fig:billede1}
+\begin{minipage}[t]{0.45\textwidth}
+\caption{Simple threshold value} % Venstre caption og label
+\label{fig:SimpleThreshold}
 \end{minipage} \hfill
-\begin{minipage}[t]{0.48\textwidth}
-\caption{Højre figurtekst.} % Højre caption og label
-\label{fig:billede2}
+\begin{minipage}[t]{0.45\textwidth}
+\caption{Complicated threshold value} % Højre caption og label
+\label{fig:ComplicatedThreshold}
 \end{minipage}
 \end{figure}
 
+The first picture which had the leftmost histogram can be seen on image \eqref{fig:SimpleThresholdAfter} and shows that after using threshold it makes a nice silhouette of the woman. However the picture from the rightmost histogram gets a very poor silhouette of a woman because the background and the woman has almost the same color. This can be seen on image \eqref{fig:ComplicatedThresholdAfter} which shows the picture after using threshold.
+
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/SimpleThresholdAfter} % Venstre billede
+\end{minipage} \hfill
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdAfter} % Højre billede
+\end{minipage} \\ % Captions og labels
+\begin{minipage}[t]{0.45\textwidth}
+\caption{Great silhouette after threshold} % Venstre caption og label
+\label{fig:SimpleThresholdAfter}
+\end{minipage} \hfill
+\begin{minipage}[t]{0.45\textwidth}
+\caption{Bad silhouette after threshold} % Højre caption og label
+\label{fig:ComplicatedThresholdAfter}
+\end{minipage}
+\end{figure}
+ 
+ 
+ 
 \subsection{Morphology}
 \subsubsection{Hit}
 \subsubsection{Fit}
