@@ -36,3 +36,26 @@ int main(){
 		currentPicture.dilate(3, tmpPicture);
 		currentPicture.erode(3, tmpPicture);
 
+		// Hat size + draw
+		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
+		if(widthOfHat > 0)
+			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
+		widthOfHat = 0;
+		
+		currentPicture.output("video");
+		currentPicture.reset();
+		int keyInput = waitKey(10);
+		//cout << keyInput;
+		if (keyInput == 115) // s
+		{
+			BG.reset();
+			BG.openCamera(camera1);
+		}
+		else if (keyInput == 27) // escape
+		{
+			cout << "\nEsc was pressed\nThe program exits when you press a key.";
+			waitKey(0);
+			return 0;
+		}
+	}	
+}
