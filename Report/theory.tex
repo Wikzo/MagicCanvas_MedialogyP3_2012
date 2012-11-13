@@ -19,7 +19,22 @@ When choosing the threshold value it is important to think about what the wanted
 To get a better understanding of this look at the two histograms below showing two grey-scale pictures. It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different while the rightmost histogram has very similar object and backgrounds.
 
 %%% INSERT TWO HISTOGRAMS!!! %%%
-
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.48\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/SimpleThresholdPicture} % Venstre billede
+\end{minipage} \hfill
+\begin{minipage}[b]{0.48\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdPicture} % Højre billede
+\end{minipage} \\ % Captions og labels
+\begin{minipage}[t]{0.48\textwidth}
+\caption{Venstre figurtekst.} % Venstre caption og label
+\label{fig:billede1}
+\end{minipage} \hfill
+\begin{minipage}[t]{0.48\textwidth}
+\caption{Højre figurtekst.} % Højre caption og label
+\label{fig:billede2}
+\end{minipage}
+\end{figure}
 
 \subsection{Morphology}
 \subsubsection{Hit}
