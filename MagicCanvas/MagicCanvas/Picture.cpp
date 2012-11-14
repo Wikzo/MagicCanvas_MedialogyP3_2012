@@ -268,3 +268,78 @@ void Picture::makeBlack()
 		}
 	}
 }
+void Picture::startFire(point startingPoint, Picture &tmpPicture)
+{
+	tmpPicture.makeBlack();
+	point currentPosition = startingPoint;
+	int pixelCount = 0;
+	while(true)
+	{
+		tmpPicture.pixelR[currentPosition.x][currentPosition.y] = 255;
+		//if right is available, is free and not burned
+		if(currentPosition.x+1 < width && pixelR[currentPosition.x+1][currentPosition.y] == 255 && tmpPicture.pixelR[currentPosition.x+1][currentPosition.y] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.x++;
+		}
+		//if down is available, is free and not burned
+		else if(currentPosition.y+1 < height && pixelR[currentPosition.x][currentPosition.y+1] == 255 && tmpPicture.pixelR[currentPosition.x][currentPosition.y+1] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.y++;
+		}
+		//if left is available, is free and not burned
+		else if(currentPosition.x-1 > 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255 && tmpPicture.pixelR[currentPosition.x-1][currentPosition.y] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.x--;
+		}
+		//if up is available, is free and not burned
+		else if(currentPosition.y-1 > 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255 && tmpPicture.pixelR[currentPosition.x][currentPosition.y-1] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.y--;
+		}
+		//steps back:
+		//if right is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.x+1 < width && tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] && tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y-1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.x++;
+		}
+		//if down is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y+1 < height && tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] > tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] > tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] > tmpPicture.pixelG[currentPosition.x][currentPosition.y-1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.y++;
+		}
+		//if left is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.x-1 > 0 && tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] && tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y-1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.x--;
+		}
+		//if up is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y-1 > 0 && tmpPicture.pixelG[currentPosition.x][currentPosition.y-1] > tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y-1] > tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y-1] > tmpPicture.pixelG[currentPosition.x][currentPosition.y+1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.y--;
+		}
+		else
+			break;
+	}
+
+	for(int x = 0; x < width; x++){
+		for(int y = 0; y < height; y++){
+			if(tmpPicture.pixelR[x][y] == 255){ 
+				pixelR[x][y] = 255;
+				pixelG[x][y] = 0;
+				pixelB[x][y] = 0;
+			}
+		}
+	}
+}

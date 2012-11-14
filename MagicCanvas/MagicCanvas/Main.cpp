@@ -28,7 +28,7 @@ int main(){
 	while(true){ //To be played all the time.
 		currentPicture.openCamera(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
-		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,50);
+		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,25);
 		
 		// Opening + closing
 		currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
@@ -38,6 +38,7 @@ int main(){
 
 		// Hat size + draw
 		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
+		currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
 		if(widthOfHat > 0)
 			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		widthOfHat = 0;
