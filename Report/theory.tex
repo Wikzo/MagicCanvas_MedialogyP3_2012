@@ -107,8 +107,7 @@ A common problem when dealing with images is to determine if the image data cont
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
 \subsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image.
-In this project, the algorithm used is a \textbf{------------- (to add).}
+The most common used connectivities in BLOB extraction are the 8-connectivity and the 4-connectivity kernels. Whereas the 8-connectivity kernel is more accurate, it also requires more computations and consequently, needs more time to process the image.
 \subsection{BLOB Classification}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
 
----------------- To finish whenever Max figures out how this will be done... --------------------------
