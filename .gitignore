@@ -39,3 +39,4 @@ Debug*
 *.mtc1
 *.out
 *.synctex.gz
+*BACKUP*
