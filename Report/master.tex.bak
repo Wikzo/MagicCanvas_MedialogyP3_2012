@@ -10,8 +10,10 @@
 %%% Introduction %%%
 \include{task}
 \include{theory}
+\include{hjoerring_library}
 
 %%% Problem statement %%%
+
 
 %%% Appendix %%%
 \include{code}
