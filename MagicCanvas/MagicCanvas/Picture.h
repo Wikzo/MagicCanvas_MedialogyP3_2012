@@ -14,6 +14,8 @@ struct point
 {
 	int x;
 	int y;
+	point():x(0),y(0){};
+	point(int x, int y):x(x),y(y){};
 };
 
 class Picture
