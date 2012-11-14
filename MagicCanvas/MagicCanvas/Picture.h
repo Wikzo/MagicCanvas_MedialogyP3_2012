@@ -32,6 +32,7 @@ public:
 	void erode(int radius, Picture &tmpPicture);
 	void dilate(int radius, Picture &tmpPicture);
 	void makeBlack();
+	void startFire(point startingPoint, Picture &tmpPicture);
 	bool isBW;
 	int height;
 	int width;
