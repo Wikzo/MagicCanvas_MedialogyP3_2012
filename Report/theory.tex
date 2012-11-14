@@ -1,14 +1,4 @@
 \chapter{Theory}
-<<<<<<< HEAD
-This chapter is going to explain the theories behind the techniques used for this project. Each technique will be elaborated and explain when and how it is being used.
-\section{Image Processing}
-During this project a lot of image processing has been used. The different image processing techniques are used in a combination to display exactly what we want to output. Some techniques is being used to remove noise from the picture so the important parts gets all the focus, while others are used for making the important parts more clear or making it possible to track specific parts of the output. \\
-It is all these different techniques combined that makes it possible to get a functional product, but before you can use them, you will have to know how they work and how they can be included to your project. This section is going to explain the different techniques that are being used and also why and how they are being used in this project.
-\subsection{Threshold}
-Threshold is one of the most fundamental operations in point processing and is used to take an input picture and make it binary. Making an image binary means to show the image in only completely black and completely white pixel values. \\
-This function could be useful in programs where you need to find silhouettes, tracking a person for example, and smaller details are not as important. \\
-To determine which pixels that should be completely black and which should be completely white a threshold value is required. The threshold value can be compared to a gatekeeper who lets everyone who is 18 years old or older inside the club, but denies everyone who is 17 years old or younger. However with threshold getting in equals to becoming a white pixel and getting denied equals to a black pixel if the chosen threshold value was 18 like in this example. To sum this up the formula for making a threshold is shown below:
-=======
 This chapter is going to explain theories behind the techniques used for this project. Each technique will be elaborated and how and when it is being used in the project will be explained.
 
 %% Gustav suggestion: %%
@@ -54,7 +44,6 @@ To determine which pixels that should be completely black and which that should 
 Using the same analogy, somebody decided that the border between being too young and just old enough should be 18 years. This age could easily be something different, such as 17 or 24. The same is true with thresholding: you have to decide when pixels are "old" enough (bright). If they are too young (dark), they cannot get access.
 
 In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up the formula for making a threshold is shown in equation \ref{threshold}.
->>>>>>> fa744efff5f13601f0a7d2d1128f5d71bd239b9b
 \begin{equation}
   \begin{aligned}
   	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)=0 \\
@@ -86,11 +75,7 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \end{minipage}
 \end{figure}
 
-<<<<<<< HEAD
-The first picture which had the leftmost histogram can be seen on image \eqref{fig:SimpleThresholdAfter} and shows that after using threshold it makes a nice silhouette of the woman. However the picture from the rightmost histogram gets a very poor silhouette of a woman because the background and the woman has almost the same color. This can be seen on image \eqref{fig:ComplicatedThresholdAfter} which shows the picture after using threshold.
-=======
 Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \eqref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after thresholding is applied. However, looking at figure \eqref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \eqref{fig:ComplicatedThreshold}, gives a very poor silhouette of a woman because the background and the object has very similar colors. 
->>>>>>> fa744efff5f13601f0a7d2d1128f5d71bd239b9b
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -109,14 +94,9 @@ Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture w
 \end{minipage}
 \end{figure}
  
-<<<<<<< HEAD
- 
- 
-=======
 This proves the point that finding a functional threshold value is not always simple, and for finding a silhouette for example it is a great help to somehow make a clear transition from the object and the background.
 
->>>>>>> fa744efff5f13601f0a7d2d1128f5d71bd239b9b
-\subsection{Morphology}
+\section{Morphology}
 \subsubsection{Hit}
 \subsubsection{Fit}
 \subsubsection{Dilation}
@@ -127,7 +107,7 @@ A common problem when dealing with images is to determine if the image data cont
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
 \subsubsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image.
-
+In this project, the algorithm used is a \textbf{------------- (to add).}
 \subsubsection{BLOB Classification}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
 
