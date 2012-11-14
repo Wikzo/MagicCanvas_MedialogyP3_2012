@@ -65,29 +65,61 @@ Together with a projector capable of projecting a relative huge output 3*2.25 me
 \subsection{Ground zero}
 The first step into developing some usable software, was to write some scrappy code that would run and produce a measurable output. This was done by dividing the entire group consisting of 6 people into 2 smaller groups of 3 people, to come up with a solution on how to produce a segmentation of the video input. A competition within the group turned up to create the best program code in 3 days to be presented. And so the "winner's" code or parts from both projects would be incorporated in a testable file.\\
 At the end of the week 2 programs were ready to be tested. Both programs were able to do same things, only the code differed. Some of the techniques used were: Median filtering, morphology(opening/closing), background subtraction, conversion from a colored image to a gray-scale image and most important a first draft of the BLOB analysis, needed to analyze the shape of the head where the Christmas hat is to be placed.\\
-One team did however create some custom made structures so that all would be able to include their own functions in the program without interfering with areas. Therefore it was decided to use that program to implement the different functions.
+One team did however create some custom made structures so that all would be able to include their own functions in the program without interfering with others. Therefore it was decided to use that program to implement the different functions.
 
 \subsection{Running the first test}
-Running the first test we
+As the first prototype of the program was completed, it was decided to test the piece of code written and also the equipment given. Mainly because it was of great importance to check the outcome of the input video, considering the fps(frames per second) and the static threshold set. 
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1.00\textwidth]{Pictures/Test/IMG_1477.jpg}
+\includegraphics[width=1.00\textwidth]{Pictures/Test/TestSetup.jpg}
 \caption{Picture from Testing the Infrared Camera}
 \label{fig:Picture from Testing the Infrared Camera}
 \end{figure} 
 
-\subsection{The equipment} 
-modified to collect infrared lightning. This works by having some lamps that projects infrared light, that is "collectible" by the camera. We 
+Figure \ref{fig:Picture from Testing the Infrared Camera} above illustrates the initial setup for the first prototype testing. \\
+At first the ordinary web camera was used, but due to change in light conditions from the objects trespassing, which caused glittering on the output, it was decided to use the infrared camera. In addition to the infrared camera, 4 \fixme{oldschool(proper name for old light bulbs)} oldschool light bulbs were used to \fixme{feed (find synonym)} feed the infrared camera with information regarding the test person. This produced a somewhat good output of the testperson, though one problem still remained. Once the testperson turned 90degrees\fixme{degrees (math symbol)}. the head became much smaller and didn't look very precise on the output, in addition the Christmas hat would also be misplaced.\\
+The solution to this turned out to be illuminating the background instead of the person, which produced a really great output, seen on figure \ref{fig:max_subtracted} below.
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Test/MaxSubtracted.jpg}
+\caption{Complete subtraction of object outputted as binary picture.}
+\label{fig:max_subtracted}
+\end{figure}
+
+
+\section{Supervisor meeting with Andreas 14th of November}
+The 14th of November a supervisor meeting was arranged with the co-supervisor Andreas Møgelmose. The meeting was initiated to receive some valuable feedback on the prototype testing and secondly some concerns regarding the programming had arisen. Currently the program ran with 2-3 fps, due to the mathematical calculations performed in the program, such as looping through the entire image's pixel values.\\
+To this several not least good suggestions were given, such as adjusting the BLOB analysis to a more specified point of interest and also to include another method of subtracting the background called \textbf{ViBe}.
+
+\subsection{Using an avatar instead of shape}
+ \begin{itemize}
+\item Reduce the image processing to the region of interest, perhaps discarding 60-70percent\fixme{percent(math symbol)}.
+\item Producing a nice real-time output in form of pixies with hats.
+\item Pixies can be a recorded scene that will be looped.
+\item Describe the use of multiple threads in programming.
+\end{itemize}
+ 
+\section{Part conclusion of Problem Definition}
+To summarize on the above-mentioned in regards to the equipment, the skills of the individual members of the group, the theme and the actual concept.\\
+Considering the hypothesis that all time in the world was given along with all money needed, the outcome of this project would within doubt be mindblowing\fixme{mind blowing(find synonym)}. Limited by time, skills and equipment an alternative plan was to be worked out and adapted to what was possible. Producing an output of the entire image, performing several mathematical operations are simply too heavy work for the program in extend to the programming skills of the group. The skills at programming are simply not advanced enough at doing optimized algorithms, to make the program run smooth in real time.      
 
 \section{Initial Problem Statement}
-After talking to Martin concerning tendencies at the library and having a discussion in the group, 
+ 
+
       
 \textbf{We want an interesting expose at the library that you can enjoy at two different levels. 1) You can walk by and it's funny and 2) you can interact and bring your friends.}\\
 \textbf{Easy or almost self-maintained.}
 
-\section{This is awesome}
-Yep yep
 
-\subsection{Subway is good}
-Nah...
+
+
+
+
+
+
+
+
+

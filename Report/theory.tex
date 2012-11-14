@@ -103,8 +103,12 @@ This proves the point that finding a functional threshold value is not always si
 \subsubsection{Erosion}
 \subsubsection{Opening}
 \subsection{BLOB-Analysis}
-The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. Therefore, this technique is used to extract meaningful information from images.
-A common problem when dealing with images is to determine if the image data contains a particular object or shape, by detecting points or regions that differ in properties like brightness or color changes.
-\subsubsection{Grass Fire}
+A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images and separate the pixels by detecting the points or regions that differ in properties like brightness or color changes (i.e., their value) and classifies them into two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
+Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
+\subsubsection{BLOB Extraction}
+To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image.
+In this project, the algorithm used is a \textbf{------------- (to add).}
 \subsubsection{BLOB Classification}
+The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
 
+---------------- To finish whenever Max figures out how this will be done... --------------------------
