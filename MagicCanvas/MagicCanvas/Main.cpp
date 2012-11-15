@@ -19,6 +19,13 @@ int main(){
 	Picture tmpPicture;
 	Picture hat;
 
+	currentPicture.initialize(camera1);
+	BG.initialize(camera1);
+	tmpPicture.initialize(camera1); //This tmpPicture is used to temporarrily store the picture at different moments
+	hat.initialize("nisse.jpg");
+	
+	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
+
 	// gustav test vibe
 	/*
 	Picture images[20];
@@ -29,8 +36,6 @@ int main(){
 		images[i].openCamera(camera1);
 		images[i].output("hey" + i);
 	}*/
-	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
-
 	while(true){ //To be played all the time.
 		currentPicture.refresh(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change

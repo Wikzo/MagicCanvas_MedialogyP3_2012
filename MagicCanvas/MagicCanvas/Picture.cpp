@@ -433,7 +433,7 @@ void Picture::findAllBLOBs(Picture &tmpPicture)
 	}
 }
 
-static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size)
+/*static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size)
 {
 	// TODO: Linked List, maybe?
 
@@ -443,4 +443,4 @@ static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[],
 		images[i].output("hey" + i);
 	}
 
-}
+}*/
