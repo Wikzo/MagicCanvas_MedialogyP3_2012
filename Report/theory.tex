@@ -46,8 +46,8 @@ Using the same analogy, somebody decided that the border between being too young
 In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up the formula for making a threshold is shown in equation \ref{threshold}.
 \begin{equation}
   \begin{aligned}
-  	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)=0 \\
-  	\text{if } f(x,y)>T \quad \text{then } g(x,y)=255
+  	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
+  	\text{if } f(x,y)>T \quad \text{then } g(x,y)&= 255
 	\label{threshold}  
   \end{aligned} 
 \end{equation}
@@ -105,6 +105,21 @@ This proves the point that finding a functional threshold value is not always si
 \section{Modified infrared camera vs normal webcam}
 \section{Framework}
 \section{Region of interest}
+The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
+A common thinking is that the more pixels, the better quality, and the better output. However this should be thought through. How important is the quality? Is it even necessary to show every single pixel or is it just as good with a lower number of pixels?\\
+When the computer make changes to a picture it has to run through every single pixel one at a time. Therefore it would make a big difference to decrease the amount of pixels used.\\
+Beside thinking about the amount of pixels used a great tool is ROI. As the name alludes ROI takes a region in the picture that is specially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing is prevented, saving time and possibly providing a faster frame rate.
+
+An example of how this could be used is taking a photo where only the head is interesting. The head should then be the region of interest, and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This can be shown on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted energy that can be saved.
+
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/Theory/RegionOfInterest.jpg} 
+\caption{Region of Interest} 
+\label{fig:Region of Interest} 
+\end{figure} 
+
 \section{Background subtraction}
 \section{Template matching}
 \section{movement tracking (ViBe)}
