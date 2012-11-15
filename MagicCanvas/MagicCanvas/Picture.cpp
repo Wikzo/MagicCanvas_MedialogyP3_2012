@@ -268,7 +268,7 @@ void Picture::makeBlack()
 		}
 	}
 }
-void Picture::startFire(point startingPoint, Picture &tmpPicture)
+void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture)
 {
 	tmpPicture.makeBlack();
 	point currentPosition = startingPoint;
@@ -332,13 +332,36 @@ void Picture::startFire(point startingPoint, Picture &tmpPicture)
 		else
 			break;
 	}
-
+	//TODO: Maybe this could be a problem when the next blob has to be found:
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
 			if(tmpPicture.pixelR[x][y] == 255){ 
-				pixelR[x][y] = 255;
-				pixelG[x][y] = 0;
-				pixelB[x][y] = 0;
+				pixelR[x][y] = objColor.r;
+				pixelG[x][y] = objColor.g;
+				pixelB[x][y] = objColor.b;
+			}
+		}
+	}
+
+}
+void Picture::findAllBLOBs(Picture &tmpPicture)
+{
+	color currentColor;
+	currentColor.r = 0;
+	currentColor.g = 0;
+	currentColor.b = 0;
+
+	for(int x = 0; x < width; x++){
+		for(int y = 0; y < height; y++){
+			if(pixelR[x][y] == 255 && pixelG[x][y] == 255 && pixelB[x][y] == 255)
+			{ 
+				currentColor.r += 50;
+				currentColor.g -= 30;
+				currentColor.b += 7;
+				point currentPoint;
+				currentPoint.x = x;
+				currentPoint.y = y;
+				startFire(currentPoint, currentColor, tmpPicture);
 			}
 		}
 	}
