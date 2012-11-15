@@ -167,25 +167,24 @@ To isolate BLOBs in a binary image, we need to define first if two pixels are co
 One of these connected component labeling algorithm is the \textbf{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
 
-
-\begin{figure}[htbp] \centering
-\begin{minipage}[b]{0.45\textwidth} \centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/8connec_kernel.png} 
-\end{minipage} \hfill
-\begin{minipage}[b]{0.45\textwidth} \centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/4connec_kernel.png} 
-\end{minipage} \\ % Captions og labels
-\begin{minipage}[t]{0.45\textwidth}
-\caption{8 connectivity labeling kernel} % Venstre caption og label
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{Pictures/Theory/8connec_kernel.png}
+\caption{8 connectivity labeling kernel detects 1 single object}
 \label{fig:8connecK}
-\end{minipage} \hfill
-\begin{minipage}[t]{0.45\textwidth}
-\caption{4 connectivity labeling kernel} % Højre caption og label
-\label{fig:4connecK}
-\end{minipage}
 \end{figure}
 
-Figure \eqref{fig:8connecK}
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it center its attention on it and burns it.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{Pictures/Theory/4connec_kernel.png}
+\caption{4 connectivity labeling kernel detects 2 objects}
+\label{fig:4connecK}
+\end{figure}
+
+
+
 Figure \eqref{fig:4connecK}
 
 \subsection{BLOB Classification}

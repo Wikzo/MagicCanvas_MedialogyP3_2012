@@ -34,8 +34,10 @@ public:
 	int height;
 	int width;
 	//functions that work on all kinds of pictures
-	void openFile(string name);
-	void openCamera(VideoCapture captureToStoreCamra);
+	void initialize(string fileName);
+	void initialize(VideoCapture captureToStoreCamra);
+	void refresh(string fileName);
+	void refresh(VideoCapture captureToStoreCamra);
 	void binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int threshhold);
 	void drawPictureAt(point lowerLeftCorner, int newidth, Picture pictureToDraw);
 	void makeBlack();
