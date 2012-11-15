@@ -35,12 +35,12 @@ int main(){
 		currentPicture.dilate(3, tmpPicture);
 
 		// Hat size + draw
-		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
+		//currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
 		//currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
 		currentPicture.findAllBLOBs(tmpPicture);
-		if(widthOfHat > 0)
-			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
-		widthOfHat = 0;
+		//if(widthOfHat > 0)
+		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
+		//widthOfHat = 0;
 		
 		currentPicture.output("video");
 		currentPicture.reset();
