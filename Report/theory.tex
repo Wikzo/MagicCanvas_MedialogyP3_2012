@@ -122,6 +122,16 @@ To isolate BLOBs in a binary image, we need to define first if two pixels are co
 One of these connected component labeling algorithm is the \textbf{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/8connec_kernel.jpg}
+\caption{8 connectivity kernel}
+\label{fig:8connecK}
+\end{figure}
+
+Figure \eqref{fig:8connecK}
+
 \subsection{BLOB Classification}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
 
