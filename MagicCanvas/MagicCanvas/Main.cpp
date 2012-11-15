@@ -13,20 +13,21 @@ int main(){
 
 	VideoCapture camera1;
 	camera1.open(0);
+
 	Picture currentPicture; 
 	Picture BG; // 
-	BG.openCamera(camera1);
 	Picture tmpPicture;
-	//This tmpPicture is used to temporarrily store the picture at different moments
-	tmpPicture.openCamera(camera1);
-	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
 	Picture hat;
-	hat.openFile("nisse.jpg");
-	
 
+	currentPicture.initialize(camera1);
+	BG.initialize(camera1);
+	tmpPicture.initialize(camera1); //This tmpPicture is used to temporarrily store the picture at different moments
+	hat.initialize("nisse.jpg");
+	
+	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
 
 	while(true){ //To be played all the time.
-		currentPicture.openCamera(camera1);
+		currentPicture.refresh(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
 		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,25);
 		
@@ -43,13 +44,13 @@ int main(){
 		//widthOfHat = 0;
 		
 		currentPicture.output("video");
-		currentPicture.reset();
+		
 		int keyInput = waitKey(10);
 		//cout << keyInput;
 		if (keyInput == 115) // s
 		{
-			BG.reset();
-			BG.openCamera(camera1);
+			
+			BG.refresh(camera1);
 		}
 		else if (keyInput == 27) // escape
 		{
@@ -57,5 +58,7 @@ int main(){
 			waitKey(0);
 			return 0;
 		}
-	}	
+	}
+	currentPicture.reset();
+	BG.reset();
 }
