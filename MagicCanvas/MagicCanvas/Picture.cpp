@@ -332,11 +332,12 @@ void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture
 		else
 			break;
 	}
-	cout << pixelCount<< "\n";
+	//cout << pixelCount<< "\n";
 	//TODO: Maybe this could be a problem when the next blob has to be found:
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
-			if(tmpPicture.pixelR[x][y] == 255){ 
+			if(tmpPicture.pixelR[x][y] == 255){
+				//the blob has to be at least 1000 pixels big to be taken as a blob of a person => the color will be green
 				if(pixelCount > 1000)
 				{
 					pixelR[x][y] = 0;
