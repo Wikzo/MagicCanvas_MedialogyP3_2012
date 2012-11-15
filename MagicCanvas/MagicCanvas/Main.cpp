@@ -30,11 +30,9 @@ int main(){
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
 		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,25);
 		
-		// Opening + closing
+		// Closing
 		currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
 		currentPicture.dilate(3, tmpPicture);
-		currentPicture.dilate(3, tmpPicture);
-		currentPicture.erode(3, tmpPicture);
 
 		// Hat size + draw
 		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.

@@ -332,32 +332,41 @@ void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture
 		else
 			break;
 	}
+	cout << pixelCount<< "\n";
 	//TODO: Maybe this could be a problem when the next blob has to be found:
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
 			if(tmpPicture.pixelR[x][y] == 255){ 
-				pixelR[x][y] = objColor.r;
-				pixelG[x][y] = objColor.g;
-				pixelB[x][y] = objColor.b;
+				if(pixelCount > 1000)
+				{
+					pixelR[x][y] = 0;
+					pixelG[x][y] = objColor.g;
+					pixelB[x][y] = 0;
+				}
+				else
+				{
+					pixelR[x][y] = objColor.r;
+					pixelG[x][y] = 0;
+					pixelB[x][y] = 0;
+				}
 			}
 		}
 	}
-
 }
 void Picture::findAllBLOBs(Picture &tmpPicture)
 {
 	color currentColor;
-	currentColor.r = 0;
-	currentColor.g = 0;
-	currentColor.b = 0;
+	currentColor.r = 100;
+	currentColor.g = 100;
+	currentColor.b = 100;
 
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
 			if(pixelR[x][y] == 255 && pixelG[x][y] == 255 && pixelB[x][y] == 255)
 			{ 
-				currentColor.r += 50;
-				currentColor.g -= 30;
-				currentColor.b += 7;
+				currentColor.r += 30;
+				currentColor.g += 30;
+				currentColor.b += 30;
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
