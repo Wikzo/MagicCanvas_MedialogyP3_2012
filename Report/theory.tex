@@ -116,6 +116,8 @@ Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} 
 \subsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most common used connectivities in BLOB extraction are the 8-connectivity and the 4-connectivity kernels. Whereas the 8-connectivity kernel is more accurate, it also requires more computations and consequently, needs more time to process the image.
 
+%% add picture here
+
 \subsubsection{Grass-Fire Algorithm}
 One of these connected component labeling algorithm is the \textbf{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
