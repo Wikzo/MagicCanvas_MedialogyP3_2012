@@ -378,3 +378,15 @@ void Picture::findAllBLOBs(Picture &tmpPicture)
 		}
 	}
 }
+
+static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size)
+{
+	// TODO: Linked List, maybe?
+
+	for (int i = 0; i < size; i++)
+	{
+		images[i].openCamera(capture);
+		images[i].output("hey" + i);
+	}
+
+}

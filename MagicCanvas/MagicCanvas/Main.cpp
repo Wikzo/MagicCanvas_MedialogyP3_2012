@@ -22,7 +22,17 @@ int main(){
 	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
 	Picture hat;
 	hat.openFile("nisse.jpg");
-	
+
+	// gustav test vibe
+	/*
+	Picture images[20];
+	//Picture::GrabMultipleBackgroundImages(camera1, images, 20);
+
+	for (int i = 0; i < 20; i++)
+	{
+		images[i].openCamera(camera1);
+		images[i].output("hey" + i);
+	}*/
 
 
 	while(true){ //To be played all the time.

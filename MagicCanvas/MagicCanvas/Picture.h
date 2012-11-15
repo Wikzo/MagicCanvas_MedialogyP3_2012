@@ -47,6 +47,7 @@ public:
 	void dilate(int radius, Picture &tmpPicture);
 	void startFire(point startingPoint, color objColor, Picture &tmpPicture);
 	void findAllBLOBs(Picture &tmpPicture);
+	static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size);
 };
 
 #endif
