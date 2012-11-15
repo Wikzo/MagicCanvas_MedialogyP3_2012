@@ -102,7 +102,6 @@ This proves the point that finding a functional threshold value is not always si
 \subsection{Dilation}
 \subsection{Erosion}
 \subsection{Opening}
-\section{BLOB-Analysis}
 \section{Modified infrared camera vs normal webcam}
 \section{Framework}
 \section{Region of interest}
@@ -111,11 +110,19 @@ This proves the point that finding a functional threshold value is not always si
 \section{movement tracking (ViBe)}
 \section{Digital image}
 \section{Noise filter(median/mean)}
-A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images and separate the pixels by detecting the points or regions that differ in properties like brightness or color changes (i.e., their value) and classifies them into two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
+\section{BLOB-Analysis}
+A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images, separate the pixels by detecting the points or regions that differ in properties like brightness or color changes (i.e., their value), and classify them into two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
 \subsection{BLOB Extraction}
-To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image.
-The most common used connectivities in BLOB extraction are the 8-connectivity and the 4-connectivity kernels. Whereas the 8-connectivity kernel is more accurate, it also requires more computations and consequently, needs more time to process the image.
+To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most common used connectivities in BLOB extraction are the 8-connectivity and the 4-connectivity kernels. Whereas the 8-connectivity kernel is more accurate, it also requires more computations and consequently, needs more time to process the image.
+
+%% add picture here
+
+\subsubsection{Grass-Fire Algorithm}
+One of these connected component labeling algorithm is the \textbf{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
+To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
+
 \subsection{BLOB Classification}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
+
 
