@@ -4,7 +4,7 @@ This chapter is going to explain theories behind the techniques used for this pr
 %% Gustav suggestion: %%
 %% This is ONLY theory and not implemenation (how we use it) %%
 
-\section{Image Processing}
+\section{Framework}
 Image Processing can be described as an umbrella term. \citep{ip_book} writes that Image Processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved using multiple steps. \citep{ip_book} describes them as follow. It should be noted, however, that the order of the steps sometimes change, and there might be more focus on some than others. That being said, this is a general framework that can be used as a good starting point:
 
 \textbf{Image Acquisition}
@@ -34,6 +34,36 @@ Figure \eqref{fig:ip_framework} illustrates the framework used typically when wo
 %% Maybe a little to blabla and too long sentences - Gustav %%
 During this project a lot of image processing has been used. The different image processing techniques are used in a combination to display exactly what we want to output. Some techniques is being used to remove noise from the picture, so the important parts gets all the focus, while others are used for making the important parts more clear or making it possible to track specific parts of the output. \\
 It is all these different techniques combined that makes it possible to get a functional product, but before you can use them, you will have to know how they work and how they can be included to your project. This section is going to explain the different techniques that are being used and also why and how they are being implemented in this project.
+
+\section{The Digital Image}
+Bla bla bla metatext for The Digital Image
+
+\subsection{8 bit system and grayscale images}
+As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer. An image with one channel of information for each pixel in the x,y axis is called grayscale, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system as mentioned above with the value \textbf{(2 to the power of 8)}\fixme{(Include math symbol for 2 to the power of 8)}, which is 256. One would immediately note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255.\\
+Figure \eqref{fig:ip_grayscale} illustrates the theory above.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
+\caption{Image illustrating the principle of a grayscale image applying to the binary system of 2 to the power of 8}
+\label{fig:ip_grayscale}
+\end{figure}
+
+
+
+  
+This system is used on two levels, one way it's used, is continuity of components with current of 0-5Volt and the second is indexing 
+ In order to use this system on two levels, for both working with components with a digital current from 0 to 5 Volts tension and for indexing the intensity of pixel values in a picture, 
+
+\subsection{The RGB color system}
+Now that the binary system and indexing an image has been represented another aspect of digital images will be presented.\\
+In addition to grayscale images consisting of one channel
+ 
+\subsection{binary images}
+
+\subsection{Indexing a picture (x,y axis)}
+
+   
+
 
 %% Could be a little more clear and short - Gustav %%
 \section{Thresholding}
@@ -136,6 +166,27 @@ To isolate BLOBs in a binary image, we need to define first if two pixels are co
 \subsubsection{Grass-Fire Algorithm}
 One of these connected component labeling algorithm is the \textbf{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
+
+
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/8connec_kernel.png} 
+\end{minipage} \hfill
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/4connec_kernel.png} 
+\end{minipage} \\ % Captions og labels
+\begin{minipage}[t]{0.45\textwidth}
+\caption{8 connectivity labeling kernel} % Venstre caption og label
+\label{fig:8connecK}
+\end{minipage} \hfill
+\begin{minipage}[t]{0.45\textwidth}
+\caption{4 connectivity labeling kernel} % Højre caption og label
+\label{fig:4connecK}
+\end{minipage}
+\end{figure}
+
+Figure \eqref{fig:8connecK}
+Figure \eqref{fig:4connecK}
 
 \subsection{BLOB Classification}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
