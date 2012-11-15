@@ -6,10 +6,10 @@
 using namespace std;
 using namespace cv;
 
-void Picture::openFile(string name)
+void Picture::initialize(string fileName)
 {
 	Mat tmp;
-	tmp = imread(name);
+	tmp = imread(fileName);
 	width = tmp.cols;
 	height = tmp.rows;
 
@@ -37,6 +37,90 @@ void Picture::openFile(string name)
 			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
 	}
 }
+void Picture::initialize(VideoCapture captureToStoreCamra)
+{
+	Mat tmp;
+	captureToStoreCamra >> tmp;
+	width = tmp.cols;
+	height = tmp.rows;
+
+	pixelR = new int*[width];
+	for(int x = 0; x < width; x++)
+	{
+		pixelR[x] = new int[height];
+		for(int y = 0; y < height; y++)
+			pixelR[x][y] = tmp.at<Vec3b>(y,x)[2];
+	}
+
+	pixelG = new int*[width];
+	for(int x = 0; x < width; x++)
+	{
+		pixelG[x] = new int[height];
+		for(int y = 0; y < height; y++)
+			pixelG[x][y] = tmp.at<Vec3b>(y,x)[1];
+	}
+
+	pixelB = new int*[width];
+	for(int x = 0; x < width; x++)
+	{
+		pixelB[x] = new int[height];
+		for(int y = 0; y < height; y++)
+			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
+	}
+}
+
+void Picture::refresh(string fileName)
+{
+	Mat tmp;
+	tmp = imread(fileName);
+	width = tmp.cols;
+	height = tmp.rows;
+
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+			pixelR[x][y] = tmp.at<Vec3b>(y,x)[2];
+	}
+
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+			pixelG[x][y] = tmp.at<Vec3b>(y,x)[1];
+	}
+
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
+	}
+}
+void Picture::refresh(VideoCapture captureToStoreCamra)
+{
+	Mat tmp;
+	captureToStoreCamra >> tmp;
+	width = tmp.cols;
+	height = tmp.rows;
+
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+			pixelR[x][y] = tmp.at<Vec3b>(y,x)[2];
+	}
+
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+			pixelG[x][y] = tmp.at<Vec3b>(y,x)[1];
+	}
+
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
+	}
+}
+
+
 void Picture::output(string windowName)
 {
 	if(height == 0||width == 0){
@@ -73,44 +157,16 @@ void Picture::reset()
 	height = 0;
 
 }
-void Picture::openCamera(VideoCapture captureToStoreCamra)
-{
-	Mat tmp;
-	captureToStoreCamra >> tmp;
-	width = tmp.cols;
-	height = tmp.rows;
 
-	pixelR = new int*[width];
-	for(int x = 0; x < width; x++)
-	{
-		pixelR[x] = new int[height];
-		for(int y = 0; y < height; y++)
-			pixelR[x][y] = tmp.at<Vec3b>(y,x)[2];
-	}
-
-	pixelG = new int*[width];
-	for(int x = 0; x < width; x++)
-	{
-		pixelG[x] = new int[height];
-		for(int y = 0; y < height; y++)
-			pixelG[x][y] = tmp.at<Vec3b>(y,x)[1];
-	}
-
-	pixelB = new int*[width];
-	for(int x = 0; x < width; x++)
-	{
-		pixelB[x] = new int[height];
-		for(int y = 0; y < height; y++)
-			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
-	}
-}
 void Picture::binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int threshhold)
 {
 	for(int x = 0; x < width; x++)
 	{
 		for(int y = 0; y < height; y++)
 		{
-			if((pixelB[x][y] - refPicture.pixelB[x][y] > threshhold || pixelB[x][y] - refPicture.pixelB[x][y] < -1*threshhold) || (pixelR[x][y] - refPicture.pixelR[x][y] > threshhold || pixelR[x][y] - refPicture.pixelR[x][y] < -1*threshhold) || (pixelG[x][y] - refPicture.pixelG[x][y] > threshhold || pixelG[x][y] - refPicture.pixelG[x][y] < -1*threshhold))
+			if((pixelB[x][y] - refPicture.pixelB[x][y] > threshhold || pixelB[x][y] - refPicture.pixelB[x][y] < -1*threshhold)
+				|| (pixelR[x][y] - refPicture.pixelR[x][y] > threshhold || pixelR[x][y] - refPicture.pixelR[x][y] < -1*threshhold)
+				|| (pixelG[x][y] - refPicture.pixelG[x][y] > threshhold || pixelG[x][y] - refPicture.pixelG[x][y] < -1*threshhold))
 			{
 				pixelR[x][y] = 255;
 				pixelG[x][y] = 255;
