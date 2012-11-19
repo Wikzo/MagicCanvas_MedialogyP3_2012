@@ -38,26 +38,34 @@ It is all these different techniques combined that makes it possible to get a fu
 \section{The Digital Image}
 Bla bla bla metatext for The Digital Image
 
-\subsection{8 bit system and grayscale images}
-As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer. An image with one channel of information for each pixel in the x,y axis is called grayscale, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system as mentioned above with the value \textbf{(2 to the power of 8)}\fixme{(Include math symbol for 2 to the power of 8)}, which is 256. One would immediately note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255.\\
-Figure \eqref{fig:ip_grayscale} illustrates the theory above.
+\subsection{8 bit pictures and grayscale images}
+As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
+An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels, it's possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
-\caption{Image illustrating the principle of a grayscale image applying to the binary system of 2 to the power of 8}
+\caption{Image illustrating the principle of an 8 bit picture}
 \label{fig:ip_grayscale}
 \end{figure}
+Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
 
-
-
-  
-This system is used on two levels, one way it's used, is continuity of components with current of 0-5Volt and the second is indexing 
- In order to use this system on two levels, for both working with components with a digital current from 0 to 5 Volts tension and for indexing the intensity of pixel values in a picture, 
-
-\subsection{The RGB color system}
-Now that the binary system and indexing an image has been represented another aspect of digital images will be presented.\\
-In addition to grayscale images consisting of one channel
+An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^1$$^6$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^3$$^2$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
  
+\subsection{Working with colored images (RGB)}
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
+Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
+\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
+\label{fig:ip_ColorWheel}
+\end{figure}\\
+Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce a white, just as when working with grayscale images.\\
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+
+
+
 \subsection{binary images}
 
 \subsection{Indexing a picture (x,y axis)}
@@ -218,7 +226,10 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it center its attention on it and burns it.
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it centers its attention on it and burns it. Then the algorithm looks in the possible directions around that pixel to check if one of those pixels is connected to the previous one, and therefore, is an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connectivity kernel, the algorithm will look into 8 directions, but for the 4-connectivity kernel, the algorithm will look in 4 directions).
+Whenever it finds an object, the algorithm labels the pixel on the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
+The algorithm looks now on the possible directions around that pixel, starting with the pixel on the right (see kernel picture \eqref{fig:8connecK}). Once it finds a non-zero pixel value, the algorithm centers its attention on it and restarts the process again labeling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labeling pixels, otherwise the algorithm will starts its way back to the beginning checking one by one surrounding pixels to verify that it has checked all the possible directions and non-zero pixels values.
+Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain connectivity kernel will affect the final result of the algorithm using a same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects correctly, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
@@ -231,7 +242,26 @@ As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the
 
 Figure \eqref{fig:4connecK}
 
+\subsection{BLOB Representation}
+The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviations that would be acceptable. This process consist of two steps: determining the features of the BLOB and matching the features with the objects found to determine if they are part of the type that we were looking for.
+
+Hence a few features like the \textbf{area}, the \textbf{perimeter} and the \textbf{circularity} will be calculated.
+\subsubsection{The features}
+\begin{itemize}
+\item Area
+\item Bounding box
+\item Bounding circle
+\item Convex hull
+\item Bounding box ratio
+\item Compactness
+\item Center of mass
+\item Center of the bounding box
+\item Perimeter
+\item Circularity
+\end{itemize}
+
+The importance of calculating features like the \textbf{area} of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the expected ones. One way of doing this is by calculating the area of the BLOBs.
+Both \textbf{bounding box} and \textbf{bounding circle} are features that operate in a similar way, as the particularity of these features is to enclose those objects that fit into a specific box or circle. The difference between these two besides the shape, is the way it operates. While the \textbf{bounding box} is the minimum rectangle and it checks the four pixels with the minimum and maximum x and y values, the \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
+
+
 \subsection{BLOB Classification}
-The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
-
-
