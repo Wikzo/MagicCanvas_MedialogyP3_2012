@@ -174,7 +174,10 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it center its attention on it and burns it.
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it centers its attention on it and burns it. Then the algorithm looks in the possible directions around that pixel to check if one of those pixels is connected to the previous one, and therefore, is an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connectivity kernel, the algorithm will look into 8 directions, but for the 4-connectivity kernel, the algorithm will look in 4 directions).
+Whenever it finds an object, the algorithm labels the pixel on the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
+The algorithm looks now on the possible directions around that pixel, starting with the pixel on the right (see kernel picture \eqref{fig:8connecK}). Once it finds a non-zero pixel value, the algorithm centers its attention on it and restarts the process again labeling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labeling pixels, otherwise the algorithm will starts its way back to the beginning checking one by one surrounding pixels to verify that it has checked all the possible directions and non-zero pixels values.
+Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain connectivity kernel will affect the final result of the algorithm using a same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects correctly, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
@@ -187,7 +190,26 @@ As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the
 
 Figure \eqref{fig:4connecK}
 
+\subsection{BLOB Representation}
+The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviations that would be acceptable. This process consist of two steps: determining the features of the BLOB and matching the features with the objects found to determine if they are part of the type that we were looking for.
+
+Hence a few features like the \textbf{area}, the \textbf{perimeter} and the \textbf{circularity} will be calculated.
+\subsubsection{The features}
+\begin{itemize}
+\item Area
+\item Bounding box
+\item Bounding circle
+\item Convex hull
+\item Bounding box ratio
+\item Compactness
+\item Center of mass
+\item Center of the bounding box
+\item Perimeter
+\item Circularity
+\end{itemize}
+
+The importance of calculating features like the \textbf{area} of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the expected ones. One way of doing this is by calculating the area of the BLOBs.
+Both \textbf{bounding box} and \textbf{bounding circle} are features that operate in a similar way, as the particularity of these features is to enclose those objects that fit into a specific box or circle. The difference between these two besides the shape, is the way it operates. While the \textbf{bounding box} is the minimum rectangle and it checks the four pixels with the minimum and maximum x and y values, the \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
+
+
 \subsection{BLOB Classification}
-The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
-
-
