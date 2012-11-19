@@ -58,10 +58,11 @@ Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
-\caption{Image illustrating the making of colors}
+\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
 \label{fig:ip_ColorWheel}
 \end{figure}\\
-Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce a white, just as when working with grayscale images. 
+Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce a white, just as when working with grayscale images.\\
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
 
 
 
