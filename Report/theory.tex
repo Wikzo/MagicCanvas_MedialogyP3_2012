@@ -151,6 +151,50 @@ An example of how this could be used is taking a photo where only the head is in
 \end{figure} 
 
 \section{Background subtraction}
+%% Working progress - Johannes %%
+A way to detect changes in a scene and extracting an object is using background subtraction. As the name tells it is done by subtracting the background from the scene so only changes is being shown. Background subtraction is very efficient but unfortunately it is not always as simple as it sounds. \\
+To be able to use background subtraction efficiently a controlled setup is required. The optimal setup is indoor with controllable light conditions. The setup is important because the background should not change. Imagine if sunshine is let inside a room. Then the light conditions will change together with the suns position, and changes will be seen everywhere spreading noise and giving an inaccurate result. \\
+However, it is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore a threshold value is required - for two reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary. \\
+Therefore the following two points has to be considered when doing background subtraction:
+\begin{enumerate} 
+	\item Is the background consistent? 
+	\item Which threshold value would be optimal for making the picture binary, and distinct the changes from the background? 
+\end{enumerate}
+
+If the first point is false, and the background is not consistent then there is a way to automatically update the backgrounds pixel values. The formula is as following:
+
+\begin{equation}
+	\begin{aligned}
+  		r_{new}(x,y)=\alpha*r_{old}(x,y)+(1-\alpha)*f(x,y)
+		\label{AutomaticBackground}  
+ 	\end{aligned}
+\end{equation}  
+
+Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$
+\fixme{Insert reference - formula taken from page 70 in the Image Processing book}
+Now that the background automatically updates, it is time to go to the next point.
+
+
+If the background is consistent from the beginning then it also leads to the next point. 
+
+The second point is about defining a threshold value. \\
+To do this, it is necessary to check how much the backgrounds pixel values vary. This can be done by making a histogram for some random pixels in the background and check the values after recording some minutes. This should give an overview of how much the pixel values vary. Lets say that this procedure shows that an efficient threshold value is 20. This means that if a pixel in the background is of the intensity 80, then pixel values captured between the values $60-100$ will not make any changes, as it is thought as being the background. Pixels below 60 and above 100 will however be an object and be highlighted.
+Another pixel in the background could have the intensity of 48 and the pixel values captured between $28-68$ would then be thought of as the background while values below 28 and above 68 would be seen as an object and be highlighted. \\
+This type of threshold is a global threshold, which means that the threshold value is the same in every pixel in the scene. Imagine a scene where only part of the picture is being affected by lights. Then a unique threshold value for each pixel could be useful. This is possible using the following formula:
+
+\begin{equation}
+	\begin{aligned}
+  		\ \text{Binary image} = \left\{ \begin{array}{ll}
+         0, \quad &\text{if } Abs(g(x,y))<\beta * \sigma(x,y)\\
+        255, \quad &\text{otherwise}.
+        \end{array} \right . \ 
+ 	\end{aligned}
+\end{equation} 
+
+Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. Using this formula creates a local threshold.
+
+When both points are considered, the background subtraction should be ready to use. In every frame in a scene each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows then the pixel will be highlighted, revealing an object in the picture.
+
 \section{Template matching}
 \section{movement tracking (ViBe)}
 \section{Digital image}
