@@ -212,8 +212,6 @@ Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation
 When both points are considered, the background subtraction should be ready to use. In every frame in a scene each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows then the pixel will be highlighted, revealing an object in the picture.
 \section{Template matching}
 \section{movement tracking (ViBe)}
-\section{Digital image}
-\section{Noise filter(median/mean)}
 \section{BLOB-Analysis}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images, separate the pixels by detecting the points or regions that differ in properties like brightness or color changes (i.e., their value), and classify them into two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
