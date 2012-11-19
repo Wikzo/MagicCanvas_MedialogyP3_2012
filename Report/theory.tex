@@ -45,36 +45,18 @@ Bla bla bla metatext for The Digital Image
 \end{figure}
 
 
-<<<<<<< HEAD
-\subsection{8 bit system and grayscale images}
-As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer. An image with one channel of information for each pixel in the x,y axis is called grayscale, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system as mentioned above with the value \textbf{(2 to the power of 8)}\fixme{(Include math symbol for 2 to the power of 8)}, which is 256. One would immediately note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255.\\
-Figure \eqref{fig:ip_grayscale} illustrates the theory above.
-=======
 \subsection{8 bit Pictures and Grayscale Images}
 As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
 An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
 
->>>>>>> a433a4704ce2df11dd7f79f4a86622ff1972936d
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
-\caption{Image illustrating the principle of a grayscale image applying to the binary system of 2 to the power of 8}
+\caption{Image illustrating the principle of an 8 bit picture}
 \label{fig:ip_grayscale}
 \end{figure}
+Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
 
-<<<<<<< HEAD
-
-
-  
-This system is used on two levels, one way it's used, is continuity of components with current of 0-5Volt and the second is indexing 
- In order to use this system on two levels, for both working with components with a digital current from 0 to 5 Volts tension and for indexing the intensity of pixel values in a picture, 
-
-\subsection{The RGB color system}
-Now that the binary system and indexing an image has been represented another aspect of digital images will be presented.\\
-In addition to grayscale images consisting of one channel
- 
-\subsection{binary images}
-=======
 An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
  
 \subsection{Working with Colored Images (RGB)}
@@ -93,7 +75,6 @@ Knowing the specific values of the red, green and blue channels within an image 
 One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
 Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
 Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
->>>>>>> a433a4704ce2df11dd7f79f4a86622ff1972936d
 
 \subsection{Indexing a picture (x,y axis)}
 
@@ -170,12 +151,12 @@ This proves the point that finding a functional threshold value is not always si
 \subsection{Opening}
 \section{Modified infrared camera vs normal webcam}
 \section{Region of interest}
-The Region of Interest or just ROI is a great image processing tool to optimize the frame rate per second for the output. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
-A common thinking is that the more pixels, the better quality, and the better output. However this should be reconsidered. One should think about different aspects like; How important is the quality and if it necessary to show every single pixel or if it is satisfying with a lower number of pixels.\\
+The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
+A common thinking is that the more pixels, the better quality, and the better output. However this should be thought through. How important is the quality? Is it even necessary to show every single pixel or is it just as good with a lower number of pixels?\\
 When the computer make changes to a picture it has to run through every single pixel one at a time. Therefore it would make a big difference to decrease the amount of pixels used.\\
-Beside thinking about the amount of pixels used, a great tool is ROI. As the name alludes ROI takes a region in the picture that is especially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing power is prevented, saving time and possibly providing a faster frame rate on the output.
+Beside thinking about the amount of pixels used a great tool is ROI. As the name alludes ROI takes a region in the picture that is specially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing is prevented, saving time and possibly providing a faster frame rate.
 
-An example of how this could be used, is taking a photo where only the head is interesting. The head should then be the region of interest and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This is illustrated on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted processing power that can be saved.
+An example of how this could be used is taking a photo where only the head is interesting. The head should then be the region of interest, and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This can be shown on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted energy that can be saved.
 
 
 \begin{figure}[htbp] 
@@ -231,6 +212,7 @@ Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation
 When both points are considered, the background subtraction should be ready to use. In every frame in a scene each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows then the pixel will be highlighted, revealing an object in the picture.
 \section{Template matching}
 \section{movement tracking (ViBe)}
+
 \section{BLOB-Analysis}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images, separate the pixels by detecting the points or regions that differ in properties like brightness or color changes (i.e., their value), and classify them into two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
@@ -250,7 +232,10 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it center its attention on it and burns it.
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it centers its attention on it and burns it. Then the algorithm looks in the possible directions around that pixel to check if one of those pixels is connected to the previous one, and therefore, is an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connectivity kernel, the algorithm will look into 8 directions, but for the 4-connectivity kernel, the algorithm will look in 4 directions).
+Whenever it finds an object, the algorithm labels the pixel on the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
+The algorithm looks now on the possible directions around that pixel, starting with the pixel on the right (see kernel picture \eqref{fig:8connecK}). Once it finds a non-zero pixel value, the algorithm centers its attention on it and restarts the process again labeling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labeling pixels, otherwise the algorithm will starts its way back to the beginning checking one by one surrounding pixels to verify that it has checked all the possible directions and non-zero pixels values.
+Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain connectivity kernel will affect the final result of the algorithm using a same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects correctly, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
@@ -263,7 +248,6 @@ As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the
 
 Figure \eqref{fig:4connecK}
 
-<<<<<<< HEAD
 \subsection{BLOB Representation}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviations that would be acceptable. This process consist of two steps: determining the features of the BLOB and matching the features with the objects found to determine if they are part of the type that we were looking for.
 
@@ -288,10 +272,10 @@ This is the height of the bounding box divided by the width, indicating in this 
 \item Compactness
 The compactness of a BLOB is the ratio of the BLOB's area to the ratio of the bounding box.
 
-\begin{displaymath}
-\center
-$Compactness=\frac{BLOB's Area}{width \cdot height}
-\end{displaymath}
+%\begin{displaymath}
+%\center
+%Compactness=\frac{BLOB's Area}{width \cdot height}$
+%\end{displaymath}
 
 \item Center of mass
 In physics, the center of mass is the unique point where the weighted relative position of the distributed mass sums to zero. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
@@ -300,10 +284,7 @@ The distribution of mass is balanced around the center of mass and the average o
 
 Its coordinates can be found using the formula:
 
-\begin{displaymath}
-\center
-X_{c}=\frac{1}{N} \sum_{i=1}^{N} x_i
-\end{displaymath}
+
 
 \item Center of the bounding box
 \item Perimeter
@@ -314,9 +295,3 @@ X_{c}=\frac{1}{N} \sum_{i=1}^{N} x_i
 
 
 \subsection{BLOB Classification}
-=======
-\subsection{BLOB Classification}
-The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
-
-
->>>>>>> a433a4704ce2df11dd7f79f4a86622ff1972936d
