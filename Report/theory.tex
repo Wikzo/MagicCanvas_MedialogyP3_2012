@@ -151,12 +151,12 @@ This proves the point that finding a functional threshold value is not always si
 \subsection{Opening}
 \section{Modified infrared camera vs normal webcam}
 \section{Region of interest}
-The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
-A common thinking is that the more pixels, the better quality, and the better output. However this should be thought through. How important is the quality? Is it even necessary to show every single pixel or is it just as good with a lower number of pixels?\\
+The Region of Interest or just ROI is a great image processing tool to optimize the frame rate per second for the output. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
+A common thinking is that the more pixels, the better quality, and the better output. However this should be reconsidered. One should think about different aspects like; How important is the quality and if it necessary to show every single pixel or if it is satisfying with a lower number of pixels.\\
 When the computer make changes to a picture it has to run through every single pixel one at a time. Therefore it would make a big difference to decrease the amount of pixels used.\\
-Beside thinking about the amount of pixels used a great tool is ROI. As the name alludes ROI takes a region in the picture that is specially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing is prevented, saving time and possibly providing a faster frame rate.
+Beside thinking about the amount of pixels used, a great tool is ROI. As the name alludes ROI takes a region in the picture that is especially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing power is prevented, saving time and possibly providing a faster frame rate on the output.
 
-An example of how this could be used is taking a photo where only the head is interesting. The head should then be the region of interest, and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This can be shown on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted energy that can be saved.
+An example of how this could be used, is taking a photo where only the head is interesting. The head should then be the region of interest and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This is illustrated on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted processing power that can be saved.
 
 
 \begin{figure}[htbp] 
