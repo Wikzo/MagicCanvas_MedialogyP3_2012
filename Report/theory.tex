@@ -47,7 +47,7 @@ Bla bla bla metatext for The Digital Image
 
 \subsection{8 bit Pictures and Grayscale Images}
 As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
-An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels, it's possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
+An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
 
 \begin{figure}[htbp]
 \centering
@@ -57,7 +57,7 @@ An image with one channel of information for each pixel in the x and y axis is c
 \end{figure}
 Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
 
-An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^1$$^6$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^3$$^2$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
+An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
  
 \subsection{Working with Colored Images (RGB)}
 Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
@@ -68,13 +68,13 @@ Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to
 \caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
 \label{fig:ip_ColorWheel}
 \end{figure}\\
-Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce a white, just as when working with grayscale images.\\
+Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
 Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
 
 \subsection{Binary Images}
 One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
 Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
-Binary pictures are much easier to when performing mathematical operations as only two colors remain of the original input. In 
+Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
 
 \subsection{Indexing a picture (x,y axis)}
 
