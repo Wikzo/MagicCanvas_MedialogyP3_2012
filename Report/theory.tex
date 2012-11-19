@@ -37,10 +37,24 @@ It is all these different techniques combined that makes it possible to get a fu
 
 \section{The Digital Image}
 Bla bla bla metatext for The Digital Image
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
+\caption{Image illustrating the principle of an 8 bit picture}
+\label{fig:ColoredToGrayscaleToBinary}
+\end{figure}
 
+
+<<<<<<< HEAD
 \subsection{8 bit system and grayscale images}
 As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer. An image with one channel of information for each pixel in the x,y axis is called grayscale, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system as mentioned above with the value \textbf{(2 to the power of 8)}\fixme{(Include math symbol for 2 to the power of 8)}, which is 256. One would immediately note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255.\\
 Figure \eqref{fig:ip_grayscale} illustrates the theory above.
+=======
+\subsection{8 bit Pictures and Grayscale Images}
+As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
+An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
+
+>>>>>>> a433a4704ce2df11dd7f79f4a86622ff1972936d
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
@@ -48,6 +62,7 @@ Figure \eqref{fig:ip_grayscale} illustrates the theory above.
 \label{fig:ip_grayscale}
 \end{figure}
 
+<<<<<<< HEAD
 
 
   
@@ -59,6 +74,26 @@ Now that the binary system and indexing an image has been represented another as
 In addition to grayscale images consisting of one channel
  
 \subsection{binary images}
+=======
+An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
+ 
+\subsection{Working with Colored Images (RGB)}
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
+Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
+\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
+\label{fig:ip_ColorWheel}
+\end{figure}\\
+Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+
+\subsection{Binary Images}
+One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
+Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
+Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
+>>>>>>> a433a4704ce2df11dd7f79f4a86622ff1972936d
 
 \subsection{Indexing a picture (x,y axis)}
 
@@ -67,6 +102,7 @@ In addition to grayscale images consisting of one channel
 
 %% Could be a little more clear and short - Gustav %%
 \section{Thresholding}
+\label{sec:Thresholding}
 Threshold is one of the most fundamental operations in point processing \fixme{WHAT is point processing? - Gustav} and is used to make an input picture binary, i.e. either black (0) or white (255). Making an image binary means to show the image in only completely black and completely white pixel values. \\
 This could be useful in programs where you need to find silhouettes - tracking a person for example - and smaller details are not as important. \\
 To determine which pixels that should be completely black and which that should be completely white a threshold value is required. The threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people that is 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied
@@ -124,7 +160,7 @@ Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture w
 \end{minipage}
 \end{figure}
  
-This proves the point that finding a functional threshold value is not always simple, and for finding a silhouette for example it is a great help to somehow make a clear transition from the object and the background.
+This proves the point that finding a functional threshold value is not always simple, and for finding a silhouette for example it is a great help to somehow make a clear transition from the object and the background..
 
 \section{Morphology}
 \subsection{Hit}
@@ -133,14 +169,13 @@ This proves the point that finding a functional threshold value is not always si
 \subsection{Erosion}
 \subsection{Opening}
 \section{Modified infrared camera vs normal webcam}
-\section{Framework}
 \section{Region of interest}
-The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
-A common thinking is that the more pixels, the better quality, and the better output. However this should be thought through. How important is the quality? Is it even necessary to show every single pixel or is it just as good with a lower number of pixels?\\
+The Region of Interest or just ROI is a great image processing tool to optimize the frame rate per second for the output. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
+A common thinking is that the more pixels, the better quality, and the better output. However this should be reconsidered. One should think about different aspects like; How important is the quality and if it necessary to show every single pixel or if it is satisfying with a lower number of pixels.\\
 When the computer make changes to a picture it has to run through every single pixel one at a time. Therefore it would make a big difference to decrease the amount of pixels used.\\
-Beside thinking about the amount of pixels used a great tool is ROI. As the name alludes ROI takes a region in the picture that is specially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing is prevented, saving time and possibly providing a faster frame rate.
+Beside thinking about the amount of pixels used, a great tool is ROI. As the name alludes ROI takes a region in the picture that is especially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing power is prevented, saving time and possibly providing a faster frame rate on the output.
 
-An example of how this could be used is taking a photo where only the head is interesting. The head should then be the region of interest, and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This can be shown on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted energy that can be saved.
+An example of how this could be used, is taking a photo where only the head is interesting. The head should then be the region of interest and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This is illustrated on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted processing power that can be saved.
 
 
 \begin{figure}[htbp] 
@@ -151,10 +186,51 @@ An example of how this could be used is taking a photo where only the head is in
 \end{figure} 
 
 \section{Background subtraction}
+%% Working progress - Johannes %%
+A way to detect changes in a scene and extracting an object is using background subtraction. As the name tells it is done by subtracting the background from the scene so only changes is being shown. Background subtraction is very efficient but unfortunately it is not always as simple as it sounds. \\
+To be able to use background subtraction efficiently a controlled setup is required. The optimal setup is indoor with controllable light conditions. The setup is important because the background should not change. Imagine if sunshine is let inside a room. Then the light conditions will change together with the suns position, and changes will be seen everywhere spreading noise and giving an inaccurate result. \\
+However, it is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore a threshold value is required - for two reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary. \\
+Therefore the following two points has to be considered when doing background subtraction:
+\begin{enumerate} 
+	\item Is the background consistent? 
+	\item Which threshold value would be optimal for making the picture binary, and distinct the changes from the background? 
+\end{enumerate}
+
+If the first point is false, and the background is not consistent then there is a way to automatically update the backgrounds pixel values. The formula is as following:
+
+\begin{equation}
+	\begin{aligned}
+  		r_{new}(x,y)=\alpha*r_{old}(x,y)+(1-\alpha)*f(x,y)
+		\label{AutomaticBackground}  
+ 	\end{aligned}
+\end{equation}  
+
+Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$
+\fixme{Insert reference - formula taken from page 70 in the Image Processing book}
+Now that the background automatically updates, it is time to go to the next point.
+
+
+If the background is consistent from the beginning then it also leads to the next point. 
+
+The second point is about defining a threshold value. \\
+To do this, it is necessary to check how much the backgrounds pixel values vary. This can be done by making a histogram for some random pixels in the background and check the values after recording some minutes. This should give an overview of how much the pixel values vary. Lets say that this procedure shows that an efficient threshold value is 20. This means that if a pixel in the background is of the intensity 80, then pixel values captured between the values $60-100$ will not make any changes, as it is thought as being the background. Pixels below 60 and above 100 will however be an object and be highlighted.
+Another pixel in the background could have the intensity of 48 and the pixel values captured between $28-68$ would then be thought of as the background while values below 28 and above 68 would be seen as an object and be highlighted. \\
+This type of threshold is a global threshold, which means that the threshold value is the same in every pixel in the scene. Imagine a scene where only part of the picture is being affected by lights. Then a unique threshold value for each pixel could be useful. This is possible using the following formula:
+
+\begin{equation}
+	\begin{aligned}
+  		\ \text{Binary image} = \left\{ \begin{array}{ll}
+         0, \quad &\text{if } Abs(g(x,y))<\beta * \sigma(x,y)\\
+        255, \quad &\text{otherwise}.
+        \end{array} \right . \ 
+ 	\end{aligned}
+\end{equation} 
+
+Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. Using this formula creates a local threshold.
+
+When both points are considered, the background subtraction should be ready to use. In every frame in a scene each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows then the pixel will be highlighted, revealing an object in the picture.
 \section{Template matching}
 \section{movement tracking (ViBe)}
-\section{Digital image}
-\section{Noise filter(median/mean)}
 \section{BLOB-Analysis}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB stands for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images, separate the pixels by detecting the points or regions that differ in properties like brightness or color changes (i.e., their value), and classify them into two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
@@ -174,10 +250,7 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it centers its attention on it and burns it. Then the algorithm looks in the possible directions around that pixel to check if one of those pixels is connected to the previous one, and therefore, is an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connectivity kernel, the algorithm will look into 8 directions, but for the 4-connectivity kernel, the algorithm will look in 4 directions).
-Whenever it finds an object, the algorithm labels the pixel on the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
-The algorithm looks now on the possible directions around that pixel, starting with the pixel on the right (see kernel picture \eqref{fig:8connecK}). Once it finds a non-zero pixel value, the algorithm centers its attention on it and restarts the process again labeling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labeling pixels, otherwise the algorithm will starts its way back to the beginning checking one by one surrounding pixels to verify that it has checked all the possible directions and non-zero pixels values.
-Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain connectivity kernel will affect the final result of the algorithm using a same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects correctly, whereas the 4-connectivity kernel finds the different objects performing less operations.
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it center its attention on it and burns it.
 
 \begin{figure}[htbp]
 \centering
@@ -190,6 +263,7 @@ Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, w
 
 Figure \eqref{fig:4connecK}
 
+<<<<<<< HEAD
 \subsection{BLOB Representation}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviations that would be acceptable. This process consist of two steps: determining the features of the BLOB and matching the features with the objects found to determine if they are part of the type that we were looking for.
 
@@ -240,3 +314,9 @@ X_{c}=\frac{1}{N} \sum_{i=1}^{N} x_i
 
 
 \subsection{BLOB Classification}
+=======
+\subsection{BLOB Classification}
+The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviation that would be acceptable.
+
+
+>>>>>>> a433a4704ce2df11dd7f79f4a86622ff1972936d
