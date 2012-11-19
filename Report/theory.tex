@@ -38,26 +38,33 @@ It is all these different techniques combined that makes it possible to get a fu
 \section{The Digital Image}
 Bla bla bla metatext for The Digital Image
 
-\subsection{8 bit system and grayscale images}
-As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer. An image with one channel of information for each pixel in the x,y axis is called grayscale, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system as mentioned above with the value \textbf{(2 to the power of 8)}\fixme{(Include math symbol for 2 to the power of 8)}, which is 256. One would immediately note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255.\\
-Figure \eqref{fig:ip_grayscale} illustrates the theory above.
+\subsection{8 bit pictures and grayscale images}
+As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
+An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels, it's possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it's from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
-\caption{Image illustrating the principle of a grayscale image applying to the binary system of 2 to the power of 8}
+\caption{Image illustrating the principle of an 8 bit picture}
 \label{fig:ip_grayscale}
 \end{figure}
+Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
 
-
-
-  
-This system is used on two levels, one way it's used, is continuity of components with current of 0-5Volt and the second is indexing 
- In order to use this system on two levels, for both working with components with a digital current from 0 to 5 Volts tension and for indexing the intensity of pixel values in a picture, 
-
-\subsection{The RGB color system}
-Now that the binary system and indexing an image has been represented another aspect of digital images will be presented.\\
-In addition to grayscale images consisting of one channel
+An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^1$$^6$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^2$$^2$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
  
+\subsection{Working with colored images (RGB)}
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
+Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
+\caption{Image illustrating the making of colors}
+\label{fig:ip_ColorWheel}
+\end{figure}\\
+Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce a white, just as when working with grayscale images. 
+
+
+
 \subsection{binary images}
 
 \subsection{Indexing a picture (x,y axis)}
