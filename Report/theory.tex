@@ -272,10 +272,13 @@ This is the height of the bounding box divided by the width, indicating in this 
 \item Compactness
 The compactness of a BLOB is the ratio of the BLOB's area to the ratio of the bounding box.
 
-%\begin{displaymath}
-%\center
-%Compactness=\frac{BLOB's Area}{width \cdot height}$
-%\end{displaymath}
+\begin{equation}
+	\begin{aligned}
+	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
+	\label{Compact}
+	\end{aligned}
+\end{equation}
+
 
 \item Center of mass
 In physics, the center of mass is the unique point where the weighted relative position of the distributed mass sums to zero. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
@@ -284,10 +287,37 @@ The distribution of mass is balanced around the center of mass and the average o
 
 Its coordinates can be found using the formula:
 
+\begin{equation}
+	\begin{aligned}
+  		\ \text{Center of Mass} = \left\{ \begin{array}{l1l}
+         x_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N x_{i}\\
+         \\
+         y_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N y_{i}
+        \end{array} \right . \ 
+ 	\end{aligned}
+\end{equation} 
 
 
+Where N is the number of pixels in the BLOB and x i and y i are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median or an erosion before using the previous formula.
 \item Center of the bounding box
+As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with the formula:
+
+\begin{equation}
+	\begin{aligned}	x_{bb}=x_{min}+\displaystyle\frac{x_{max}-x_{min}}{2}=x_{min}+\displaystyle\frac{x_{max}}{2}-\displaystyle\frac{x_{min}}{2}=\displaystyle\frac{x_{min}+x_{max}}{2}
+	\label{BoundingBoxCenterX}
+	\end{aligned}
+\end{equation}
+
+\begin{equation}	
+	\begin{aligned}
+	y_{bb}=y_{min}+\displaystyle\frac{y_{max}-y_{min}}{2}=y_{min}+\displaystyle\frac{y_{max}}{2}-\displaystyle\frac{y_{min}}{2}=\displaystyle\frac{y_{min}+y_{max}}{2}
+	\label{BoundingBoxCenterY}
+	\end{aligned}
+\end{equation}
+
+
 \item Perimeter
+
 \item Circularity
 \end{itemize}
 
