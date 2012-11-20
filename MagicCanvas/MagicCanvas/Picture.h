@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <fstream>
 using namespace std;
 using namespace cv;
 
@@ -49,8 +50,12 @@ public:
 	void erode(int radius, Picture &tmpPicture);
 	void dilate(int radius, Picture &tmpPicture);
 	void startFire(point startingPoint, color objColor, Picture &tmpPicture);
+	void startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture);
 	void findAllBLOBs(Picture &tmpPicture);
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
+
+	static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size);
+	
 };
 
 #endif

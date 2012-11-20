@@ -1,5 +1,6 @@
 #include <opencv2\highgui\highgui.hpp>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <stdlib.h>
 #include "Picture.h"
@@ -201,6 +202,7 @@ void Picture::findFirstRow(int minRowLength, int minRowWidth, point &startOfTheL
 			// Found left corner
 			if(found)
 			{
+				
 				//cout<< "x: " << x << "y: " << y;
 				startOfTheLine.x = x;
 				startOfTheLine.y = y;
@@ -431,13 +433,13 @@ void Picture::findAllBLOBs(Picture &tmpPicture)
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
-				startFire(currentPoint, currentColor, tmpPicture);
+				startFireLoggingData(currentPoint, currentColor, tmpPicture);
 				currentColor.r -= 1;
 			}
 		}
 	}
 	// why is this one to big???? <- needs to be fixed
-	cout << numberOfPersons;
+	//cout << numberOfPersons;
 }
 void Picture::placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat)
 {
@@ -498,4 +500,109 @@ void Picture::placeHats(int minRowLength, int minRowWidth, point &startOfTheLine
 		lengthOfTheLines[k] = 0;
 	}
 		
+}
+/*static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size)
+{
+	// TODO: Linked List, maybe?
+
+	for (int i = 0; i < size; i++)
+	{
+		images[i].openCamera(capture);
+		images[i].output("hey" + i);
+	}
+
+}*/
+void Picture::startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture)
+{
+	tmpPicture.makeBlack();
+	point currentPosition = startingPoint;
+	int pixelCount = 0;
+	while(true)
+	{
+		tmpPicture.pixelR[currentPosition.x][currentPosition.y] = 255;
+		//if right is available, is free and not burned
+		if(currentPosition.x+1 < width && pixelR[currentPosition.x+1][currentPosition.y] == 255 && tmpPicture.pixelR[currentPosition.x+1][currentPosition.y] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.x++;
+		}
+		//if down is available, is free and not burned
+		else if(currentPosition.y+1 < height && pixelR[currentPosition.x][currentPosition.y+1] == 255 && tmpPicture.pixelR[currentPosition.x][currentPosition.y+1] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.y++;
+		}
+		//if left is available, is free and not burned
+		else if(currentPosition.x-1 > 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255 && tmpPicture.pixelR[currentPosition.x-1][currentPosition.y] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.x--;
+		}
+		//if up is available, is free and not burned
+		else if(currentPosition.y-1 > 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255 && tmpPicture.pixelR[currentPosition.x][currentPosition.y-1] != 255)
+		{
+			pixelCount++;
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.y--;
+		}
+		//steps back:
+		//if right is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.x+1 < width && tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] && tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y-1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.x++;
+		}
+		//if down is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y+1 < height && tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] > tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] > tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] > tmpPicture.pixelG[currentPosition.x][currentPosition.y-1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.y++;
+		}
+		//if left is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.x-1 > 0 && tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y+1] && tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] > tmpPicture.pixelG[currentPosition.x][currentPosition.y-1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.x--;
+		}
+		//if up is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y-1 > 0 && tmpPicture.pixelG[currentPosition.x][currentPosition.y-1] > tmpPicture.pixelG[currentPosition.x+1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y-1] > tmpPicture.pixelG[currentPosition.x-1][currentPosition.y] && tmpPicture.pixelG[currentPosition.x][currentPosition.y-1] > tmpPicture.pixelG[currentPosition.x][currentPosition.y+1])
+		{
+			tmpPicture.pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.y--;
+		}
+		else
+			break;
+	}
+	if(pixelCount > 5000)
+	{
+		numberOfPersons++;
+		cout << numberOfPersons;
+		//pixelCount = 0;
+	}
+	//cout << pixelCount<< "\n";
+	//TODO: Maybe this could be a problem when the next blob has to be found:
+	for(int x = 0; x < width; x++){
+		for(int y = 0; y < height; y++){
+			if(tmpPicture.pixelR[x][y] == 255){
+				//the blob has to be at least 1000 pixels big to be taken as a blob of a person => the color will be green
+				if(pixelCount > 1000)
+				{
+
+					pixelR[x][y] = objColor.r;
+					pixelG[x][y] = objColor.g;
+					pixelB[x][y] = objColor.b;
+				}
+				else
+				{
+					pixelR[x][y] = 1;//objColor.r;
+					pixelG[x][y] = 0;
+					pixelB[x][y] = 0;
+				}
+			}
+		}
+	}
+	pixelCount = 0;
 }
