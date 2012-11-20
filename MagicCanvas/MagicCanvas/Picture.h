@@ -28,6 +28,7 @@ struct point
 class Picture
 {
 public:
+	int numberOfPersons;
 	int** pixelR; //Pointers to the value of each color pixel on the image
 	int** pixelG;
 	int** pixelB;
@@ -49,6 +50,7 @@ public:
 	void dilate(int radius, Picture &tmpPicture);
 	void startFire(point startingPoint, color objColor, Picture &tmpPicture);
 	void findAllBLOBs(Picture &tmpPicture);
+	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 };
 
 #endif

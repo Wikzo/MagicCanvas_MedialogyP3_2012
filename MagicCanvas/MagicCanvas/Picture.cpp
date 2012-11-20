@@ -388,6 +388,8 @@ void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture
 		else
 			break;
 	}
+	if(pixelCount > 1000)
+		numberOfPersons++;
 	//cout << pixelCount<< "\n";
 	//TODO: Maybe this could be a problem when the next blob has to be found:
 	for(int x = 0; x < width; x++){
@@ -396,13 +398,14 @@ void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture
 				//the blob has to be at least 1000 pixels big to be taken as a blob of a person => the color will be green
 				if(pixelCount > 1000)
 				{
-					pixelR[x][y] = 0;
+
+					pixelR[x][y] = objColor.r;
 					pixelG[x][y] = objColor.g;
-					pixelB[x][y] = 0;
+					pixelB[x][y] = objColor.b;
 				}
 				else
 				{
-					pixelR[x][y] = objColor.r;
+					pixelR[x][y] = 1;//objColor.r;
 					pixelG[x][y] = 0;
 					pixelB[x][y] = 0;
 				}
@@ -412,23 +415,87 @@ void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture
 }
 void Picture::findAllBLOBs(Picture &tmpPicture)
 {
+	numberOfPersons = 0;
 	color currentColor;
-	currentColor.r = 100;
-	currentColor.g = 100;
-	currentColor.b = 100;
+	currentColor.r = 255;
+	currentColor.g = 255;
+	currentColor.b = 255;
 
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
 			if(pixelR[x][y] == 255 && pixelG[x][y] == 255 && pixelB[x][y] == 255)
 			{ 
-				currentColor.r += 30;
-				currentColor.g += 30;
-				currentColor.b += 30;
+				
+				//currentColor.g -= 1;
+				//currentColor.b -= 1;
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
 				startFire(currentPoint, currentColor, tmpPicture);
+				currentColor.r -= 1;
 			}
 		}
 	}
+	// why is this one to big???? <- needs to be fixed
+	cout << numberOfPersons;
+}
+void Picture::placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat)
+{
+	const int maxNumberOfPersons = 3;
+	int lengthOfTheLines[maxNumberOfPersons];
+	point startOfLines[maxNumberOfPersons];
+	for(int k = 0; k < maxNumberOfPersons; k++){
+		bool found = false;
+		for(int y = 0; y < height && !found; y++)
+		{
+			for(int x = 0; x < width-minRowLength && !found; x++)
+			{
+				found = true;
+				for(int i = minRowLength; i > 0; i--)
+				{
+					for(int j = 0; j < minRowWidth; j++){
+						if(pixelR[x+i][y+j] != k+255-maxNumberOfPersons+1)
+							found = false;
+					}
+				}
+
+				// Found left corner
+				if(found)
+				{
+					//cout<< "x: " << x << "y: " << y;
+					startOfTheLine.x = x;
+					startOfTheLine.y = y;
+					startOfLines[k] = startOfTheLine;
+
+					/*for(int x = 0; x < width; x++)
+					{
+						pixelR[x][y] = 255;
+						pixelG[x][y] = 0;
+						pixelB[x][y] = 0;
+					}
+					*/
+				
+					// Strech
+					// RGB are all the same, so it doesn't matter what color channel is used
+					while((pixelG[x+1][y] == 255 || pixelG[x+2][y] == 255 || pixelG[x+3][y] == 255) && x < width-4)
+					{
+					
+						//pixelR[x][y] = 255;
+						//pixelG[x][y] = 0;
+						//pixelB[x][y] = 0;
+						x++;
+						
+					}
+					lengthOfTheLine = x - startOfTheLine.x;
+					lengthOfTheLines[k] = lengthOfTheLine;
+				}
+			}
+		}
+	}
+	for(int k = 0; k < maxNumberOfPersons; k++){
+		if(lengthOfTheLines[k] > 0)
+			drawPictureAt(startOfLines[k], lengthOfTheLines[k], hat);
+		lengthOfTheLines[k] = 0;
+	}
+		
 }

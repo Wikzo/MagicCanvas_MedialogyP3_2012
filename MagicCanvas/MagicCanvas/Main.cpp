@@ -12,7 +12,7 @@ int main(){
 	int widthOfHat; // Red Line (real distance of the head)
 
 	VideoCapture camera1;
-	camera1.open(0);
+	camera1.open(1);
 
 	Picture currentPicture; 
 	Picture BG; // 
@@ -29,16 +29,20 @@ int main(){
 	while(true){ //To be played all the time.
 		currentPicture.refresh(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
-		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,25);
-		
-		// Closing
-		currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
-		currentPicture.dilate(3, tmpPicture);
+		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,25);
+		//
+		//// Closing
+		//currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
+		//currentPicture.dilate(3, tmpPicture);
 
-		// Hat size + draw
+		//// Hat size + draw
+		//
+		////currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
+
+		////currentPicture.findAllBLOBs(tmpPicture);
+		////currentPicture.placeHats(50,10,lowerLeftCornerOfHat,widthOfHat, hat);
+		////
 		//currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
-		//currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
-		currentPicture.findAllBLOBs(tmpPicture);
 		//if(widthOfHat > 0)
 		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		//widthOfHat = 0;
