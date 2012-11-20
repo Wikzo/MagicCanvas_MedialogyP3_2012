@@ -7,7 +7,12 @@
 using namespace std;
 using namespace cv;
 
+void clipboard(const string &s);
+
 int main(){
+	const int maxNumberOfPersons = 50;
+	Person person[maxNumberOfPersons]; // 15 is the max number of persons
+
 	ofstream myFile;
 	//setup:
 	point lowerLeftCornerOfHat; // point with two variables to connect the lower point of the image with the Red Line (head)
@@ -27,7 +32,9 @@ int main(){
 	hat.initialize("nisse.jpg");
 	
 	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
+	currentPicture.minPixelToBeAPerson = 1000;
 
+	hat.output("Window for control");
 	// gustav test vibe
 	/*
 	Picture images[20];
@@ -41,7 +48,7 @@ int main(){
 	while(true){ //To be played all the time.
 		currentPicture.refresh(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
-		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,25);
+		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		
 		// Closing
 		currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
@@ -51,26 +58,36 @@ int main(){
 		
 		//currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
 
-		currentPicture.findAllBLOBs(tmpPicture);
+		currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
 		//currentPicture.placeHats(50,10,lowerLeftCornerOfHat,widthOfHat, hat);
 		//
-		currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
+		//currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
 
 
 		//send to file that is read by unity-----------------------------------------------------------------------------------------------------
 		ofstream myFile ("test.txt");
-		if(myFile.is_open()){
-			myFile << "\n" << lowerLeftCornerOfHat.x << "," << lowerLeftCornerOfHat.y;
-			myFile.close();
-		} else { cout << "cant create file";}
+
+		for(int i = 0; i < currentPicture.numberOfPersons; i++)
+		{
+			if(myFile.is_open()){
+				ostringstream ss;
+				ss << person[i].posOnX;
+				string s(ss.str());
+				clipboard(s);
+				//myFile << /*"\nThe " << i+1 << ". persons Xposition is: " <<*/"\n" << person[i].posOnX;
+				//cout << /*"\nThe " << i+1 << ". persons Xposition is: " <<*/ person[i].posOnX;
+			} else { cout << "cant create file";}
+		}
+
+		myFile.close();
 		//--------------------------------------------------------------------------------------------------------------------------------------
 
 
-		if(widthOfHat > 0)
-			currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
-		widthOfHat = 0;
-		
-		currentPicture.output("video");
+		//if(widthOfHat > 0)
+		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
+		//widthOfHat = 0;
+		//
+		//currentPicture.output("video");
 		
 		int keyInput = waitKey(30);
 		//cout << keyInput;
@@ -78,6 +95,7 @@ int main(){
 		{
 			
 			BG.refresh(camera1);
+			BG.output("Window for control");
 		}
 		else if (keyInput == 27) // escape
 		{
@@ -89,3 +107,22 @@ int main(){
 	currentPicture.reset();
 	BG.reset();
 }
+//START CLIPBOARD
+void clipboard(const string &s)
+{
+  OpenClipboard(0);
+  EmptyClipboard(); 
+  HGLOBAL hg=GlobalAlloc(GMEM_MOVEABLE,s.size()+1);
+  
+  if (!hg)
+  {
+    CloseClipboard();
+    return;
+  }
+  memcpy(GlobalLock(hg),s.c_str(),s.size());
+  GlobalUnlock(hg);
+  SetClipboardData(CF_TEXT,hg);
+  CloseClipboard();
+  GlobalFree(hg);
+}
+//SLUT CLIPBOARD

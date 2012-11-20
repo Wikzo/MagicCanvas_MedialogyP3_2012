@@ -26,10 +26,16 @@ struct point
 	point(int x, int y):x(x),y(y){};
 };
 
+struct Person
+{
+	float posOnX;
+};
+
 class Picture
 {
 public:
 	int numberOfPersons;
+	int minPixelToBeAPerson;
 	int** pixelR; //Pointers to the value of each color pixel on the image
 	int** pixelG;
 	int** pixelB;
@@ -50,8 +56,8 @@ public:
 	void erode(int radius, Picture &tmpPicture);
 	void dilate(int radius, Picture &tmpPicture);
 	void startFire(point startingPoint, color objColor, Picture &tmpPicture);
-	void startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture);
-	void findAllBLOBs(Picture &tmpPicture);
+	void startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture, Person persons[], int maxNumberOfPersons);
+	void findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberOfPersons);
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
 	static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size);

@@ -415,11 +415,11 @@ void Picture::startFire(point startingPoint, color objColor, Picture &tmpPicture
 		}
 	}
 }
-void Picture::findAllBLOBs(Picture &tmpPicture)
+void Picture::findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberOfPersons)
 {
 	numberOfPersons = 0;
 	color currentColor;
-	currentColor.r = 255;
+	currentColor.r = 254;
 	currentColor.g = 255;
 	currentColor.b = 255;
 
@@ -433,7 +433,7 @@ void Picture::findAllBLOBs(Picture &tmpPicture)
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
-				startFireLoggingData(currentPoint, currentColor, tmpPicture);
+				startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
 				currentColor.r -= 1;
 			}
 		}
@@ -512,7 +512,7 @@ void Picture::placeHats(int minRowLength, int minRowWidth, point &startOfTheLine
 	}
 
 }*/
-void Picture::startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture)
+void Picture::startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture, Person persons[], int maxNumberOfPersons)
 {
 	tmpPicture.makeBlack();
 	point currentPosition = startingPoint;
@@ -576,20 +576,19 @@ void Picture::startFireLoggingData(point startingPoint, color objColor, Picture 
 		else
 			break;
 	}
-	if(pixelCount > 5000)
-	{
-		numberOfPersons++;
-		cout << numberOfPersons;
-		//pixelCount = 0;
-	}
-	//cout << pixelCount<< "\n";
-	//TODO: Maybe this could be a problem when the next blob has to be found:
-	for(int x = 0; x < width; x++){
-		for(int y = 0; y < height; y++){
+	int minX = height + 100;
+	int maxX = -100;
+
+	for(int y = 0; y < height; y++){
+		for(int x = 0; x < width; x++){
 			if(tmpPicture.pixelR[x][y] == 255){
-				//the blob has to be at least 1000 pixels big to be taken as a blob of a person => the color will be green
-				if(pixelCount > 1000)
+				if(pixelCount > minPixelToBeAPerson)
 				{
+					//detect the possition on the x-axis
+					if(x > maxX)
+						maxX = x;
+					if(x < minX)
+						minX = x;
 
 					pixelR[x][y] = objColor.r;
 					pixelG[x][y] = objColor.g;
@@ -604,5 +603,14 @@ void Picture::startFireLoggingData(point startingPoint, color objColor, Picture 
 			}
 		}
 	}
-	pixelCount = 0;
+
+	if(pixelCount > minPixelToBeAPerson)
+	{
+		float average = ((minX + maxX)/2);
+		float zeroToOne = average/width;
+
+		persons[numberOfPersons].posOnX = 1 - zeroToOne;
+		numberOfPersons++;
+		
+	}
 }
