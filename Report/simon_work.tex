@@ -180,7 +180,15 @@ Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
 An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations, as it consumes a lot of process power to calculate the information in each individual pixel.
  
 \subsection{Indexing a picture}
-When working with pictures on a computer and performing image processing, one often have to look at the individual pixels within a picture to perform mathematical operations. Accessing specific pixels    
+When working with pictures on a computer and performing image processing, one often have to look at the individual pixels within a picture to perform mathematical operations. Accessing specific pixels is however relatively easy as it's indexed cleverly.\\
+Working around the pixels in a picture is like working with a coordinate system. However instead of going from the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Moving horizontally applies to the x-axis and moving vertically applies to the y-axis. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image. If for example an image at the size of \textit{1024*1024} pixels is loaded, the highest number which the matrix can hold is (1024,1024). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a picture in the y- and x-axis.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
+\caption{Image illustrating the principle of indexing a picture in x- and y-axis.}
+\label{fig:ip_IndexingAPicture}
+\end{figure}
+  
 
 \subsection{Working with Colored Images (RGB)}
 Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
