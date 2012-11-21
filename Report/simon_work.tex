@@ -118,7 +118,7 @@ Instead of outputting the entire input image and performing several mathematical
 The foremost reason for doing this is based on the outcome of the image processing and the concept. Running the program with 5-6 fps or perhaps even less, will not create the kind of tension toward using the product at the library. People trespassing will barely be recognized by the camera, before they're out of the region of interest. Furthermore the silhouette is not very exciting to look at, so to spice things up and engage especially the kids at the library, the cartoonish characters and a nice GUI, will add a nice touch to the overall user experience. 
 
 \subsection{Using Unity to create the GUI}
-Some investigation towards creating a graphical interface was initiated. Preferably Unity was the program in which the graphical interface was to be created, therefore all alternative solutions were investigated. Ultimately it was discovered that it was possible to store in an external text file on the desktop of the computer, which Unity could successfully important and interpret.\\
+Some investigation towards creating a graphical interface was initiated. Preferably Unity was the program in which the graphical interface was to be created, therefore all alternative solutions were investigated. Ultimately it was discovered that it was possible to store in an external text file on the desktop of the computer, which Unity could successfully import and interpret.\\
   
 
 
@@ -139,26 +139,23 @@ Some of the goals, which are of interest to this project is that people can enga
 \\
 Based on reaching the above-mentioned goals by engaging people on two levels at the library, the initial vision of this semester project is the following. "How do we succeed in engaging visitors at Hj{\o}rring Library to use our product on two levels, both passively and actively."
 
-\section{The Digital Image}
-Bla bla bla metatext for The Digital Image
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
-\caption{Image illustrating the principle of an 8 bit picture}
-\label{fig:ColoredToGrayscaleToBinary}
-\end{figure}
-
-
-
-
 
 %%% Theory %%%
 
 \chapter{Theory(Simon)}
+\section{The digital Image}
+Working around digital images on computers are something that most can relate to, but there's a lot more to it that one realizes. Figure \eqref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about, working with colored, grayscale or binary pictures and the different attributes of each type.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
+\caption{Image illustrating a conversion from a colored image to grayscale and finally to binary}
+\label{fig:ip_ColoredToGrayscaleToBinary}
+\end{figure}
+
 \subsection{8 bit Pictures and Grayscale Images}
 As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
-An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
-
+An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$ when working with 8 bit pictures, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
@@ -166,9 +163,19 @@ An image with one channel of information for each pixel in the x and y axis is c
 \label{fig:ip_grayscale}
 \end{figure}
 Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
-
-An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
+An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations, as it consumes a lot of process power to calculate the information in each individual pixel.
  
+\subsection{Indexing a picture}
+When working with pictures on a computer and performing image processing, one often have to look at the individual pixels within a picture to perform mathematical operations. Accessing specific pixels is however relatively easy as it's indexed cleverly.\\
+Working around the pixels in a picture is like working with a coordinate system. However instead of going from the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Moving horizontally applies to the x-axis and moving vertically applies to the y-axis. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image. If for example an image at the size of \textit{1024*1024} pixels is loaded, the highest number which the matrix can hold is (1024,1024). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a picture in the y- and x-axis.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
+\caption{Image illustrating the principle of indexing a picture in x- and y-axis.}
+\label{fig:ip_IndexingAPicture}
+\end{figure}
+  
+
 \subsection{Working with Colored Images (RGB)}
 Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
 Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
@@ -185,7 +192,5 @@ Knowing the specific values of the red, green and blue channels within an image 
 One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
 Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
 Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
-
-\subsection{Indexing a picture (x,y axis)}
 
 
