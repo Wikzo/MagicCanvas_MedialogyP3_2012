@@ -55,8 +55,11 @@ Both \textbf{bounding box} and \textbf{bounding circle} are features that operat
 It's the minimum convex polygon which contains the BLOB. Starting from the topmost pixel of the BLOB and searching on the right along a horizontal line and in the clockwise angle till, it finds a BLOB pixel and creates the first side of the polygon.
 
 \item Bounding box ratio
+
 This is the height of the bounding box divided by the width, indicating in this way the lengthening of the BLOB.
+
 \item Compactness
+
 The compactness of a BLOB is the ratio of the BLOB's area to the ratio of the bounding box.
 
 \begin{equation}
@@ -68,6 +71,7 @@ The compactness of a BLOB is the ratio of the BLOB's area to the ratio of the bo
 
 
 \item Center of mass
+
 In physics, the center of mass is the unique point where the weighted relative position of the distributed mass sums to zero. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
 
 The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average x and y positions of the object on the image.
@@ -172,8 +176,8 @@ Therefore, the Area would be done by:
 
 The Circularity can also be normalized in the same:
 
-\begin{equation}	
-	\begin{aligned}
+\begin{equation}
+\begin{aligned}
 {Circularity \: feature} \: = \: min \begin{Bmatrix} {Circularity}, & \displaystyle\frac{1}{Circularity}\end{Bmatrix}
 \label{NormCirc}
 	\end{aligned}
@@ -184,8 +188,17 @@ The Circularity can also be normalized in the same:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MORPHOLOGY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Morphology}
-\subsection{Hit}
-\subsection{Fit}
+Morphology is a collection of operations used to analyse and process structures. Although this techniques were commonly used on binary images, nowadays it is possible to apply them also to grayscale images.
+The processes related to morphology on binary images are oriented to remove noise produced by thresholding the image as well as define the contours of the objects in order to achieve a proper BLOB analysis.
+
+Mathematical morphology is a neighborhood processing method that applies a \textit{structuring element} (or kernel) to the pixels on the image. The ways that kernel will be structured, how big it will be or the shape that will be used depends on the designer, and the shape and size of the objects to be analysed. The reason for this is that the structured elements are applied by \textit{hitting} or \textit{fitting} operations that will affect the results in different ways.
+
+\subsection{Hit and Fit}
+Whenever you decide to apply a structured element by \textit{hitting} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. The kernel will be first placed on the corner of the image so that it can check if each pixel placed at the same position is also a '1'. If one of the pixels of the area of the kernel is indeed a '1', the pixel in which the kernel is centred will be changed to the value 'a' on the output image. Otherwise, the value of the output pixel in that particular position will be '0'.
+
+On the contrary, to be able to fit a pixel on the center of the structured element, the pixels' values have to be the same both on the kernel and the input image. If one of the pixels on the input image has a different value to the corresponding one of the kernel, the pixel in which the kernel is centred will have the opposite value (see picture ).
+
+
 \subsection{Dilation}
 \subsection{Erosion}
 \subsection{Opening}
