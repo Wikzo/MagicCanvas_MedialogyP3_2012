@@ -28,9 +28,9 @@ An image with a single channel of information for each pixel in the x and y axis
  Illustrates 256 different levels of grayscale.\\
 
  
-\subsection{Indexing a picture}
-When working with pictures on a computer and performing image processing, one often has to look at the individual pixels within a picture to perform mathematical operations. Accessing specific pixels is however relatively easy as it's indexed cleverly.\\
-Working around the pixels in a picture is like working with a coordinate system. However instead of going from the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Moving horizontally applies to the x-axis and moving vertically applies to the y-axis. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image. If for example an image at the size of \textit{1024*1024} pixels is loaded, the highest number which the matrix can hold is (1024,1024). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a picture in the y- and x-axis.\\
+\subsection{Indexing an image}
+When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image to perform mathematical operations. Accessing specific pixels is however relatively easy as it's indexed cleverly.\\
+Working around the pixels in a image is like working with a coordinate system. However instead of starting at the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Moving horizontally applies to the x-axis and moving vertically applies to the y-axis.\fixme{Did we mention openCV before? Maybe write something about how OpenCV stores images} In OpenCV pictures are stored in a matrix. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image i.e. an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a image in the y- and x-axis.\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
@@ -40,7 +40,7 @@ Working around the pixels in a picture is like working with a coordinate system.
   
 
 \subsection{Working with Colored Images (RGB)}
-Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is to understand the basics of a color image.\\
 Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
 \begin{figure}[htbp]
 \centering
@@ -48,6 +48,7 @@ Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to
 \caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
 \label{fig:ip_ColorWheel}
 \end{figure}\\
+\fixme{THIS IS WHERE I GOT TO -Marco}
 Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
 Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
 
