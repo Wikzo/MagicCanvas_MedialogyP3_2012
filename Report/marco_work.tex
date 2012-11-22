@@ -29,32 +29,32 @@ An image with a single channel of information for each pixel in the x and y axis
 
  
 \subsection{Indexing an image}
-When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image to perform mathematical operations. Accessing specific pixels is however relatively easy as it's indexed cleverly.\\
-Working around the pixels in a image is like working with a coordinate system. However instead of starting at the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Moving horizontally applies to the x-axis and moving vertically applies to the y-axis.\fixme{Did we mention openCV before? Maybe write something about how OpenCV stores images} In OpenCV pictures are stored in a matrix. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image i.e. an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a image in the y- and x-axis.\\
+When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image to perform mathematical operations. Accessing specific pixels is however relatively easy as they are indexed cleverly.\\
+Working with pixels in a image is like working with a coordinate system. However instead of starting at the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Horizontal indices describe the x-axis and vertically indices the y-axis. A single pixel can be described as a coordinate i.e. (0,255) \fixme{Did we mention openCV before? Maybe write something about how OpenCV stores images} In OpenCV images are stored in a matrix. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image therefore, when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a image in the y- and x-axis.\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
 \caption{Image illustrating the principle of indexing a picture in x- and y-axis.}
 \label{fig:ip_IndexingAPicture}
 \end{figure}
-  
 
-\subsection{Working with Colored Images (RGB)}
-Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is to understand the basics of a color image.\\
 Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
 \caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
 \label{fig:ip_ColorWheel}
-\end{figure}\\
+\end{figure}  
+
+\subsection{Working with Colored Images (RGB)}
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is to understand the basics of a color image.\\
 \fixme{THIS IS WHERE I GOT TO -Marco}
-Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+There are several formats for handling color images, in this report we will only decribe RGB, since this is the only format we will encounter. Compared to a grayscale image, a colored image differs in that it consists of 3 channels, opposed to 1. Each channel describe the value of the color in the specific pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. The most significant difference between grayscale images and colored images, is that one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition equal amounts of red, green and blue  will produce a gradient of grey, where a pixel a value of 255 will produce white, while 0 would produce black, just as when working with grayscale images.\\
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would simply have to create a threshold value to segment the pixels depending on values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
 
 \subsection{Binary Images}
-One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
-Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
-Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
+In comparison to the above-mentioned, where images are defined by bit depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this often correlates to use of a threshold, described in section \ref{sec:Thresholding}. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.\\
+%Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
+
 
 
