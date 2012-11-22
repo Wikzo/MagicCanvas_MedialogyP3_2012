@@ -633,3 +633,49 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 		}
 	}
 }
+void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
+{
+	numberOfPersons = 0;
+	color currentColor;
+	currentColor.r = 254;
+	currentColor.g = 255;
+	currentColor.b = 255;
+
+	int hasToBeChanged = 1;
+
+	int y = height-1;
+	for(int i = 0; i < 2; i++){
+		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++){
+			//if(pixelR[x][y] == 255)
+			{ 
+#pragma region showEnterExit
+				pixelR[x][y] = 255;
+				pixelG[x][y] = 0;
+				pixelB[x][y] = 0;
+#pragma endregion
+				//point currentPoint;
+				//currentPoint.x = x;
+				//currentPoint.y = y;
+				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
+				//currentColor.r -= 1;
+			}
+		}
+		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--){
+			//if(pixelR[x][y] == 255)
+			{
+#pragma region showEnterExit
+				pixelR[x][y] = 255;
+				pixelG[x][y] = 0;
+				pixelB[x][y] = 0;
+#pragma endregion
+
+				//point currentPoint;
+				//currentPoint.x = x;
+				//currentPoint.y = y;
+				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
+				//currentColor.r -= 1;
+			}
+		}
+		y = heightOfUpperFOI;
+	}
+}
