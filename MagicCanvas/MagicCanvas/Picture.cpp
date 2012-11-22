@@ -9,7 +9,6 @@ using namespace cv;
 
 void Picture::initialize(string fileName)
 {
-	Mat tmp;
 	tmp = imread(fileName);
 	width = tmp.cols;
 	height = tmp.rows;
@@ -40,7 +39,6 @@ void Picture::initialize(string fileName)
 }
 void Picture::initialize(VideoCapture captureToStoreCamra)
 {
-	Mat tmp;
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;
@@ -72,7 +70,6 @@ void Picture::initialize(VideoCapture captureToStoreCamra)
 
 void Picture::refresh(string fileName)
 {
-	Mat tmp;
 	tmp = imread(fileName);
 	width = tmp.cols;
 	height = tmp.rows;
@@ -97,7 +94,6 @@ void Picture::refresh(string fileName)
 }
 void Picture::refresh(VideoCapture captureToStoreCamra)
 {
-	Mat tmp;
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;
@@ -612,5 +608,28 @@ void Picture::startFireLoggingData(point startingPoint, color objColor, Picture 
 		persons[numberOfPersons].posOnX = 1 - zeroToOne;
 		numberOfPersons++;
 		
+	}
+}
+void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold)
+{
+	captureToStoreCamra >> tmp;
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+		{
+			if((int)tmp.at<Vec3b>(y,x)[1] - refPicture.pixelG[x][y] < -1*threshhold) 
+			{
+				//cout << (int)tmp.at<Vec3b>(y,x)[0];
+				pixelR[x][y] = 255;
+				pixelG[x][y] = 255;
+				pixelB[x][y] = 255;
+			}
+			else
+			{
+				pixelR[x][y] = 0;
+				pixelG[x][y] = 0;
+				pixelB[x][y] = 0;
+			}
+		}
 	}
 }

@@ -19,7 +19,7 @@ int main(){
 	int widthOfHat; // Red Line (real distance of the head)
 
 	VideoCapture camera1;
-	camera1.open(1);
+	camera1.open(0);
 
 	Picture currentPicture; 
 	Picture BG; // 
@@ -45,41 +45,44 @@ int main(){
 		images[i].openCamera(camera1);
 		images[i].output("hey" + i);
 	}*/
+	int counter = 0;
 	while(true){ //To be played all the time.
-		currentPicture.refresh(camera1);
+		//currentPicture.refresh(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
-		currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
-		
+		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
+		//counter++;
+		//cout << counter;
+		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
 		// Closing
-		currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
-		currentPicture.dilate(3, tmpPicture);
+		//currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
+		//currentPicture.dilate(3, tmpPicture);
 
 		// Hat size + draw
 		
 		//currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
 
-		currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
+		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
 		//currentPicture.placeHats(50,10,lowerLeftCornerOfHat,widthOfHat, hat);
 		//
 		//currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
 
 
 		//send to file that is read by unity-----------------------------------------------------------------------------------------------------
-		ofstream myFile ("test.txt");
+		//ofstream myFile ("test.txt");
 
-		for(int i = 0; i < currentPicture.numberOfPersons; i++)
-		{
-			if(myFile.is_open()){
-				ostringstream ss;
-				ss << person[i].posOnX;
-				string s(ss.str());
-				clipboard(s);
-				//myFile << /*"\nThe " << i+1 << ". persons Xposition is: " <<*/"\n" << person[i].posOnX;
-				//cout << /*"\nThe " << i+1 << ". persons Xposition is: " <<*/ person[i].posOnX;
-			} else { cout << "cant create file";}
-		}
+		//ostringstream ss;
+		//for(int i = 0; i < currentPicture.numberOfPersons; i++)
+		//{
+		//	//if(myFile.is_open()){
+		//		ss << person[i].posOnX << "p";
+		//		//myFile << /*"\nThe " << i+1 << ". persons Xposition is: " <<*/"\n" << person[i].posOnX;
+		//		cout << "\nThe " << i << ". persons Xposition is: " << person[i].posOnX;
+		//	//} else { cout << "cant create file";}
+		//}
+		//string s(ss.str());
+		//clipboard(s);
 
-		myFile.close();
+		//myFile.close();
 		//--------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -87,9 +90,9 @@ int main(){
 		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		//widthOfHat = 0;
 		//
-		//currentPicture.output("video");
+		currentPicture.output("video");
 		
-		int keyInput = waitKey(30);
+		int keyInput = waitKey(10);
 		//cout << keyInput;
 		if (keyInput == 115) // s
 		{
