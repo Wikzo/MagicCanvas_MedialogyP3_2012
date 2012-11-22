@@ -53,6 +53,7 @@ int main(){
 		//counter++;
 		//cout << counter;
 		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
+		currentPicture.lookForNewPersons(50, 100);
 		// Closing
 		//currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
 		//currentPicture.dilate(3, tmpPicture);
@@ -85,7 +86,7 @@ int main(){
 		//myFile.close();
 		//--------------------------------------------------------------------------------------------------------------------------------------
 
-
+		
 		//if(widthOfHat > 0)
 		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		//widthOfHat = 0;

@@ -38,8 +38,9 @@ private:
 	{
 		int posX;
 		bool isHittingBottomFOI;
+		int** pixel;
 
-	};
+	}p[50];
 	int numberOfPersons;
 	
 	int** pixelR; //Pointers to the value of each color pixel on the image
@@ -48,11 +49,8 @@ private:
 	int height;
 	int width;
 
-	int heightOfUpperFOI;
-
 	Mat tmp;
 public:
-	int heightOfUpperFOI;
 	int minPixelToBeAPerson;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
@@ -75,7 +73,7 @@ public:
 	void findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberOfPersons);
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
-	void lookForNewPersons();
+	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
 
 	static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size);
 	

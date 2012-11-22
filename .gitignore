@@ -40,3 +40,5 @@ Debug*
 *.out
 *.synctex.gz
 *BACKUP*
+*.bak
+*.orig
