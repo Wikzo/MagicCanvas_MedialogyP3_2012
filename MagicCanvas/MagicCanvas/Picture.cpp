@@ -678,7 +678,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	int pixelCount = 0;
 
 
-
+	//TODO height and width -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while(true)
 	{
 		pixelB[currentPosition.x][currentPosition.y] = 255;
@@ -698,14 +698,14 @@ void Picture::startFireLoggingPersons(point startingPoint)
 			currentPosition.y++;
 		}
 		//if left is available, is free and not burned
-		else if(currentPosition.x-1 > 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255 && pixelB[currentPosition.x-1][currentPosition.y] != 255)
+		else if(currentPosition.x-1 >= 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255 && pixelB[currentPosition.x-1][currentPosition.y] != 255)
 		{
 			pixelCount++;
 			pixelG[currentPosition.x][currentPosition.y] = pixelCount;
 			currentPosition.x--;
 		}
 		//if up is available, is free and not burned
-		else if(currentPosition.y-1 > 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255 && pixelB[currentPosition.x][currentPosition.y-1] != 255)
+		else if(currentPosition.y-1 >= 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255 && pixelB[currentPosition.x][currentPosition.y-1] != 255)
 		{
 			pixelCount++;
 			pixelG[currentPosition.x][currentPosition.y] = pixelCount;
@@ -713,25 +713,25 @@ void Picture::startFireLoggingPersons(point startingPoint)
 		}
 		//steps back:
 		//if right is available, burned and has the biggest count -> we have been there last
-		else if(currentPosition.x+1 < width && pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1] && pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x-1][currentPosition.y] && pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1])
+		else if(currentPosition.x+1 < width && (currentPosition.y+1 >= height || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1]))
 		{
 			pixelG[currentPosition.x][currentPosition.y] = 0;
 			currentPosition.x++;
 		}
 		//if down is available, burned and has the biggest count -> we have been there last
-		else if(currentPosition.y+1 < height && pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x+1][currentPosition.y] && pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x-1][currentPosition.y] && pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x][currentPosition.y-1])
+		else if(currentPosition.y+1 < height && (currentPosition.x+1 >= width || pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0||pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x][currentPosition.y-1]))
 		{
 			pixelG[currentPosition.x][currentPosition.y] = 0;
 			currentPosition.y++;
 		}
 		//if left is available, burned and has the biggest count -> we have been there last
-		else if(currentPosition.x-1 > 0 && pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1] && pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x+1][currentPosition.y] && pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1])
+		else if(currentPosition.x-1 >= 0 && (currentPosition.y+1 >= height || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x+1 >= width || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1]))
 		{
 			pixelG[currentPosition.x][currentPosition.y] = 0;
 			currentPosition.x--;
 		}
 		//if up is available, burned and has the biggest count -> we have been there last
-		else if(currentPosition.y-1 > 0 && pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x+1][currentPosition.y] && pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x-1][currentPosition.y] && pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x][currentPosition.y+1])
+		else if(currentPosition.y-1 >= 0 && (currentPosition.x+1 >= width || pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.x-1 < 0||pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y+1 >= height||pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x][currentPosition.y+1]))
 		{
 			pixelG[currentPosition.x][currentPosition.y] = 0;
 			currentPosition.y--;
