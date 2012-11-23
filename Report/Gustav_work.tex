@@ -1,46 +1,57 @@
-\chapter{Gustav is awesome}
+%%% Theory %%%
+\section{MARCOS WORKS IS THISSSSS!!}
+\chapter{Theory(Simon)}
+\section{The digital Image}
+Working around digital images on computers is something that most can relate to, but there is a lot more to it than one realizes. Figure \eqref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images and the different attributes of each type.
 
-\section{Camera Theory}
-
-An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this chapter the basics of image acquisition using a digital camera will be explained. To understand how this works it is necessary to have a rudimentary understanding of the physics behind light.
-
-\begin{figure}[htbp] 
-\centering 
-\includegraphics[width=0.5\textwidth]{Pictures/Theory/light_from_sun.png} 
-\caption{Light as captured by a camera} 
-\label{fig:light_cam} 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
+\caption{Image illustrating a conversion from a colored image to grayscale and finally to binary}
+\label{fig:ip_ColoredToGrayscaleToBinary}
 \end{figure}
 
-Light is a form of electromagnetic radiation and can be viewed as both waves and particles. This duality is not something that we will be concerned with in this chapter; the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space: these energy packets are known as photons. Photons can be described by three properties:
-
-\begin{itemize}
-\item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
-\item \textbf{Frequency} - Measured in oscillations per second, Hz, denoted $f$.
-\item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
-\end{itemize}
-
-The formulae for these properties are as follows:
-To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied
-\begin{align}
-\centering 
-\lambda = \frac{C}{f}
-\label{eq:wavelenght} 
-\end{align}
-$\lambda$ and f we are familiar with and C is the speed of light. The second equation describes the energy 
-\begin{align}
+\subsection{8 bit Image and Grayscale Images}
+In an 8 bit image, the 8 bit bit prefix describes the \textit{bit depth} of the image. The bit depth tells you about the amount of information you can store in a single pixel.
+\\
+An image with a single channel of information for each pixel in the x and y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The information stored in each pixel is the intensity of the particular pixel. 8 bits evaluates to $2^8$ different states, meaning that a single 8 bit pixel can display 256 different levels of intensity. In addition one should note that logically the values of the pixels should be 1-256, but the fact is that a computer counts 0 as the first value and therefore the pixel value varies from 0-255, see figure \eqref{fig:ip_grayscale}. An 8-bit image is a widely spread format for an image, but it is however possible to create images with more depth and with more information for each individual pixel in the image. Examples of that are 16, and 32 bit images. A 16 bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously a 32 bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations, as it consumes less processing power than a similar looking 16- or 32 bit image.
+\\
+%As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.
+\\
+%An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$ when working with 8 bit pictures, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.
+\begin{figure}[htbp]
 \centering
-E = \frac{hC}{\lambda}
-\label{eq:e_v} 
-\end{align}
-where h is Planck's constant. E, C and $\lambda$ are still as explained above.
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
+\caption{Image illustrating the 256 different gradients of an 8 bit picture.}
+\label{fig:ip_grayscale}
+\end{figure}
+ Illustrates 256 different levels of grayscale.\\
 
-The wavelength of the photon determines what color you perceive, however as we know from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color perceived. The visible spectrum of light is but a fraction of the full spectrum of electromagnetic radiation \fixme{SSEE THE FIGURE THAT IS NOT HTERE}. As with images, light interacts additively, with a mix of equal parts of each wavelength resulting in white light.
-\fixme{image of light color by wavelength}
-The most common light source by far is the sun. The white light we know from the sun can be broken down into it's component wavelengths by refracting the light in a prism. This will yield the full color spectrum\fixme{MOAR PICTURES; LIGHT REFRACTED}
-While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, constructed to be sensitive to three colors; red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\fixme{link to cells and visible spectrum maybe figures?}
-\subsection{Digital image acquisition}
-When capturing and image using a digital camera, light is passed through a lens onto the sensor, which acts in much the same way as our eyes, in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors, one for each pixel in the output image. A camera that can only capture black and white photos have only one type of sensor in each physical pixel whereas a camera that captures RGB color images has three types of sensors in each pixel. \fixme{sources and images?}
-\subsection{Image acquisition in the project}
- In the project, two cameras were contemplated; a normal RGB webcam and a similar camera with a infra red filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infra-red light to pass, thus making the only light that reaches the sensor infra red. \fixme{figure that illustrates the IR filter} This is interesting, as this enables a larger degrees of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting  \fixme{should be refenrence to place where we state that light is hard to control and the issues inherit in handling lighting "on location"} can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day-night cycle. Working with IR eliminates this issue.
+ 
+\subsection{Indexing an image}
+When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image to perform mathematical operations. Accessing specific pixels is however relatively easy as they are indexed cleverly.\\
+Working with pixels in a image is like working with a coordinate system. However instead of starting at the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Horizontal indices describe the x-axis and vertically indices the y-axis. A single pixel can be described as a coordinate i.e. (0,255) \fixme{Did we mention openCV before? Maybe write something about how OpenCV stores images} In OpenCV images are stored in a matrix. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image therefore, when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a image in the y- and x-axis.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
+\caption{Image illustrating the principle of indexing a picture in x- and y-axis.}
+\label{fig:ip_IndexingAPicture}
+\end{figure}
 
+Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
+\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
+\label{fig:ip_ColorWheel}
+\end{figure}  
 
+\subsection{Working with Colored Images (RGB)}
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is to understand the basics of a color image.\\
+\fixme{THIS IS WHERE I GOT TO -Marco}
+There are several formats for handling color images, in this report we will only decribe RGB, since this is the only format we will encounter. Compared to a grayscale image, a colored image differs in that it consists of 3 channels, opposed to 1. Each channel describe the value of the color in the specific pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. The most significant difference between grayscale images and colored images, is that one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition equal amounts of red, green and blue  will produce a gradient of grey, where a pixel a value of 255 will produce white, while 0 would produce black, just as when working with grayscale images.\\
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would simply have to create a threshold value to segment the pixels depending on values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+
+\subsection{Binary Images}
+In comparison to the above-mentioned, where images are defined by bit depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this often correlates to use of a threshold, described in section \ref{sec:Thresholding}. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.\\
+%Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
