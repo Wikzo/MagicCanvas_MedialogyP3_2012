@@ -20,10 +20,10 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the whole image from the upper-left side to the right bottom, row by row. When the kernel finds a non-zero pixel value it centers its attention on it and burns it. Then the algorithm looks in the possible directions around that pixel to check if one of those pixels is connected to the previous one, and therefore, is an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connectivity kernel, the algorithm will look into 8 directions, but for the 4-connectivity kernel, the algorithm will look in 4 directions).
-Whenever it finds an object, the algorithm labels the pixel on the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
-The algorithm looks now on the possible directions around that pixel, starting with the pixel on the right (see kernel picture \eqref{fig:8connecK}). Once it finds a non-zero pixel value, the algorithm centers its attention on it and restarts the process again labeling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labeling pixels, otherwise the algorithm will starts its way back to the beginning checking one by one surrounding pixels to verify that it has checked all the possible directions and non-zero pixels values.
-Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain connectivity kernel will affect the final result of the algorithm using a same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects correctly, whereas the 4-connectivity kernel finds the different objects performing less operations.
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the entire image from the upper-left corner to the right bottom, row by row. When the kernel encounters a non-zero pixel value it centers on it and burns the center pixel. Then the algorithm looks in the possible directions around that pixel to check if those pixels are connected to the previous one, and therefore, together make out an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
+Whenever it finds an object, the algorithm labels the pixel in the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
+The algorithm now looks to the possible directions around that pixel, starting with the pixel on the right (see kernel picture \eqref{fig:8connecK}). Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and restarts the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
+Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using a same picture. Although the 8-connected kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
@@ -32,7 +32,7 @@ Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, w
 \label{fig:4connecK}
 \end{figure}
 
-
+\fxnote{MARCO GOT TO THIS PART IN CORRECTION, REMEMBER THAT MARCO}
 
 Figure \eqref{fig:4connecK}
 
