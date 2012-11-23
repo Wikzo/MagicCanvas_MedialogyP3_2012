@@ -33,27 +33,36 @@ struct Person
 
 class Picture
 {
-private:
+public:
 	class person
 	{
 	public:
-		int posX;
+
+		float posX;
+		float moveVector;
+
 		bool isHittingBottomFOI;
 		int** pixel;
+
+		person();
+
+		void refind();
 
 	}p[50];
 	
 	int** pixelR; //Pointers to the value of each color pixel on the image
 	int** pixelG;
 	int** pixelB;
-	int height;
-	int width;
+
 
 	Mat tmp;
-public:
+
+	int height;
+	int width;
 	int minPixelToBeAPerson;
 	int radiusForMorfology;
 	int numberOfPersons;
+	float initialMoveVector;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
 	void initialize(VideoCapture captureToStoreCamra);

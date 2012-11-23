@@ -10,6 +10,7 @@ using namespace cv;
 void clipboard(const string &s);
 
 int main(){
+	//find way to optimize the initial move vector
 	const int maxNumberOfPersons = 50;
 	Person person[maxNumberOfPersons]; // 15 is the max number of persons
 
@@ -20,6 +21,9 @@ int main(){
 
 	VideoCapture camera1;
 	camera1.open(0);
+
+	VideoCapture testVideo1;
+	testVideo1.open("Library_Observation_Nov19.wmv");
 
 	Picture currentPicture; 
 	Picture BG; // 
@@ -35,6 +39,7 @@ int main(){
 	currentPicture.minPixelToBeAPerson = 1000;
 	currentPicture.radiusForMorfology = 3;
 	currentPicture.numberOfPersons = 0;
+	currentPicture.initialMoveVector = 0.1f;
 
 	hat.output("Window for control");
 	// gustav test vibe
@@ -50,21 +55,28 @@ int main(){
 
 
 	while(true){ //To be played all the time.
-		//currentPicture.refresh(camera1);
+		//currentPicture.refresh(testVideo1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		//counter++;
 		//cout << counter;
 		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-
-		//currentPicture.lookForNewPersons(50, 100);
+		
+		currentPicture.lookForNewPersons(20, currentPicture.height/2);
 		// Closing
 		
 		//currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
 		//currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
 		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
-		currentPicture.lookForNewPersons(30, 100);
-		cout << currentPicture.numberOfPersons;
+		//currentPicture.lookForNewPersons(30, 100);
+		//cout << currentPicture.numberOfPersons;
+		if(currentPicture.numberOfPersons > 0)
+		system("cls");
+		for(int i = 0; i < currentPicture.numberOfPersons; i++)
+		{
+			
+			cout << currentPicture.p[i].posX;
+		}
 		currentPicture.numberOfPersons = 0;
 
 		// Hat size + draw

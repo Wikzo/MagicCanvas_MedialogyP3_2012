@@ -609,14 +609,14 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 			{
 				//cout << (int)tmp.at<Vec3b>(y,x)[0];
 				pixelR[x][y] = 255;
-				pixelG[x][y] = 255;
-				pixelB[x][y] = 255;
+				//pixelG[x][y] = 255;
+				//pixelB[x][y] = 255;
 			}
 			else
 			{
 				pixelR[x][y] = 0;
-				pixelG[x][y] = 0;
-				pixelB[x][y] = 0;
+				//pixelG[x][y] = 0;
+				//pixelB[x][y] = 0;
 			}
 		}
 	}
@@ -641,6 +641,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				currentPoint.x = x;
 				currentPoint.y = y;
 				startFireLoggingPersons(currentPoint);
+				p[numberOfPersons-1].moveVector = initialMoveVector;
 				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
 				//currentColor.r -= 1;
 			}
@@ -658,6 +659,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				currentPoint.x = x;
 				currentPoint.y = y;
 				startFireLoggingPersons(currentPoint);
+				p[numberOfPersons-1].moveVector = -1*initialMoveVector;
 				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
 				//currentColor.r -= 1;
 			}
@@ -678,7 +680,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	int pixelCount = 0;
 
 
-	//TODO height and width -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//TODO height and width -- test if this is done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while(true)
 	{
 		pixelB[currentPosition.x][currentPosition.y] = 255;
@@ -712,7 +714,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 			currentPosition.y--;
 		}
 		//steps back:
-		//if right is available, burned and has the biggest count -> we have been there last
+		//if right is available, burned and has the biggest count(also check if the pixel, that is compared to is available) -> we have been there last -> go back 
 		else if(currentPosition.x+1 < width && (currentPosition.y+1 >= height || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1]))
 		{
 			pixelG[currentPosition.x][currentPosition.y] = 0;
@@ -740,7 +742,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 			break;
 	}
 
-	//TODO- make the following recursive
+	//TODO- make the following recursive/build into the recursive function
 	int minX = height + 100;
 	int maxX = -100;
 	if(pixelCount > minPixelToBeAPerson)
@@ -760,13 +762,13 @@ void Picture::startFireLoggingPersons(point startingPoint)
 				}
 		float average = ((minX + maxX)/2);
 		float zeroToOne = average/width;
-		p[numberOfPersons].posX = 1 - zeroToOne;
+		p[numberOfPersons-1].posX = zeroToOne;
 	}
 	else
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
-					pixelR[x][y] = 0;//objColor.r;
+					pixelR[x][y] = 0;
 }
 void Picture::resetChannel(char RorGorB)
 {
@@ -828,4 +830,12 @@ void Picture::resetChannelsExcept(char RorGorB)
 	default:
 		cout << "A channel is not reseted!!!!!!!!!!!!!!!!!!!!!\n\nA wrong channel is chosen";
 	};
+}
+void Picture::person::refind()
+{
+
+}
+Picture::person::person()
+{
+	moveVector = 2;
 }
