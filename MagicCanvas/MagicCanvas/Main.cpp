@@ -33,6 +33,8 @@ int main(){
 	
 	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
 	currentPicture.minPixelToBeAPerson = 1000;
+	currentPicture.radiusForMorfology = 3;
+	currentPicture.numberOfPersons = 0;
 
 	hat.output("Window for control");
 	// gustav test vibe
@@ -45,7 +47,8 @@ int main(){
 		images[i].openCamera(camera1);
 		images[i].output("hey" + i);
 	}*/
-	int counter = 0;
+
+
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(camera1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
@@ -53,10 +56,14 @@ int main(){
 		//counter++;
 		//cout << counter;
 		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-		currentPicture.lookForNewPersons(50, 100);
+
+		//currentPicture.lookForNewPersons(50, 100);
 		// Closing
-		//currentPicture.erode(3, tmpPicture); // radius of 3 to erode and dilate
-		//currentPicture.dilate(3, tmpPicture);
+		
+		currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
+		currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
+		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
+		currentPicture.lookForNewPersons(30, 100);
 
 		// Hat size + draw
 		

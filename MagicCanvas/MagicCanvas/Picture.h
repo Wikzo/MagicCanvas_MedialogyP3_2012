@@ -36,12 +36,12 @@ class Picture
 private:
 	class person
 	{
+	public:
 		int posX;
 		bool isHittingBottomFOI;
 		int** pixel;
 
 	}p[50];
-	int numberOfPersons;
 	
 	int** pixelR; //Pointers to the value of each color pixel on the image
 	int** pixelG;
@@ -52,6 +52,8 @@ private:
 	Mat tmp;
 public:
 	int minPixelToBeAPerson;
+	int radiusForMorfology;
+	int numberOfPersons;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
 	void initialize(VideoCapture captureToStoreCamra);
@@ -74,8 +76,9 @@ public:
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
 	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
-
-	static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size);
+	void startFireLoggingPersons(point startingPoint, color objColor);
+	void resetChannel(char RorGorB);
+	void resetChannelsExcept(char RorGorB);
 	
 };
 
