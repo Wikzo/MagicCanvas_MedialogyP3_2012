@@ -76,7 +76,7 @@ public:
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
 	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
-	void startFireLoggingPersons(point startingPoint, color objColor);
+	void startFireLoggingPersons(point startingPoint);
 	void resetChannel(char RorGorB);
 	void resetChannelsExcept(char RorGorB);
 	
