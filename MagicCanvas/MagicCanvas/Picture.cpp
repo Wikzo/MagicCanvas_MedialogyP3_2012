@@ -429,7 +429,7 @@ void Picture::findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberO
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
-				startFireLoggingPersons(currentPoint, currentColor);
+				startFireLoggingPersons(currentPoint);
 				currentColor.r -= 1;
 			}
 		}
@@ -624,10 +624,6 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
 {
 	numberOfPersons = 0;
-	color currentColor;
-	currentColor.r = 254;
-	currentColor.g = 255;
-	currentColor.b = 255;
 
 	int hasToBeChanged = 1;
 
@@ -644,7 +640,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
-				startFireLoggingPersons(currentPoint, currentColor);
+				startFireLoggingPersons(currentPoint);
 				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
 				//currentColor.r -= 1;
 			}
@@ -661,7 +657,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
-				startFireLoggingPersons(currentPoint, currentColor);
+				startFireLoggingPersons(currentPoint);
 				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
 				//currentColor.r -= 1;
 			}
@@ -669,11 +665,11 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 		y = heightOfUpperFOI;
 	}
 }
-void Picture::startFireLoggingPersons(point startingPoint, color objColor)
+void Picture::startFireLoggingPersons(point startingPoint)
 {
 	if(pixelR[startingPoint.x][startingPoint.y] != 255) 
 		return;
-	//R is for Input
+	//R is for Input - 255 = blob not classified, 0 = nothing found or to small
 	//B is for Burned/Output
 	//G is for way back
 	//TODO maybee move in lookForNewPersons()-------------------------------------------------------------
@@ -744,14 +740,15 @@ void Picture::startFireLoggingPersons(point startingPoint, color objColor)
 			break;
 	}
 
-
+	//TODO- make the following recursive
 	int minX = height + 100;
 	int maxX = -100;
-
-	for(int y = 0; y < height; y++){
-		for(int x = 0; x < width; x++){
-			if(pixelB[x][y] == 255){
-				if(pixelCount > minPixelToBeAPerson)
+	if(pixelCount > minPixelToBeAPerson)
+	{
+		numberOfPersons++;
+		for(int y = 0; y < height; y++)
+			for(int x = 0; x < width; x++)
+				if(pixelB[x][y] == 255)
 				{
 					//detect the possition on the x-axis
 					if(x > maxX)
@@ -759,27 +756,17 @@ void Picture::startFireLoggingPersons(point startingPoint, color objColor)
 					if(x < minX)
 						minX = x;
 					
-					pixelR[x][y] = 254 - numberOfPersons;
-
-					//pixelG[x][y] = objColor.g;
-					//pixelB[x][y] = objColor.b;
+					pixelR[x][y] = 255 - numberOfPersons;
 				}
-				else
-				{
-					pixelR[x][y] = 1;//objColor.r;
-				}
-			}
-		}
-	}
-
-	if(pixelCount > minPixelToBeAPerson)
-	{
 		float average = ((minX + maxX)/2);
 		float zeroToOne = average/width;
 		p[numberOfPersons].posX = 1 - zeroToOne;
-		numberOfPersons++;
-		
 	}
+	else
+		for(int y = 0; y < height; y++)
+			for(int x = 0; x < width; x++)
+				if(pixelB[x][y] == 255)
+					pixelR[x][y] = 0;//objColor.r;
 }
 void Picture::resetChannel(char RorGorB)
 {

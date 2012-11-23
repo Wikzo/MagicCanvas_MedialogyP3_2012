@@ -60,10 +60,12 @@ int main(){
 		//currentPicture.lookForNewPersons(50, 100);
 		// Closing
 		
-		currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
-		currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
+		//currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
+		//currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
 		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
 		currentPicture.lookForNewPersons(30, 100);
+		cout << currentPicture.numberOfPersons;
+		currentPicture.numberOfPersons = 0;
 
 		// Hat size + draw
 		
