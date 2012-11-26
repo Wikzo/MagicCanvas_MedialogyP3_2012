@@ -61,8 +61,7 @@ int main(){
 		//counter++;
 		//cout << counter;
 		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-		
-		currentPicture.lookForNewPersons(20, currentPicture.height/2);
+
 		// Closing
 		
 		//currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
@@ -70,14 +69,23 @@ int main(){
 		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
 		//currentPicture.lookForNewPersons(30, 100);
 		//cout << currentPicture.numberOfPersons;
-		if(currentPicture.numberOfPersons > 0)
-		system("cls");
-		for(int i = 0; i < currentPicture.numberOfPersons; i++)
-		{
-			
-			cout << currentPicture.p[i].posX;
-		}
+		//if(currentPicture.numberOfPersons > 0)
+		//system("cls");
+
+		int preNumbersOfPersons = currentPicture.numberOfPersons;
 		currentPicture.numberOfPersons = 0;
+
+		for(int i = 0; i < preNumbersOfPersons; i++)
+		{
+			float prePos = currentPicture.p[i].posX;
+			//cout << currentPicture.p[i].posX;
+
+			currentPicture.p[i].refind(currentPicture);
+			currentPicture.p[i-1].moveVector = currentPicture.p[i-1].posX - prePos;
+		}
+		//currentPicture.numberOfPersons = 0;
+
+		currentPicture.lookForNewPersons(20, currentPicture.height/2);
 
 		// Hat size + draw
 		

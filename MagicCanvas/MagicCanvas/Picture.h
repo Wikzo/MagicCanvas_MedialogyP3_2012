@@ -34,19 +34,21 @@ struct Person
 class Picture
 {
 public:
+	
 	class person
 	{
 	public:
 
 		float posX;
 		float moveVector;
+		int heightOfROI;
 
-		bool isHittingBottomFOI;
+		//static Picture& parent;
 		int** pixel;
 
-		person();
+		//person(const Picture& parentPicture);
 
-		void refind();
+		void refind(Picture& parent);
 
 	}p[50];
 	
@@ -62,6 +64,7 @@ public:
 	int minPixelToBeAPerson;
 	int radiusForMorfology;
 	int numberOfPersons;
+	//TODO: find a smart way to determine that!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	float initialMoveVector;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
