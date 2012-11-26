@@ -194,9 +194,35 @@ The processes related to morphology on binary images are oriented to remove nois
 Mathematical morphology is a neighborhood processing method that applies a \textit{structuring element} (or kernel) to the pixels on the image. The ways that kernel will be structured, how big it will be or the shape that will be used depends on the designer, and the shape and size of the objects to be analysed. The reason for this is that the structured elements are applied by \textit{hitting} or \textit{fitting} operations that will affect the results in different ways.
 
 \subsubsection{Hit and Fit}
-Whenever you decide to apply a structured element and \textbf{hit} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. The kernel will be first placed on the corner of the image so that it can check if each pixel placed at the same position is also a '1'. If one of the pixels of the area of the kernel is indeed a '1', the pixel in which the kernel is centred will be changed to the value 'a' on the output image. Otherwise, the value of the output pixel in that particular position will be '0'.
+Whenever you decide to apply a structured element and \textbf{hit} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. The kernel will be first placed on the corner of the image so that it can check if each pixel placed at the same position is also a '1'. If one of the pixels of the area of the kernel is indeed a '1', the pixel in which the kernel is centred will be changed to the value '1' on the output image. Otherwise, the value of the output pixel in that particular position will be '0'.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/FitHitKernels.png}
+\caption{Binary image and \textit{Structuring elements}}
+\label{fig:FitHit}
+\end{figure}
 
-On the contrary, to be able to \textbf{fit} a pixel on the center of the structured element, the pixels' values have to be the same both on the kernel and the input image. If one of the pixels on the input image has a different value to the corresponding one of the kernel, the pixel in which the kernel is centred will have the opposite value (see picture ).
+On the contrary, to be able to \textbf{fit} a pixel on the center of the structured element, the pixels' values have to be the same both on the kernel and the input image. If one of the pixels on the input image has a different value to the corresponding '1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On Table \ref{tab:HitFitResults} Figure \ref{fig:FitHit} has been represented with two different types of structuring elements.
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+ \:Position\: &SE &\:\:\:Hit\:\:\: &\:\:\:Fit\:\:\: \\\hline
+ \hline
+ A &$S_{1}$ &No &No\\\hline
+ A &$S_{2}$ &No &No\\\hline
+ B &$S_{1}$ &Yes &Yes\\\hline
+ B &$S_{2}$ &Yes &Yes\\\hline
+ C &$S_{1}$ &Yes &Yes\\\hline
+ C &$S_{2}$ &Yes &No\\\hline
+ D &$S_{1}$ &No &No\\\hline
+ D &$S_{2}$ &No &No\\\hline
+\end{tabular}
+\caption{Results of Hitting and Fitting with two different structuring elements}
+\label{tab:HitFitResults}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%% SHOULD I TALK A BIT MORE ABOUT THE TABLE? %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Dilation}
 

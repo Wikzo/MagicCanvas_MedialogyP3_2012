@@ -32,36 +32,34 @@ Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, w
 \label{fig:4connecK}
 \end{figure}
 
-\fxnote{MARCO GOT TO THIS PART IN CORRECTION, REMEMBER THAT MARCO}
-
 Figure \eqref{fig:4connecK}
 
 \subsection{BLOB Representation}
-The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for, in order to state the features that it should accomplish, and the deviations that would be acceptable. This process consist of two steps: determining the features of the BLOB and matching the features with the objects found to determine if they are part of the type that we were looking for.
+The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: Determining the features of the BLOB and matching the features with the prototype to determine if they are part of the type that we were looking for.
 
-Hence a few features like the \textbf{area}, the \textbf{perimeter} and the \textbf{circularity} will be calculated.
+This means that a few features like the \textbf{area}, the \textbf{perimeter} and the \textbf{circularity} will be calculated.
 \subsubsection{The features}
 
 \begin{itemize}
 \item Area
 
-The importance of calculating features like the \textbf{area} of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the expected ones. One way of doing this is by calculating the area of the BLOBs.
+The importance of calculating features like the \textbf{area} of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOBs.
 
 \item Bounding box and Bounding circle
 
-Both \textbf{bounding box} and \textbf{bounding circle} are features that operate in a similar way, as the particularity of these features is to enclose those objects that fit into a specific box or circle. The difference between these two besides the shape, is the way it operates. While the \textbf{bounding box} is the minimum rectangle and it checks the four pixels with the minimum and maximum x and y values, the \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
-
+Both \textbf{bounding box} and \textbf{bounding circle} are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two besides the shape, is the way they operate. While the \textbf{bounding box} is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum x and y values than can create a box that encompasses the BLOB. The \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
+\fxnote {to here}
 \item Convex hull
 
-It's the minimum convex polygon which contains the BLOB. Starting from the topmost pixel of the BLOB and searching on the right along a horizontal line and in the clockwise angle till, it finds a BLOB pixel and creates the first side of the polygon.
+The minimum convex polygon which contains the BLOB can be described as wrapping a piece of string tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
 
 \item Bounding box ratio
 
-This is the height of the bounding box divided by the width, indicating in this way the lengthening of the BLOB.
+This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
 
 \item Compactness
 
-The compactness of a BLOB is the ratio of the BLOB's area to the ratio of the bounding box.
+The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box.
 
 \begin{equation}
 	\begin{aligned}
@@ -70,7 +68,7 @@ The compactness of a BLOB is the ratio of the BLOB's area to the ratio of the bo
 	\end{aligned}
 \end{equation}
 
-
+\fxnote{MArco was here}
 \item Center of mass
 
 In physics, the center of mass is the unique point where the weighted relative position of the distributed mass sums to zero. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
