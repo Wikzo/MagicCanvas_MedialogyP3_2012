@@ -9,7 +9,6 @@ using namespace cv;
 
 void Picture::initialize(string fileName)
 {
-	Mat tmp;
 	tmp = imread(fileName);
 	width = tmp.cols;
 	height = tmp.rows;
@@ -40,7 +39,6 @@ void Picture::initialize(string fileName)
 }
 void Picture::initialize(VideoCapture captureToStoreCamra)
 {
-	Mat tmp;
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;
@@ -72,7 +70,6 @@ void Picture::initialize(VideoCapture captureToStoreCamra)
 
 void Picture::refresh(string fileName)
 {
-	Mat tmp;
 	tmp = imread(fileName);
 	width = tmp.cols;
 	height = tmp.rows;
@@ -97,7 +94,6 @@ void Picture::refresh(string fileName)
 }
 void Picture::refresh(VideoCapture captureToStoreCamra)
 {
-	Mat tmp;
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;
@@ -425,7 +421,7 @@ void Picture::findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberO
 
 	for(int x = 0; x < width; x++){
 		for(int y = 0; y < height; y++){
-			if(pixelR[x][y] == 255 && pixelG[x][y] == 255 && pixelB[x][y] == 255)
+			if(pixelR[x][y] == 255)
 			{ 
 				
 				//currentColor.g -= 1;
@@ -433,13 +429,12 @@ void Picture::findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberO
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
-				startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
+				startFireLoggingPersons(currentPoint);
 				currentColor.r -= 1;
 			}
 		}
 	}
-	// why is this one to big???? <- needs to be fixed
-	//cout << numberOfPersons;
+	cout << "\n" << currentColor.r;
 }
 void Picture::placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat)
 {
@@ -501,17 +496,6 @@ void Picture::placeHats(int minRowLength, int minRowWidth, point &startOfTheLine
 	}
 		
 }
-/*static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size)
-{
-	// TODO: Linked List, maybe?
-
-	for (int i = 0; i < size; i++)
-	{
-		images[i].openCamera(capture);
-		images[i].output("hey" + i);
-	}
-
-}*/
 void Picture::startFireLoggingData(point startingPoint, color objColor, Picture &tmpPicture, Person persons[], int maxNumberOfPersons)
 {
 	tmpPicture.makeBlack();
@@ -613,4 +597,245 @@ void Picture::startFireLoggingData(point startingPoint, color objColor, Picture 
 		numberOfPersons++;
 		
 	}
+}
+void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold)
+{
+	captureToStoreCamra >> tmp;
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = 0; y < height; y++)
+		{
+			if((int)tmp.at<Vec3b>(y,x)[1] - refPicture.pixelG[x][y] < -1*threshhold) 
+			{
+				//cout << (int)tmp.at<Vec3b>(y,x)[0];
+				pixelR[x][y] = 255;
+				//pixelG[x][y] = 255;
+				//pixelB[x][y] = 255;
+			}
+			else
+			{
+				pixelR[x][y] = 0;
+				//pixelG[x][y] = 0;
+				//pixelB[x][y] = 0;
+			}
+		}
+	}
+}
+void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
+{
+	numberOfPersons = 0;
+
+	int hasToBeChanged = 1;
+
+	int y = height-1-radiusForMorfology;
+	for(int i = 0; i < 2; i++){
+		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++){
+			//if(pixelR[x][y] == 255)
+			{ 
+#pragma region showEnterExit
+				//pixelR[x][y] = 255;
+				//pixelG[x][y] = 0;
+				//pixelB[x][y] = 0;
+#pragma endregion
+				point currentPoint;
+				currentPoint.x = x;
+				currentPoint.y = y;
+				startFireLoggingPersons(currentPoint);
+				p[numberOfPersons-1].moveVector = initialMoveVector;
+				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
+				//currentColor.r -= 1;
+			}
+		}
+		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--){
+			//if(pixelR[x][y] == 255)
+			{
+#pragma region showEnterExit
+				//pixelR[x][y] = 255;
+				//pixelG[x][y] = 0;
+				//pixelB[x][y] = 0;
+#pragma endregion
+
+				point currentPoint;
+				currentPoint.x = x;
+				currentPoint.y = y;
+				startFireLoggingPersons(currentPoint);
+				p[numberOfPersons-1].moveVector = -1*initialMoveVector;
+				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
+				//currentColor.r -= 1;
+			}
+		}
+		y = heightOfUpperFOI;
+	}
+}
+void Picture::startFireLoggingPersons(point startingPoint)
+{
+	if(pixelR[startingPoint.x][startingPoint.y] != 255) 
+		return;
+	//R is for Input - 255 = blob not classified, 0 = nothing found or to small
+	//B is for Burned/Output
+	//G is for way back
+	//TODO maybee move in lookForNewPersons()-------------------------------------------------------------
+	resetChannelsExcept('R');
+	point currentPosition = startingPoint;
+	int pixelCount = 0;
+
+
+	//TODO height and width -- test if this is done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	while(true)
+	{
+		pixelB[currentPosition.x][currentPosition.y] = 255;
+
+		//if right is available, is free and not burned
+		if(currentPosition.x+1 < width && pixelR[currentPosition.x+1][currentPosition.y] == 255 && pixelB[currentPosition.x+1][currentPosition.y] != 255)
+		{
+			pixelCount++;
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.x++;
+		}
+		//if down is available, is free and not burned
+		else if(currentPosition.y+1 < height && pixelR[currentPosition.x][currentPosition.y+1] == 255 && pixelB[currentPosition.x][currentPosition.y+1] != 255)
+		{
+			pixelCount++;
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.y++;
+		}
+		//if left is available, is free and not burned
+		else if(currentPosition.x-1 >= 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255 && pixelB[currentPosition.x-1][currentPosition.y] != 255)
+		{
+			pixelCount++;
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.x--;
+		}
+		//if up is available, is free and not burned
+		else if(currentPosition.y-1 >= 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255 && pixelB[currentPosition.x][currentPosition.y-1] != 255)
+		{
+			pixelCount++;
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount;
+			currentPosition.y--;
+		}
+		//steps back:
+		//if right is available, burned and has the biggest count(also check if the pixel, that is compared to is available) -> we have been there last -> go back 
+		else if(currentPosition.x+1 < width && (currentPosition.y+1 >= height || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1]))
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.x++;
+		}
+		//if down is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y+1 < height && (currentPosition.x+1 >= width || pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0||pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x][currentPosition.y-1]))
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.y++;
+		}
+		//if left is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.x-1 >= 0 && (currentPosition.y+1 >= height || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x+1 >= width || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1]))
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.x--;
+		}
+		//if up is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y-1 >= 0 && (currentPosition.x+1 >= width || pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.x-1 < 0||pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y+1 >= height||pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x][currentPosition.y+1]))
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0;
+			currentPosition.y--;
+		}
+		else
+			break;
+	}
+
+	//TODO- make the following recursive/build into the recursive function
+	int minX = height + 100;
+	int maxX = -100;
+	if(pixelCount > minPixelToBeAPerson)
+	{
+		numberOfPersons++;
+		for(int y = 0; y < height; y++)
+			for(int x = 0; x < width; x++)
+				if(pixelB[x][y] == 255)
+				{
+					//detect the possition on the x-axis
+					if(x > maxX)
+						maxX = x;
+					if(x < minX)
+						minX = x;
+					
+					pixelR[x][y] = 255 - numberOfPersons;
+				}
+		float average = ((minX + maxX)/2);
+		float zeroToOne = average/width;
+		p[numberOfPersons-1].posX = zeroToOne;
+	}
+	else
+		for(int y = 0; y < height; y++)
+			for(int x = 0; x < width; x++)
+				if(pixelB[x][y] == 255)
+					pixelR[x][y] = 0;
+}
+void Picture::resetChannel(char RorGorB)
+{
+	switch(RorGorB)
+	{
+	case 'r':case'R':
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				pixelR[x][y] = 0;
+			}
+		}
+		break;
+	case 'g':case'G':
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				pixelG[x][y] = 0;
+			}
+		}
+		break;
+	case 'b':case'B':
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				pixelB[x][y] = 0;
+			}
+		}
+		break;
+	default:
+		cout << "A channel is not reseted!!!!!!!!!!!!!!!!!!!!!\n\nA wrong channel is chosen";
+	};
+}
+void Picture::resetChannelsExcept(char RorGorB)
+{
+	switch(RorGorB)
+	{
+	case 'r':case'R':
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				pixelB[x][y] = 0;
+				pixelG[x][y] = 0;
+			}
+		}
+		break;
+	case 'g':case'G':
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				pixelR[x][y] = 0;
+				pixelB[x][y] = 0;
+			}
+		}
+		break;
+	case 'b':case'B':
+		for(int y = 0; y < height; y++){
+			for(int x = 0; x < width; x++){
+				pixelG[x][y] = 0;
+				pixelR[x][y] = 0;
+			}
+		}
+		break;
+	default:
+		cout << "A channel is not reseted!!!!!!!!!!!!!!!!!!!!!\n\nA wrong channel is chosen";
+	};
+}
+void Picture::person::refind()
+{
+
+}
+Picture::person::person()
+{
+	moveVector = 2;
 }

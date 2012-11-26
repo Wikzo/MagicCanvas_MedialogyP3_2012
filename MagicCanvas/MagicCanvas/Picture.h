@@ -34,19 +34,43 @@ struct Person
 class Picture
 {
 public:
-	int numberOfPersons;
-	int minPixelToBeAPerson;
+	class person
+	{
+	public:
+
+		float posX;
+		float moveVector;
+
+		bool isHittingBottomFOI;
+		int** pixel;
+
+		person();
+
+		void refind();
+
+	}p[50];
+	
 	int** pixelR; //Pointers to the value of each color pixel on the image
 	int** pixelG;
 	int** pixelB;
+
+
+	Mat tmp;
+
 	int height;
 	int width;
+	int minPixelToBeAPerson;
+	int radiusForMorfology;
+	int numberOfPersons;
+	float initialMoveVector;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
 	void initialize(VideoCapture captureToStoreCamra);
 	void refresh(string fileName);
 	void refresh(VideoCapture captureToStoreCamra);
 	void binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int threshhold);
+	//This function compares the input from the camera to the bg. When the input is bright with the chosen threshold the output pixel will be true.
+	void refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold);
 	void drawPictureAt(point lowerLeftCorner, int newidth, Picture pictureToDraw);
 	void makeBlack();
 	void output(string windowName);
@@ -60,7 +84,10 @@ public:
 	void findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberOfPersons);
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
-	static void GrabMultipleBackgroundImages(VideoCapture capture, Picture images[], int size);
+	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
+	void startFireLoggingPersons(point startingPoint);
+	void resetChannel(char RorGorB);
+	void resetChannelsExcept(char RorGorB);
 	
 };
 
