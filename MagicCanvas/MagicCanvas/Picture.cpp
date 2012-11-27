@@ -623,7 +623,7 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 }
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
 {
-	numberOfPersons = 0;
+	//numberOfPersons = 0;
 
 	int hasToBeChanged = 1;
 
@@ -640,11 +640,24 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
+				// find the next empty:
+
+				int i = 0;
+				do
+				{
+					currentPersonId = i;
+					i++;
+				} 
+				while (i < 50 && p[i].posX != -1);
+
+				personCount++;
+				p[currentPersonId].id = personCount;
+
 				startFireLoggingPersons(currentPoint);
-				p[numberOfPersons-1].moveVector = initialMoveVector;
-				p[numberOfPersons-1].heightOfROI = y;
-				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
-				//currentColor.r -= 1;
+				if(p[currentPersonId].posX != -1){
+					p[currentPersonId].moveVector = initialMoveVector;
+					p[currentPersonId].heightOfROI = y;
+				}
 			}
 		}
 		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--){
@@ -659,11 +672,24 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
+				// find the next empty:
+
+				int i = 0;
+				do
+				{
+					currentPersonId = i;
+					i++;
+				} 
+				while (i < 50 && p[i].posX != -1);
+
+				personCount++;
+				p[currentPersonId].id = personCount;
+
 				startFireLoggingPersons(currentPoint);
-				p[numberOfPersons-1].moveVector = -1*initialMoveVector;
-				p[numberOfPersons-1].heightOfROI = y;
-				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
-				//currentColor.r -= 1;
+				if(p[currentPersonId].posX != -1){
+					p[currentPersonId].moveVector = -1*initialMoveVector;
+					p[currentPersonId].heightOfROI = y;
+				}
 			}
 		}
 		y = heightOfUpperFOI;
@@ -749,7 +775,6 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	int maxX = -100;
 	if(pixelCount > minPixelToBeAPerson)
 	{
-		numberOfPersons++;
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
@@ -760,17 +785,22 @@ void Picture::startFireLoggingPersons(point startingPoint)
 					if(x < minX)
 						minX = x;
 					
-					pixelR[x][y] = 255 - numberOfPersons;
+					pixelR[x][y] = 200 + currentPersonId;
+					
 				}
 		float average = ((minX + maxX)/2);
 		float zeroToOne = average/width;
-		p[numberOfPersons-1].posX = zeroToOne;
+		p[currentPersonId].posX = zeroToOne;
 	}
 	else
+	{
+		//TODO do it again nothing is found !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
 					pixelR[x][y] = 0;
+		p[currentPersonId].posX = -1;
+	}
 }
 void Picture::resetChannel(char RorGorB)
 {
@@ -833,11 +863,12 @@ void Picture::resetChannelsExcept(char RorGorB)
 		cout << "A channel is not reseted!!!!!!!!!!!!!!!!!!!!!\n\nA wrong channel is chosen";
 	};
 }
-void Picture::person::refind(Picture& parent)
+bool Picture::person::refind(Picture& parent)
 {
 	point currentPoint;
 	bool found = false;
-	int maxAmountToMove = (int) (parent.width*0.3f);
+	int maxAmountToMove = parent.maxAmountToMove;
+	parent.currentPersonId = pId;
 	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -847,48 +878,84 @@ void Picture::person::refind(Picture& parent)
 		currentPoint.x = (int)((posX+moveVector)*parent.width);
 		currentPoint.y = heightOfROI;
 		parent.startFireLoggingPersons(currentPoint);
-		found = true;
+		if(parent.p[parent.currentPersonId].posX != -1)
+			found = true;
 	} 
-	else if(parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255)
+	if(parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found)
 	{
 		//second priority to look is the position (has stoped)
 		currentPoint.x = (int)(posX*parent.width);
 		currentPoint.y = heightOfROI;
 		parent.startFireLoggingPersons(currentPoint);
+		if(parent.p[parent.currentPersonId].posX != -1)
+			found = true;
+	} 
+	//TODO on side is never complete!!! --- exp. |( ! )<----f1-m1,2-f2---->|
+	//third priority is to look around the most likely point until the max amount to move is reached
+	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
+	{
+		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] == 255)
+		{
+			currentPoint.x = (int)((posX+moveVector/2)*parent.width)+i;
+			currentPoint.y = heightOfROI;
+			parent.startFireLoggingPersons(currentPoint);
+			if(parent.p[parent.currentPersonId].posX != -1)
+			{
+				found = true;
+				break;
+			}
+		}
+		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] == 255)
+		{
+			currentPoint.x = (int)((posX+moveVector/2)*parent.width)-i;
+			currentPoint.y = heightOfROI;
+			parent.startFireLoggingPersons(currentPoint);
+			if(parent.p[parent.currentPersonId].posX != -1)
+			{
+				found = true;
+				break;
+			}
+		}
+	}
+	return found;
+}
+bool Picture::person::refindOccluded(Picture& parent)
+{
+	point currentPoint;
+	bool found = false;
+	int maxAmountToMove = parent.maxAmountToMove;
+	parent.currentPersonId = pId;
+	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+	if(parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
+	{
+		//first priority to look is the position+the move vector (has moved normal)
+		posX = parent.p[parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI]-200].posX;
 		found = true;
 	} 
-	else
+	if(parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
 	{
-		//TODO on side is never complete!!! --- exp. |( ! )<----f1-m1,2-f2---->|
-		//third priority is to look around the most likely point until the max amount to move is reached
-		for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove; i++/*check if this works*/)
+		//second priority to look is the position (has stoped)
+		posX = parent.p[parent.pixelR[(int)(posX*parent.width)][heightOfROI]-200].posX;
+		found = true;
+	} 
+	//TODO on side is never complete!!! --- exp. |( ! )<----f1-m1,2-f2---->|
+	//third priority is to look around the most likely point until the max amount to move is reached
+	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
+	{
+		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] != 0)
 		{
-			if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] == 255)
-			{
-				currentPoint.x = (int)((posX+moveVector/2)*parent.width)+i;
-				currentPoint.y = heightOfROI;
-				parent.startFireLoggingPersons(currentPoint);
-				found = true;
-				break;
-			}
-			if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] == 255)
-			{
-				currentPoint.x = (int)((posX+moveVector/2)*parent.width)-i;
-				currentPoint.y = heightOfROI;
-				parent.startFireLoggingPersons(currentPoint);
-				found = true;
-				break;
-			}
+			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI]-200].posX;
+			found = true;
+			break;
+		}
+		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] != 0)
+		{
+			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI]-200].posX;
+			found = true;
+			break;
 		}
 	}
-	if(!found)
-	{
-		//either exited or occluded
-		//is the blob in the range so it can exit?
-		if(((posX*parent.width) - maxAmountToMove < 0) || ((posX*parent.width) + maxAmountToMove > parent.width))
-		{
-			//is allowed to exit
-
-		}
-	}
+	return found;
 }
