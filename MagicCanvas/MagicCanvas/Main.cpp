@@ -8,7 +8,7 @@ using namespace std;
 using namespace cv;
 
 void clipboard(const string &s);
-void setupP(const int &numbersOfpersons, Person &personArray);
+void setupP(const int &numbersOfpersons, Picture::person personArray[]);
 
 int main(){
 	//find way to optimize the initial move vector

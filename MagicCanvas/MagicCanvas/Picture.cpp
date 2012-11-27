@@ -623,10 +623,6 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 }
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
 {
-	//numberOfPersons = 0;
-
-	int hasToBeChanged = 1;
-
 	int y = height-1-radiusForMorfology;
 	for(int i = 0; i < 2; i++){
 		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++){
@@ -872,7 +868,7 @@ bool Picture::person::refind(Picture& parent)
 	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-	if(parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] == 255)
+	if((int)((posX+moveVector)*parent.width) < parent.width && (int)((posX+moveVector)*parent.width) >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] == 255)
 	{
 		//first priority to look is the position+the move vector (has moved normal)
 		currentPoint.x = (int)((posX+moveVector)*parent.width);
@@ -881,7 +877,7 @@ bool Picture::person::refind(Picture& parent)
 		if(parent.p[parent.currentPersonId].posX != -1)
 			found = true;
 	} 
-	if(parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found)
+	if((int)(posX*parent.width) < parent.width && (int)(posX*parent.width) >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found)
 	{
 		//second priority to look is the position (has stoped)
 		currentPoint.x = (int)(posX*parent.width);
@@ -894,7 +890,7 @@ bool Picture::person::refind(Picture& parent)
 	//third priority is to look around the most likely point until the max amount to move is reached
 	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
 	{
-		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] == 255)
+		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] == 255)
 		{
 			currentPoint.x = (int)((posX+moveVector/2)*parent.width)+i;
 			currentPoint.y = heightOfROI;
@@ -905,7 +901,7 @@ bool Picture::person::refind(Picture& parent)
 				break;
 			}
 		}
-		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] == 255)
+		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] == 255)
 		{
 			currentPoint.x = (int)((posX+moveVector/2)*parent.width)-i;
 			currentPoint.y = heightOfROI;
@@ -928,13 +924,13 @@ bool Picture::person::refindOccluded(Picture& parent)
 	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-	if(parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
+	if((int)((posX+moveVector)*parent.width) < parent.width && (int)((posX+moveVector)*parent.width) >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
 	{
 		//first priority to look is the position+the move vector (has moved normal)
 		posX = parent.p[parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI]-200].posX;
 		found = true;
 	} 
-	if(parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
+	if((int)(posX*parent.width) < parent.width && (int)(posX*parent.width) >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
 	{
 		//second priority to look is the position (has stoped)
 		posX = parent.p[parent.pixelR[(int)(posX*parent.width)][heightOfROI]-200].posX;
@@ -944,13 +940,13 @@ bool Picture::person::refindOccluded(Picture& parent)
 	//third priority is to look around the most likely point until the max amount to move is reached
 	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
 	{
-		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] != 0)
+		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] != 0)
 		{
 			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI]-200].posX;
 			found = true;
 			break;
 		}
-		if(parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] != 0)
+		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] != 0)
 		{
 			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI]-200].posX;
 			found = true;
