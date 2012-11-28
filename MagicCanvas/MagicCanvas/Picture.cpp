@@ -971,7 +971,7 @@ bool Picture::person::refindOccluded(Picture& parent)
 }
 void Picture::coutPersons()
 {
-	system("cls");
+	//system("cls");
 	for(int i = 0; i < 50; i++)
 	{
 		if(p[i].posX != -1)

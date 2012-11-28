@@ -55,7 +55,7 @@ int main(){
 	}*/
 	setupP(maxNumberOfPersons, currentPicture.p);
 	currentPicture.personCount = 0;
-	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.3f);
+	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.1f);
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
@@ -86,19 +86,20 @@ int main(){
 				{
 				//either exited or occluded
 				//is the blob in the range so it can exit?
-					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
+					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width))
 					{
 						//is not allowed to exit -> it must be occluded
 						if(!currentPicture.p[i].refindOccluded(currentPicture))
 						{
 							currentPicture.p[i].posX = -1;
-							cout << "there is a fuckup with a person that is neither exited or occluded";
+							cout << "there is a fuckup with a person that is neither exited or occluded\n";
 						}
 					
 					}
 					else 
 					{
-						cout << "normal exit";
+						currentPicture.p[i].posX = -1;
+						cout << "normal exit\n";
 					}
 
 				}
