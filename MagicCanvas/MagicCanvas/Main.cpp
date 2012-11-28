@@ -84,7 +84,6 @@ int main(){
 			//cout << currentPicture.p[i].posX;
 				if(!currentPicture.p[i].refind(currentPicture))
 				{
-					cout << "cant be refound!";
 				//either exited or occluded
 				//is the blob in the range so it can exit?
 					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
@@ -97,6 +96,11 @@ int main(){
 						}
 					
 					}
+					else 
+					{
+						cout << "normal exit";
+					}
+
 				}
 			
 			currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
