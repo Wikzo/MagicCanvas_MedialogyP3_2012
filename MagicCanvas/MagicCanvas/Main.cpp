@@ -80,23 +80,24 @@ int main(){
 			if(currentPicture.p[i].posX != -1)
 			{
 			float prePos = currentPicture.p[i].posX;
+			//cout << "program is trying to refind" << "\n";
 			//cout << currentPicture.p[i].posX;
-
-			if(!currentPicture.p[i].refind(currentPicture))
-			{
-			//either exited or occluded
-			//is the blob in the range so it can exit?
-				if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
+				if(!currentPicture.p[i].refind(currentPicture))
 				{
-					//is not allowed to exit -> it must be occluded
-					if(!currentPicture.p[i].refindOccluded(currentPicture))
+					cout << "cant be refound!";
+				//either exited or occluded
+				//is the blob in the range so it can exit?
+					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
 					{
-						currentPicture.p[i].posX = -1;
-						cout << "there is a fuckup with a person that is neither exited or occluded";
-					}
+						//is not allowed to exit -> it must be occluded
+						if(!currentPicture.p[i].refindOccluded(currentPicture))
+						{
+							currentPicture.p[i].posX = -1;
+							cout << "there is a fuckup with a person that is neither exited or occluded";
+						}
 					
+					}
 				}
-			}
 			
 			currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
 			}
@@ -104,6 +105,8 @@ int main(){
 		//currentPicture.numberOfPersons = 0;
 
 		currentPicture.lookForNewPersons(20, currentPicture.height/2);
+
+		currentPicture.coutPersons();
 
 		// Hat size + draw
 		

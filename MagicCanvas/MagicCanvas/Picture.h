@@ -100,6 +100,7 @@ public:
 	void startFireLoggingOccludedPersons(point startingPoint);
 	void resetChannel(char RorGorB);
 	void resetChannelsExcept(char RorGorB);
+	void coutPersons();
 	
 };
 

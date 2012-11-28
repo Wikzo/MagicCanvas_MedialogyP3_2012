@@ -626,7 +626,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 	int y = height-1-radiusForMorfology;
 	for(int i = 0; i < 2; i++){
 		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++){
-			//if(pixelR[x][y] == 255)
+			if(pixelR[x][y] == 255)
 			{ 
 #pragma region showEnterExit
 				//pixelR[x][y] = 255;
@@ -646,18 +646,18 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				} 
 				while (i < 50 && p[i].posX != -1);
 
-				personCount++;
-				p[currentPersonId].id = personCount;
-
 				startFireLoggingPersons(currentPoint);
+
 				if(p[currentPersonId].posX != -1){
+					personCount++;
+					p[currentPersonId].id = personCount;
 					p[currentPersonId].moveVector = initialMoveVector;
 					p[currentPersonId].heightOfROI = y;
 				}
 			}
 		}
 		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--){
-			//if(pixelR[x][y] == 255)
+			if(pixelR[x][y] == 255)
 			{
 #pragma region showEnterExit
 				//pixelR[x][y] = 255;
@@ -678,11 +678,11 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				} 
 				while (i < 50 && p[i].posX != -1);
 
-				personCount++;
-				p[currentPersonId].id = personCount;
-
 				startFireLoggingPersons(currentPoint);
+
 				if(p[currentPersonId].posX != -1){
+					personCount++;
+					p[currentPersonId].id = personCount;
 					p[currentPersonId].moveVector = -1*initialMoveVector;
 					p[currentPersonId].heightOfROI = y;
 				}
@@ -767,10 +767,12 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	}
 
 	//TODO- make the following recursive/build into the recursive function
-	int minX = height + 100;
-	int maxX = -100;
+
 	if(pixelCount > minPixelToBeAPerson)
 	{
+		int minX = height + 100;
+		int maxX = -100;
+
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
@@ -954,4 +956,17 @@ bool Picture::person::refindOccluded(Picture& parent)
 		}
 	}
 	return found;
+}
+void Picture::coutPersons()
+{
+	
+	for(int i = 0; i < 50; i++)
+	{
+		if(p[i].posX != -1)
+		{
+			system("cls");
+			cout << "pid" << p[i].pId << "id: " << p[i].id << " pos: " << p[i].posX << "\n"; 
+		}
+
+	}
 }
