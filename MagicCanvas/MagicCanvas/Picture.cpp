@@ -644,7 +644,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 					currentPersonId = i;
 					i++;
 				} 
-				while (i < 50 && p[i].posX != -1);
+				while (i < 51 && p[i-1].posX != -1);
 
 				startFireLoggingPersons(currentPoint);
 
@@ -676,7 +676,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 					currentPersonId = i;
 					i++;
 				} 
-				while (i < 50 && p[i].posX != -1);
+				while (i < 51 && p[i-1].posX != -1);
 
 				startFireLoggingPersons(currentPoint);
 
@@ -870,23 +870,29 @@ bool Picture::person::refind(Picture& parent)
 	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-	if((int)((posX+moveVector)*parent.width) < parent.width && (int)((posX+moveVector)*parent.width) >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] == 255)
+	if(posX+moveVector < 1 && posX+moveVector >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] == 255)
 	{
 		//first priority to look is the position+the move vector (has moved normal)
 		currentPoint.x = (int)((posX+moveVector)*parent.width);
 		currentPoint.y = heightOfROI;
 		parent.startFireLoggingPersons(currentPoint);
 		if(parent.p[parent.currentPersonId].posX != -1)
+		{
+			cout << "found first try \n";
 			found = true;
+		}
 	} 
-	if((int)(posX*parent.width) < parent.width && (int)(posX*parent.width) >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found)
+	if(posX < 1 && posX >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found)
 	{
 		//second priority to look is the position (has stoped)
 		currentPoint.x = (int)(posX*parent.width);
 		currentPoint.y = heightOfROI;
 		parent.startFireLoggingPersons(currentPoint);
 		if(parent.p[parent.currentPersonId].posX != -1)
+		{
+			cout << "found second try \n";
 			found = true;
+		}
 	} 
 	//TODO on side is never complete!!! --- exp. |( ! )<----f1-m1,2-f2---->|
 	//third priority is to look around the most likely point until the max amount to move is reached
@@ -899,6 +905,7 @@ bool Picture::person::refind(Picture& parent)
 			parent.startFireLoggingPersons(currentPoint);
 			if(parent.p[parent.currentPersonId].posX != -1)
 			{
+				cout << "found normal \n";
 				found = true;
 				break;
 			}
@@ -910,6 +917,7 @@ bool Picture::person::refind(Picture& parent)
 			parent.startFireLoggingPersons(currentPoint);
 			if(parent.p[parent.currentPersonId].posX != -1)
 			{
+				cout << "found normal \n";
 				found = true;
 				break;
 			}
@@ -926,15 +934,17 @@ bool Picture::person::refindOccluded(Picture& parent)
 	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-	if((int)((posX+moveVector)*parent.width) < parent.width && (int)((posX+moveVector)*parent.width) >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
+	if(posX+moveVector < 1 && posX+moveVector >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
 	{
 		//first priority to look is the position+the move vector (has moved normal)
+		cout << "found occluded - first try \n";
 		posX = parent.p[parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI]-200].posX;
 		found = true;
 	} 
-	if((int)(posX*parent.width) < parent.width && (int)(posX*parent.width) >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
+	if(posX < 1 && posX >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
 	{
 		//second priority to look is the position (has stoped)
+		cout << "found occluded - second try \n";
 		posX = parent.p[parent.pixelR[(int)(posX*parent.width)][heightOfROI]-200].posX;
 		found = true;
 	} 
@@ -944,12 +954,14 @@ bool Picture::person::refindOccluded(Picture& parent)
 	{
 		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] != 0)
 		{
+			cout << "found occluded\n";
 			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI]-200].posX;
 			found = true;
 			break;
 		}
 		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] != 0)
 		{
+			cout << "found occluded\n";
 			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI]-200].posX;
 			found = true;
 			break;
@@ -959,13 +971,13 @@ bool Picture::person::refindOccluded(Picture& parent)
 }
 void Picture::coutPersons()
 {
-	
+	system("cls");
 	for(int i = 0; i < 50; i++)
 	{
 		if(p[i].posX != -1)
 		{
-			system("cls");
-			cout << "pid" << p[i].pId << "id: " << p[i].id << " pos: " << p[i].posX << "\n"; 
+			
+			cout << "pid: " << p[i].pId << " id: " << p[i].id << " pos: " << p[i].posX << "\n"; 
 		}
 
 	}
