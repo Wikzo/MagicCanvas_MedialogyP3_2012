@@ -1,220 +1,26 @@
 %%% Simon's Workfile! %%%
-%%% Problem Definition %%%
+%%% DESIGN PART %%%
 
-\chapter{Problem Definition(Simon)}
-\section{Foreword}
-One edge of Medialogy is systems built to react accordingly to humans. This system is called Visual Computing. There are several not least good topics that apply to this kind of technology. One area in which image processing and specific object recognition is used, is surveillance. By implementing some custom made software, one will be able to monitor a specific target group or process. In addition to the semester project two mandatory courses on the third semester of Medialogy are of interest to our semester project.\\
-The first course is called Image Processing and it is primarily based on understanding the theory of a picture and tools to manipulate the pixel values within. Knowledge such as the principle of 8-bit, the RGB color system, histograms and using threshold to segment a picture are some of the tools learned from the course.\\
-The second course used for the semester project is Procedural Programming, in which programming skills in C++ are learned. The theoretical background for programming is necessary to complete image manipulations, based on methods learned in Image Processing.
-
-To structure the semester projects considering supervisors and co-supervisors, every group was asked to discuss which subject field that was of interest to them. In continuation of this every group was asked to submit an application for the three subjects of the biggest interest, with first, second and third priority.\\
-The eleven subjects presented was:
-
-\begin{itemize}
-\item Image Processing for Fun Utilizing an Industrial Robot
-\item Image Processing for Ambient Intelligent Robots
-\item Interactive Floor
-\item Interactive Book
-\item Interactive Drawing Game
-\item Interactive Arcade Game
-\item Emergency system for old people that have fallen
-\item Thermal Sock Puppet Show
-\item Body Motion Controlled Exercise Game
-\item Mobile app for recognizing electric components
-\item Hj{\o}rring Library
-\end{itemize}
-
-After reading into the different project proposals the group decided which three subject to apply for in prioritized order:
-
-\begin{enumerate} 
-\item Hj{\o}rring Library 
-\item Interactive Floor 
-\item Image Processing for Ambient Intelligent Robots 
-\end{enumerate}
-
-\section{Initial vision}
-The group chose a predefined task in the form of developing an installation for Hjørring Library. It was suggested that the software should entertain, teach, surprise, etc.
-
-\section{Establishing collaboration with Hj{\o}rring Library}
-
-To great delight our group were chosen to work with Hj{\o}rring Library, which was our first priority. A meeting was arranged and the group together with other groups from third and fifth semester of Medialogy traveled to Hj{\o}rring to meet the library staff. In addition the groups were let loose in the library to check locations for potential projects.\\
-After talking to some of the staff, more specific our contact person Martin J{\o}rgensen, some general ideas emerged, so it was decided to go back to the group room at NOVI to do some brainstorming within the group.
-
-The first idea that emerged, included scanning of barcodes on books in the library. The idea was that the shade of people trespassing on the walkway where the canvas was placed, would be projected onto the canvas. The conceptual idea was that people would explore the library and depending on the book gathered and scanned, some specific graphic would appear on the canvas. An example could be scanning a fairy tale written by H.C. Andersen which would then produce a hat on-top of the user.
-
-After conferencing with the supervisor, Thomas Moeslund, and the co-supervisor, Andreas M{\o}gelmose, it was decided that the conceptual idea needed to be narrowed down to a more specific subject field. The second idea emerged that we should focus mainly on fairy tales and first of all work around H.C. Andersen, which meant adding a top hat on-top of the users.
-
-An email was sent to Martin J{\o}rgensen concerning the concept for the third semester project and also the location of the project. Martin liked the idea, but had some concerns to identify the period in which the project would fit the library. Hj{\o}rring Library work around specific topics that change every 8-12 weeks. One of the upcoming themes of interest at the library was Christmas which runs from the 2nd week of November until the last week of December. Another idea then emerged in the group towards creating a project for December. Instead of working with the H.C. Andersen theme, it was decided to work with father Christmas and to add a Christmas hat on-top of trespassing users of the library. Martin was fond of this idea and so a new meeting was arranged in order to settle on a suitable location at the library for our project.\\
-Two members of the group traveled to Hj{\o}rring Library to participate in the meeting with Martin. The outcome was a more specific plan on the project concerning the:
-
-\begin{itemize}
-\item The position of the project
-\item The equipment that was desired to borrow
-\item The light conditions
-\end{itemize}
-
-The position of the project will be on the walkway from the reception desk to the core of the library, which Martin believed would be an ideal position for the project, as the light conditions are controllable. In addition to that he knew from experience that people tend to use that walkway either to enter or exit the library, as it is the shortest route.
-
+\section{Animations and why}
+In order to create some excitement towards the game animations were added, as static scenery/avatars tend to bore the user. It was decided to give the avatars some animations for each movement. In practic 3 animations were created. There would be a primary stance if the user would stand still and a movement simulating a walk cycle if the user would move to either the right or left. The horizontal movement was however mirrored so going left and right will produce the same animation only inverted.
+Figure \eqref{fig:Design_SnowmanAnimation} illustrates the three different animations made for one of the avatars.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1.00\textwidth]{Pictures/HjoerringLibrary/LocationJohannesHat.jpg}
-\caption{Location a Hjørring Library}
-\label{fig:concept_art}
-\end{figure}
-Figure \ref{fig:concept_art} illustrates the setup at the library. A canvas with the proportions 3 * 2.25 meters will be positioned directly on the bookshelves seen in the background of the picture.
-
-\subsection{The initial goal}
-One thing that Martin was interested in, was knowing the ambitions for the project and what to expect. There had been a talk within the group about ambitions for the project at Hj{\o}rring Library. Considering the knowledge in programming and image processing, being ready to present the prototype the 1st of December was a part of the initial goal. Previously Martin told us that the Christmas theme would run from the second week in November, until the last week in December, therefore a 3 week run-time period was a desirable goal.\\
-As for the initial goal, Martin expressed his excitement by letting us know that it was very ambitious, but that we should not be intimidated and that he hoped we would succeed. Furthermore he let us know that he would like to contact the designer in charge of the exhibitions at the library to create some interesting scenery for the project. Lastly he expressed that in case we would not succeed to finish the prototype for 1st of December and run for three weeks period, he would like to know, so that he could contact the designer and tell her to do some backup exhibition.
-
-\section{Technical point of view}
-The basic idea is to have a canvas on which the shade of the person is projected together with the Christmas hat added to the top of the head. For that some tools are needed:
-
-\begin{itemize}
-\item A web camera to gather input about people trespassing
-\item A laptop to run the program code
-\item A projector to display the output from the computer
-\item A canvas on which the output is projected on
-\item Controllable lights/light conditions
-\item Power, cables etc.
-\end{itemize}
-
-Together with a projector capable of projecting a relative huge output 3 * 2.25 meters, the laptop running the program code will also be connected to a web cam. A canvas in above-mentioned size will have to be made and placed on-top of the book-shelves illustrated on figure 1.1.
-
-\subsection{Ground zero}
-The first step into developing some usable software, was to write some scrappy code that would run and produce a measurable output. This was done by dividing the entire group consisting of 6 people into 2 smaller groups of 3 people, to come up with a solution on how to produce a segmentation of the video input. A competition within the group turned up to create the best program code in 3 days to be presented. And so the "winner's" code or parts from both projects would be incorporated in a testable file.\\
-At the end of the week, two programs were ready to be tested. Both programs were able to do same things, only the code differed. Some of the techniques used were: Median filtering, morphology(opening/closing), background subtraction, conversion from a colored image to a gray-scale image and most important a first draft of the BLOB analysis, needed to analyze the shape of the head where the Christmas hat is to be placed.\\
-One team did however create some custom made structures so that all would be able to include their own functions in the program without interfering with others. Therefore it was decided to use that program to implement the different functions.
-
-\subsection{Running the first test}
-As the first prototype of the program was completed, it was decided to test the piece of code written and also the equipment given. Mainly because it was of great importance to check the outcome of the input video, considering the fps(frames per second) and the static threshold set. 
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Test/TestSetup.jpg}
-\caption{Picture from Testing the Infrared Camera}
-\label{fig:Picture from Testing the Infrared Camera}
+\includegraphics[width=1.00\textwidth]{Pictures/Design/SnowManShowOff.png}
+\caption{Picture illustrating 3 different animations for one avatar}
+\label{fig:Design_SnowmanAnimation}
 \end{figure} 
-
-Figure \ref{fig:Picture from Testing the Infrared Camera}  illustrates the initial setup for the first prototype testing. \\
-At first the ordinary web camera was used, but due to change in light conditions from the objects trespassing, which caused glittering on the output, it was decided to use the infrared camera. In addition to the infrared camera, four light bulbs were used to \fixme{feed (find synonym)} feed the infrared camera with information regarding the test person. This produced a somewhat good output of the testperson, though one problem still remained. Once the testperson turned 90 degrees\fixme{degrees (math symbol)}. the head became much smaller and didn't look very precise on the output, in addition the Christmas hat would also be misplaced.\\
-The solution to this turned out to be illuminating the background instead of the person, which produced a really great output, seen on figure \ref{fig:max_subtracted}.
-
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Test/MaxSubtracted.jpg}
-\caption{Complete subtraction of object outputted as binary picture.}
-\label{fig:max_subtracted}
-\end{figure}
-
-
-\section{Supervisor meeting with Andreas 14th of November}
-The 14th of November a supervisor meeting was arranged with the co-supervisor Andreas M{\o}gelmose. The meeting was initiated to receive some valuable feedback on the prototype testing and secondly some concerns regarding the programming had arisen. Currently the program ran with 2-3 fps, due to the mathematical calculations performed in the program, such as looping through the entire image's pixel values several times.\\
-To this several not least good suggestions were given, such as adjusting the BLOB analysis to a more specified point of interest and also to include another method of subtracting the background called \textbf{ViBe}.
-
-\section{A Cartoonish touch}
-After throwing the meeting with Andreas the 14th of November, some changes in regards to the concept and program were made. It was decided that, considering the new information gathered, to take the project in another direction.
-
-\subsection{Using an avatar instead of shape}
-Instead of outputting the entire input image and performing several mathematical operations, on a large field of interest that an avatar would function as the body of the person. This would mean that eventually it would be possible to discard up to 60{\%} of all mathematical operations, as only the head of the user is of interest to analyze.\\
-The foremost reason for doing this is based on the outcome of the image processing and the concept. Running the program with 5-6 fps or perhaps even less, will not create the kind of tension toward using the product at the library. People trespassing will barely be recognized by the camera, before they're out of the region of interest. Furthermore the silhouette is not very exciting to look at, so to spice things up and engage especially the kids at the library, the cartoonish characters and a nice GUI, will add a nice touch to the overall user experience. 
-
-\subsection{Using Unity to create the GUI}
-Some investigation towards creating a graphical interface was initiated. Preferably Unity was the program in which the graphical interface was to be created, therefore all alternative solutions were investigated. Ultimately it was discovered that it was possible to store in an external text file on the desktop of the computer, which Unity could successfully import and interpret.\\
-  
-
-
-\textcolor{purple}{THIS IS NOT FINISHED!!!}
- \begin{itemize}
-\item Reduce the image processing to the region of interest, perhaps discarding 60-70{\%}
-\item Producing a nice real-time output in form of pixies with hats.
-\item Pixies can be a recorded scene that will be looped.
-\item Describe the use of multiple threads in programming.
-\end{itemize}
- 
-\section{Initial Vision}
-This section will summarize on the above-mentioned in regards to the equipment, the skills of the individual members of the group, the theme and the actual concept.\\
-Considering the hypothesis that all time in the world was given along with all money needed, the outcome of this project would without doubt be mind blowing\fixme{mind blowing(find synonym)}. Limited by time, skills and equipment an alternative plan was to be worked out and adapted to what was possible. Producing an output of the entire image, performing several mathematical operations are simply too heavy work for the program in extend to the programming skills of the group. The skills at programming are simply not advanced enough at doing optimized algorithms, to make the program run smooth in real time. \\
-Therefore research towards analyzing regions of interest on an input was performed. This would make it possible to discard up to 60{\%} of the mathematical operations needed, which ultimately should produce more frames per second, when running the program. In addition this should enhance the user experience as the tracking of the Christmas hat would be much smoother.
-\\
-Some of the goals, which are of interest to this project is that people can engage in the game at two levels. Given that people can engage passively in the game, simply by trespassing the area of the project without minding the canvas, on which the Christmas hats will be navigated around. Secondly it's of interest that people can engage actively in the game by moving side to side and back and forward to create an illusion of being there. In continuity of that, participants might tell their acquaintances/friends about the game and bring them along.
-\\
-Based on reaching the above-mentioned goals by engaging people on two levels at the library, the initial vision of this semester project is the following. "How do we succeed in engaging visitors at Hj{\o}rring Library to use our product on two levels, both passively and actively."
-
-
-%%% Theory %%%
-
-\chapter{Theory(Simon)}
-\section{The digital Image}
-Working around digital images on computers are something that most can relate to, but there's a lot more to it that one realizes. Figure \eqref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about, working with colored, grayscale or binary pictures and the different attributes of each type.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
-\caption{Image illustrating a conversion from a colored image to grayscale and finally to binary}
-\label{fig:ip_ColoredToGrayscaleToBinary}
-\end{figure}
-
-\subsection{8 bit Pictures and Grayscale Images}
-As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
-An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$ when working with 8 bit pictures, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
-\caption{Image illustrating the principle of an 8 bit picture}
-\label{fig:ip_grayscale}
-\end{figure}
-Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
-An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations, as it consumes a lot of process power to calculate the information in each individual pixel.
- 
-\subsection{Indexing a picture}
-When working with pictures on a computer and performing image processing, one often have to look at the individual pixels within a picture to perform mathematical operations. Accessing specific pixels is however relatively easy as it's indexed cleverly.\\
-Working around the pixels in a picture is like working with a coordinate system. However instead of going from the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Moving horizontally applies to the x-axis and moving vertically applies to the y-axis. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image. If for example an image at the size of \textit{1024*1024} pixels is loaded, the highest number which the matrix can hold is (1024,1024). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a picture in the y- and x-axis.\\
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
-\caption{Image illustrating the principle of indexing a picture in x- and y-axis.}
-\label{fig:ip_IndexingAPicture}
-\end{figure}
-  
-
-\subsection{Working with Colored Images (RGB)}
-Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
-Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
-\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
-\label{fig:ip_ColorWheel}
-\end{figure}\\
-Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
-
-\subsection{Binary Images}
-One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
-Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
-Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
-
-\chapter{Design}
-\section{Introduction to design}
-As it was earlier decided to create some graphical interface for the game, in form of Unity, some considerations was to be made in regards to the layout. This chapter of the report will focus on the decisions taken, to create a smooth interface and a good user experience. In order to create a smooth interface that would excite people in using the setup at the library, a background, some character and some interaction was to be made. Figure \eqref{fig:ip_Background}
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Design/Background.png}
-\caption{Image illustrating the initial background for the Christmas game}
-\label{fig:ip_Background}
-\end{figure}\\ 
-\section{The scene}
-The first step into developing a good looking set was to develop a suitable background that ultimately would create a Christmas-like mood. The original idea was to have a few different sets to choose from, depending on the time of the day or week. However initially one background was created to run the prototype testing on. The first background created consist of a static winter landscape, together with some dynamic movable trees.\\
-In addition; due to light conditions at the library the colors chosen for the background are not all bright, but slightly soften. This action was taken in order for the projector to output a usable illustration.
-\section{Avatars}
-In addition to the background created for the illustration at the library, some avatars were to be made. Considerations towards creating suitable avatars were made and it was decided to create a pixie boy- and girl, a snowman, an angle and a squirrel.
-
-
-\subsection{Cartoonish touch}
-\subsection{Self-drawn}
-\section{Animations}
-\subsection{Why animations and which}
 \section{Sprite sheets}
+There are many ways of animating an avatar for use on other platforms. One way is to finalize the animation on beforehand and play the actual footage. This is however not a very efficient way of including an animation as it take up space depending on the file format and size. Ultimately having several animations would slow down the program producing a weak\fixme{Find synonym for weak} output. Instead another solution was taken into considerations.\\
+It was decided to create complete sprite sheets, to be implemented in Unity for use of animations. A sprite sheet contain all the images needed to create the full cycle and depending on the movement of the user in front of the installation on the library, the different sprite sheets will be activated. Figure \eqref{fig:Design_PixieBoyWalking} illustrates a complete sprite sheet for a user moving horizontally to the right.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/PixieWalking.png}
+\caption{Picture illustrating The walk cycle of the pixie boy}
+\label{fig:Design_PixieBoyWalking}
+\end{figure}
+
+
+
+
 

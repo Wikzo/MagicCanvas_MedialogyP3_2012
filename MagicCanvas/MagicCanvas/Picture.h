@@ -40,6 +40,8 @@ public:
 	public:
 
 		float posX;
+		int minX;
+		int maxX;
 		float moveVector;
 		int heightOfROI;
 		double id;
@@ -80,8 +82,10 @@ public:
 	void refresh(string fileName);
 	void refresh(VideoCapture captureToStoreCamra);
 	void binaryPictureOfWhatMovedInComparrisionTo(Picture refPicture, int threshhold);
+
 	//This function compares the input from the camera to the bg. When the input is bright with the chosen threshold the output pixel will be true.
 	void refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold);
+	void refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfUpperFOI);
 	void drawPictureAt(point lowerLeftCorner, int newidth, Picture pictureToDraw);
 	void makeBlack();
 	void output(string windowName);
@@ -96,11 +100,18 @@ public:
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
 	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
+	void handleFoundPersons();
+
 	void startFireLoggingPersons(point startingPoint);
 	void startFireLoggingOccludedPersons(point startingPoint);
+
 	void resetChannel(char RorGorB);
 	void resetChannelsExcept(char RorGorB);
+
 	void coutPersons();
+	void clipPersonsAll();
+	void clipPersonsSmart();
+	void clipboard(const string &s);
 	
 };
 

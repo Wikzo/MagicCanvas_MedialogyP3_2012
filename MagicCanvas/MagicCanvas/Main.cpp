@@ -7,6 +7,16 @@
 using namespace std;
 using namespace cv;
 
+/*TODOs 
+occlusion instead of midtpoint
+improve recursion 
+don't go throung the hole picture in the beginning
+get the speed of each person in the beginning and make the initial movevector adapt
+automized setup function (both take bg and find height of the upper loi)
+seperate the upper from the lower analysis
+write stats (how many, how long etc.)
+flip values
+*/
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);
 
@@ -43,37 +53,22 @@ int main(){
 	currentPicture.initialMoveVector = 0.1f;
 
 	hat.output("Window for control");
-	// gustav test vibe
-	/*
-	Picture images[20];
-	//Picture::GrabMultipleBackgroundImages(camera1, images, 20);
 
-	for (int i = 0; i < 20; i++)
-	{
-		images[i].openCamera(camera1);
-		images[i].output("hey" + i);
-	}*/
 	setupP(maxNumberOfPersons, currentPicture.p);
 	currentPicture.personCount = 0;
-	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.3f);
+	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.2f);
+	currentPicture.makeBlack();
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
-		//counter++;
-		//cout << counter;
-		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-
+		//currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
+		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, 20, currentPicture.height/2);
 		// Closing
 		
 		//currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
 		//currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
-		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
-		//currentPicture.lookForNewPersons(30, 100);
-		//cout << currentPicture.numberOfPersons;
-		//if(currentPicture.numberOfPersons > 0)
-		//system("cls");
 
 		for(int i = 0; i < maxNumberOfPersons; i++)
 		{
@@ -86,19 +81,20 @@ int main(){
 				{
 				//either exited or occluded
 				//is the blob in the range so it can exit?
-					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
+					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width))
 					{
 						//is not allowed to exit -> it must be occluded
 						if(!currentPicture.p[i].refindOccluded(currentPicture))
 						{
 							currentPicture.p[i].posX = -1;
-							cout << "there is a fuckup with a person that is neither exited or occluded";
+							cout << "there is a fuckup with a person that is neither exited or occluded\n";
 						}
 					
 					}
 					else 
 					{
-						cout << "normal exit";
+						currentPicture.p[i].posX = -1;
+						cout << "normal exit\n";
 					}
 
 				}
@@ -106,56 +102,35 @@ int main(){
 			currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
 			}
 		}
-		//currentPicture.numberOfPersons = 0;
 
 		currentPicture.lookForNewPersons(20, currentPicture.height/2);
 
 		currentPicture.coutPersons();
 
-		// Hat size + draw
-		
-		//currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
+		currentPicture.clipPersonsAll();
 
-		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
-		//currentPicture.placeHats(50,10,lowerLeftCornerOfHat,widthOfHat, hat);
-		//
-		//currentPicture.findFirstRow(50, 10, lowerLeftCornerOfHat, widthOfHat); // 50, 10 --> messures how big should be the head.
-
-
-		//send to file that is read by unity-----------------------------------------------------------------------------------------------------
+#pragma region how to write to a file
 		//ofstream myFile ("test.txt");
-
-		//ostringstream ss;
 		//for(int i = 0; i < currentPicture.numberOfPersons; i++)
 		//{
-		//	//if(myFile.is_open()){
-		//		ss << person[i].posOnX << "p";
-		//		//myFile << /*"\nThe " << i+1 << ". persons Xposition is: " <<*/"\n" << person[i].posOnX;
-		//		cout << "\nThe " << i << ". persons Xposition is: " << person[i].posOnX;
-		//	//} else { cout << "cant create file";}
+		//	if(myFile.is_open()){
+		//		myFile << "\nThe " << i+1 << ". persons Xposition is: " << "\n" << currentPicture.p[i].posX;
+		//	} else { cout << "cant create file";}
 		//}
-		//string s(ss.str());
-		//clipboard(s);
-
 		//myFile.close();
-		//--------------------------------------------------------------------------------------------------------------------------------------
+#pragma endregion
 
-		
-		//if(widthOfHat > 0)
-		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
-		//widthOfHat = 0;
-		//
 		currentPicture.output("video");
 		
 		int keyInput = waitKey(10);
 		//cout << keyInput;
-		if (keyInput == 115) // s
+		if (keyInput == 115) // <-s
 		{
 			
 			BG.refresh(camera1);
 			BG.output("Window for control");
 		}
-		else if (keyInput == 27) // escape
+		else if (keyInput == 27) // <-escape
 		{
 			cout << "\nEsc was pressed\nThe program exits when you press a key.";
 			waitKey(0);
