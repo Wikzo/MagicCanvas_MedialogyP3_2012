@@ -621,6 +621,35 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 		}
 	}
 }
+void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfUpperFOI)
+{
+	captureToStoreCamra >> tmp;
+	for(int x = 0; x < width; x++)
+	{
+		for(int y = height-1; y > height - (int)(((float)(procentOfScreenUsed/2)/100)*height) ; y--)
+		{
+			if((int)tmp.at<Vec3b>(y,x)[1] - refPicture.pixelG[x][y] < -1*threshhold) 
+			{
+				pixelR[x][y] = 255;
+			}
+			else
+			{
+				pixelR[x][y] = 0;
+			}
+		}
+		for(int y = heightOfUpperFOI; y > heightOfUpperFOI - (int)(((float)(procentOfScreenUsed/2)/100)*height); y--)
+		{
+			if((int)tmp.at<Vec3b>(y,x)[1] - refPicture.pixelG[x][y] < -1*threshhold) 
+			{
+				pixelR[x][y] = 255;
+			}
+			else
+			{
+				pixelR[x][y] = 0;
+			}
+		}
+	}
+}
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
 {
 	int y = height-1-radiusForMorfology;
@@ -770,23 +799,23 @@ void Picture::startFireLoggingPersons(point startingPoint)
 
 	if(pixelCount > minPixelToBeAPerson)
 	{
-		int minX = height + 100;
-		int maxX = -100;
+		p[currentPersonId].minX = height + 100;
+		p[currentPersonId].maxX = -100;
 
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
 				{
 					//detect the possition on the x-axis
-					if(x > maxX)
-						maxX = x;
-					if(x < minX)
-						minX = x;
+					if(x > p[currentPersonId].maxX)
+						p[currentPersonId].maxX = x;
+					if(x < p[currentPersonId].minX)
+						p[currentPersonId].minX = x;
 					
 					pixelR[x][y] = 200 + currentPersonId;
 					
 				}
-		float average = ((minX + maxX)/2);
+		float average = ((p[currentPersonId].minX + p[currentPersonId].maxX)/2);
 		float zeroToOne = average/width;
 		p[currentPersonId].posX = zeroToOne;
 	}
@@ -977,7 +1006,7 @@ void Picture::coutPersons()
 		if(p[i].posX != -1)
 		{
 			
-			cout << "pid: " << p[i].pId << " id: " << p[i].id << " pos: " << p[i].posX << "\n"; 
+			cout << "id: " << p[i].id << " id: " << p[i].id << " pos: " << p[i].posX << "\n"; 
 		}
 
 	}
@@ -991,7 +1020,6 @@ void Picture::clipPersonsAll()
 		if(p[i].posX == -1)
 			p[i].id = -1;
 		ss <<" i"<< p[i].id << "p" << p[i].posX;
-		i++;
 	}
 	ss << " q";
 	string s(ss.str());
