@@ -26,8 +26,9 @@ public class CharacterManager : MonoBehaviour
     private const float BACKGROUND_WIDTH = 220;
     private string _text;
     Vector3 _pixieDefaultPosition;
-    private Vector3 _inValidPosition = new Vector3(-115f, 70f, -8f);
-    private const float REFRESH_TIME = 0.5f;
+    private Vector3 outOfPicture_left = new Vector3(-32f, 90f, -5f);
+    Vector3 outOfPicture_right = new Vector3(257f, 90f, -5f);
+    private const float REFRESH_TIME = 0.2f;
     private float[] _xPositions;
 
     private string[] ID;
@@ -40,20 +41,19 @@ public class CharacterManager : MonoBehaviour
     private float[] pointX;
 
     private static PropertyInfo _mSystemCopyBufferProperty = null;
-    public float MoveSpeed = 2f;
+    private float MoveSpeed = 15f;
 
-    private float spriteMovingThreshold = 2f;
+    private float MovingThreshold = 20f;
 
     // Use this for initialization
 	void Start ()
     {
         _pixieDefaultPosition = new Vector3(0, Character_Y_Default, Character_Z_Default);
-        _inValidPosition = new Vector3(-50, -50, -50);
 	    _characterNumber = 0;
 
 	    readyForNewTarget = true;
 
-	    SpawnCharacters(5);
+	    SpawnCharacters(50);
 	    GetNewTarget();
 
     }
@@ -168,12 +168,11 @@ public class CharacterManager : MonoBehaviour
             string[] temp = tempIDs[i].Split('p'); // split into IDs AND Positions
             ID[i] = "ID_" + temp[0]; // Save ID name
             float.TryParse(temp[1], out Position[i]); // Get position in float format
+
+            if (Position[i] > 0f)
+                Position[i] = 1f - Position[i]; // flip so it is not mirrored
         }
-
-        // test print
-//        for (int i = 0; i < ID.Length; i++)
-//            print(ID[i] + " at position: " + Position[i]);
-
+        //print("Here: " + Math.Round(Position[10]));
         _numberOfPeopleRightNow = (int) ID.Length;
         
         // new end
@@ -201,22 +200,18 @@ public class CharacterManager : MonoBehaviour
         target = new Vector3[Position.Length];
         for (int i = 0; i < Characters.Count; i++)
         {
-            // don't move an invalid object
-            if (Position[i] == -1)
-                continue;
-
             if (Characters[i].tag == "Angel")
-                target[i] = new Vector3(Position[i] * BACKGROUND_WIDTH, Angel_Y,
-                                                               Character_Z_Default);
+                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Angel_Y,
+                                        Character_Z_Default);
             else if (Characters[i].tag == "Snowman")
             {
                 target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Snowman_Y,
                                         Character_Z_Default);
 
                 // Change moving sprite
-                if (target[i].x > (Characters[i].transform.position.x + spriteMovingThreshold)) // right
+                if (target[i].x > (Characters[i].transform.position.x + MovingThreshold)) // right
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingRight;
-                else if (target[i].x < (Characters[i].transform.position.x - spriteMovingThreshold)) // left
+                else if (target[i].x < (Characters[i].transform.position.x - MovingThreshold)) // left
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingLeft;
                 else // static
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.Static;
@@ -227,9 +222,9 @@ public class CharacterManager : MonoBehaviour
                                         Character_Z_Default);
 
                 // Change moving sprite
-                if (target[i].x > (Characters[i].transform.position.x + spriteMovingThreshold)) // right
+                if (target[i].x > (Characters[i].transform.position.x + MovingThreshold)) // right
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingRight;
-                else if (target[i].x < (Characters[i].transform.position.x - spriteMovingThreshold)) // left
+                else if (target[i].x < (Characters[i].transform.position.x - MovingThreshold)) // left
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingLeft;
                 else // static
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.Static;
@@ -240,9 +235,9 @@ public class CharacterManager : MonoBehaviour
                                         Character_Z_Default);
 
                 // Change moving sprite
-                if (target[i].x > (Characters[i].transform.position.x + spriteMovingThreshold)) // right
+                if (target[i].x > (Characters[i].transform.position.x + MovingThreshold)) // right
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingRight;
-                else if (target[i].x < (Characters[i].transform.position.x - spriteMovingThreshold)) // left
+                else if (target[i].x < (Characters[i].transform.position.x - MovingThreshold)) // left
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingLeft;
                 else // static
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.Static;
@@ -253,15 +248,14 @@ public class CharacterManager : MonoBehaviour
                                         Character_Z_Default);
 
                 // Change moving sprite
-                if (target[i].x > (Characters[i].transform.position.x + spriteMovingThreshold)) // right
+                if (target[i].x > (Characters[i].transform.position.x + MovingThreshold)) // right
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingRight;
-                else if (target[i].x < (Characters[i].transform.position.x - spriteMovingThreshold)) // left
+                else if (target[i].x < (Characters[i].transform.position.x - MovingThreshold)) // left
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingLeft;
                 else // static
                     Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.Static;
 
             }
-
         }
 
         StartCoroutine(Countdown());
@@ -271,8 +265,12 @@ public class CharacterManager : MonoBehaviour
     {
         for (int i = 0; i < Characters.Count; i++)
         {
-            Vector3 direction = Vector3.Normalize(target[i] - Characters[i].transform.position);
-            Characters[i].transform.position += direction * MoveSpeed * Time.deltaTime;
+            if (target[i].x > Characters[i].transform.position.x + MovingThreshold
+                    || target[i].x < Characters[i].transform.position.x - MovingThreshold)
+            {
+                Vector3 direction = Vector3.Normalize(target[i] - Characters[i].transform.position);
+                Characters[i].transform.position += direction*MoveSpeed*Time.deltaTime;
+            }
         }
     }
 
@@ -287,21 +285,32 @@ public class CharacterManager : MonoBehaviour
     {
         GetDataFromClipBoard();
 
-        if (Position.Length < Characters.Count)
+        /*if (Position.Length < Characters.Count)
             throw new InvalidOperationException("ERROR - input data is smaller than amount of characters in the list");
+        */
+        //print("POSITION LENGTH = " + Position.Length + " and Characters count = " + Characters.Count);
+        //print("Actual pos: " + Characters[40].transform.position + " Wanted Pos: " + target[40]);
 
         // Update the pixie's positions
         for (int i = 0; i < Characters.Count; i++)
         {
-            if (Position[i] == -1)
+            if (Position[i] == -1f)
             {
+                //print("GETREADYTOMOVE");
                 Characters[i].name = ID[i] + "_invalid";
-                Characters[i].transform.position = _inValidPosition;
+                if (Characters[i].transform.position.x > 111)
+                {
+                    Characters[i].transform.position = outOfPicture_right;
+                }
+                else if (Characters[i].transform.position.x < 111)
+                {
+                    Characters[i].transform.position = outOfPicture_left;
+                }
             }
             else
             {
                 Characters[i].name = ID[i];
-
+                
                 SmoothMove();
                 if (readyForNewTarget)
                     GetNewTarget();
@@ -384,7 +393,7 @@ public class CharacterManager : MonoBehaviour
 	    }*/
 
         // Used for reading txt files ... WE DON'T USE THIS ANYMORE
-        using (StreamReader reader = new StreamReader("test.txt"))
+        /*using (StreamReader reader = new StreamReader("test.txt"))
         {
             string line;
 
@@ -424,7 +433,7 @@ public class CharacterManager : MonoBehaviour
             {
                 print("ERROR - couldn't get move data from clipboard");
             }
-        }
+        }*/
     }
 
     IEnumerator UpdatePosition()

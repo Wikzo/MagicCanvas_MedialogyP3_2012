@@ -43,28 +43,27 @@ public class TimeManager : MonoBehaviour
 	        Application.Quit();
 
         // DEBUG TIME BUTTONS ---------------------------------
-//	    if (Input.GetKeyDown(KeyCode.H))
-//	    {
-//	        timeHour++;
-//	        if (timeHour >= 24)
-//	            timeHour = 0;
-//	    }
-//
-//	    if (Input.GetKeyDown(KeyCode.M))
-//	    {
-//	        timeMinutes++;
-//	        if (timeMinutes > 60)
-//	        {
-//	            timeMinutes = 0;
-//	            timeHour++;
-//	        }
-//	    }
+	    /*if (Input.GetKeyDown(KeyCode.H))
+	    {
+	        timeHour++;
+	        if (timeHour >= 24)
+	            timeHour = 0;
+	    }
 
-        // DEBUG TIME BUTTONS ---------------------------------
+	    if (Input.GetKeyDown(KeyCode.M))
+	    {
+	        timeMinutes++;
+	        if (timeMinutes > 60)
+	        {
+	            timeMinutes = 0;
+	            timeHour++;
+	        }
+	    }*/
+
+         //DEBUG TIME BUTTONS ---------------------------------
 
 	    //print(timeHour + ":" + timeMinutes);
 
-	    DirectionLight.light.intensity = timeHour * (0.5f/60);
         //print("Time: " + timeHour + "Intensity: " + DirectionLight.light.intensity);
 
         // 0 - 0.5
@@ -87,16 +86,22 @@ public class TimeManager : MonoBehaviour
             case 7:
             case 8:
             case 9:
+                LightsTurnOn = true;
+                DirectionLight.light.intensity = 0; // Hjoerring opens at 10
+                break;
             case 10:
                 LightsTurnOn = true;
                 DirectionLight.light.intensity = 0; // Hjoerring opens at 10
-                SunRotator.transform.rotation = Quaternion.Euler(0, 0, sunStartLocation);
+                SunRotator.transform.rotation = Quaternion.Euler(0, 0, -16.25f * timeHour + 227.5f);
+
                 break;
 
             case 11:                                                            // Becoming day
                 DirectionLight.light.intensity = timeMinutes * (maxBrightness / 60);
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0,
-                                                                 sunStartLocation - timeMinutes*(sunStartLocation/60));
+                                                                 -16.25f*timeHour + 227.5f);
+
+                
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
@@ -106,30 +111,51 @@ public class TimeManager : MonoBehaviour
             case 12:
             case 13:
             case 14:
-            case 15:
-            case 16:                                                            // Full day
+            case 15: // Full day 
+                LightsTurnOn = false;
+                DirectionLight.light.intensity = maxBrightness;
+
+                if (timeMinutes == santaMoveMinute)
+                {
+                    SantaClaus.SantaMove = true;
+                    santaLastMoveHour = 15;
+                }
+                
+                SunRotator.transform.rotation = Quaternion.Euler(0, 0,
+                                                                 -16.25f * timeHour + 227.5f);
+                break;
+            case 16:                                                             // Becoming night
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
                     santaLastMoveHour = 16;
                 }
-                LightsTurnOn = false;
-                DirectionLight.light.intensity = maxBrightness;
-                SunRotator.transform.rotation = Quaternion.Euler(0, 0, sunFullDayRotation);
+
+                SunRotator.transform.rotation = Quaternion.Euler(0, 0,
+                                                                 -16.25f * timeHour + 227.5f);
 
                 break;
-            case 17:                                                            // Becoming night
+            case 17:                                                           
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
                     santaLastMoveHour = 17;
                 }
+                SunRotator.transform.rotation = Quaternion.Euler(0, 0,
+                                                                 -16.25f*timeHour + 227.5f);
                 LightsTurnOn = true;
                 DirectionLight.light.intensity = maxBrightness - (timeMinutes * (maxBrightness / 60));
-                SunRotator.transform.rotation = Quaternion.Euler(0, 0, timeMinutes * (sunStopLocation / 60));
 
                 break;
             case 18: // Hjoering closes at 18                                   // Full night
+                SunRotator.transform.rotation = Quaternion.Euler(0, 0,
+                                                                 -16.25f*timeHour + 227.5f);
+                DirectionLight.light.intensity = 0;
+
+                //SunRotator.transform.rotation = Quaternion.Euler(0, 0, timeMinutes * (sunStopLocation / 60));
+
+
+                break;
             case 19:
             case 20:
             case 21:
@@ -145,6 +171,6 @@ public class TimeManager : MonoBehaviour
     public static void GetRandomSantaTime()
     {
         santaMoveMinute = Random.Range(1, 59);
-        print("Santa move minute: " + santaMoveMinute);
+        //print("Santa move minute: " + santaMoveMinute);
     }
 }
