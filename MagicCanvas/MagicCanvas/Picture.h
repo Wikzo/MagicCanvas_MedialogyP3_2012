@@ -34,22 +34,30 @@ struct Person
 class Picture
 {
 public:
+	
 	class person
 	{
 	public:
 
 		float posX;
 		float moveVector;
+		int heightOfROI;
+		double id;
+		int pId;
 
-		bool isHittingBottomFOI;
+		//static Picture& parent;
 		int** pixel;
 
-		person();
+		//person(const Picture& parentPicture);
 
-		void refind();
+		bool refind(Picture& parent);
+		bool refindOccluded(Picture& parent);
 
 	}p[50];
-	
+	int currentPersonId;
+	double personCount;
+
+
 	int** pixelR; //Pointers to the value of each color pixel on the image
 	int** pixelG;
 	int** pixelB;
@@ -60,8 +68,11 @@ public:
 	int height;
 	int width;
 	int minPixelToBeAPerson;
+	int maxAmountToMove;
 	int radiusForMorfology;
-	int numberOfPersons;
+	int numberOfPersons; //TODO - Remove
+	
+	//TODO: find a smart way to determine that!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	float initialMoveVector;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
@@ -86,8 +97,10 @@ public:
 
 	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
 	void startFireLoggingPersons(point startingPoint);
+	void startFireLoggingOccludedPersons(point startingPoint);
 	void resetChannel(char RorGorB);
 	void resetChannelsExcept(char RorGorB);
+	void coutPersons();
 	
 };
 

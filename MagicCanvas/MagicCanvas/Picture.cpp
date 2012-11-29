@@ -623,14 +623,10 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 }
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
 {
-	numberOfPersons = 0;
-
-	int hasToBeChanged = 1;
-
 	int y = height-1-radiusForMorfology;
 	for(int i = 0; i < 2; i++){
 		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++){
-			//if(pixelR[x][y] == 255)
+			if(pixelR[x][y] == 255)
 			{ 
 #pragma region showEnterExit
 				//pixelR[x][y] = 255;
@@ -640,14 +636,28 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
+				// find the next empty:
+
+				int i = 0;
+				do
+				{
+					currentPersonId = i;
+					i++;
+				} 
+				while (i < 51 && p[i-1].posX != -1);
+
 				startFireLoggingPersons(currentPoint);
-				p[numberOfPersons-1].moveVector = initialMoveVector;
-				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
-				//currentColor.r -= 1;
+
+				if(p[currentPersonId].posX != -1){
+					personCount++;
+					p[currentPersonId].id = personCount;
+					p[currentPersonId].moveVector = initialMoveVector;
+					p[currentPersonId].heightOfROI = y;
+				}
 			}
 		}
 		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--){
-			//if(pixelR[x][y] == 255)
+			if(pixelR[x][y] == 255)
 			{
 #pragma region showEnterExit
 				//pixelR[x][y] = 255;
@@ -658,10 +668,24 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
+				// find the next empty:
+
+				int i = 0;
+				do
+				{
+					currentPersonId = i;
+					i++;
+				} 
+				while (i < 51 && p[i-1].posX != -1);
+
 				startFireLoggingPersons(currentPoint);
-				p[numberOfPersons-1].moveVector = -1*initialMoveVector;
-				////startFireLoggingData(currentPoint, currentColor, tmpPicture, persons, maxNumberOfPersons);
-				//currentColor.r -= 1;
+
+				if(p[currentPersonId].posX != -1){
+					personCount++;
+					p[currentPersonId].id = personCount;
+					p[currentPersonId].moveVector = -1*initialMoveVector;
+					p[currentPersonId].heightOfROI = y;
+				}
 			}
 		}
 		y = heightOfUpperFOI;
@@ -743,11 +767,12 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	}
 
 	//TODO- make the following recursive/build into the recursive function
-	int minX = height + 100;
-	int maxX = -100;
+
 	if(pixelCount > minPixelToBeAPerson)
 	{
-		numberOfPersons++;
+		int minX = height + 100;
+		int maxX = -100;
+
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
@@ -758,17 +783,22 @@ void Picture::startFireLoggingPersons(point startingPoint)
 					if(x < minX)
 						minX = x;
 					
-					pixelR[x][y] = 255 - numberOfPersons;
+					pixelR[x][y] = 200 + currentPersonId;
+					
 				}
 		float average = ((minX + maxX)/2);
 		float zeroToOne = average/width;
-		p[numberOfPersons-1].posX = zeroToOne;
+		p[currentPersonId].posX = zeroToOne;
 	}
 	else
+	{
+		//TODO do it again nothing is found !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelB[x][y] == 255)
 					pixelR[x][y] = 0;
+		p[currentPersonId].posX = -1;
+	}
 }
 void Picture::resetChannel(char RorGorB)
 {
@@ -831,11 +861,124 @@ void Picture::resetChannelsExcept(char RorGorB)
 		cout << "A channel is not reseted!!!!!!!!!!!!!!!!!!!!!\n\nA wrong channel is chosen";
 	};
 }
-void Picture::person::refind()
+bool Picture::person::refind(Picture& parent)
 {
+	point currentPoint;
+	bool found = false;
+	int maxAmountToMove = parent.maxAmountToMove;
+	parent.currentPersonId = pId;
+	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+
+	if(posX+moveVector < 1 && posX+moveVector >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] == 255)
+	{
+		//first priority to look is the position+the move vector (has moved normal)
+		currentPoint.x = (int)((posX+moveVector)*parent.width);
+		currentPoint.y = heightOfROI;
+		parent.startFireLoggingPersons(currentPoint);
+		if(parent.p[parent.currentPersonId].posX != -1)
+		{
+			cout << "found first try \n";
+			found = true;
+		}
+	} 
+	if(posX < 1 && posX >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found)
+	{
+		//second priority to look is the position (has stoped)
+		currentPoint.x = (int)(posX*parent.width);
+		currentPoint.y = heightOfROI;
+		parent.startFireLoggingPersons(currentPoint);
+		if(parent.p[parent.currentPersonId].posX != -1)
+		{
+			cout << "found second try \n";
+			found = true;
+		}
+	} 
+	//TODO on side is never complete!!! --- exp. |( ! )<----f1-m1,2-f2---->|
+	//third priority is to look around the most likely point until the max amount to move is reached
+	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
+	{
+		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] == 255)
+		{
+			currentPoint.x = (int)((posX+moveVector/2)*parent.width)+i;
+			currentPoint.y = heightOfROI;
+			parent.startFireLoggingPersons(currentPoint);
+			if(parent.p[parent.currentPersonId].posX != -1)
+			{
+				cout << "found normal \n";
+				found = true;
+				break;
+			}
+		}
+		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] == 255)
+		{
+			currentPoint.x = (int)((posX+moveVector/2)*parent.width)-i;
+			currentPoint.y = heightOfROI;
+			parent.startFireLoggingPersons(currentPoint);
+			if(parent.p[parent.currentPersonId].posX != -1)
+			{
+				cout << "found normal \n";
+				found = true;
+				break;
+			}
+		}
+	}
+	return found;
 }
-Picture::person::person()
+bool Picture::person::refindOccluded(Picture& parent)
 {
-	moveVector = 2;
+	point currentPoint;
+	bool found = false;
+	int maxAmountToMove = parent.maxAmountToMove;
+	parent.currentPersonId = pId;
+	//TODO initial vel. handling!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+	if(posX+moveVector < 1 && posX+moveVector >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
+	{
+		//first priority to look is the position+the move vector (has moved normal)
+		cout << "found occluded - first try \n";
+		posX = parent.p[parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI]-200].posX;
+		found = true;
+	} 
+	if(posX < 1 && posX >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
+	{
+		//second priority to look is the position (has stoped)
+		cout << "found occluded - second try \n";
+		posX = parent.p[parent.pixelR[(int)(posX*parent.width)][heightOfROI]-200].posX;
+		found = true;
+	} 
+	//TODO on side is never complete!!! --- exp. |( ! )<----f1-m1,2-f2---->|
+	//third priority is to look around the most likely point until the max amount to move is reached
+	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
+	{
+		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] != 0)
+		{
+			cout << "found occluded\n";
+			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI]-200].posX;
+			found = true;
+			break;
+		}
+		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] != 0)
+		{
+			cout << "found occluded\n";
+			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI]-200].posX;
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+void Picture::coutPersons()
+{
+	system("cls");
+	for(int i = 0; i < 50; i++)
+	{
+		if(p[i].posX != -1)
+		{
+			
+			cout << "pid: " << p[i].pId << " id: " << p[i].id << " pos: " << p[i].posX << "\n"; 
+		}
+
+	}
 }

@@ -8,11 +8,12 @@ using namespace std;
 using namespace cv;
 
 void clipboard(const string &s);
+void setupP(const int &numbersOfpersons, Picture::person personArray[]);
 
 int main(){
 	//find way to optimize the initial move vector
 	const int maxNumberOfPersons = 50;
-	Person person[maxNumberOfPersons]; // 15 is the max number of persons
+	
 
 	ofstream myFile;
 	//setup:
@@ -52,7 +53,9 @@ int main(){
 		images[i].openCamera(camera1);
 		images[i].output("hey" + i);
 	}*/
-
+	setupP(maxNumberOfPersons, currentPicture.p);
+	currentPicture.personCount = 0;
+	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.3f);
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
@@ -61,8 +64,7 @@ int main(){
 		//counter++;
 		//cout << counter;
 		currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-		
-		currentPicture.lookForNewPersons(20, currentPicture.height/2);
+
 		// Closing
 		
 		//currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
@@ -70,14 +72,45 @@ int main(){
 		//currentPicture.findAllBLOBs(tmpPicture, person, maxNumberOfPersons);
 		//currentPicture.lookForNewPersons(30, 100);
 		//cout << currentPicture.numberOfPersons;
-		if(currentPicture.numberOfPersons > 0)
-		system("cls");
-		for(int i = 0; i < currentPicture.numberOfPersons; i++)
+		//if(currentPicture.numberOfPersons > 0)
+		//system("cls");
+
+		for(int i = 0; i < maxNumberOfPersons; i++)
 		{
+			if(currentPicture.p[i].posX != -1)
+			{
+			float prePos = currentPicture.p[i].posX;
+			//cout << "program is trying to refind" << "\n";
+			//cout << currentPicture.p[i].posX;
+				if(!currentPicture.p[i].refind(currentPicture))
+				{
+				//either exited or occluded
+				//is the blob in the range so it can exit?
+					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
+					{
+						//is not allowed to exit -> it must be occluded
+						if(!currentPicture.p[i].refindOccluded(currentPicture))
+						{
+							currentPicture.p[i].posX = -1;
+							cout << "there is a fuckup with a person that is neither exited or occluded";
+						}
+					
+					}
+					else 
+					{
+						cout << "normal exit";
+					}
+
+				}
 			
-			cout << currentPicture.p[i].posX;
+			currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
+			}
 		}
-		currentPicture.numberOfPersons = 0;
+		//currentPicture.numberOfPersons = 0;
+
+		currentPicture.lookForNewPersons(20, currentPicture.height/2);
+
+		currentPicture.coutPersons();
 
 		// Hat size + draw
 		
@@ -151,3 +184,12 @@ void clipboard(const string &s)
   GlobalFree(hg);
 }
 //SLUT CLIPBOARD
+
+void setupP(const int &numbersOfpersons, Picture::person personArray[])
+{
+	for(int i = 0; i < numbersOfpersons; i++)
+	{
+		personArray[i].pId = i;
+		personArray[i].posX = -1;
+	}
+}
