@@ -213,12 +213,12 @@ When both points are considered, the background subtraction should be ready to u
 \section{Template matching}
 \section{movement tracking (ViBe)}
 
+
 \section{BLOB Analysis}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB is an acronym for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
-\citep{ip_book}
+\fixme{sauce plz}
 \subsection{BLOB Extraction}
-To isolate BLOBs in a binary image, the first step is to define whether two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most common used connectivities in BLOB extraction are the 8-connectivity and the 4-connectivity kernels. The 8-connectivity kernel is more accurate than the 4-connectivity kernel, but it also requires more computations and consequently needs more time to process the image.
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image and vice versa.
 
 \fixme{add picture here}
