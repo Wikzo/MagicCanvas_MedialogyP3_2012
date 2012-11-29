@@ -48,7 +48,7 @@ The importance of calculating features like the \textbf{area} of a BLOB is well 
 \item Bounding box and Bounding circle
 
 Both \textbf{bounding box} and \textbf{bounding circle} are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two besides the shape, is the way they operate. While the \textbf{bounding box} is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum x and y values than can create a box that encompasses the BLOB. The \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
-\fxnote {to here}
+
 \item Convex hull
 
 The minimum convex polygon which contains the BLOB can be described as wrapping a piece of string tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
@@ -68,10 +68,9 @@ The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bou
 	\end{aligned}
 \end{equation}
 
-\fxnote{MArco was here}
 \item Center of mass
 
-In physics, the center of mass is the unique point where the weighted relative position of the distributed mass sums to zero. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
+In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
 
 The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average x and y positions of the object on the image.
 
@@ -87,7 +86,7 @@ Its coordinates can be found using the formula:
 \end{equation} 
 
 
-Where N is the number of pixels in the BLOB and x i and y i are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median or an erosion before using the previous formula.
+Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
 
 \item Center of the bounding box
 
@@ -113,11 +112,11 @@ Scanning along the border of the BLOB and summing the pixels we obtain the lengt
 
 \item Circularity
 
-Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually we apply the ratio to get a value lower or equal to 1 that will indicate how circular the BLOB is.
+Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
 
 \begin{equation}	
 	\begin{aligned}
-	{Circularity}=\displaystyle\frac{BLOB's \;\; Perimeter}{2 \; \sqrt{\mathstrut \: \Pi \: \cdot \: {BLOB's \;\; Area}}}
+	{Circularity}=\displaystyle\frac{BLOB's \;\; Perimeter}{2 \; \sqrt{\mathstrut \: \pi \: \cdot \: {BLOB's \;\; Area}}}
 	\label{Circularity}
 	\end{aligned}
 \end{equation}
@@ -131,11 +130,11 @@ After all the feature's extractions, a binary object can be defined by its featu
 
 \subsection{BLOB Classification}
 
-Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object have to accomplish so that it can be selected.
+Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to in order for it to be selected.
 For this reason, we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
 Using two features like the circularity and the area we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
 
-Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two is, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the \textit{box classifier}.
+Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the \textit{box classifier}.
 This time, the region will not be a rectangle but an ellipse, and is commonly known as the \textit{weighted Euclidean distance}.
 
 \begin{equation}	
@@ -183,4 +182,3 @@ The Circularity can also be normalized in the same:
 \label{NormCirc}
 	\end{aligned}
 \end{equation}
-
