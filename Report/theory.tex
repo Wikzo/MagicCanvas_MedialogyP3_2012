@@ -218,7 +218,7 @@ When both points are considered, the background subtraction should be ready to u
 \section{BLOB Analysis}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB is an acronym for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type.
-\fixme{sauce plz}
+\citep{ip_book}
 \subsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image and vice versa.
 
@@ -247,8 +247,6 @@ Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, w
 \label{fig:4connecK}
 \end{figure}
 
-Figure \eqref{fig:4connecK}
-
 \subsection{BLOB Representation}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: Determining the features of the BLOB and matching the features with the prototype to determine if they are part of the type that we were looking for.
 
@@ -259,19 +257,19 @@ This means that a few features like the \textbf{area}, the \textbf{perimeter} an
 \item Area
 
 The importance of calculating features like the \textbf{area} of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOBs.
-
+\\
 \item Bounding box and Bounding circle
 
-Both \textbf{bounding box} and \textbf{bounding circle} are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two besides the shape, is the way they operate. While the \textbf{bounding box} is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum x and y values than can create a box that encompasses the BLOB. The \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
-
+Both \textbf{bounding box} and \textbf{bounding circle} are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two besides the shape, is the way they operate. While the \textbf{bounding box} is the minimum rectangle and operates by finding four pixels; $x_{max}$, $x_{min}$, $y_{max}$ and $y_{min}$, which represent the minimum and maximum x and y values than can create a box that encompasses the BLOB. The \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.
+\\
 \item Convex hull
 
 The minimum convex polygon which contains the BLOB can be described as wrapping a piece of string tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
-
+\\
 \item Bounding box ratio
 
 This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
-
+\\
 \item Compactness
 
 The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box.
@@ -282,7 +280,7 @@ The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bou
 	\label{Compact}
 	\end{aligned}
 \end{equation}
-
+\\
 \item Center of mass
 
 In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
@@ -302,7 +300,7 @@ Its coordinates can be found using the formula:
 
 
 Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
-
+\\
 \item Center of the bounding box
 
 As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with the formula:
@@ -319,12 +317,11 @@ As the bounding box is a rectangle that surrounds the BLOB, the center of the bo
 	\label{BoundingBoxCenterY}
 	\end{aligned}
 \end{equation}
-
-
+\\
 \item Perimeter
 
 Scanning along the border of the BLOB and summing the pixels we obtain the length of the contour of the BLOB. In Image Processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.
-
+\\
 \item Circularity
 
 Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
