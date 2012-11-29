@@ -105,7 +105,9 @@ public:
 	void resetChannelsExcept(char RorGorB);
 
 	void coutPersons();
-	void clipPersons();
+	void clipPersonsAll();
+	void clipPersonsSmart();
+	void clipboard(const string &s);
 	
 };
 

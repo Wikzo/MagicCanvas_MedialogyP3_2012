@@ -982,9 +982,51 @@ void Picture::coutPersons()
 
 	}
 }
-void Picture::clipPersons()
+void Picture::clipPersonsAll()
 {
-
+	ostringstream ss;
+	ss << "q";
+	for(int i = 0; i < 50; i++)
+	{
+		if(p[i].posX == -1)
+			p[i].id = -1;
+		ss <<" i"<< p[i].id << "p" << p[i].posX;
+		i++;
+	}
+	ss << " q";
+	string s(ss.str());
+	clipboard(s);
+}
+void Picture::clipPersonsSmart()
+{
+	ostringstream ss;
+	int i = 0;
+	ss << "q";
+	while(p[i].posX != -1)
+	{
+		ss <<" i"<< p[i].id << "p" << p[i].posX;
+		i++;
+	}
+	ss << " q";
+	string s(ss.str());
+	clipboard(s);
+}
+void Picture::clipboard(const string &s)
+{
+  OpenClipboard(0);
+  EmptyClipboard(); 
+  HGLOBAL hg=GlobalAlloc(GMEM_MOVEABLE,s.size()+1);
+  
+  if (!hg)
+  {
+    CloseClipboard();
+    return;
+  }
+  memcpy(GlobalLock(hg),s.c_str(),s.size());
+  GlobalUnlock(hg);
+  SetClipboardData(CF_TEXT,hg);
+  CloseClipboard();
+  GlobalFree(hg);
 }
 //void Picture::handleFoundPersons()
 //{
