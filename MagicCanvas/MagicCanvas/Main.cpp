@@ -55,7 +55,7 @@ int main(){
 	}*/
 	setupP(maxNumberOfPersons, currentPicture.p);
 	currentPicture.personCount = 0;
-	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.1f);
+	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.2f);
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
@@ -126,7 +126,9 @@ int main(){
 		//send to file that is read by unity-----------------------------------------------------------------------------------------------------
 		//ofstream myFile ("test.txt");
 
-		//ostringstream ss;
+		ostringstream ss;
+
+
 		//for(int i = 0; i < currentPicture.numberOfPersons; i++)
 		//{
 		//	//if(myFile.is_open()){
@@ -140,7 +142,16 @@ int main(){
 
 		//myFile.close();
 		//--------------------------------------------------------------------------------------------------------------------------------------
-
+		int i = 0;
+		ss << "q";
+		while(currentPicture.p[i].posX != -1)
+		{
+			ss <<" i"<< currentPicture.p[i].id << "p" << currentPicture.p[i].posX;
+			i++;
+		}
+		ss << " q";
+		string s(ss.str());
+		clipboard(s);
 		
 		//if(widthOfHat > 0)
 		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
