@@ -971,7 +971,7 @@ bool Picture::person::refindOccluded(Picture& parent)
 }
 void Picture::coutPersons()
 {
-	system("cls");
+	//system("cls");
 	for(int i = 0; i < 50; i++)
 	{
 		if(p[i].posX != -1)
@@ -982,3 +982,42 @@ void Picture::coutPersons()
 
 	}
 }
+void Picture::clipPersons()
+{
+
+}
+//void Picture::handleFoundPersons()
+//{
+//	for(int i = 0; i < maxNumberOfPersons; i++)
+//		{
+//			if(p[i].posX != -1)
+//			{
+//			float prePos = p[i].posX;
+//			//cout << "program is trying to refind" << "\n";
+//			//cout << currentPicture.p[i].posX;
+//				if(!p[i].refind(currentPicture))
+//				{
+//				//either exited or occluded
+//				//is the blob in the range so it can exit?
+//					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width))
+//					{
+//						//is not allowed to exit -> it must be occluded
+//						if(!p[i].refindOccluded(currentPicture))
+//						{
+//							currentPicture.p[i].posX = -1;
+//							cout << "there is a fuckup with a person that is neither exited or occluded\n";
+//						}
+//					
+//					}
+//					else 
+//					{
+//						currentPicture.p[i].posX = -1;
+//						cout << "normal exit\n";
+//					}
+//
+//				}
+//			
+//			currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
+//			}
+//		}
+//}
