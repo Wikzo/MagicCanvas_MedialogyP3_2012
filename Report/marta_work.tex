@@ -226,7 +226,7 @@ On the contrary, to be able to \textbf{fit} a pixel on the center of the structu
 
 \subsection{Dilation}
 
-Dilation is the process of applying Hit to an entire image and refers to the expansion of an object on an image (see Eq. \ref{Dilation1} for a mathematical definition). The result of this method implies also filling small holes and merging objects. As said before, the final effect on these objects will depend on the structured element (how big it is, which shape it has and what values is holding). 
+Dilation is the process of applying Hit to an entire image and refers to the expansion of an object on an image (see Eq. \ref{Dilation1} for a mathematical definition). The result of this method implies also filling small holes and merging objects. As said before, the final effect on these objects will depend on the structured element (how big it is, which shape it has and what values is holding), this can be seen on Figure . 
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\oplus{SE}
@@ -240,6 +240,12 @@ A small structured element applied several times will have the same effect as a 
 \label{Dilation2}
 	\end{aligned}
 \end{equation}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/Dilation.png}
+\caption{Dilation produced by two different structuring elements.}
+\label{fig:Dilation}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%% INSERT IMAGES WITH DILATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Erosion}
 The Erosion is the process of applying Fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on Eq. \ref{Erosion1}). As the Fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As occuring with Dilation, the effects depend on the size, shape and values of the structured element.
