@@ -55,7 +55,7 @@ int main(){
 	}*/
 	setupP(maxNumberOfPersons, currentPicture.p);
 	currentPicture.personCount = 0;
-	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.3f);
+	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.2f);
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
@@ -86,19 +86,20 @@ int main(){
 				{
 				//either exited or occluded
 				//is the blob in the range so it can exit?
-					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove < 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove > currentPicture.width))
+					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width))
 					{
 						//is not allowed to exit -> it must be occluded
 						if(!currentPicture.p[i].refindOccluded(currentPicture))
 						{
 							currentPicture.p[i].posX = -1;
-							cout << "there is a fuckup with a person that is neither exited or occluded";
+							cout << "there is a fuckup with a person that is neither exited or occluded\n";
 						}
 					
 					}
 					else 
 					{
-						cout << "normal exit";
+						currentPicture.p[i].posX = -1;
+						cout << "normal exit\n";
 					}
 
 				}
@@ -125,7 +126,9 @@ int main(){
 		//send to file that is read by unity-----------------------------------------------------------------------------------------------------
 		//ofstream myFile ("test.txt");
 
-		//ostringstream ss;
+		ostringstream ss;
+
+
 		//for(int i = 0; i < currentPicture.numberOfPersons; i++)
 		//{
 		//	//if(myFile.is_open()){
@@ -139,7 +142,16 @@ int main(){
 
 		//myFile.close();
 		//--------------------------------------------------------------------------------------------------------------------------------------
-
+		int i = 0;
+		ss << "q";
+		while(currentPicture.p[i].posX != -1)
+		{
+			ss <<" i"<< currentPicture.p[i].id << "p" << currentPicture.p[i].posX;
+			i++;
+		}
+		ss << " q";
+		string s(ss.str());
+		clipboard(s);
 		
 		//if(widthOfHat > 0)
 		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
