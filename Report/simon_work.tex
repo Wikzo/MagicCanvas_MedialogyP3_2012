@@ -1,25 +1,26 @@
 %%% Simon's Workfile! %%%
 %%% DESIGN PART %%%
 
-\chapter{Design}
-\section{Introduction to design}
-As it was earlier decided to create some graphical interface for the game, in form of Unity, some considerations was to be made in regards to the layout. This chapter of the report will focus on the decisions taken, to create a smooth interface and a good user experience. In order to create a smooth interface that would excite people in using the setup at the library, a background, some character and some interaction was to be made. Figure \eqref{fig:ip_Background}
+\section{Animations and why}
+In order to create some excitement towards the game animations were added, as static scenery/avatars tend to bore the user. It was decided to give the avatars some animations for each movement. In practic 3 animations were created. There would be a primary stance if the user would stand still and a movement simulating a walk cycle if the user would move to either the right or left. The horizontal movement was however mirrored so going left and right will produce the same animation only inverted.
+Figure \eqref{fig:Design_SnowmanAnimation} illustrates the three different animations made for one of the avatars.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1.00\textwidth]{Pictures/Design/Background.png}
-\caption{Image illustrating the initial background for the Christmas game}
-\label{fig:ip_Background}
-\end{figure}\\ 
-\section{The scene}
-The first step into developing a good looking set was to develop a suitable background that ultimately would create a Christmas-like mood. The original idea was to have a few different sets to choose from, depending on the time of the day or week. However initially one background was created to run the prototype testing on. The first background created consist of a static winter landscape, together with some dynamic movable trees.\\
-In addition; due to light conditions at the library the colors chosen for the background are not all bright, but slightly soften. This action was taken in order for the projector to output a usable illustration.
-\section{Avatars}
-In addition to the background created for the illustration at the library, some avatars were to be made. Considerations towards creating suitable avatars were made and it was decided to create a pixie boy- and girl, a snowman, an angle and a squirrel.
-\subsection{Self-drawn}
-In addition it was decided to draw the avatars instead of using some premade drawings on the internet, to be imported as assets in Unity. It was done by drawing the avatars on a sheet of paper and then imported to the computer to be redone in Photoshop with an drawing pen.\\
-Considering the primary group of people trespassing the setup at the library, it was decided to give the avatars a cartoonish look. This was done by using a variety of techniques, one of them was to create oversized bodyparts e.g. oversized heads.
-
-\section{Animations}
-\subsection{Why animations and which}
+\includegraphics[width=1.00\textwidth]{Pictures/Design/SnowManShowOff.png}
+\caption{Picture illustrating 3 different animations for one avatar}
+\label{fig:Design_SnowmanAnimation}
+\end{figure} 
 \section{Sprite sheets}
+There are many ways of animating an avatar for use on other platforms. One way is to finalize the animation on beforehand and play the actual footage. This is however not a very efficient way of including an animation as it take up space depending on the file format and size. Ultimately having several animations would slow down the program producing a weak\fixme{Find synonym for weak} output. Instead another solution was taken into considerations.\\
+It was decided to create complete sprite sheets, to be implemented in Unity for use of animations. A sprite sheet contain all the images needed to create the full cycle and depending on the movement of the user in front of the installation on the library, the different sprite sheets will be activated. Figure \eqref{fig:Design_PixieBoyWalking} illustrates a complete sprite sheet for a user moving horizontally to the right.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/PixieWalking.png}
+\caption{Picture illustrating The walk cycle of the pixie boy}
+\label{fig:Design_PixieBoyWalking}
+\end{figure}
+
+
+
+
 
