@@ -113,6 +113,8 @@ int main(){
 
 		currentPicture.coutPersons();
 
+		currentPicture.clipPersonsAll();
+
 		// Hat size + draw
 		
 		//currentPicture.startFire(lowerLeftCornerOfHat, tmpPicture);
@@ -126,7 +128,7 @@ int main(){
 		//send to file that is read by unity-----------------------------------------------------------------------------------------------------
 		//ofstream myFile ("test.txt");
 
-		ostringstream ss;
+		//ostringstream ss;
 
 
 		//for(int i = 0; i < currentPicture.numberOfPersons; i++)
@@ -142,17 +144,17 @@ int main(){
 
 		//myFile.close();
 		//--------------------------------------------------------------------------------------------------------------------------------------
-		int i = 0;
-		ss << "q";
-		while(currentPicture.p[i].posX != -1)
-		{
-			ss <<" i"<< currentPicture.p[i].id << "p" << currentPicture.p[i].posX;
-			i++;
-		}
-		ss << " q";
-		string s(ss.str());
-		clipboard(s);
-		
+		//int i = 0;
+		//ss << "q";
+		//while(currentPicture.p[i].posX != -1)
+		//{
+		//	ss <<" i"<< currentPicture.p[i].id << "p" << currentPicture.p[i].posX;
+		//	i++;
+		//}
+		//ss << " q";
+		//string s(ss.str());
+		//clipboard(s);
+		//
 		//if(widthOfHat > 0)
 		//	currentPicture.drawPictureAt(lowerLeftCornerOfHat, widthOfHat, hat);
 		//widthOfHat = 0;
