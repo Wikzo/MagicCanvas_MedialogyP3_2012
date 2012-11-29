@@ -222,7 +222,49 @@ Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} 
 \subsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image and vice versa.
 
-\fixme{add picture here}
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/binary_image.png}
+\caption{Binary Image with Bounding Box and Center-of-Mass}
+\label{fig:FeaturesIm}
+\end{minipage} \hfill
+\begin{minipage}[b]{0.45\textwidth} \centering
+\begin{tabular}{|c|c|c|c|} \centering
+ \:Position\: &SE &\:\:\:Hit\:\:\: &\:\:\:Fit\:\:\: \\\hline
+ A &$S_{1}$ &No &No\\\hline
+ A &$S_{2}$ &No &No\\\hline
+ B &$S_{1}$ &Yes &Yes\\\hline
+ B &$S_{2}$ &Yes &Yes\\\hline
+ C &$S_{1}$ &Yes &Yes\\\hline
+ C &$S_{2}$ &Yes &No\\\hline
+ D &$S_{1}$ &No &No\\\hline
+ D &$S_{2}$ &No &No\\\hline
+\end{tabular}
+\caption{Results of Hitting and Fitting with two different structuring elements}
+\label{tab:HitFitResults}
+\end{minipage}\hfill
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+ \:Position\: &SE &\:\:\:Hit\:\:\: &\:\:\:Fit\:\:\: \\\hline
+ \hline
+ A &$S_{1}$ &No &No\\\hline
+ A &$S_{2}$ &No &No\\\hline
+ B &$S_{1}$ &Yes &Yes\\\hline
+ B &$S_{2}$ &Yes &Yes\\\hline
+ C &$S_{1}$ &Yes &Yes\\\hline
+ C &$S_{2}$ &Yes &No\\\hline
+ D &$S_{1}$ &No &No\\\hline
+ D &$S_{2}$ &No &No\\\hline
+\end{tabular}
+\caption{Results of Hitting and Fitting with two different structuring elements}
+\label{tab:HitFitResults}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Grass-Fire Algorithm}
 One of these connected component labelling algorithms is the \textit{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
