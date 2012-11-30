@@ -1,22 +1,3 @@
-%%%% Guide til bibtex og litteratur.bib %%%%
-
-% Alle kilder angives efter Harvard-metoden og vil i rapporten fremstaa med [FORFATTER, AAR] eller mere praecist [EFTERNAVN, AAR].
-
-% Nederst findes eksempler paa kildeangivelser af typerne manual, book, article, techreport og misc.
-	% - Manual bruges ved henvisninger fra internettet, idet \url-funktionen findes her
-	% - Book bruges ved helt almindelige boeger
-	% - Article bruges ved artikler og udgivelser
-	% - Techreport kan bruges ved mindre udgivelser, hvor kun titel, forfatter og AAR er noedvendig eller tilgaengelig
-	% - Misc kan bruges ved det, der falder udenfor de andre kategorier - interview, forelaesninger, foredrag osv. 
-
-% Hvis der er flere forfattere paa en kilde, SKAL de listes med 'and' imellem dem - ogsaa ved 3 og derover (f.eks. FORFATTER 1 and FORFATTER 2 and FORFATTER 3). NAAR kildelisten bygges i rapporten, vil der ved 2 forfattere komme til at staa [EFTERNAVN 1 og EFTERNAVN 2, AAR] og ved 3 forfattere og derover komme til at staa [EFTERNAVN 1 et. al, AAR]. 
-
-% Ved almindelige forfatternavne skal der vaere ét saet tuborg-parenteser ved Author (f.eks. author = {H. C. Andersen}). Ved andre navne (f.eks. virksomheder, hjemmesider, grupper, raad, naevn osv.) skal der vaere 2 saet tuborg-parenteser ved Author (f.eks. author = {{Dansk Standard}}). Begrundelse: med 2 saet tuborg-parenteser skrives hele parentesen ud som forfatter, [Dansk Standard, AAR]. Alternativt ville der i eksemplet bare komme til at staa [Standard, AAR].
-
-%-----------------------------------------------------%
-
-%%%% EKSEMPLER (manual, book, article, techreport og misc) %%%%
-
 @book{ip_book,
 	title = {Introduction to Video and Image Processing - Building real systems and applications},
 	author = {Thomas B. Moeslund},
@@ -42,9 +23,20 @@ publisher = {Oxford University Press}
    Url = {http://www.texample.net/media/tikz/examples/PNG/rgb-color-mixing.png}
 }
 @misc{bworld,
-  author = {Ingo L�tkebohle},
+  author = {Ingo Lutkebohle},
   title = {{BWorld Robot Control Software}},
   howpublished = "\url{http://aiweb.techfak.uni-bielefeld.de/content/bworld-robot-control-software/}",
   year = {2008}, 
   note = "[Online; accessed 19-July-2008]"
 }
+
+@booklet{hjoerring_study,
+    %author   = "",
+    title     = {Walking the Library},
+    howpublished   = {Aalborg Universitet},
+    %address  = "",
+    year      = {2010},
+    %month    = "",
+    %note     = "",
+}
+
