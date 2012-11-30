@@ -35,48 +35,114 @@ Figure \eqref{fig:ip_framework} illustrates the framework used typically when wo
 During this project a lot of image processing has been used. The different image processing techniques are used in a combination to display exactly what we want to output. Some techniques is being used to remove noise from the picture, so the important parts gets all the focus, while others are used for making the important parts more clear or making it possible to track specific parts of the output. \\
 It is all these different techniques combined that makes it possible to get a functional product, but before you can use them, you will have to know how they work and how they can be included to your project. This section is going to explain the different techniques that are being used and also why and how they are being implemented in this project.
 
-\section{The Digital Image}
-Bla bla bla metatext for The Digital Image
+\chapter{Gustav}
+
+\chapter{Image theory}
+\section{The digital Image}
+Working around digital images on computers is something that most can relate to, but there is a lot more to it than one realizes. Figure \eqref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images and the different attributes of each type.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
-\caption{Image illustrating the principle of an 8 bit picture}
-\label{fig:ColoredToGrayscaleToBinary}
+\caption{Image illustrating a conversion from a colored image to grayscale and finally to binary}
+\label{fig:ip_ColoredToGrayscaleToBinary}
 \end{figure}
 
-
-\subsection{8 bit Pictures and Grayscale Images}
-As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
-An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
-
+\subsection{8 bit Image and Grayscale Images}
+In an 8 bit image, the 8 bit bit prefix describes the \textit{bit depth} of the image. The bit depth tells you about the amount of information you can store in a single pixel.
+\\
+An image with a single channel of information for each pixel in the x and y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The information stored in each pixel is the intensity of the particular pixel. 8 bits evaluates to $2^8$ different states, meaning that a single 8 bit pixel can display 256 different levels of intensity. In addition one should note that logically the values of the pixels should be 1-256, but the fact is that a computer counts 0 as the first value and therefore the pixel value varies from 0-255, see figure \eqref{fig:ip_grayscale}. An 8-bit image is a widely spread format for an image, but it is however possible to create images with more depth and with more information for each individual pixel in the image. Examples of that are 16, and 32 bit images. A 16 bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously a 32 bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations, as it consumes less processing power than a similar looking 16- or 32 bit image.
+\\
+%As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.
+\\
+%An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$ when working with 8 bit pictures, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
-\caption{Image illustrating the principle of an 8 bit picture}
+\caption{Image illustrating the 256 different gradients of an 8 bit picture.}
 \label{fig:ip_grayscale}
 \end{figure}
-Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
+ Illustrates 256 different levels of grayscale.\\
 
-An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
  
-\subsection{Working with Colored Images (RGB)}
-Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
+\subsection{Indexing an image}
+When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image to perform mathematical operations. Accessing specific pixels is however relatively easy as they are indexed cleverly.\\
+Working with pixels in a image is like working with a coordinate system. However instead of starting at the lower left corner, a picture is indexed from the upper left corner, starting in the point (0,0). Horizontal indices describe the x-axis and vertically indices the y-axis. A single pixel can be described as a coordinate i.e. (0,255) \fixme{Did we mention openCV before? Maybe write something about how OpenCV stores images} In OpenCV images are stored in a matrix. The size of the matrix holding the pixel values of the x- and y-axis is as wide as the proportions of the image therefore, when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023). Figure \eqref{fig:ip_IndexingAPicture} Illustrates the theory of indexing a image in the y- and x-axis.\\
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture.png}
+\caption{Image illustrating the principle of indexing a picture in X and Y axis.}
+\label{fig:ip_IndexingAPicture}
+\end{figure}
+
+%%% GUSTAV TO-DO - add with Marcos method for reference for pics
+
 Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
-\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
+\caption{Image illustrating the making of colors - \citep{colorMixing}}
 \label{fig:ip_ColorWheel}
-\end{figure}\\
-Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+\end{figure}  
+
+\subsection{Working with colored images}
+Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is to understand the basics of a color image.\\
+\fixme{THIS IS WHERE I GOT TO -Marco}
+There are several formats for handling color images, in this report we will only decribe RGB, since this is the only format we will encounter. Compared to a grayscale image, a colored image differs in that it consists of 3 channels, opposed to 1. Each channel describe the value of the color in the specific pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. The most significant difference between grayscale images and colored images, is that one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition equal amounts of red, green and blue  will produce a gradient of grey, where a pixel a value of 255 will produce white, while 0 would produce black, just as when working with grayscale images.\\
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would simply have to create a threshold value to segment the pixels depending on values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
 
 \subsection{Binary Images}
-One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
-Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
-Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
+In comparison to the above-mentioned, where images are defined by bit depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this often correlates to use of a threshold, described in section \ref{sec:Thresholding}. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.\\
+%Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
 
-\subsection{Indexing a picture (x,y axis)}
+%%% I HAVE COMMENTED OUT THE TEXT BELOW FOR THE IMAGE THEORY %%%
+%%% I BELIEVE WHAT I HAVE PASTED IN IS A NEWER VERSION (MADE BY MARCO), %%%
+%%% AND SHOULD REPLACE THE ORIGINAL TEXT %%%
+%%% - GUSTAV %%%
+
+%\section{The Digital Image}
+%Bla bla bla metatext for The Digital Image
+%\begin{figure}[htbp]
+%\centering
+%\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
+%\caption{Image illustrating the principle of an 8 bit picture}
+%\label{fig:ColoredToGrayscaleToBinary}
+%\end{figure}
+
+
+%\subsection{8 bit Pictures and Grayscale Images}
+%As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
+%An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
+
+%\begin{figure}[htbp]
+%\centering
+%\includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
+%\caption{Image illustrating the principle of an 8 bit picture}
+%\label{fig:ip_grayscale}
+%\end{figure}
+%Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
+
+%An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
+ 
+%\subsection{Working with Colored Images (RGB)}
+%Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
+%Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
+%\begin{figure}[htbp]
+%\centering
+%\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
+%\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
+%\label{fig:ip_ColorWheel}
+%\end{figure}\\
+%Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
+%Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+
+%\subsection{Binary Images}
+%One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
+%Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
+%Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
+
+%\subsection{Indexing a picture (x,y axis)}
 
    
 
@@ -222,8 +288,6 @@ Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} 
 \subsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image and vice versa.
 
-\fixme{add picture here}
-
 \subsubsection{Grass-Fire Algorithm}
 One of these connected component labelling algorithms is the \textit{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
@@ -336,12 +400,47 @@ Circularity is a very common shape factor that depends on the \textbf{Perimeter}
 	\end{aligned}
 \end{equation}
 
-After all the feature's extractions, a binary object can be defined by its features value that would be stored into a \textit{feature vector} in order to have a list where to start our BLOB's classification.
+After all the feature's extractions, a binary object can be defined by its features value that would be stored into a \textit{feature vector} in order to have a list where to start our BLOB's classification. On the Figures \ref{fig:BinaryIm} and \ref{fig:BinaryImTable} 
 
 \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\begin{figure}[ht]
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/binary_image.png}
+\caption{Binary image with Bounding Box and Center-of-Mass}
+\label{fig:BinaryIm}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/binary_image_table.png}
+\label{fig:BinaryImTable}
+\end{minipage}
+\caption{The table corresponding to the Fig. \ref{fig:BinaryIm} shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-% IMAGE WITH OBJECTS AND TABLE WITH DATA
+\begin{figure}[ht]
+\begin{subfig}[b]{0.45\linewidth}
+\centering
+\includegraphics[width=1\linewidth]{Pictures/Theory/binary_image.png}
+\caption{A gull}
+\label{fig:BinaryIm}
+\end{subfig}%
+~ %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
+%(or a blank line to force the subfigure onto a new line)
+\begin{subfig}[b]{0.45\linewidth}
+\centering
+\includegraphics[width=\textwidth]{Pictures/Theory/binary_image_table.png}
+\caption{A tiger}
+\label{fig:BinaryImTable}
+\end{subfig}
+~ %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
+%(or a blank line to force the subfigure onto a new line)
+\caption{The table corresponding to the Fig. \ref{fig:BinaryIm} shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}\label{fig:Features}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{BLOB Classification}
 
