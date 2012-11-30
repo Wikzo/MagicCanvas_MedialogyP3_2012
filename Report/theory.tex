@@ -288,6 +288,35 @@ Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} 
 \subsection{BLOB Extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image and vice versa.
 
+\begin{table}[htbp]
+\begin{minipage}[b]{0.45\linewidth}\centering
+\begin{tabular}{c c|c|}
+\includegraphics[width=1\textwidth]{Pictures/Theory/binary_image.png}
+\label{fig:FeaturesIm}
+\end{tabular}
+\caption{Binary Image with Bounding Box and Center-of-Mass}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+BLOB number&Circularity&Area (pixels)\\
+\hline
+1&2&2\\
+\hline
+2&2&2\\
+\hline
+3&2&2\\
+\hline
+4&2&2\\
+\hline
+\end{tabular}
+\caption{Binary Image with Bounding Box and Center-of-Mass}
+\end{minipage}
+\end{table}
+
+
 \subsubsection{Grass-Fire Algorithm}
 One of these connected component labelling algorithms is the \textit{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
@@ -393,54 +422,35 @@ Scanning along the border of the BLOB and summing the pixels we obtain the lengt
 
 Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
 
-\begin{equation}	
-	\begin{aligned}
-	{Circularity}=\displaystyle\frac{BLOB's \;\; Perimeter}{2 \; \sqrt{\mathstrut \: \pi \: \cdot \: {BLOB's \;\; Area}}}
-	\label{Circularity}
-	\end{aligned}
-\end{equation}
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%\begin{equation}	
+%	\begin{aligned}
+%	{Circularity}=\displaystyle\frac{BLOB's \;\; Perimeter}{2 \; \sqrt{\mathstrut \: \pi \: \cdot \: %{BLOB's \;\; Area}}}
+%	\label{Circularity}
+%	\end{aligned}
+%\end{equation}
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
+%%% Think there is an error - Gustav %%%
+%%% REMEMBER THIS!!!!!!!!!!!!!%%%
 
-After all the feature's extractions, a binary object can be defined by its features value that would be stored into a \textit{feature vector} in order to have a list where to start our BLOB's classification. On the Figures \ref{fig:BinaryIm} and \ref{fig:BinaryImTable} 
+After all the feature's extractions, a binary object can be defined by its features value that would be stored into a \textit{feature vector} in order to have a list where to start our BLOB's classification.
 
 \end{itemize}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-\begin{figure}[ht]
-\begin{minipage}[b]{0.45\linewidth}
-\centering
-\includegraphics[width=1\textwidth]{Pictures/Theory/binary_image.png}
-\caption{Binary image with Bounding Box and Center-of-Mass}
-\label{fig:BinaryIm}
-\end{minipage}
-\hspace{0.5cm}
-\begin{minipage}[b]{0.45\linewidth}
-\centering
-\includegraphics[width=1\textwidth]{Pictures/Theory/binary_image_table.png}
-\label{fig:BinaryImTable}
-\end{minipage}
-\caption{The table corresponding to the Fig. \ref{fig:BinaryIm} shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[ht]
-\begin{subfig}[b]{0.45\linewidth}
-\centering
-\includegraphics[width=1\linewidth]{Pictures/Theory/binary_image.png}
-\caption{A gull}
-\label{fig:BinaryIm}
-\end{subfig}%
-~ %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
-%(or a blank line to force the subfigure onto a new line)
-\begin{subfig}[b]{0.45\linewidth}
-\centering
-\includegraphics[width=\textwidth]{Pictures/Theory/binary_image_table.png}
-\caption{A tiger}
-\label{fig:BinaryImTable}
-\end{subfig}
-~ %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
-%(or a blank line to force the subfigure onto a new line)
-\caption{The table corresponding to the Fig. \ref{fig:BinaryIm} shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}\label{fig:Features}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% IMAGE WITH OBJECTS AND TABLE WITH DATA
 
 \subsection{BLOB Classification}
 
