@@ -1091,3 +1091,87 @@ void Picture::clipboard(const string &s)
 //			}
 //		}
 //}
+
+void Picture::saveNumbersOfPersons()
+{
+	string data;
+
+	ifstream inputFile;
+	inputFile.open ("numbersOfPersonsEachDay.txt");
+	getline(inputFile,data);
+	inputFile.close();
+
+
+	ofstream outputFile;
+	outputFile.open("numbersOfPersonsEachDay.txt");
+	outputFile << data << personCount << " ";
+	outputFile.close();
+}
+void Picture::openOldMoveVector()
+{
+	string data;
+
+	ifstream inputFile;
+	inputFile.open ("moveVector.txt");
+	getline(inputFile,data);
+	if(inputFile.eof())
+	{
+	//the file is empty
+		inputFile.close();
+		cout << "the moveVector-file is either empty or nonexistend" << endl
+			<< "enter a guess for the first moveVector" << endl;
+		cin >> initialMoveVector;
+
+		ofstream outputFile;
+		outputFile.open("moveVector.txt");
+		outputFile << 0 << endl << 0;
+		outputFile.close();
+	} 
+	else
+	{
+		inputFile.close();
+		//convert the string data into the float initialMoveVector
+		stringstream ss;
+		ss << data;
+		ss >> initialMoveVector;
+	}
+}
+void Picture::saveNewMoveVector()
+{
+	if(personCount <= 0)
+	{
+		cout << "there was no person, so the intialMoveVector is not set new";
+		return;
+	}
+
+	string moveVector;
+	string numberOfDays;
+	int numberOfDaysInt;
+	float moveVectorFloat;
+
+	ifstream inputFile;
+	inputFile.open ("moveVector.txt");
+	getline(inputFile,moveVector);
+	getline(inputFile,numberOfDays);
+	inputFile.close();
+
+	stringstream ss;
+	ss << numberOfDays;
+	ss >> numberOfDaysInt;
+
+	ss << moveVector;
+	ss >> moveVectorFloat;
+
+	newInitialMoveVectorProduct /= personCount;
+
+	moveVectorFloat *= numberOfDaysInt;
+	moveVectorFloat += newInitialMoveVectorProduct;
+
+	numberOfDaysInt++;
+	moveVectorFloat /= numberOfDaysInt;
+
+	ofstream outputFile;
+	outputFile.open("moveVector.txt");
+	outputFile << moveVectorFloat << endl << numberOfDaysInt;
+	outputFile.close();
+}

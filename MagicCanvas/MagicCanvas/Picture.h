@@ -47,6 +47,8 @@ public:
 		double id;
 		int pId;
 
+		bool notAddedToTheNewInitialMoveVectorProductYet;
+
 		//static Picture& parent;
 		int** pixel;
 
@@ -76,6 +78,7 @@ public:
 	
 	//TODO: find a smart way to determine that!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	float initialMoveVector;
+	double newInitialMoveVectorProduct;
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);
 	void initialize(VideoCapture captureToStoreCamra);
@@ -113,6 +116,9 @@ public:
 	void clipPersonsSmart();
 	void clipboard(const string &s);
 	
+	void saveNumbersOfPersons();
+	void openOldMoveVector();
+	void saveNewMoveVector();
 };
 
 #endif

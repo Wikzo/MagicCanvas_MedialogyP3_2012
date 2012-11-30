@@ -10,11 +10,11 @@ using namespace cv;
 /*TODOs 
 occlusion instead of midtpoint
 improve recursion 
-don't go throung the hole picture in the beginning
+don't go throung the hole picture in the beginning - Done
 get the speed of each person in the beginning and make the initial movevector adapt
 automized setup function (both take bg and find height of the upper loi)
 seperate the upper from the lower analysis
-write stats (how many, how long etc.)
+write stats (how many, how long etc.) how many is done
 flip values
 */
 void clipboard(const string &s);
@@ -59,6 +59,9 @@ int main(){
 	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.2f);
 	currentPicture.makeBlack();
 
+	currentPicture.newInitialMoveVectorProduct = 0;
+	currentPicture.openOldMoveVector();
+
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
@@ -79,6 +82,19 @@ int main(){
 			//cout << currentPicture.p[i].posX;
 				if(!currentPicture.p[i].refind(currentPicture))
 				{
+					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet)
+					{
+						if(currentPicture.personCount-1 > 0)
+						{
+							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1);
+							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
+						}
+						else
+						{
+							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector;
+							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
+						}
+					}
 				//either exited or occluded
 				//is the blob in the range so it can exit?
 					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width))
@@ -98,8 +114,12 @@ int main(){
 					}
 
 				}
-			
-			currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
+				currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
+				if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet)
+				{
+					currentPicture.newInitialMoveVectorProduct += currentPicture.p[i].moveVector;
+					currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
+				}
 			}
 		}
 
@@ -132,6 +152,8 @@ int main(){
 		}
 		else if (keyInput == 27) // <-escape
 		{
+			currentPicture.saveNumbersOfPersons();
+			currentPicture.saveNewMoveVector();
 			cout << "\nEsc was pressed\nThe program exits when you press a key.";
 			waitKey(0);
 			return 0;
