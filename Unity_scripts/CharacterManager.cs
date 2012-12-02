@@ -13,11 +13,20 @@ public class CharacterManager : MonoBehaviour
     public float Character_Z_Default = -5f;
     public float Character_Y_Default = 100f;
 
-    private float Snowman_Y = 62f;
-    private float NisseGirl_Y = 52f;
-    private float NisseBoy_Y = 61f;
-    private float Angel_Y = 122f;
-    private float Squirrel_Y = 0f;
+    private float Snowman_Y_Min = 58.5f;
+    private float Snowman_Y_Max = 75f;
+    
+    private float NisseGirl_Y_Min = 47f;
+    private float NisseGirl_Y_Max = 60f;
+    
+    private float NisseBoy_Y_Min = 52.7f;
+    private float NisseBoy_Y_Max = 81.3f;
+
+    private float Angel_Y_Max = 155f;
+    private float Angel_Y_Min = 123f;
+    
+    private float Squirrel_Y_Min = 50f;
+    private float Squirrel_Y_Max = 71f;
     
     public GameObject[] CharacterPrefab;
     private int _characterNumber;
@@ -28,8 +37,8 @@ public class CharacterManager : MonoBehaviour
     Vector3 _pixieDefaultPosition;
     private Vector3 outOfPicture_left = new Vector3(-32f, 90f, -5f);
     Vector3 outOfPicture_right = new Vector3(257f, 90f, -5f);
-    private const float REFRESH_TIME = 0.2f;
-    private float[] _xPositions;
+    private const float REFRESH_TIME = 0.5f;
+    //  private float[] _xPositions;
 
     private string[] ID;
     private float[] Position;
@@ -41,9 +50,14 @@ public class CharacterManager : MonoBehaviour
     private float[] pointX;
 
     private static PropertyInfo _mSystemCopyBufferProperty = null;
-    private float MoveSpeed = 15f;
+    private float MoveSpeed = 2.6f;
 
-    private float MovingThreshold = 20f;
+    private float MovingThreshold = 2f;
+
+    private float timer;
+    private const float WaitTimeToGetNewTarget = 0.5f;
+
+    private bool inputError;
 
     // Use this for initialization
 	void Start ()
@@ -51,10 +65,10 @@ public class CharacterManager : MonoBehaviour
         _pixieDefaultPosition = new Vector3(0, Character_Y_Default, Character_Z_Default);
 	    _characterNumber = 0;
 
-	    readyForNewTarget = true;
-
-	    SpawnCharacters(50);
+	    SpawnCharacters(20);
 	    GetNewTarget();
+        timer = WaitTimeToGetNewTarget;
+	    inputError = false;
 
     }
 	
@@ -62,6 +76,17 @@ public class CharacterManager : MonoBehaviour
 	void Update ()
 	{
         GetReadyToMove();
+
+        // Update target timer
+	    if (timer < WaitTimeToGetNewTarget)
+	    {
+	        timer += Time.deltaTime;
+	    }
+	    else if (timer >= WaitTimeToGetNewTarget)
+	    {
+	        timer = 0;
+	        GetNewTarget();
+	    }
 
 	}
 
@@ -130,6 +155,12 @@ public class CharacterManager : MonoBehaviour
         _characterNumber = randomCharacter;
     }
 
+    void OnGUI()
+    {
+        if (inputError)
+            GUI.Label(new Rect(50, 50, 500, 200), "FEJL! - Der er noget galt med ClipBoard manageren.\n(Tryk Escape for at afslutte programmet)");
+    }
+
     void GetDataFromClipBoard()
     {
         _text = ClipBoard; // raw data from clipboard
@@ -145,7 +176,10 @@ public class CharacterManager : MonoBehaviour
 
         // Check to see if OpenCV program is running and feeding us with the correct data
         if (!_text.StartsWith("q") && !_text.EndsWith("q"))
+        {
+            inputError = true;
             throw new InvalidOperationException("ERROR - There is something wrong with the ClipBoard function data! Are you sure the OpenCV program is running?");
+        }
 
         // WE START WITH THIS DATA:
         // q i5p0.5 i42p0.5 i6p0.6 i7p0.341 i123p-1 q
@@ -200,12 +234,15 @@ public class CharacterManager : MonoBehaviour
         target = new Vector3[Position.Length];
         for (int i = 0; i < Characters.Count; i++)
         {
+            if (Position[i] == -1) // don't give a target to an invalid character
+                continue;
+
             if (Characters[i].tag == "Angel")
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Angel_Y,
+                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Angel_Y_Min, Angel_Y_Max),
                                         Character_Z_Default);
             else if (Characters[i].tag == "Snowman")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Snowman_Y,
+                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Snowman_Y_Min, Snowman_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -218,7 +255,7 @@ public class CharacterManager : MonoBehaviour
             }
             else if (Characters[i].tag == "Nisseboy")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, NisseBoy_Y,
+                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(NisseBoy_Y_Min, NisseBoy_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -231,7 +268,7 @@ public class CharacterManager : MonoBehaviour
             }
             else if (Characters[i].tag == "Nissegirl")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, NisseGirl_Y,
+                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(NisseGirl_Y_Min, NisseGirl_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -244,7 +281,7 @@ public class CharacterManager : MonoBehaviour
             }
             else if (Characters[i].tag == "Squirrel")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Squirrel_Y,
+                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Squirrel_Y_Min, Squirrel_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -257,8 +294,6 @@ public class CharacterManager : MonoBehaviour
 
             }
         }
-
-        StartCoroutine(Countdown());
     }
 
     void SmoothMove()
@@ -274,20 +309,23 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    IEnumerator Countdown()
-    {
-        readyForNewTarget = false;
-        yield return new WaitForSeconds(REFRESH_TIME);
-        readyForNewTarget = true;
-    }
-
     void GetReadyToMove()
     {
         GetDataFromClipBoard();
 
-        /*if (Position.Length < Characters.Count)
+        if (Position.Length < Characters.Count)
+        {
+            inputError = true;
             throw new InvalidOperationException("ERROR - input data is smaller than amount of characters in the list");
-        */
+        }
+
+        if (Position.Length > Characters.Count)
+        {
+            inputError = true;
+            throw new InvalidOperationException("ERROR - input data is larger than amount of characters in the list");
+        }
+
+
         //print("POSITION LENGTH = " + Position.Length + " and Characters count = " + Characters.Count);
         //print("Actual pos: " + Characters[40].transform.position + " Wanted Pos: " + target[40]);
 
@@ -297,23 +335,46 @@ public class CharacterManager : MonoBehaviour
             if (Position[i] == -1f)
             {
                 //print("GETREADYTOMOVE");
-                Characters[i].name = ID[i] + "_invalid";
-                if (Characters[i].transform.position.x > 111)
+                // if outside picture
+                if (Characters[i].transform.position.x < outOfPicture_right.x &&
+                    Characters[i].transform.position.x > outOfPicture_left.x)
                 {
-                    Characters[i].transform.position = outOfPicture_right;
-                }
-                else if (Characters[i].transform.position.x < 111)
-                {
-                    Characters[i].transform.position = outOfPicture_left;
+                    if (Characters[i].transform.position.x > 111)
+                    {
+                        GameObject oldCharacter = Characters[i];
+
+                        oldCharacter.transform.position = outOfPicture_right;
+                        GetRandomCharacter();
+                        GameObject newCharacter = (GameObject)Instantiate(CharacterPrefab[_characterNumber], oldCharacter.transform.position,
+                                        Quaternion.Euler(270f, 0, 0));
+
+                        Characters[i] = newCharacter;
+
+                        Destroy(oldCharacter);
+
+                    }
+                    else if (Characters[i].transform.position.x < 111)
+                    {
+                        GameObject oldCharacter = Characters[i];
+
+                        oldCharacter.transform.position = outOfPicture_left;
+                        GetRandomCharacter();
+                        GameObject newCharacter = (GameObject)Instantiate(CharacterPrefab[_characterNumber], oldCharacter.transform.position,
+                                        Quaternion.Euler(270f, 0, 0));
+
+                        Characters[i] = newCharacter;
+
+                        Destroy(oldCharacter);
+                    }
+
+                    Characters[i].name = ID[i] + "_invalid";
                 }
             }
             else
             {
                 Characters[i].name = ID[i];
-                
+
                 SmoothMove();
-                if (readyForNewTarget)
-                    GetNewTarget();
 
                 //Characters[i].transform.position = new Vector3(Position[i]*BACKGROUND_WIDTH, Character_Y_Default,
                 //Character_Z_Default);
@@ -378,6 +439,7 @@ public class CharacterManager : MonoBehaviour
     }
 
     // OLD STUFF BEGIN  ----------------------------------------------------
+    /*
     void GetPositionFromTextFile()
     {
         /*
@@ -433,7 +495,7 @@ public class CharacterManager : MonoBehaviour
             {
                 print("ERROR - couldn't get move data from clipboard");
             }
-        }*/
+        }
     }
 
     IEnumerator UpdatePosition()
@@ -468,11 +530,11 @@ public class CharacterManager : MonoBehaviour
         for (int i = 0; i < Characters.Count - 1; i++)
         {
             //print(posX[i]);
-            Characters[i].transform.position = new Vector3(_xPositions[i] * BACKGROUND_WIDTH, Character_Y_Default, Character_Z_Default);
+            //Characters[i].transform.position = new Vector3(_xPositions[i] * BACKGROUND_WIDTH, Character_Y_Default, Character_Z_Default);
             /*Characters[i].transform.position = Vector3.Lerp(transform.position, new Vector3(_xPositions[i] * BACKGROUND_WIDTH,
                                                                                     transform.position.y,
                                                                                     transform.position.y),
-                                                    Time.deltaTime * REFRESH_TIME);*/
+                                                    Time.deltaTime * REFRESH_TIME);
             //print(Characters[i].name + ". " + Characters[i].transform.position);
 
         }
@@ -523,4 +585,7 @@ public class CharacterManager : MonoBehaviour
     }
 
     // OLD STUFF END ------------------------------------------------------
+
+    */
+
 }
