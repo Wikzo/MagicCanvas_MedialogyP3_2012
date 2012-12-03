@@ -77,7 +77,7 @@ The basic idea is to have a canvas on which the shade of the person is projected
 
 Together with a projector capable of projecting a relatively huge output, 3 * 2.25 meters, the computer running the program code will also be connected to a web cam. A canvas in the above-mentioned size will have to be made and placed on top of the bookshelves.
 
-\subsection{Ground zero}
+\subsection{Getting started with a prototype}
 The first step into developing the needed software was to write some initial code that would run and produce a useful output. This was done by dividing the group into two smaller groups consisting of three people each, with the goal of coming up with a solution on how to produce a segmentation of a video input. A competition within the group turned up to create the best program code in three days to be presented. And so the "winner's code", or parts from both projects, would be incorporated in a testable file to be elaborated on in the following month.\\
 At the end of the week, two programs were ready to be tested. Both programs were able to do same things, only the code differed. Some of the techniques used were: median filtering; morphology (opening/closing); background subtraction; conversion from a colored image to a grayscale image; and, most importantly, a first draft of the BLOB analysis that is needed to analyze the shape of the head where the Christmas hat is to be placed.\\
 
@@ -110,22 +110,18 @@ Various suggestions were given, such as adjusting the BLOB analysis to a more sp
 After the meeting with Andreas, some changes were made to the concept. It was decided that, considering the new information gathered, to take the project in slightly different direction.
 
 \subsection{Using an avatar instead of shape}
-Instead of outputting the entire input image (the person itself) and performing several image operations, it was chosen to limit the amount of data analyzed. Instead of looking at the whole shape, the program should only look for the head.
+Instead of outputting the entire input image (the person itself) and performing several image operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the head. This would save a lot of calculations, so only the head of the user is of interest to analyze. This would hopefully lead to a more stable framerate for the program, which is important to create the proper immersion. It is important that the camera is quick enough to pick up and recognize new people stepping into the scene.
 
-%%% GUstav nåaede hertil %%% 
+\subsection{Using Unity to handle the graphical output}
+The group quickly realized that for it would be difficult to use OpenCV to both extract the data from the camera and display it in some kind of graphical way. Since the program has to loop through a lot of data continuously, there was little resources left for it to actually display the result in an interesting way without lagging behind. First the group thought about using multiple threads running in the program, but even then it would be hard to display more sophisticated graphics. OpenCV is not meant as a tool to display graphics, but more to for the analyzing/extracting part.
 
- on a large field of interest that an avatar would function as the body of the person. This would mean that eventually it would be possible to discard up to 60{\%} of all mathematical operations, as only the head of the user is of interest to analyze.\\
-The foremost reason for doing this is based on the outcome of the image processing and the concept. Running the program with 5-6 fps or perhaps even less, will not create the kind of tension toward using the product at the library. People trespassing will barely be recognized by the camera, before they're out of the region of interest. Furthermore the silhouette is not very exciting to look at, so to spice things up and engage especially the kids at the library, the cartoonish characters and a nice GUI, will add a nice touch to the overall user experience. 
+Then the group came up with the idea of using the Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with the Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages. Even though there are various APIs to get OpenCV and Unity communicate, it was decided for a much simpler approach where OpenCV would copy some position data into a text file that Unity would read.
 
-\subsection{Using Unity to create the GUI}
-Some investigation towards creating a graphical interface was initiated. Preferably Unity was the program in which the graphical interface was to be created, therefore all alternative solutions were investigated. Ultimately it was discovered that it was possible to store in an external text file on the desktop of the computer, which Unity could successfully import and interpret.\\
+In the end, the result should be a smoother experience than if only OpenCV was used.
   
-\section{Initial Vision}
-This section will summarize on the above-mentioned in regards to the equipment, the skills of the individual members of the group, the theme and the actual concept.\\
-Considering the hypothesis that all time in the world was given along with all money needed, the outcome of this project would without doubt be mind blowing\fixme{mind blowing(find synonym)}. Limited by time, skills and equipment an alternative plan was to be worked out and adapted to what was possible. Producing an output of the entire image, performing several mathematical operations are simply too heavy work for the program in extend to the programming skills of the group. The skills at programming are simply not advanced enough at doing optimized algorithms, to make the program run smooth in real time. \\
-Therefore research towards analyzing regions of interest on an input was performed. This would make it possible to discard up to 60{\%} of the mathematical operations needed, which ultimately should produce more frames per second, when running the program. In addition this should enhance the user experience as the tracking of the Christmas hat would be much smoother.
-\\
-Some of the goals, which are of interest to this project is that people can engage in the game at two levels. Given that people can engage passively in the game, simply by trespassing the area of the project without minding the canvas, on which the Christmas hats will be navigated around. Secondly it's of interest that people can engage actively in the game by moving side to side and back and forward to create an illusion of being there. In continuity of that, participants might tell their acquaintances/friends about the game and bring them along.
-\\
-Based on reaching the above-mentioned goals by engaging people on two levels at the library, the initial vision of this semester project is the following. "How do we succeed in engaging visitors at Hj{\o}rring Library to use our product on two levels, both passively and actively."
+\section{Initial vision}
+The vision for the project is to make a simple, yet working, program that is fun and engaging to use at Hj{\o}rring Library. It should be something you can just walk pass once and get something fun out of it, or, if you stay for a little longer, you can interact with it even more. Also, the program should be fairly self-maintained and independent, meaning that little work is needed from the staff of the library.
 
+The group decided that it wanted to make everything from scratch, i.e. not use any existing functionality in OpenCV. This means that even though the program is going to be slower in overall, everything is made by ourselves.
+
+Based on reaching the above-mentioned goals by engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement can be read in \ref{problemStatement}.
