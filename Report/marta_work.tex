@@ -114,7 +114,7 @@ On Fig. \ref{fig:Closing} we can observe the effect of this operations: even tho
 \end{equation}
 It is also important to remember that we can imply the Closing or Opening methods only one time. Most of the holes of the image will be filled but the size of the object will be the original one. If these operations are applied a second time, the size of the final image will be decreased or increased respectively.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT IMAGE CLOSING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE CLOSING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/ClosingSq.png}
@@ -130,4 +130,12 @@ An alternative approach to the edge detection on binary images is the denoted \t
 \label{BoundDetec}
 	\end{aligned}
 \end{equation}
-When the purpose of implementing these operations is to find the edges, it is important to remember to apply first dilation or erosion to remove the noise of the image. The results can be noted on Fig. -----, where the final result is a thin edge of the object.
+When the purpose of implementing these operations is to find the edges, it is important to remember to apply first dilation or erosion to remove the noise of the image. The results can be noted on Fig. \ref{fig:Boundary}, where the final result is a thin edge of the object.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE SUBTRACTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/BoundaryEdges_circ.png}
+\caption{Result of subtracting an eroded picture to the original one with a circular structured element.}
+\label{fig:Boundary}
+\end{figure}
