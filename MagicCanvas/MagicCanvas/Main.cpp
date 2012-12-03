@@ -11,9 +11,9 @@ using namespace cv;
 occlusion instead of midtpoint
 improve recursion 
 don't go throung the hole picture in the beginning - Done
-get the speed of each person in the beginning and make the initial movevector adapt
-automized setup function (both take bg and find height of the upper loi)
-seperate the upper from the lower analysis
+get the speed of each person in the beginning and make the initial movevector adapt - ip
+automized setup function (both take bg and find height of the upper loi) - first in the libary
+seperate the upper from the lower analysis (when low discard high)
 write stats (how many, how long etc.) how many is done
 flip values
 */
@@ -75,23 +75,23 @@ int main(){
 
 		for(int i = 0; i < maxNumberOfPersons; i++)
 		{
-			if(currentPicture.p[i].posX != -1)
+			if(currentPicture.p[i].posX != -1) // <- does the person exist?
 			{
-			float prePos = currentPicture.p[i].posX;
+			float prePos = currentPicture.p[i].posX; // <-save the current position
 			//cout << "program is trying to refind" << "\n";
 			//cout << currentPicture.p[i].posX;
-				if(!currentPicture.p[i].refind(currentPicture))
+				if(!currentPicture.p[i].refind(currentPicture)) // <- find the new position of the person, when not found do the following:
 				{
-					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet)
+					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
 					{
-						if(currentPicture.personCount-1 > 0)
+						if(currentPicture.personCount-1 > 0) // <- when this is not the first person
 						{
-							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1);
-							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
+							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1); // <- add the initial move vector to the statistics !!!!!!!!!!!!!! wrong !!!!!!!!
+							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
 						}
 						else
 						{
-							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector;
+							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- set the 
 							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
 						}
 					}
