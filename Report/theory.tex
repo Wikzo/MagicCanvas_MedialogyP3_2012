@@ -35,6 +35,8 @@ Figure \eqref{fig:ip_framework} illustrates the framework used typically when wo
 During this project a lot of image processing has been used. The different image processing techniques are used in a combination to display exactly what we want to output. Some techniques is being used to remove noise from the picture, so the important parts gets all the focus, while others are used for making the important parts more clear or making it possible to track specific parts of the output. \\
 It is all these different techniques combined that makes it possible to get a functional product, but before you can use them, you will have to know how they work and how they can be included to your project. This section is going to explain the different techniques that are being used and also why and how they are being implemented in this project.
 
+\chapter{Gustav}
+
 \chapter{Image theory}
 \section{The digital Image}
 Working around digital images on computers is something that most can relate to, but there is a lot more to it than one realizes. Figure \eqref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images and the different attributes of each type.
@@ -333,11 +335,13 @@ Both \textbf{bounding box} and \textbf{bounding circle} are methods that operate
 The minimum convex polygon which contains the BLOB can be described as wrapping a piece of string tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
 
 \item Bounding box ratio
-
+\\
+\\
 This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
 
 \item Compactness
-
+\\
+\\
 The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box.
 
 \begin{equation}
@@ -348,7 +352,8 @@ The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bou
 \end{equation}
 
 \item Center of mass
-
+\\
+\\
 In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
 
 The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average x and y positions of the object on the image.
@@ -368,7 +373,8 @@ Its coordinates can be found using the formula:
 Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
 
 \item Center of the bounding box
-
+\\
+\\
 As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with the formula:
 
 \begin{equation}
@@ -386,11 +392,13 @@ As the bounding box is a rectangle that surrounds the BLOB, the center of the bo
 
 
 \item Perimeter
-
+\\
+\\
 Scanning along the border of the BLOB and summing the pixels we obtain the length of the contour of the BLOB. In Image Processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.
 
 \item Circularity
-
+\\
+\\
 Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
 
 \begin{equation}	

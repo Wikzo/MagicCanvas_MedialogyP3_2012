@@ -7,7 +7,7 @@
 Morphology is a collection of operations used to analyse and process structures. Although this techniques were commonly used on binary images, nowadays it is possible to apply them also to grayscale images.
 The processes related to morphology on binary images are oriented to remove noise produced by thresholding the image as well as define the contours of the objects in order to achieve a proper BLOB analysis.
 
-Mathematical morphology is a neighborhood processing method that applies a \textit{structuring element} (or kernel) to the pixels on the image. The ways that kernel will be structured, how big it will be or the shape that will be used depends on the designer, and the shape and size of the objects to be analysed. The reason for this is that the structured elements are applied by \textit{hitting} or \textit{fitting} operations that will affect the results in different ways.
+Mathematical morphology is a neighborhood processing method that applies a \textit{structuring element} (or kernel) to the pixels on the image. The ways that kernel will be structured, how big it will be or the shape that will be used, depends on the designer and the shape and size of the objects to be analysed. The reason for this is that the structured elements are used to apply by \textit{hitting} or \textit{fitting} operations that will affect the results in different ways.
 
 \subsubsection{Hit and Fit}
 Whenever you decide to apply a structured element and \textbf{hit} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. The kernel will be first placed on the corner of the image so that it can check if each pixel placed at the same position is also a '1'. If one of the pixels of the area of the kernel is indeed a '1', the pixel in which the kernel is centred will be changed to the value '1' on the output image. Otherwise, the value of the output pixel in that particular position will be '0'.
@@ -42,7 +42,7 @@ On the contrary, to be able to \textbf{fit} a pixel on the center of the structu
 
 \subsection{Dilation}
 
-Dilation is the process of applying Hit to an entire image and refers to the expansion of an object on an image (see Eq. \ref{Dilation1} for a mathematical definition). The result of this method implies also filling small holes and merging objects. As said before, the final effect on these objects will depend on the structured element (how big it is, which shape it has and what values is holding), this can be seen on Figure . 
+Dilation is the process of applying Hit to an entire image and refers to the expansion of an object on an image (see Eq.\ref{Dilation1} for a mathematical definition). The result of this method implies also filling small holes and merging objects. As said before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on Figure \ref{fig:Dilation}. 
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\oplus{SE}
@@ -63,6 +63,8 @@ A small structured element applied several times will have the same effect as a 
 \label{fig:Dilation}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%% INSERT IMAGES WITH DILATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \subsection{Erosion}
 The Erosion is the process of applying Fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on Eq. \ref{Erosion1}). As the Fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As occuring with Dilation, the effects depend on the size, shape and values of the structured element.
 \begin{equation}
