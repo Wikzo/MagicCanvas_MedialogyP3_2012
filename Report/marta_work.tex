@@ -66,14 +66,23 @@ A small structured element applied several times will have the same effect as a 
 
 
 \subsection{Erosion}
-The Erosion is the process of applying Fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on Eq. \ref{Erosion1}). As the Fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As occuring with Dilation, the effects depend on the size, shape and values of the structured element.
+The Erosion is the process of applying Fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on Eq. \ref{Erosion1}). As the Fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As occuring with Dilation, the effects depend on the size, shape and values of the structured element. An example of \textbf{erosion}
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\ominus{SE}
 \label{Erosion1}
 	\end{aligned}
 \end{equation}
+
 %%%%%%%%%%%%%%%%%%%%%%%%% INSERT IMAGES WITH EROSIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{Pictures/Theory/Erosion.png}
+\caption{Erosion produced by two different structuring elements.}
+\label{fig:Erosion}
+\end{figure}
+
+
 \subsection{Compound Operations}
 The term Compound Operations refers to the combination of dilating and eroding objects on an image and can therefore imply the \textit{Union} or \textit{Intersection} of the objects, but also other operations like \textit{Closing}, \textit{Opening} or doing edge detection, also know by \textit{Boundary detection}.
 \subsubsection{Opening}
