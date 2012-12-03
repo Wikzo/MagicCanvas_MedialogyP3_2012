@@ -12,6 +12,7 @@ occlusion instead of midtpoint
 improve recursion 
 don't go throung the hole picture in the beginning - Done
 get the speed of each person in the beginning and make the initial movevector adapt - ip
+   |-> the eof function in openOldMoveVector doesn't work
 automized setup function (both take bg and find height of the upper loi) - first in the libary
 seperate the upper from the lower analysis (when low discard high)
 write stats (how many, how long etc.) how many is done
@@ -47,7 +48,7 @@ int main(){
 	hat.initialize("nisse.jpg");
 	
 	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
-	currentPicture.minPixelToBeAPerson = 1000;
+	currentPicture.minPixelToBeAPerson = 100;
 	currentPicture.radiusForMorfology = 3;
 	currentPicture.numberOfPersons = 0;
 	currentPicture.initialMoveVector = 0.1f;
@@ -84,20 +85,20 @@ int main(){
 				{
 					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
 					{
-						if(currentPicture.personCount-1 > 0) // <- when this is not the first person
+						if(currentPicture.personCount-1 >= 0) // <- when this is not the first person
 						{
-							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1); // <- add the initial move vector to the statistics !!!!!!!!!!!!!! wrong !!!!!!!!
+							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1); // <- add the average of the until now found initial move vectors to the move vector product
 							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
 						}
-						else
+						else // when this is the first person:
 						{
-							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- set the 
-							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
+							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- since there is nothig to take the average from take the movevector the prgram started with
+							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
 						}
 					}
 				//either exited or occluded
 				//is the blob in the range so it can exit?
-					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width))
+					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
 					{
 						//is not allowed to exit -> it must be occluded
 						if(!currentPicture.p[i].refindOccluded(currentPicture))
@@ -117,7 +118,10 @@ int main(){
 				currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
 				if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet)
 				{
-					currentPicture.newInitialMoveVectorProduct += currentPicture.p[i].moveVector;
+					if(currentPicture.p[i].moveVector < 0)
+						currentPicture.newInitialMoveVectorProduct += -currentPicture.p[i].moveVector;
+					else
+						currentPicture.newInitialMoveVectorProduct += currentPicture.p[i].moveVector;
 					currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
 				}
 			}

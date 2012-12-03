@@ -679,6 +679,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 
 				if(p[currentPersonId].posX != -1){
 					personCount++;
+					p[currentPersonId].notAddedToTheNewInitialMoveVectorProductYet = true;
 					p[currentPersonId].id = personCount;
 					p[currentPersonId].moveVector = initialMoveVector;
 					p[currentPersonId].heightOfROI = y;
@@ -711,6 +712,7 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 
 				if(p[currentPersonId].posX != -1){
 					personCount++;
+					p[currentPersonId].notAddedToTheNewInitialMoveVectorProductYet = true;
 					p[currentPersonId].id = personCount;
 					p[currentPersonId].moveVector = -1*initialMoveVector;
 					p[currentPersonId].heightOfROI = y;
@@ -1109,15 +1111,17 @@ void Picture::saveNumbersOfPersons()
 }
 void Picture::openOldMoveVector()
 {
-	string data;
+	float data;
 
 	ifstream inputFile;
 	inputFile.open ("moveVector.txt");
-	getline(inputFile,data);
-	if(inputFile.eof())
+	//getline(inputFile,data);
+	inputFile >> data;
+	inputFile.close();
+	if(data < 0)
 	{
 	//the file is empty
-		inputFile.close();
+		
 		cout << "the moveVector-file is either empty or nonexistend" << endl
 			<< "enter a guess for the first moveVector" << endl;
 		cin >> initialMoveVector;
@@ -1129,11 +1133,11 @@ void Picture::openOldMoveVector()
 	} 
 	else
 	{
-		inputFile.close();
+		initialMoveVector = data;
 		//convert the string data into the float initialMoveVector
-		stringstream ss;
-		ss << data;
-		ss >> initialMoveVector;
+		//stringstream ss;
+		//ss << data;
+		//ss >> initialMoveVector;
 	}
 }
 void Picture::saveNewMoveVector()
@@ -1147,31 +1151,33 @@ void Picture::saveNewMoveVector()
 	string moveVector;
 	string numberOfDays;
 	int numberOfDaysInt;
-	float moveVectorFloat;
+	double moveVectorDouble;
 
 	ifstream inputFile;
 	inputFile.open ("moveVector.txt");
-	getline(inputFile,moveVector);
-	getline(inputFile,numberOfDays);
+	//getline(inputFile,moveVector);
+	//getline(inputFile,numberOfDays);
+	inputFile >> moveVectorDouble;
+	inputFile >> numberOfDaysInt;
 	inputFile.close();
 
-	stringstream ss;
-	ss << numberOfDays;
-	ss >> numberOfDaysInt;
+	//stringstream ss;
+	//ss << numberOfDays;
+	//ss >> numberOfDaysInt;
 
-	ss << moveVector;
-	ss >> moveVectorFloat;
+	//ss << moveVector;
+	//ss >> moveVectorFloat;
 
 	newInitialMoveVectorProduct /= personCount;
 
-	moveVectorFloat *= numberOfDaysInt;
-	moveVectorFloat += newInitialMoveVectorProduct;
+	moveVectorDouble *= numberOfDaysInt;
+	moveVectorDouble += newInitialMoveVectorProduct;
 
 	numberOfDaysInt++;
-	moveVectorFloat /= numberOfDaysInt;
+	moveVectorDouble /= numberOfDaysInt;
 
 	ofstream outputFile;
 	outputFile.open("moveVector.txt");
-	outputFile << moveVectorFloat << endl << numberOfDaysInt;
+	outputFile << moveVectorDouble << endl << numberOfDaysInt;
 	outputFile.close();
 }
