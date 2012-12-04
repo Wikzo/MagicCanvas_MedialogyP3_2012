@@ -35,9 +35,6 @@ Figure \eqref{fig:ip_framework} illustrates the framework used typically when wo
 During this project a lot of image processing has been used. The different image processing techniques are used in a combination to display exactly what we want to output. Some techniques is being used to remove noise from the picture, so the important parts gets all the focus, while others are used for making the important parts more clear or making it possible to track specific parts of the output. \\
 It is all these different techniques combined that makes it possible to get a functional product, but before you can use them, you will have to know how they work and how they can be included to your project. This section is going to explain the different techniques that are being used and also why and how they are being implemented in this project.
 
-
-
-\chapter{Image theory}
 \section{The digital Image}
 Working around digital images on computers is something that most can relate to, but there is a lot more to it than one realizes. Figure \eqref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images and the different attributes of each type.
 
@@ -76,8 +73,6 @@ Working with pixels in a image is like working with a coordinate system. However
 \label{fig:ip_IndexingAPicture}
 \end{figure}
 
-%%% GUSTAV TO-DO - add with Marcos method for reference for pics
-
 Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
 \begin{figure}[htbp]
 \centering
@@ -94,60 +89,8 @@ Knowing the specific values of the red, green and blue channels within an image 
 
 \subsection{Binary Images}
 In comparison to the above-mentioned, where images are defined by bit depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this often correlates to use of a threshold, described in section \ref{sec:Thresholding}. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.\\
-%Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
+Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.
 
-%%% I HAVE COMMENTED OUT THE TEXT BELOW FOR THE IMAGE THEORY %%%
-%%% I BELIEVE WHAT I HAVE PASTED IN IS A NEWER VERSION (MADE BY MARCO), %%%
-%%% AND SHOULD REPLACE THE ORIGINAL TEXT %%%
-%%% - GUSTAV %%%
-
-%\section{The Digital Image}
-%Bla bla bla metatext for The Digital Image
-%\begin{figure}[htbp]
-%\centering
-%\includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
-%\caption{Image illustrating the principle of an 8 bit picture}
-%\label{fig:ColoredToGrayscaleToBinary}
-%\end{figure}
-
-
-%\subsection{8 bit Pictures and Grayscale Images}
-%As the human eye is not able to distinguish the huge numbers of photos hitting the eye, one have decided to quantify the number of photos hitting a cell. This is often quantified as bytes (8 bits), which applies to the binary system and also the structure of memory within a computer.\\
-%An image with one channel of information for each pixel in the x and y axis is called grayscale image, which describes the intensity of light in that specific pixel. The value of the pixel applies to the binary system with the value of $2^8$, which is 256. That means by having an 8-bit picture with 256 levels of intensity, it is possible for the computer to distinguish 256 different levels of one particular color, giving more depth. In addition one would note that the values of the pixels should be 1-256, but fact is that a computer counts 0 as the first value and therefore it is from 0-255. An 8-bit picture is a pretty standard format for a picture, but it is however possible to create images with more depth and with more information for each individual pixel in the picture.\\
-
-%\begin{figure}[htbp]
-%\centering
-%\includegraphics[width=1.00\textwidth]{Pictures/Theory/Grayscale.jpg}
-%\caption{Image illustrating the principle of an 8 bit picture}
-%\label{fig:ip_grayscale}
-%\end{figure}
-%Figure \eqref{fig:ip_grayscale} Illustrates 256 different levels of grayscale.\\
-
-%An example of that is 16, and 32 bit pictures. An 16 bit picture is equals to $2^{16}$, which means that each pixel has 65,536 different shades of gray. Simultaneously a 32 bit is equal to $2^{32}$, which means that the picture has 4,294,967,296 different shades of gray. It should however be notified that working with 8 bit picture is the most standard format when doing computer operations as it consumes a lot of process power to calculate the information in each individual pixel.
- 
-%\subsection{Working with Colored Images (RGB)}
-%Now that a basic knowledge regarding images has been established, the next leap into using images in calculations is by understanding the basics of a colored image.\\
-%Figure \eqref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.\\
-%\begin{figure}[htbp]
-%\centering
-%\includegraphics[width=0.70\textwidth]{Pictures/Theory/RGBColor.pdf}
-%\caption{Image illustrating the making of colors from http://www.texample.net/tikz/examples/rgb-color-mixing/}
-%\label{fig:ip_ColorWheel}
-%\end{figure}\\
-%Different from a grayscale image, a colored image consists of 3 channels of colors that each describe the value of the color in relation to red, blue or green, which are the primary colors from which all other colors are derived. The most significant different between grayscale images and colored images, is that now one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition giving the red, green and blue pixel a value of 255 will produce white, while giving them all the value 0 would produce black, just as when working with grayscale images.\\
-%Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as deriving colors adjoining to red from the input, one would simply have to create a threshold to segment the the minimum and maximum values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
-
-%\subsection{Binary Images}
-%One edge of image operations is binary pictures. In comparison to above-mentioned that is all about picture depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this indicates the use of a threshold, described in section \ref{sec:Thresholding}.\\
-%Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input.\\
-%Binary pictures are less resource demanding when performing mathematical operations as only two colors remain of the original input. In 
-
-%\subsection{Indexing a picture (x,y axis)}
-
-   
-
-
-%% Could be a little more clear and short - Gustav %%
 \section{Thresholding}
 \label{sec:Thresholding}
 Threshold is one of the most fundamental operations in point processing \fixme{WHAT is point processing? - Gustav} and is used to make an input picture binary, i.e. either black (0) or white (255). Making an image binary means to show the image in only completely black and completely white pixel values. \\
@@ -209,7 +152,6 @@ Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture w
  
 This proves the point that finding a functional threshold value is not always simple, and for finding a silhouette for example it is a great help to somehow make a clear transition from the object and the background..
 
-
 \section{Morphology}
 Morphology is a collection of operations used to analyse and process structures. Although this techniques were commonly used on binary images, nowadays it is possible to apply them also to grayscale images.
 The processes related to morphology on binary images are oriented to remove noise produced by thresholding the image as well as define the contours of the objects in order to achieve a proper BLOB analysis.
@@ -246,9 +188,7 @@ On the contrary, to be able to \textbf{fit} a pixel on the center of the structu
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%% SHOULD I TALK A BIT MORE ABOUT THE TABLE? %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{Dilation}
-
 Dilation is the process of applying Hit to an entire image and refers to the expansion of an object on an image (see Eq.\ref{Dilation1} for a mathematical definition). The result of this method implies also filling small holes and merging objects. As said before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on Figure \ref{fig:Dilation}. 
 \begin{equation}
 \begin{aligned}
@@ -271,7 +211,6 @@ A small structured element applied several times will have the same effect as a 
 \label{fig:Dilation}
 \end{figure}
 
-
 \subsection{Erosion}
 The Erosion is the process of applying Fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on Eq. \ref{Erosion1}). As the Fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As occuring with Dilation, the effects depend on the size, shape and values of the structured element. An example of \textbf{erosion}
 \begin{equation}
@@ -289,8 +228,7 @@ The Erosion is the process of applying Fit to an entire figure and refers to the
 \label{fig:Erosion}
 \end{figure}
 
-
-\subsection{Compound Operations}
+\subsection{Compound operations}
 The term Compound Operations refers to the combination of dilating and eroding objects on an image and can therefore imply the \textit{Union} or \textit{Intersection} of the objects, but also other operations like \textit{Closing}, \textit{Opening} or doing edge detection, also know by \textit{Boundary detection}.
 \subsubsection{Opening}
 When \textit{eroding} images to erase small noise objects or split parts, it often occurs that the object of interest has decreased its size. The solution to this problem passes by dilating the eroded object. This operation is denoted \textit{Opening} and its mathematical definition is
@@ -329,7 +267,7 @@ It is also important to remember that we can imply the Closing or Opening method
 \label{fig:Closing}
 \end{figure}
 
-\subsubsection{Boundary Detection}
+\subsubsection{Boundary detection}
 An alternative approach to the edge detection on binary images is the denoted \textit{Boundary Detection}. The performance of this operations is a compound of \textit{erosion} and \textit{subtraction}. Hence the first operation will be eroding the object to get a smaller version of it and then subtract it to the original input image so as to get a final output image with the border of the object. The mathematical definition of these operations is
 \begin{equation}
 \begin{aligned}
@@ -347,16 +285,13 @@ When the purpose of implementing these operations is to find the edges, it is im
 \label{fig:Boundary}
 \end{figure}
 
-
-\section{Modified infrared camera vs normal webcam}
-\section{Region of interest}
+\section{Region of interest (ROI)}
 The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
 A common thinking is that the more pixels, the better quality, and the better output. However this should be thought through. How important is the quality? Is it even necessary to show every single pixel or is it just as good with a lower number of pixels?\\
 When the computer make changes to a picture it has to run through every single pixel one at a time. Therefore it would make a big difference to decrease the amount of pixels used.\\
 Beside thinking about the amount of pixels used a great tool is ROI. As the name alludes ROI takes a region in the picture that is specially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing is prevented, saving time and possibly providing a faster frame rate.
 
 An example of how this could be used is taking a photo where only the head is interesting. The head should then be the region of interest, and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This can be shown on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted energy that can be saved.
-
 
 \begin{figure}[htbp] 
 \centering 
@@ -409,20 +344,15 @@ This type of threshold is a global threshold, which means that the threshold val
 Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. Using this formula creates a local threshold.
 
 When both points are considered, the background subtraction should be ready to use. In every frame in a scene each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows then the pixel will be highlighted, revealing an object in the picture.
-\section{Template matching}
-\section{movement tracking (ViBe)}
 
-
-
-\section{BLOB Analysis}
+\section{BLOB analysis}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB is an acronym for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type \citep{ip_book}.
 
-\subsection{BLOB Extraction}
+\subsection{BLOB extraction}
 To isolate BLOBs in a binary image, we need to define first if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image and vice versa.
 
-
-\subsubsection{Grass-Fire Algorithm}
+\subsubsection{Grass-Fire algorithm}
 One of these connected component labelling algorithms is the \textit{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
 
@@ -433,7 +363,7 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on Fig. \eqref{fig:8connecK}, the Grass-Fire algorithm scans the entire image from the upper-left corner to the right bottom, row by row. When the kernel encounters a non-zero pixel value it centers on it and burns the center pixel. Then the algorithm looks in the possible directions around that pixel to check if those pixels are connected to the previous one, and therefore, together make out an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
+As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the entire image from the upper-left corner to the right bottom, row by row. When the kernel encounters a non-zero pixel value it centers on it and burns the center pixel. Then the algorithm looks in the possible directions around that pixel to check if those pixels are connected to the previous one, and therefore, together make out an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
 Whenever it finds an object, the algorithm labels the pixel in the output image and then burns that pixel on the input image in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
 The algorithm now looks to the possible directions around that pixel, starting with the pixel on the righ. This process is represented on Fig. \eqref{fig:8connecK}. Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and restarts the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
 Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using a same picture. Although the 8-connected kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
@@ -445,7 +375,7 @@ Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, w
 \label{fig:4connecK}
 \end{figure}
 
-\subsection{BLOB Representation}
+\subsection{BLOB representation}
 The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: Determining the features of the BLOB and matching the features with the prototype to determine if they are part of the type that we were looking for.
 
 This means that a few features like the \textbf{area}, the \textbf{perimeter} and the \textbf{circularity} will be calculated.
@@ -565,8 +495,7 @@ After all the feature's extractions, a binary object can be defined by its featu
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{BLOB Classification}
-
+\subsection{BLOB classification}
 Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to in order for it to be selected.
 For this reason, we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
 Using two features like the circularity and the area we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
