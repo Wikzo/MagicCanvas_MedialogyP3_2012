@@ -8,15 +8,13 @@ using namespace std;
 using namespace cv;
 
 /*TODOs 
+don't go throung the hole picture in the beginning - Done
+get the speed of each person in the beginning and make the initial movevector adapt - Done needs to be tested
+
 occlusion instead of midtpoint
 improve recursion 
-don't go throung the hole picture in the beginning - Done
-get the speed of each person in the beginning and make the initial movevector adapt - ip
-   |-> the eof function in openOldMoveVector doesn't work
 automized setup function (both take bg and find height of the upper loi) - first in the libary
 seperate the upper from the lower analysis (when low discard high)
-write stats (how many, how long etc.) how many is done
-flip values
 */
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);

@@ -1017,7 +1017,7 @@ void Picture::clipPersonsAll()
 {
 	ostringstream ss;
 	ss << "q";
-	for(int i = 0; i < 50; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		if(p[i].posX == -1)
 			p[i].id = -1;
