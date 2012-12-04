@@ -46,11 +46,11 @@ public class CharacterManager : MonoBehaviour
 
     private bool readyForNewTarget;
 
-    public int _numberOfPeopleRightNow;
+    //public int _numberOfPeopleRightNow;
     private float[] pointX;
 
     private static PropertyInfo _mSystemCopyBufferProperty = null;
-    private float MoveSpeed = 2.6f;
+    public float MoveSpeed = 2.6f;
 
     private float MovingThreshold = 2f;
 
@@ -65,7 +65,7 @@ public class CharacterManager : MonoBehaviour
         _pixieDefaultPosition = new Vector3(0, Character_Y_Default, Character_Z_Default);
 	    _characterNumber = 0;
 
-	    SpawnCharacters(20);
+	    SpawnCharacters(10);
 	    GetNewTarget();
         timer = WaitTimeToGetNewTarget;
 	    inputError = false;
@@ -178,8 +178,10 @@ public class CharacterManager : MonoBehaviour
         if (!_text.StartsWith("q") && !_text.EndsWith("q"))
         {
             inputError = true;
-            throw new InvalidOperationException("ERROR - There is something wrong with the ClipBoard function data! Are you sure the OpenCV program is running?");
+            //throw new InvalidOperationException("ERROR - There is something wrong with the ClipBoard function data! Are you sure the OpenCV program is running?");
         }
+        else
+            inputError = true;
 
         // WE START WITH THIS DATA:
         // q i5p0.5 i42p0.5 i6p0.6 i7p0.341 i123p-1 q
@@ -207,7 +209,7 @@ public class CharacterManager : MonoBehaviour
                 Position[i] = 1f - Position[i]; // flip so it is not mirrored
         }
         //print("Here: " + Math.Round(Position[10]));
-        _numberOfPeopleRightNow = (int) ID.Length;
+        //_numberOfPeopleRightNow = (int) ID.Length;
         
         // new end
 
@@ -316,14 +318,15 @@ public class CharacterManager : MonoBehaviour
         if (Position.Length < Characters.Count)
         {
             inputError = true;
-            throw new InvalidOperationException("ERROR - input data is smaller than amount of characters in the list");
+            //throw new InvalidOperationException("ERROR - input data is smaller than amount of characters in the list");
         }
-
-        if (Position.Length > Characters.Count)
+        else if (Position.Length > Characters.Count)
         {
             inputError = true;
-            throw new InvalidOperationException("ERROR - input data is larger than amount of characters in the list");
+            //throw new InvalidOperationException("ERROR - input data is larger than amount of characters in the list");
         }
+        else
+            inputError = false;
 
 
         //print("POSITION LENGTH = " + Position.Length + " and Characters count = " + Characters.Count);
