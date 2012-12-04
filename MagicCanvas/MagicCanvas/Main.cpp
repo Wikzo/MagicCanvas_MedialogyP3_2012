@@ -10,12 +10,14 @@ using namespace cv;
 /*TODOs 
 don't go throung the hole picture in the beginning - Done
 get the speed of each person in the beginning and make the initial movevector adapt - Done needs to be tested
+setupBG autofunction - Done
 
 occlusion instead of midtpoint
 improve recursion 
 automized setup function (both take bg and find height of the upper loi) - first in the libary
 seperate the upper from the lower analysis (when low discard high)
 */
+void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged);
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);
 
@@ -61,9 +63,11 @@ int main(){
 	currentPicture.newInitialMoveVectorProduct = 0;
 	currentPicture.openOldMoveVector();
 
+	configBG(BG, camera1, 100, 600, 5);
+
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
-		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't change
+		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't changeconf
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		//currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
 		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, 20, currentPicture.height/2);
@@ -190,5 +194,80 @@ void setupP(const int &numbersOfpersons, Picture::person personArray[])
 	{
 		personArray[i].pId = i;
 		personArray[i].posX = -1;
+	}
+}
+void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged)
+{
+	Picture test1;
+	Picture test2;
+	test1.initialize(camera1);
+	test2.initialize(camera1);
+
+	double framesUnchangeged = 0;
+	while(true)
+	{
+		test1.refresh(camera1);
+		waitKey(30);
+		test2.refresh(camera1);
+		double pixelChange = 0;
+		double pixelsChanged = 0;
+		
+
+		for(int x = 0; x < test1.width; x++)
+		{
+			for(int y = 0; y < test1.height; y++)
+			{
+				pixelChange = 0;
+				if(test1.pixelR[x][y] - test2.pixelR[x][y] > 0)
+					pixelChange += test1.pixelR[x][y] - test2.pixelR[x][y];
+				else
+					pixelChange += test2.pixelR[x][y] - test1.pixelR[x][y];
+
+				if(test1.pixelG[x][y] - test2.pixelG[x][y] > 0)
+					pixelChange += test1.pixelG[x][y] - test2.pixelG[x][y];
+				else
+					pixelChange += test2.pixelG[x][y] - test1.pixelG[x][y];
+
+				if(test1.pixelB[x][y] - test2.pixelB[x][y] > 0)
+					pixelChange += test1.pixelB[x][y] - test2.pixelB[x][y];
+				else
+					pixelChange += test2.pixelB[x][y] - test1.pixelB[x][y];
+				if(pixelChange > threshholdPixelChange)
+					pixelsChanged++;
+				//cout << pixelChange << endl;
+
+			}
+		}
+		cout << pixelsChanged << endl;
+		if(pixelsChanged < threshholdPixelsChanged)
+			framesUnchangeged++;
+		else
+			framesUnchangeged = 0;
+
+		if(framesUnchangeged >= threshholdFramesChanged)
+		{
+			BG.refresh(camera1);
+			return;
+		}
+		//pixelChange /= test1.width;
+		//pixelChange /= test1.height;
+		//cout << pixelChange << endl;
+
+		//		if(!((test1.pixelB[x][y] - test2.pixelB[x][y] > threshhold || test1.pixelB[x][y] - test2.pixelB[x][y] < -1*threshhold)
+		//			|| (test1.pixelR[x][y] - test2.pixelR[x][y] > threshhold || test1.pixelR[x][y] - test2.pixelR[x][y] < -1*threshhold)
+		//			|| (test1.pixelG[x][y] - test2.pixelG[x][y] > threshhold || test1.pixelG[x][y] - test2.pixelG[x][y] < -1*threshhold)))
+		//		{
+		//			picturesWithoutChanges = 1;
+		//		}
+		//	}
+		//}
+		//if(picturesWithoutChanges == 1)
+		//{
+		//	BG.refresh(camera1);
+		//	return;
+
+		//}
+
+		////return 0;
 	}
 }
