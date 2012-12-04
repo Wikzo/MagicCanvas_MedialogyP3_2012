@@ -15,15 +15,17 @@ public class TimeManager : MonoBehaviour
     public GameObject SunRotator;
 
     private static int santaMoveMinute;
-    private static int santaLastMoveHour = 59;
+    private static int lastSantaMoveMinute;
+    //private static int santaLastMoveHour = 59;
 
     private float sunStartLocation = 65f;
-    private float sunStopLocation = -65f;
-    private float sunFullDayRotation = 0;
+    //private float sunStopLocation = -65f;
+    //private float sunFullDayRotation = 0;
 
 	// Use this for initialization
 	void Start ()
 	{
+        Screen.showCursor = false;
 	    LightsTurnOn = true;
 	    GetRandomSantaTime();
 	}
@@ -35,7 +37,7 @@ public class TimeManager : MonoBehaviour
         timeString = DateTime.Now.ToString("HH");
 	    int.TryParse(timeString, out timeHour);
 
-        // Seconds
+        // Minutes
         timeString = DateTime.Now.ToString("mm");
 	    int.TryParse(timeString, out timeMinutes);
 
@@ -60,7 +62,7 @@ public class TimeManager : MonoBehaviour
 	        }
 	    }*/
 
-         //DEBUG TIME BUTTONS ---------------------------------
+         //DEBUG TIME BUTTONS END ---------------------------------
 
 	    //print(timeHour + ":" + timeMinutes);
 
@@ -94,6 +96,11 @@ public class TimeManager : MonoBehaviour
                 DirectionLight.light.intensity = 0; // Hjoerring opens at 10
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0, -16.25f * timeHour + 227.5f);
 
+                if (timeMinutes == santaMoveMinute)
+                {
+                    SantaClaus.SantaMove = true;
+                }
+
                 break;
 
             case 11:                                                            // Becoming day
@@ -105,7 +112,6 @@ public class TimeManager : MonoBehaviour
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
-                    santaLastMoveHour = 16;
                 }
                 break;
             case 12:
@@ -118,7 +124,6 @@ public class TimeManager : MonoBehaviour
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
-                    santaLastMoveHour = 15;
                 }
                 
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0,
@@ -128,7 +133,6 @@ public class TimeManager : MonoBehaviour
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
-                    santaLastMoveHour = 16;
                 }
 
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0,
@@ -139,7 +143,6 @@ public class TimeManager : MonoBehaviour
                 if (timeMinutes == santaMoveMinute)
                 {
                     SantaClaus.SantaMove = true;
-                    santaLastMoveHour = 17;
                 }
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0,
                                                                  -16.25f*timeHour + 227.5f);
@@ -170,7 +173,21 @@ public class TimeManager : MonoBehaviour
 
     public static void GetRandomSantaTime()
     {
-        santaMoveMinute = Random.Range(1, 59);
+        int tries = 0;
+
+        do
+        {
+            santaMoveMinute = Random.Range(1, 59);
+            tries++;
+            //print("tries:" + tries);
+        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 20 && tries < 10);
+
         //print("Santa move minute: " + santaMoveMinute);
+        lastSantaMoveMinute = santaMoveMinute;
     }
+
+    /*void OnGUI()
+    {
+        GUI.Label(new Rect(50, 50, 200, 20), timeHour + ":" + timeMinutes);
+    }*/
 }

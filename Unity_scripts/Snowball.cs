@@ -66,7 +66,7 @@ public class Snowball : MonoBehaviour
     {
         isRespawning = false;
 
-        if (collision.transform.tag != "Wall")
+        if (collision.transform.tag != "Wall" && collision.transform.tag != "Gift")
             transform.localScale = new Vector3(transform.localScale.x + growSize, transform.localScale.y + growSize, transform.localScale.z + growSize);
     }
 }
