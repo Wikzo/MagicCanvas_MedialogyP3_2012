@@ -113,7 +113,7 @@ public:
 	void resetChannelsExcept(char RorGorB);
 
 	void coutPersons();
-	void clipPersonsAll();
+	void clipPersonsAll(int heightOfUpperFOI, int procentOfScreenUsedInTheUpperFOI);
 	void clipPersonsSmart();
 	void clipboard(const string &s);
 	

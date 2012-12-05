@@ -1013,7 +1013,7 @@ void Picture::coutPersons()
 
 	}
 }
-void Picture::clipPersonsAll()
+void Picture::clipPersonsAll(int heightOfUpperFOI, int procentOfScreenUsedInTheUpperFOI)
 {
 	ostringstream ss;
 	ss << "q";
@@ -1021,7 +1021,13 @@ void Picture::clipPersonsAll()
 	{
 		if(p[i].posX == -1)
 			p[i].id = -1;
-		ss <<" i"<< p[i].id << "p" << p[i].posX;
+		if (p[i].heightOfROI == heightOfUpperFOI)
+		{
+			//perspectiv view adjustment:
+			ss <<" i"<< p[i].id << "p" << (p[i].posX*(procentOfScreenUsedInTheUpperFOI/100) + (((100-procentOfScreenUsedInTheUpperFOI)/200)*width));
+		}
+		else
+			ss <<" i"<< p[i].id << "p" << p[i].posX;
 	}
 	ss << " q";
 	string s(ss.str());

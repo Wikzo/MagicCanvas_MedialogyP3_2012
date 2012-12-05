@@ -12,10 +12,13 @@ don't go throung the hole picture in the beginning - Done
 get the speed of each person in the beginning and make the initial movevector adapt - Done needs to be tested
 setupBG autofunction - Done
 
+seperate the upper from the lower analysis (when low discard high)
+map upper to canvas
+
 occlusion instead of midtpoint
 improve recursion 
 automized setup function (both take bg and find height of the upper loi) - first in the libary
-seperate the upper from the lower analysis (when low discard high)
+
 */
 void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged);
 void clipboard(const string &s);
@@ -71,10 +74,11 @@ int main(){
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		//currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
 		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, 20, currentPicture.height/2);
+
 		// Closing
 		
-		//currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
-		//currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
+		currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
+		currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
 
 		for(int i = 0; i < maxNumberOfPersons; i++)
 		{
@@ -133,7 +137,7 @@ int main(){
 
 		currentPicture.coutPersons();
 
-		currentPicture.clipPersonsAll();
+		currentPicture.clipPersonsAll(currentPicture.height/2, 50);
 
 #pragma region how to write to a file
 		//ofstream myFile ("test.txt");
