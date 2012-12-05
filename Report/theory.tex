@@ -114,11 +114,11 @@ Using the tool correctly, one will be able to adjust the input so that only usab
 %%% I SKIPPED THIS BECAUSEI WROTE IT MYSELF - JOE 5/12 - 2012 %%%
 \section{Thresholding}
 \label{sec:Thresholding}
-Threshold is one of the most fundamental operations in point processing \fixme{WHAT is point processing? - Gustav} and is used to make an input picture binary, i.e. either black (0) or white (255). Making an image binary means to show the image in only completely black and completely white pixel values. \\
-This could be useful in programs where you need to find silhouettes - tracking a person for example - and smaller details are not as important. \\
-To determine which pixels that should be completely black and which that should be completely white a threshold value is required. The threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people that is 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied
+Thresholding is one of the most fundamental operations in point processing \fixme{WHAT is point processing? - Gustav} and it is performed to make an input picture binary, i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only completely black and completely white pixel values. \\
+This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not of importance.\\
+To determine which pixels that should be completely black and which that should be completely white a fixed thresholding value is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy; pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied.
 
-Using the same analogy, somebody decided that the border between being too young and just old enough should be 18 years. This age could easily be something different, such as 17 or 24. The same is true with thresholding: you have to decide when pixels are "old" enough (bright). If they are too young (dark), they cannot get access.
+Using the same analogy that somebody decided that the border between being too young and just old enough, should be 18 years. This age could easily be something different, such as 17 or 24. The same is relevant with thresholding. You have to decide when pixels are "old" enough (bright). If they are too young (dark), they cannot get access.
 
 In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up the formula for making a threshold is shown in equation \ref{threshold}.
 \begin{equation}
@@ -130,7 +130,7 @@ In practice this means that pixels with values greater than a threshold is set t
 \end{equation}
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
-When choosing the threshold value it is important to think about what the wanted output is. It differs  from image to image how effective thresholding is based on the difference between the object and the background. If the background and the object you want to find is very different in color, then it is easy to distinguish between them and choose an effective threshold value. However, if the object and background are very similar, then it becomes harder to do choose a threshold value, since you will have to chose between losing some information from the wanted object in order to remove background noise, or keep the object clear but have more background noise. \\
+When setting the thresholding value it is important to think about what is wanted regarding the output. It differs  from image to image how effective thresholding is, based on the contrast difference between the object and the background. If the background, and the object you want to find are very different in color and/or contract, then it is easy to distinguish between them and choose an effective threshold value. However; if the object and background are very similar, it becomes harder to do choose a thresholding value. As you will have to chose between losing information associated to the object of interest or to gather some background noise, but then keeping the object of interest.\\
 To get a better understanding of this, look at the histograms shown in \eqref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
 
 It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, while the rightmost histogram has very similar object and backgrounds.
@@ -152,7 +152,7 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \end{minipage}
 \end{figure}
 
-Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \eqref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after thresholding is applied. However, looking at figure \eqref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \eqref{fig:ComplicatedThreshold}, gives a very poor silhouette of a woman because the background and the object has very similar colors. 
+Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \eqref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \eqref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \eqref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -171,7 +171,7 @@ Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture w
 \end{minipage}
 \end{figure}
  
-This proves the point that finding a functional threshold value is not always simple, and for finding a silhouette for example it is a great help to somehow make a clear transition from the object and the background..
+This proves the point that finding a functional thresholding value is not always straightforward. As for finding a silhouette it is of great help to make a clear transition from the object and the background.
 
 \section{Morphology}
 Morphology is a collection of operations used to analyse and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well.
@@ -310,18 +310,16 @@ When the purpose of implementing these operations is to find the edges, it is im
 \label{fig:Boundary}
 \end{figure}
 
-%%% JOE GOT HERE 5/12 - 2012!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2012!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2012!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2012!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2012!!! %%%%%
+%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
+%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
+%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
+%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
+%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
 \section{Region of interest (ROI)}
-The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time, and the quality and amount of pixels available increases all the time. \\
-A common thinking is that the more pixels, the better quality, and the better output. However this should be thought through. How important is the quality? Is it even necessary to show every single pixel or is it just as good with a lower number of pixels?\\
-When the computer make changes to a picture it has to run through every single pixel one at a time. Therefore it would make a big difference to decrease the amount of pixels used.\\
-Beside thinking about the amount of pixels used a great tool is ROI. As the name alludes ROI takes a region in the picture that is specially interesting. This region is usually enclosed of a rectangle, and then only the pixels inside this rectangle is being processed. All the pixels outside of the rectangle is being ignored, and unnecessary processing is prevented, saving time and possibly providing a faster frame rate.
-
-An example of how this could be used is taking a photo where only the head is interesting. The head should then be the region of interest, and only the pixels inside the rectangle that illustrates the region of interest will then be processed. This can be shown on figure \eqref{fig:Region of Interest}. This figure illustrate how many pixels that can be ignored, and gives a great overview of how much wasted energy that can be saved.
+The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time and the quality and amount of pixels information are enhanced simultaneously.\\
+Generally one would think that the more pixels, the better quality, and the better output. This should however be reconsidered. Having the opportunity to access several pixels is a great opportunity to produce some magnificent pictures, but when a computer makes image manipulations changes to a picture it has to run through every single pixel one at a time. This means that in fact it would mean a lot to decrease the amount of pixels the computer has to process.\\
+Therefore using a technique called Region of Interest or "ROI", is often used to reduce the amount of pixels being processed. ROI takes a region in the picture that is of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI is ignored and unnecessary processing is prevented.
+An example of how this could be used is taking a photo where only the head is of interest. The head then appears as the region of interest and only the pixels within the rectangle is processed. This is illustrated on figure \eqref{fig:Region of Interest}. This figure illustrates how many pixels that can be ignored.
 
 \begin{figure}[htbp] 
 \centering 
