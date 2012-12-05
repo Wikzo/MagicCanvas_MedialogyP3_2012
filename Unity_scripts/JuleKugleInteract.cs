@@ -9,21 +9,6 @@ public class JuleKugleInteract : MonoBehaviour
     private float minRotation = 333f;
     private float maxRotation = 400f;
 
-    void FixedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            bool left = (Random.Range(0, 2) == 1);
-            float randomForce = Random.Range(minForce, maxForce);
-
-            if (left)
-                gameObject.rigidbody.AddForce(Vector3.left * randomForce, ForceMode.Impulse);
-            else
-                gameObject.rigidbody.AddForce(Vector3.right * randomForce, ForceMode.Impulse);
-        }
-
-    }
-
     void Start()
     {
 
@@ -39,14 +24,5 @@ public class JuleKugleInteract : MonoBehaviour
             gameObject.rigidbody.AddForce(Vector3.left * randomForce, ForceMode.Impulse);
         else
             gameObject.rigidbody.AddForce(Vector3.right * randomForce, ForceMode.Impulse);
-    }
-
-
-    void OnTriggerEnter(Collider collider)
-    {
-        if (collider.tag == "Player")
-        {
-            gameObject.rigidbody.AddForce(Vector3.right);
-        }
     }
 }

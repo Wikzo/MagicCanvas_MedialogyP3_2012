@@ -35,8 +35,8 @@ public class CharacterManager : MonoBehaviour
     private const float BACKGROUND_WIDTH = 220;
     private string _text;
     Vector3 _pixieDefaultPosition;
-    private Vector3 outOfPicture_left = new Vector3(-32f, 90f, -5f);
-    Vector3 outOfPicture_right = new Vector3(257f, 90f, -5f);
+    private Vector3 outOfPicture_left = new Vector3(-20f, 90f, -5f);
+    Vector3 outOfPicture_right = new Vector3(238f, 90f, -5f);
     private const float REFRESH_TIME = 0.5f;
     //  private float[] _xPositions;
 
@@ -58,6 +58,13 @@ public class CharacterManager : MonoBehaviour
     private const float WaitTimeToGetNewTarget = 0.5f;
 
     private bool inputError;
+    private bool[] characterHasBeenSwitched;
+
+    private char[] c;
+
+    private int numberToSpawn = 10;
+
+    private List<int> listOfThreeLastCharacters = new List<int>(); 
 
     // Use this for initialization
 	void Start ()
@@ -65,10 +72,21 @@ public class CharacterManager : MonoBehaviour
         _pixieDefaultPosition = new Vector3(0, Character_Y_Default, Character_Z_Default);
 	    _characterNumber = 0;
 
-	    SpawnCharacters(10);
+        c = new char[1];
+        c[0] = 'i'; // used to split and not get empty string back
+
+        inputError = false;
+        characterHasBeenSwitched = new bool[numberToSpawn];
+        ID = new string[numberToSpawn];
+        Position = new float[numberToSpawn];
+
+        SpawnCharacters(numberToSpawn);
 	    GetNewTarget();
         timer = WaitTimeToGetNewTarget;
-	    inputError = false;
+
+        for (int i = 0; i < 10; i++)
+                characterHasBeenSwitched[i] = false;
+
 
     }
 	
@@ -142,14 +160,28 @@ public class CharacterManager : MonoBehaviour
 
     void GetRandomCharacter()
     {
-        int randomCharacter = 0;
-        int tryNumber = 0;
-
-        // Try to get a character that has not yet been spawned
-        while (tryNumber < 20 && _characterNumber == randomCharacter)
+        int randomCharacter = Random.Range(0, CharacterPrefab.Length);
+        bool isSame = true;
+        int tries = 0;
+        
+        while (isSame == true && tries < 10)
         {
-            tryNumber++;
+            for (int i = 0; i < listOfThreeLastCharacters.Count; i++)
+            {
+                if (listOfThreeLastCharacters[i] != randomCharacter)
+                    isSame = false;
+            }
+
             randomCharacter = Random.Range(0, CharacterPrefab.Length);
+            tries++;
+        }
+
+        if (listOfThreeLastCharacters.Count < 3)
+            listOfThreeLastCharacters.Add(randomCharacter);
+        else
+        {
+            listOfThreeLastCharacters.RemoveAt(0);
+            listOfThreeLastCharacters.Add(randomCharacter);
         }
 
         _characterNumber = randomCharacter;
@@ -165,12 +197,6 @@ public class CharacterManager : MonoBehaviour
     {
         _text = ClipBoard; // raw data from clipboard
 
-        // input should look like this:
-        // pp0.1p0.2p0.3q
-
-        // person 1 = 0.1
-        // person 2 = 0.2
-        // person 3 = 0.3
 
         // new
 
@@ -190,13 +216,7 @@ public class CharacterManager : MonoBehaviour
         string[] removeStartAndEnd = noWhiteSpace.Split('q'); // to get away with blank space
 
         // now we have: i5p0.5i6p0.6i7p0.7
-        char[] c = new char[1];
-        c[0] = 'i'; // used to split and not get empty string back
         string[] tempIDs = removeStartAndEnd[1].Split(c, StringSplitOptions.RemoveEmptyEntries);
-
-        // now we have: [blankSpace];5p0.5;6p0.6;7p0.7
-        ID = new string[tempIDs.Length];
-        Position = new float[tempIDs.Length];
 
         // now we have: string array ID with names + float array Position with position values
         for (int i = 0; i < ID.Length; i++)
@@ -237,7 +257,10 @@ public class CharacterManager : MonoBehaviour
         for (int i = 0; i < Characters.Count; i++)
         {
             if (Position[i] == -1) // don't give a target to an invalid character
+            {
+                Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.NoAnimation;
                 continue;
+            }
 
             if (Characters[i].tag == "Angel")
                 target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Angel_Y_Min, Angel_Y_Max),
@@ -344,30 +367,39 @@ public class CharacterManager : MonoBehaviour
                 {
                     if (Characters[i].transform.position.x > 111)
                     {
-                        GameObject oldCharacter = Characters[i];
+                        Characters[i].transform.position = outOfPicture_right;
+                        if (characterHasBeenSwitched[i] == false)
+                        {
+                            GameObject oldCharacter = Characters[i];
+                            GetRandomCharacter();
+                            GameObject newCharacter = (GameObject)Instantiate(CharacterPrefab[_characterNumber], oldCharacter.transform.position,
+                                            Quaternion.Euler(270f, 0, 0));
 
-                        oldCharacter.transform.position = outOfPicture_right;
-                        GetRandomCharacter();
-                        GameObject newCharacter = (GameObject)Instantiate(CharacterPrefab[_characterNumber], oldCharacter.transform.position,
-                                        Quaternion.Euler(270f, 0, 0));
+                            Characters[i] = newCharacter;
 
-                        Characters[i] = newCharacter;
-
-                        Destroy(oldCharacter);
+                            characterHasBeenSwitched[i] = true;
+                            Destroy(oldCharacter);
+                        }
+                        
 
                     }
-                    else if (Characters[i].transform.position.x < 111)
+                    else if (Characters[i].transform.position.x <= 111)
                     {
-                        GameObject oldCharacter = Characters[i];
+                        Characters[i].transform.position = outOfPicture_left;
+                        
+                        if (characterHasBeenSwitched[i] == false)
+                        {
+                            GameObject oldCharacter = Characters[i];
+                            GetRandomCharacter();
+                            GameObject newCharacter = (GameObject)Instantiate(CharacterPrefab[_characterNumber], oldCharacter.transform.position,
+                                            Quaternion.Euler(270f, 0, 0));
 
-                        oldCharacter.transform.position = outOfPicture_left;
-                        GetRandomCharacter();
-                        GameObject newCharacter = (GameObject)Instantiate(CharacterPrefab[_characterNumber], oldCharacter.transform.position,
-                                        Quaternion.Euler(270f, 0, 0));
+                            Characters[i] = newCharacter;
 
-                        Characters[i] = newCharacter;
-
-                        Destroy(oldCharacter);
+                            characterHasBeenSwitched[i] = true;
+                            Destroy(oldCharacter);
+                        }
+                        
                     }
 
                     Characters[i].name = ID[i] + "_invalid";
@@ -375,6 +407,7 @@ public class CharacterManager : MonoBehaviour
             }
             else
             {
+                characterHasBeenSwitched[i] = false;
                 Characters[i].name = ID[i];
 
                 SmoothMove();
