@@ -89,7 +89,7 @@ public:
 
 	//This function compares the input from the camera to the bg. When the input is bright with the chosen threshold the output pixel will be true.
 	void refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold);
-	void refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfUpperFOI);
+	void refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfLowerFOI, int heightOfUpperFOI);
 	void drawPictureAt(point lowerLeftCorner, int newidth, Picture pictureToDraw);
 	void makeBlack();
 	void output(string windowName);

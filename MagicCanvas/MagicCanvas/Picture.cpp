@@ -621,12 +621,13 @@ void Picture::refreshBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCa
 		}
 	}
 }
-void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfUpperFOI)
+void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfLowerFOI, int heightOfUpperFOI)
 {
 	captureToStoreCamra >> tmp;
 	for(int x = 0; x < width; x++)
 	{
-		for(int y = height-1; y > height - (int)(((float)(procentOfScreenUsed/2)/100)*height) ; y--)
+		//for(int y = height-1; y > height - (int)(((float)(procentOfScreenUsed/2)/100)*height) ; y--)
+		for(int y = heightOfLowerFOI; y > heightOfLowerFOI - (int)(((float)(procentOfScreenUsed/2)/100)*height); y--)
 		{
 			if((int)tmp.at<Vec3b>(y,x)[1] - refPicture.pixelG[x][y] < -1*threshhold) 
 			{
@@ -637,6 +638,7 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 				pixelR[x][y] = 0;
 			}
 		}
+		/*
 		for(int y = heightOfUpperFOI; y > heightOfUpperFOI - (int)(((float)(procentOfScreenUsed/2)/100)*height); y--)
 		{
 			if((int)tmp.at<Vec3b>(y,x)[1] - refPicture.pixelG[x][y] < -1*threshhold) 
@@ -648,36 +650,45 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 				pixelR[x][y] = 0;
 			}
 		}
+		*/
 	}
 }
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI)
 {
-	int y = height-1-radiusForMorfology;
-	for(int i = 0; i < 2; i++){
-		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++){
+	//int y = height-1-radiusForMorfology;
+
+	int y = heightOfUpperFOI;
+	/*for(int i = 0; i < 2; i++){*/
+		for(int x = 0; x < width * (procentOfScreenUsedForEnterAndExit/2) / 100; x++)
+		{
+			//cout << x << ","<< y <<endl;
+			//remove:
 			if(pixelR[x][y] == 255)
 			{ 
-#pragma region showEnterExit
-				//pixelR[x][y] = 255;
-				//pixelG[x][y] = 0;
-				//pixelB[x][y] = 0;
-#pragma endregion
+//#pragma region showEnterExit
+//				pixelR[x][y] = 255;
+//				pixelG[x][y] = 0;
+//				pixelB[x][y] = 0;
+//#pragma endregion
+
+				//cout << "lala";
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
 				// find the next empty:
 
-				int i = 0;
+				int j = 0;
 				do
 				{
-					currentPersonId = i;
-					i++;
+					currentPersonId = j;
+					j++;
 				} 
-				while (i < 51 && p[i-1].posX != -1);
+				while (j < 51 && p[j-1].posX != -1);
 
 				startFireLoggingPersons(currentPoint);
 
-				if(p[currentPersonId].posX != -1){
+				if(p[currentPersonId].posX != -1)
+				{
 					personCount++;
 					p[currentPersonId].notAddedToTheNewInitialMoveVectorProductYet = true;
 					p[currentPersonId].id = personCount;
@@ -686,31 +697,33 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				}
 			}
 		}
-		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--){
+		for(int x = width-1; x > width - ((width * (procentOfScreenUsedForEnterAndExit/2)) / 100); x--)
+		{
 			if(pixelR[x][y] == 255)
 			{
-#pragma region showEnterExit
-				//pixelR[x][y] = 255;
-				//pixelG[x][y] = 0;
-				//pixelB[x][y] = 0;
-#pragma endregion
+//#pragma region showEnterExit
+//				pixelR[x][y] = 255;
+//				pixelG[x][y] = 0;
+//				pixelB[x][y] = 0;
+//#pragma endregion
 
 				point currentPoint;
 				currentPoint.x = x;
 				currentPoint.y = y;
 				// find the next empty:
 
-				int i = 0;
+				int j = 0;
 				do
 				{
-					currentPersonId = i;
-					i++;
+					currentPersonId = j;
+					j++;
 				} 
-				while (i < 51 && p[i-1].posX != -1);
+				while (j < 51 && p[j-1].posX != -1);
 
 				startFireLoggingPersons(currentPoint);
 
-				if(p[currentPersonId].posX != -1){
+				if(p[currentPersonId].posX != -1)
+				{
 					personCount++;
 					p[currentPersonId].notAddedToTheNewInitialMoveVectorProductYet = true;
 					p[currentPersonId].id = personCount;
@@ -719,8 +732,8 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heig
 				}
 			}
 		}
-		y = heightOfUpperFOI;
-	}
+	//	y = heightOfUpperFOI;
+	//}
 }
 void Picture::startFireLoggingPersons(point startingPoint)
 {
@@ -738,6 +751,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	//TODO height and width -- test if this is done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while(true)
 	{
+		//cout << "lala";
 		pixelB[currentPosition.x][currentPosition.y] = 255;
 
 		//if right is available, is free and not burned
@@ -798,7 +812,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	}
 
 	//TODO- make the following recursive/build into the recursive function
-
+	//cout << pixelCount << " min: " << minPixelToBeAPerson;
 	if(pixelCount > minPixelToBeAPerson)
 	{
 		p[currentPersonId].minX = height + 100;
