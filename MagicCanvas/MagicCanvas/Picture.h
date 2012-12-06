@@ -103,7 +103,7 @@ public:
 	void findAllBLOBs(Picture &tmpPicture, Person persons[], int maxNumberOfPersons);
 	void placeHats(int minRowLength, int minRowWidth, point &startOfTheLine, int &lengthOfTheLine, Picture hat);
 
-	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int heightOfUpperFOI);
+	void lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int brightestYatX[]);
 	void handleFoundPersons();
 
 	void startFireLoggingPersons(point startingPoint);
