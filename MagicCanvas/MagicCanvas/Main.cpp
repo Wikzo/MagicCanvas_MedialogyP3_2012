@@ -12,17 +12,19 @@ don't go throung the hole picture in the beginning - Done
 get the speed of each person in the beginning and make the initial movevector adapt - Done needs to be tested
 setupBG autofunction - Done
 
-seperate the upper from the lower analysis (when low discard high)
-map upper to canvas
+seperate the upper from the lower analysis (when low discard high) -done by just taking lower
+map upper to canvas -done by just taking lower
 
 occlusion instead of midtpoint
 improve recursion 
-automized setup function (both take bg and find height of the upper loi) - first in the libary
+automized setup function (both take bg and find height of the upper loi)
 
 */
-void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged);
+void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi);
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);
+
+int brightestYatX[1000];
 
 int main(){
 	//find way to optimize the initial move vector
@@ -35,10 +37,10 @@ int main(){
 	int widthOfHat; // Red Line (real distance of the head)
 
 	VideoCapture camera1;
-	camera1.open(0);
+	camera1.open(1);
 
-	VideoCapture testVideo1;
-	testVideo1.open("Library_Observation_Nov19.wmv");
+	//VideoCapture testVideo1;
+	//testVideo1.open("Library_Observation_Nov19.wmv");
 
 	Picture currentPicture; 
 	Picture BG; // 
@@ -51,8 +53,8 @@ int main(){
 	hat.initialize("nisse.jpg");
 	
 	tmpPicture.makeBlack(); // function to avoid colored pixels on the sisdes of the transformed image.
-	currentPicture.minPixelToBeAPerson = 100;
-	currentPicture.radiusForMorfology = 3;
+	currentPicture.minPixelToBeAPerson = 50;
+	currentPicture.radiusForMorfology = 5;
 	currentPicture.numberOfPersons = 0;
 	currentPicture.initialMoveVector = 0.1f;
 
@@ -60,26 +62,28 @@ int main(){
 
 	setupP(maxNumberOfPersons, currentPicture.p);
 	currentPicture.personCount = 0;
-	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.2f);
+	currentPicture.maxAmountToMove = (int) (currentPicture.width*0.4f);
 	currentPicture.makeBlack();
 
 	currentPicture.newInitialMoveVectorProduct = 0;
 	currentPicture.openOldMoveVector();
-
-	configBG(BG, camera1, 100, 600, 5);
+	int lroi = currentPicture.height/4*3-25;
+	configBG(BG, camera1, 50, 10, 5, lroi);
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't changeconf
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		//currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, 20, currentPicture.height/2);
-
-		// Closing
 		
-		currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture); // radius of 3 to erode and dilate
-		currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
+		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, 20, (currentPicture.height/4)*3, (currentPicture.height/2));
 
+		
+		// Closing
+		currentPicture.dilate(currentPicture.radiusForMorfology, tmpPicture);
+		currentPicture.erode(currentPicture.radiusForMorfology, tmpPicture);
+		currentPicture.resetChannelsExcept('R');
+		
 		for(int i = 0; i < maxNumberOfPersons; i++)
 		{
 			if(currentPicture.p[i].posX != -1) // <- does the person exist?
@@ -132,12 +136,14 @@ int main(){
 				}
 			}
 		}
-
-		currentPicture.lookForNewPersons(20, currentPicture.height/2);
-
+		
+		currentPicture.lookForNewPersons(20, brightestYatX);
+		
 		currentPicture.coutPersons();
+		
 
 		currentPicture.clipPersonsAll(currentPicture.height/2, 50);
+		
 
 #pragma region how to write to a file
 		//ofstream myFile ("test.txt");
@@ -151,14 +157,14 @@ int main(){
 #pragma endregion
 
 		currentPicture.output("video");
-		
+		//
 		int keyInput = waitKey(10);
 		//cout << keyInput;
 		if (keyInput == 115) // <-s
 		{
-			
+			configBG(BG, camera1, 50, 10, 5, lroi);
 			BG.refresh(camera1);
-			BG.output("Window for control");
+			//BG.output("Window for control");
 		}
 		else if (keyInput == 27) // <-escape
 		{
@@ -200,7 +206,7 @@ void setupP(const int &numbersOfpersons, Picture::person personArray[])
 		personArray[i].posX = -1;
 	}
 }
-void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged)
+void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi)
 {
 	Picture test1;
 	Picture test2;
@@ -250,7 +256,34 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 
 		if(framesUnchangeged >= threshholdFramesChanged)
 		{
+			//BG.refresh(camera1);
+			//for(int x = 0; x < BG.width; x++)
+			//{
+			//	BG.pixelR[x][lroi] = 255;
+			//	BG.pixelG[x][lroi] = 0;
+			//	BG.pixelB[x][lroi] = 0;
+			//}
 			BG.refresh(camera1);
+
+			for(int x = 0; x < BG.width; x++)
+			{
+				int brightestVal = 0;
+				for(int y = 0; y < BG.height; y++)
+				{
+					if(BG.pixelR[x][y] > brightestVal)
+					{
+						brightestVal = BG.pixelR[x][y];
+						brightestYatX[x] = y;
+					}
+				}
+				BG.pixelR[x][brightestYatX[x]] = 255;
+				BG.pixelG[x][brightestYatX[x]] = 0;
+				BG.pixelB[x][brightestYatX[x]] = 0;
+			}
+			BG.output("Window for control");
+			BG.refresh(camera1);
+			
+			
 			return;
 		}
 		//pixelChange /= test1.width;
