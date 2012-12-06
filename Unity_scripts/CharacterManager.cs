@@ -15,19 +15,19 @@ public class CharacterManager : MonoBehaviour
 
     private float Snowman_Y_Min = 58.5f;
     private float Snowman_Y_Max = 75f;
-    
+
     private float NisseGirl_Y_Min = 47f;
     private float NisseGirl_Y_Max = 60f;
-    
+
     private float NisseBoy_Y_Min = 52.7f;
     private float NisseBoy_Y_Max = 81.3f;
 
     private float Angel_Y_Max = 155f;
     private float Angel_Y_Min = 123f;
-    
+
     private float Squirrel_Y_Min = 50f;
     private float Squirrel_Y_Max = 71f;
-    
+
     public GameObject[] CharacterPrefab;
     private int _characterNumber;
 
@@ -37,7 +37,7 @@ public class CharacterManager : MonoBehaviour
     Vector3 _pixieDefaultPosition;
     private Vector3 outOfPicture_left = new Vector3(-20f, 90f, -5f);
     Vector3 outOfPicture_right = new Vector3(238f, 90f, -5f);
-    private const float REFRESH_TIME = 0.5f;
+    private const float REFRESH_TIME = 0.1f;
     //  private float[] _xPositions;
 
     private string[] ID;
@@ -50,12 +50,12 @@ public class CharacterManager : MonoBehaviour
     private float[] pointX;
 
     private static PropertyInfo _mSystemCopyBufferProperty = null;
-    public float MoveSpeed = 2.6f;
+    public float MoveSpeed = 40f;
 
-    private float MovingThreshold = 2f;
+    private float MovingThreshold = 0.1f;
 
     private float timer;
-    private const float WaitTimeToGetNewTarget = 0.5f;
+    private const float WaitTimeToGetNewTarget = 0.1f;
 
     private bool inputError;
     private bool[] characterHasBeenSwitched;
@@ -64,13 +64,13 @@ public class CharacterManager : MonoBehaviour
 
     private int numberToSpawn = 10;
 
-    private List<int> listOfThreeLastCharacters = new List<int>(); 
+    private List<int> listOfThreeLastCharacters = new List<int>();
 
     // Use this for initialization
-	void Start ()
+    void Start()
     {
         _pixieDefaultPosition = new Vector3(0, Character_Y_Default, Character_Z_Default);
-	    _characterNumber = 0;
+        _characterNumber = 0;
 
         c = new char[1];
         c[0] = 'i'; // used to split and not get empty string back
@@ -81,32 +81,32 @@ public class CharacterManager : MonoBehaviour
         Position = new float[numberToSpawn];
 
         SpawnCharacters(numberToSpawn);
-	    GetNewTarget();
+        GetNewTarget();
         timer = WaitTimeToGetNewTarget;
 
         for (int i = 0; i < 10; i++)
-                characterHasBeenSwitched[i] = false;
+            characterHasBeenSwitched[i] = false;
 
 
     }
-	
-	// Update is called once per frame
-	void Update ()
-	{
+
+    // Update is called once per frame
+    void Update()
+    {
         GetReadyToMove();
 
         // Update target timer
-	    if (timer < WaitTimeToGetNewTarget)
-	    {
-	        timer += Time.deltaTime;
-	    }
-	    else if (timer >= WaitTimeToGetNewTarget)
-	    {
-	        timer = 0;
-	        GetNewTarget();
-	    }
+        if (timer < WaitTimeToGetNewTarget)
+        {
+            timer += Time.deltaTime;
+        }
+        else if (timer >= WaitTimeToGetNewTarget)
+        {
+            timer = 0;
+            GetNewTarget();
+        }
 
-	}
+    }
 
     void SpawnCharacters(int count)
     {
@@ -131,28 +131,28 @@ public class CharacterManager : MonoBehaviour
 
         #region OLD STUFF BEFORE NEW LOGGING SYSTEM
 
-//// Spawn multiple
-//        if (numberOfPixies > 1)
-//        {
-//            for (int i = 0; i < numberOfPixies; i++)
-//            {
-//                GetRandomCharacter();
-//                GameObject p =
-//                    (GameObject)
-//                    Instantiate(CharacterPrefab[_characterNumber], _pixieDefaultPosition, Quaternion.Euler(270f, 0, 0));
-//                p.name = "P" + i;
-//                Characters.Add(p);
-//            }
-//        }
-//        else if (numberOfPixies == 1)
-//        {
-//            GetRandomCharacter();
-//            GameObject p =
-//                (GameObject)
-//                Instantiate(CharacterPrefab[_characterNumber], _pixieDefaultPosition, Quaternion.Euler(270f, 0, 0));
-//            //p.name = "NewSpawner_" + Characters[Characters.Count - 1].name;
-//            Characters.Add(p);
-//        }
+        //// Spawn multiple
+        //        if (numberOfPixies > 1)
+        //        {
+        //            for (int i = 0; i < numberOfPixies; i++)
+        //            {
+        //                GetRandomCharacter();
+        //                GameObject p =
+        //                    (GameObject)
+        //                    Instantiate(CharacterPrefab[_characterNumber], _pixieDefaultPosition, Quaternion.Euler(270f, 0, 0));
+        //                p.name = "P" + i;
+        //                Characters.Add(p);
+        //            }
+        //        }
+        //        else if (numberOfPixies == 1)
+        //        {
+        //            GetRandomCharacter();
+        //            GameObject p =
+        //                (GameObject)
+        //                Instantiate(CharacterPrefab[_characterNumber], _pixieDefaultPosition, Quaternion.Euler(270f, 0, 0));
+        //            //p.name = "NewSpawner_" + Characters[Characters.Count - 1].name;
+        //            Characters.Add(p);
+        //        }
 
         #endregion
 
@@ -163,7 +163,7 @@ public class CharacterManager : MonoBehaviour
         int randomCharacter = Random.Range(0, CharacterPrefab.Length);
         bool isSame = true;
         int tries = 0;
-        
+
         while (isSame == true && tries < 10)
         {
             for (int i = 0; i < listOfThreeLastCharacters.Count; i++)
@@ -225,26 +225,26 @@ public class CharacterManager : MonoBehaviour
             ID[i] = "ID_" + temp[0]; // Save ID name
             float.TryParse(temp[1], out Position[i]); // Get position in float format
 
-            if (Position[i] > 0f)
-                Position[i] = 1f - Position[i]; // flip so it is not mirrored
+            /*if (Position[i] > 0f)
+                Position[i] = 1f - Position[i]; // flip so it is not mirrored*/
         }
         //print("Here: " + Math.Round(Position[10]));
         //_numberOfPeopleRightNow = (int) ID.Length;
-        
+
         // new end
 
         #region OLD STUFF BEFORE NEW LOGGING FORMAT
 
-//        string[] lines = _text.Split('p'); // array with each BLOB data (separated by a 'p')
-//        pointX = new float[lines.Length - 2]; // array with float points for each character
-//
-//        // Get first value - there is a mismatch between lines[] and pointX[], since lines[0] is EMPTY
-//        for (int i = 0; i < pointX.Length; i++)
-//        {
-//            float.TryParse(lines[i + 1], out pointX[i]);
-//        }
-//
-//        _numberOfPeopleRightNow = (int) pointX.Length; // first value is number of people
+        //        string[] lines = _text.Split('p'); // array with each BLOB data (separated by a 'p')
+        //        pointX = new float[lines.Length - 2]; // array with float points for each character
+        //
+        //        // Get first value - there is a mismatch between lines[] and pointX[], since lines[0] is EMPTY
+        //        for (int i = 0; i < pointX.Length; i++)
+        //        {
+        //            float.TryParse(lines[i + 1], out pointX[i]);
+        //        }
+        //
+        //        _numberOfPeopleRightNow = (int) pointX.Length; // first value is number of people
 
         #endregion
 
@@ -263,11 +263,14 @@ public class CharacterManager : MonoBehaviour
             }
 
             if (Characters[i].tag == "Angel")
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Angel_Y_Min, Angel_Y_Max),
+            {
+                target[i] = new Vector3(Position[i] * BACKGROUND_WIDTH, Random.Range(Angel_Y_Min, Angel_Y_Max),
                                         Character_Z_Default);
+                Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingRight;
+            }
             else if (Characters[i].tag == "Snowman")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Snowman_Y_Min, Snowman_Y_Max),
+                target[i] = new Vector3(Position[i] * BACKGROUND_WIDTH, Random.Range(Snowman_Y_Min, Snowman_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -280,7 +283,7 @@ public class CharacterManager : MonoBehaviour
             }
             else if (Characters[i].tag == "Nisseboy")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(NisseBoy_Y_Min, NisseBoy_Y_Max),
+                target[i] = new Vector3(Position[i] * BACKGROUND_WIDTH, Random.Range(NisseBoy_Y_Min, NisseBoy_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -293,7 +296,7 @@ public class CharacterManager : MonoBehaviour
             }
             else if (Characters[i].tag == "Nissegirl")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(NisseGirl_Y_Min, NisseGirl_Y_Max),
+                target[i] = new Vector3(Position[i] * BACKGROUND_WIDTH, Random.Range(NisseGirl_Y_Min, NisseGirl_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -306,7 +309,7 @@ public class CharacterManager : MonoBehaviour
             }
             else if (Characters[i].tag == "Squirrel")
             {
-                target[i] = new Vector3(Position[i]*BACKGROUND_WIDTH, Random.Range(Squirrel_Y_Min, Squirrel_Y_Max),
+                target[i] = new Vector3(Position[i] * BACKGROUND_WIDTH, Random.Range(Squirrel_Y_Min, Squirrel_Y_Max),
                                         Character_Z_Default);
 
                 // Change moving sprite
@@ -329,7 +332,7 @@ public class CharacterManager : MonoBehaviour
                     || target[i].x < Characters[i].transform.position.x - MovingThreshold)
             {
                 Vector3 direction = Vector3.Normalize(target[i] - Characters[i].transform.position);
-                Characters[i].transform.position += direction*MoveSpeed*Time.deltaTime;
+                Characters[i].transform.position += direction * MoveSpeed * Time.deltaTime;
             }
         }
     }
@@ -378,15 +381,16 @@ public class CharacterManager : MonoBehaviour
                             Characters[i] = newCharacter;
 
                             characterHasBeenSwitched[i] = true;
+                            Destroy(oldCharacter.renderer.material);
                             Destroy(oldCharacter);
                         }
-                        
+
 
                     }
                     else if (Characters[i].transform.position.x <= 111)
                     {
                         Characters[i].transform.position = outOfPicture_left;
-                        
+
                         if (characterHasBeenSwitched[i] == false)
                         {
                             GameObject oldCharacter = Characters[i];
@@ -399,7 +403,7 @@ public class CharacterManager : MonoBehaviour
                             characterHasBeenSwitched[i] = true;
                             Destroy(oldCharacter);
                         }
-                        
+
                     }
 
                     Characters[i].name = ID[i] + "_invalid";
@@ -419,33 +423,33 @@ public class CharacterManager : MonoBehaviour
 
         #region OLD STUFF BEFORE NEW LOGGING SYSTEM (kinda)
 
-//        // Spawn more pixies if neccessary
-//        if (_numberOfPeopleRightNow > Characters.Count)
-//            SpawnCharacters(_numberOfPeopleRightNow - Characters.Count);
-//        else if (_numberOfPeopleRightNow < Characters.Count)
-//        {
-//            GameObject p;
-//            for (int i = 0; i < _numberOfPeopleRightNow; i++)
-//            {
-//                if (Position[i] <= -1f)
-//                {
-//                    p = GameObject.Find(ID[i]);
-//                    Characters.RemoveAt(i);
-//                    Destroy(p);
-//                }
-//            }
-//
-//            // TODO: Should delete the number that is removed and not just the last one in the list
-//            p = Characters[Characters.Count - 1];
-//            Characters.RemoveAt(Characters.Count - 1);
-//            Destroy(p);
-//
-//
-//
-//        }
+        //        // Spawn more pixies if neccessary
+        //        if (_numberOfPeopleRightNow > Characters.Count)
+        //            SpawnCharacters(_numberOfPeopleRightNow - Characters.Count);
+        //        else if (_numberOfPeopleRightNow < Characters.Count)
+        //        {
+        //            GameObject p;
+        //            for (int i = 0; i < _numberOfPeopleRightNow; i++)
+        //            {
+        //                if (Position[i] <= -1f)
+        //                {
+        //                    p = GameObject.Find(ID[i]);
+        //                    Characters.RemoveAt(i);
+        //                    Destroy(p);
+        //                }
+        //            }
+        //
+        //            // TODO: Should delete the number that is removed and not just the last one in the list
+        //            p = Characters[Characters.Count - 1];
+        //            Characters.RemoveAt(Characters.Count - 1);
+        //            Destroy(p);
+        //
+        //
+        //
+        //        }
         #endregion
 
-        
+
     }
 
     private static PropertyInfo GetSystemCopyBufferProperty()
@@ -490,138 +494,138 @@ public class CharacterManager : MonoBehaviour
             fileExists = true;
 	    }*/
 
-        // Used for reading txt files ... WE DON'T USE THIS ANYMORE
-        /*using (StreamReader reader = new StreamReader("test.txt"))
+    // Used for reading txt files ... WE DON'T USE THIS ANYMORE
+    /*using (StreamReader reader = new StreamReader("test.txt"))
+    {
+        string line;
+
+        if (reader.ReadLine() != null)
         {
-            string line;
+            line = reader.ReadLine();
 
-            if (reader.ReadLine() != null)
-            {
-                line = reader.ReadLine();
-
-                string[] lines = line.Split('p');
+            string[] lines = line.Split('p');
                 
-                foreach (string l in lines)
-                {
-                    Characters.Add(CharacterPrefab[0]);
-                }
+            foreach (string l in lines)
+            {
+                Characters.Add(CharacterPrefab[0]);
+            }
 
-                float[] pointX = new float[lines.Length];
+            float[] pointX = new float[lines.Length];
 
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    float.TryParse(lines[i], out pointX[i]);
-                }
-                //int.TryParse(lines[0], out pointX);
-                for (int i = 0; i < pointX.Length; i++)
-                {
-                    print(pointX[i]);
-                    Characters[i].transform.position = new Vector3(pointX[i], Character_Y_Default, Character_Z_Default);
-                }
+            for (int i = 0; i < lines.Length; i++)
+            {
+                float.TryParse(lines[i], out pointX[i]);
+            }
+            //int.TryParse(lines[0], out pointX);
+            for (int i = 0; i < pointX.Length; i++)
+            {
+                print(pointX[i]);
+                Characters[i].transform.position = new Vector3(pointX[i], Character_Y_Default, Character_Z_Default);
+            }
                
-                //int.TryParse(lines[1], out pointY);
+            //int.TryParse(lines[1], out pointY);
 
-                //print("X: " + pointX + ", Y: " + pointY);
+            //print("X: " + pointX + ", Y: " + pointY);
 
-                //return new Vector3(pointX, Character_Y_Default, Character_Z_Default);
+            //return new Vector3(pointX, Character_Y_Default, Character_Z_Default);
 
 
-            }
-            else
-            {
-                print("ERROR - couldn't get move data from clipboard");
-            }
         }
-    }
-
-    IEnumerator UpdatePosition()
-    {
-        oldMovePixies();
-        yield return new WaitForSeconds(REFRESH_TIME);
-        //StartCoroutine(UpdatePosition());
-    }
-
-    void KillPixies(bool removeAllPixies)
-    {
-        // Remove all
-        if (removeAllPixies)
-        {
-            foreach (GameObject pixie in Characters)
-            {
-                Destroy(pixie);
-            }
-            Characters.Clear();
-        }
-            // Remove the last pixie
         else
         {
-            GameObject p = Characters[Characters.Count - 1];
-            Characters.RemoveAt((Characters.Count - 1));
-            Destroy(p);
+            print("ERROR - couldn't get move data from clipboard");
         }
     }
+}
 
-    void oldMovePixies()
+IEnumerator UpdatePosition()
+{
+    oldMovePixies();
+    yield return new WaitForSeconds(REFRESH_TIME);
+    //StartCoroutine(UpdatePosition());
+}
+
+void KillPixies(bool removeAllPixies)
+{
+    // Remove all
+    if (removeAllPixies)
     {
-        for (int i = 0; i < Characters.Count - 1; i++)
+        foreach (GameObject pixie in Characters)
         {
-            //print(posX[i]);
-            //Characters[i].transform.position = new Vector3(_xPositions[i] * BACKGROUND_WIDTH, Character_Y_Default, Character_Z_Default);
-            /*Characters[i].transform.position = Vector3.Lerp(transform.position, new Vector3(_xPositions[i] * BACKGROUND_WIDTH,
-                                                                                    transform.position.y,
-                                                                                    transform.position.y),
-                                                    Time.deltaTime * REFRESH_TIME);
-            //print(Characters[i].name + ". " + Characters[i].transform.position);
-
+            Destroy(pixie);
         }
+        Characters.Clear();
     }
-
-    int GetNumberOfPlayers()
+        // Remove the last pixie
+    else
     {
-        _text = ClipBoard; // raw data from clipboard
+        GameObject p = Characters[Characters.Count - 1];
+        Characters.RemoveAt((Characters.Count - 1));
+        Destroy(p);
+    }
+}
 
-        string[] lines = _text.Split('n'); // number of players
-
-        int number;
-        int.TryParse(lines[0], out number);
-
-        return number;
+void oldMovePixies()
+{
+    for (int i = 0; i < Characters.Count - 1; i++)
+    {
+        //print(posX[i]);
+        //Characters[i].transform.position = new Vector3(_xPositions[i] * BACKGROUND_WIDTH, Character_Y_Default, Character_Z_Default);
+        /*Characters[i].transform.position = Vector3.Lerp(transform.position, new Vector3(_xPositions[i] * BACKGROUND_WIDTH,
+                                                                                transform.position.y,
+                                                                                transform.position.y),
+                                                Time.deltaTime * REFRESH_TIME);
+        //print(Characters[i].name + ". " + Characters[i].transform.position);
 
     }
+}
 
-    void GetXPositionFromClipBoard_FirstTime()
-    {
-        _text = ClipBoard; // raw data from clipboard
+int GetNumberOfPlayers()
+{
+    _text = ClipBoard; // raw data from clipboard
 
-        string[] lines = _text.Split('p'); // array with each BLOB data (separated by a 'p')
+    string[] lines = _text.Split('n'); // number of players
 
-        float floatNumber;
-        bool isValidNumber = float.TryParse(lines[0], out floatNumber);
+    int number;
+    int.TryParse(lines[0], out number);
 
-        if (!isValidNumber)
-            throw new InvalidOperationException("ERROR - There is something wrong with the ClipBoard function data! Are you sure the OpenCV program is running?");
+    return number;
+
+}
+
+void GetXPositionFromClipBoard_FirstTime()
+{
+    _text = ClipBoard; // raw data from clipboard
+
+    string[] lines = _text.Split('p'); // array with each BLOB data (separated by a 'p')
+
+    float floatNumber;
+    bool isValidNumber = float.TryParse(lines[0], out floatNumber);
+
+    if (!isValidNumber)
+        throw new InvalidOperationException("ERROR - There is something wrong with the ClipBoard function data! Are you sure the OpenCV program is running?");
         
-        _numberOfPeopleRightNow = lines.Length - 1;
-    }
+    _numberOfPeopleRightNow = lines.Length - 1;
+}
 
-    void UpdateNumberOfPlayers()
+void UpdateNumberOfPlayers()
+{
+    int newSize = GetNumberOfPlayers();
+
+    // Spawn 1 new pixie
+    if (Characters.Count - 1 < newSize)
     {
-        int newSize = GetNumberOfPlayers();
-
-        // Spawn 1 new pixie
-        if (Characters.Count - 1 < newSize)
-        {
-            //SpawnCharacters();
-        }
-        // Remove 1 pixie
-        else
-        {
-            KillPixies(false);
-        }
+        //SpawnCharacters();
     }
+    // Remove 1 pixie
+    else
+    {
+        KillPixies(false);
+    }
+}
 
-    // OLD STUFF END ------------------------------------------------------
+// OLD STUFF END ------------------------------------------------------
 
-    */
+*/
 
 }
