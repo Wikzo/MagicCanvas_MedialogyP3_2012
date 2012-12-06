@@ -76,9 +76,9 @@ public:
 	int radiusForMorfology;
 	int numberOfPersons; //TODO - Remove
 	
-	//TODO: find a smart way to determine that!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	float initialMoveVector;
 	double newInitialMoveVectorProduct;
+	bool alreadySendZero;
 
 	//functions that work on all kinds of pictures
 	void initialize(string fileName);

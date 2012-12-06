@@ -24,7 +24,13 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);
 
+//Manuel set:
+int widthOfROI = 100; // <- pixels 
+
+//Auto set:
 int brightestYatX[1000];
+
+int heightOfROI;
 
 int main(){
 	//find way to optimize the initial move vector
@@ -280,6 +286,7 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 				BG.pixelG[x][brightestYatX[x]] = 0;
 				BG.pixelB[x][brightestYatX[x]] = 0;
 			}
+
 			BG.output("Window for control");
 			BG.refresh(camera1);
 			
