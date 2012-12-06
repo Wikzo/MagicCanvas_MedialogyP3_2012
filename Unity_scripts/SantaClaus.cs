@@ -33,7 +33,7 @@ public class SantaClaus : MonoBehaviour
 
     IEnumerator HoHoSoundEffect()
     {
-        float time = Random.Range(6f, 11f);
+        float time = Random.Range(6f, 7f);
         yield return new WaitForSeconds(time);
         audio.PlayOneShot(hoho);
     }

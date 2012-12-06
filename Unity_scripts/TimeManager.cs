@@ -9,6 +9,7 @@ public class TimeManager : MonoBehaviour
     private static int timeHour;
     private static int timeMinutes;
     private float maxBrightness = 0.5f;
+    private float minBrightness = 0.3f;
 
     public static bool LightsTurnOn;
     public GameObject DirectionLight;
@@ -33,6 +34,11 @@ public class TimeManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        if (Time.frameCount % 30 == 0)
+        {
+            System.GC.Collect();
+        }
+
         // Hour
         timeString = DateTime.Now.ToString("HH");
 	    int.TryParse(timeString, out timeHour);
@@ -89,11 +95,11 @@ public class TimeManager : MonoBehaviour
             case 8:
             case 9:
                 LightsTurnOn = true;
-                DirectionLight.light.intensity = 0; // Hjoerring opens at 10
+                DirectionLight.light.intensity = minBrightness; // Hjoerring opens at 10
                 break;
             case 10:
                 LightsTurnOn = true;
-                DirectionLight.light.intensity = 0; // Hjoerring opens at 10
+                DirectionLight.light.intensity = minBrightness; // Hjoerring opens at 10
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0, -16.25f * timeHour + 227.5f);
 
                 if (timeMinutes == santaMoveMinute)
@@ -153,7 +159,7 @@ public class TimeManager : MonoBehaviour
             case 18: // Hjoering closes at 18                                   // Full night
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0,
                                                                  -16.25f*timeHour + 227.5f);
-                DirectionLight.light.intensity = 0;
+                DirectionLight.light.intensity = minBrightness;
 
                 //SunRotator.transform.rotation = Quaternion.Euler(0, 0, timeMinutes * (sunStopLocation / 60));
 
@@ -165,7 +171,7 @@ public class TimeManager : MonoBehaviour
             case 22:
             case 23:
             case 24:
-                DirectionLight.light.intensity = 0;
+                DirectionLight.light.intensity = minBrightness;
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0, sunStartLocation);
                 break;
         }
@@ -180,7 +186,7 @@ public class TimeManager : MonoBehaviour
             santaMoveMinute = Random.Range(1, 59);
             tries++;
             //print("tries:" + tries);
-        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 20 && tries < 10);
+        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 10 && tries < 10);
 
         //print("Santa move minute: " + santaMoveMinute);
         lastSantaMoveMinute = santaMoveMinute;
