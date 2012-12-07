@@ -35,4 +35,19 @@ Using Picture struct
 ROI
 Using ClipBoard Manager
 Unity - uses time of day to change stuff
-\subsection{Unity}
+
+\subsection{Using Unity to display the characters}
+The Unity game engine is typically used to make 3D games, but it is still possible to make programs in 2D, using 2D sprites/textures and an orthographic camera that doesn't display depth.
+
+The scene used for the game is quite simple. As shown in figure XX, it consists of a background image showing mountains. To achieve a more dynamic look, a couple of elements are added to make the whole scene spring to life.
+
+First there are are a collection of Christmas trees with some Christmas balls and bells hanging on top. Using built-in physics in Unity, these bouncy back and forth, simulating a wind effect. Along with this is the falling snow, which is made as an particle system in Unity. This ensures that even when there are nobody in front of the camera, the program still feels alive.
+
+\subsection{Time manager and Santa Claus}
+As mentioned in chapter \ref{hjoerring}, the library is build on the theme of serendipity, e.g. to surprise and be new. When making the program, the group had an idea about having it change depending on the time of the day. Using the clock in Windows, the program could do something different at different times.
+
+In the program, the a sun will gradually rise as time goes, as well as the light will become brighter/dimmer, just as it is happening outside.
+
+Another aspect is Santa Claus who will come at a randomly chosen time. When he arrives, he jingle bell sounds play, as well as his iconic "ho ho ho". Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa doesn't come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
+
+\subsection{Snow ball}
