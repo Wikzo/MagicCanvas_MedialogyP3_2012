@@ -48,3 +48,23 @@ In the project, two cameras were contemplated; a normal RGB webcam and a similar
 \end{figure}
 
 This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting  \fixme{should be refenrence to place where we state that light is hard to control and the issues inherit in handling lighting "on location"} can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle. Working with IR eliminates this issue.
+
+\subsection{Illuminating the scene}
+
+For many different image processing procedures it important that the lightning in the scene is constant. Imagine that the scene is captured with a normal webcam, this creates an RGB image, \ref{fig:scene_light}.  In this case, we want to find the shelves, so we can place virtual objects in them for our imaginary augmented reality program. In order to speed things up, the image is converted to grayscale, as part of the  image processing, an algorithm thresholds the image, discarding all pixels with values less than 113. In the right picture the program can easily find the shelves, but in the picture on the left, the program cannot find the shelves, see \ref{fig:scene_thresholded}.
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/HjoerringLibrary/scene_lighting.png} 
+\caption{The difference in illumination on different times of day is clearly visible when compared next to each other} 
+\label{fig:scene_light} 
+\end{figure}
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/HjoerringLibrary/scene_lighting_thresholded.png} 
+\caption{The same image converted to 8bit grayscale and thresholded.} 
+\label{fig:scene_thresholded} 
+\end{figure}
+
+To avoid this, 
