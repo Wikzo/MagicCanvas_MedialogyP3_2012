@@ -9,7 +9,7 @@ public class TimeManager : MonoBehaviour
     private static int timeHour;
     private static int timeMinutes;
     private float maxBrightness = 0.5f;
-    private float minBrightness = 0.3f;
+    private float minBrightness = 0.25f;
 
     public static bool LightsTurnOn;
     public GameObject DirectionLight;
@@ -110,7 +110,7 @@ public class TimeManager : MonoBehaviour
                 break;
 
             case 11:                                                            // Becoming day
-                DirectionLight.light.intensity = timeMinutes * (maxBrightness / 60);
+                DirectionLight.light.intensity = minBrightness + timeMinutes * (maxBrightness / 60);
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0,
                                                                  -16.25f*timeHour + 227.5f);
 
@@ -174,6 +174,15 @@ public class TimeManager : MonoBehaviour
                 DirectionLight.light.intensity = minBrightness;
                 SunRotator.transform.rotation = Quaternion.Euler(0, 0, sunStartLocation);
                 break;
+
+            default:
+                DirectionLight.light.intensity = maxBrightness;
+                SunRotator.transform.rotation = Quaternion.Euler(0, 0, sunStartLocation);
+                if (timeMinutes == santaMoveMinute)
+                {
+                    SantaClaus.SantaMove = true;
+                }
+                break;
         }
 	}
 
@@ -186,7 +195,7 @@ public class TimeManager : MonoBehaviour
             santaMoveMinute = Random.Range(1, 59);
             tries++;
             //print("tries:" + tries);
-        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 10 && tries < 10);
+        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 5 && tries < 10);
 
         //print("Santa move minute: " + santaMoveMinute);
         lastSantaMoveMinute = santaMoveMinute;

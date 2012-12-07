@@ -59,6 +59,9 @@ public class SantaClaus : MonoBehaviour
                 SantaMove = false;
                 transform.position = StartPosition;
                 TimeManager.GetRandomSantaTime();
+                StopCoroutine("HohoSoundEffect");
+                StopCoroutine("HohoSoundEffect");
+
             }
         }
         else

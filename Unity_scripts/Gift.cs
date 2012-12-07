@@ -26,6 +26,7 @@ public class Gift : MonoBehaviour
 	{
 	    float dieTime = Random.Range(8f, 50f);
         yield return new WaitForSeconds(dieTime);
+        Destroy(gameObject.renderer.material);
         Destroy(gameObject);
 	}
 }
