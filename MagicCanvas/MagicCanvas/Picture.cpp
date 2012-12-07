@@ -1022,17 +1022,26 @@ void Picture::coutPersons()
 void Picture::clipPersonsAll(int heightOfUpperFOI, int procentOfScreenUsedInTheUpperFOI)
 {
 	ostringstream ss;
+	if (p[0].posX == -1)
+	{
+		if(alreadySendZero)
+			return;
+		alreadySendZero = true;
+	}
+	else
+		alreadySendZero = false;
+
 	ss << "q";
 	for(int i = 0; i < 10; i++)
 	{
 		if(p[i].posX == -1)
 			p[i].id = -1;
-		if (p[i].heightOfROI == heightOfUpperFOI)
-		{
-			//perspectiv view adjustment:
-			ss <<" i"<< p[i].id << "p" << (p[i].posX*(procentOfScreenUsedInTheUpperFOI/100) + (((100-procentOfScreenUsedInTheUpperFOI)/200)*width));
-		}
-		else
+		//if (p[i].heightOfROI == heightOfUpperFOI)
+		//{
+		//	//perspectiv view adjustment:
+		//	ss <<" i"<< p[i].id << "p" << (p[i].posX*(procentOfScreenUsedInTheUpperFOI/100) + (((100-procentOfScreenUsedInTheUpperFOI)/200)*width));
+		//}
+		//else
 			ss <<" i"<< p[i].id << "p" << p[i].posX;
 	}
 	ss << " q";

@@ -24,7 +24,12 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);
 
+//Manuel set:
+int procentOfTheScreenUsed = 30;
+//Auto set:
 int brightestYatX[1000];
+
+int startHeightOfROI;
 
 int main(){
 	//find way to optimize the initial move vector
@@ -37,7 +42,7 @@ int main(){
 	int widthOfHat; // Red Line (real distance of the head)
 
 	VideoCapture camera1;
-	camera1.open(1);
+	camera1.open(0);
 
 	//VideoCapture testVideo1;
 	//testVideo1.open("Library_Observation_Nov19.wmv");
@@ -68,6 +73,7 @@ int main(){
 	currentPicture.newInitialMoveVectorProduct = 0;
 	currentPicture.openOldMoveVector();
 	int lroi = currentPicture.height/4*3-25;
+	//BG.refresh(camera1);
 	configBG(BG, camera1, 50, 10, 5, lroi);
 
 	while(true){ //To be played all the time.
@@ -76,7 +82,7 @@ int main(){
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		//currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
 		
-		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, 20, (currentPicture.height/4)*3, (currentPicture.height/2));
+		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, procentOfTheScreenUsed, startHeightOfROI, (currentPicture.height/2));
 
 		
 		// Closing
@@ -89,8 +95,6 @@ int main(){
 			if(currentPicture.p[i].posX != -1) // <- does the person exist?
 			{
 			float prePos = currentPicture.p[i].posX; // <-save the current position
-			//cout << "program is trying to refind" << "\n";
-			//cout << currentPicture.p[i].posX;
 				if(!currentPicture.p[i].refind(currentPicture)) // <- find the new position of the person, when not found do the following:
 				{
 					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
@@ -107,8 +111,9 @@ int main(){
 						}
 					}
 				//either exited or occluded
-				//is the blob in the range so it can exit?
-					if(!((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
+				//is the blob not in the range so it can exit?
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!     Removed (!) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
 					{
 						//is not allowed to exit -> it must be occluded
 						if(!currentPicture.p[i].refindOccluded(currentPicture))
@@ -163,7 +168,7 @@ int main(){
 		if (keyInput == 115) // <-s
 		{
 			configBG(BG, camera1, 50, 10, 5, lroi);
-			BG.refresh(camera1);
+			//BG.refresh(camera1);
 			//BG.output("Window for control");
 		}
 		else if (keyInput == 27) // <-escape
@@ -264,7 +269,7 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 			//	BG.pixelB[x][lroi] = 0;
 			//}
 			BG.refresh(camera1);
-
+			int brightestYProduct = 0;
 			for(int x = 0; x < BG.width; x++)
 			{
 				int brightestVal = 0;
@@ -279,7 +284,10 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 				BG.pixelR[x][brightestYatX[x]] = 255;
 				BG.pixelG[x][brightestYatX[x]] = 0;
 				BG.pixelB[x][brightestYatX[x]] = 0;
+				brightestYProduct += brightestYatX[x];
 			}
+			startHeightOfROI = brightestYProduct/BG.width + BG.height*((float)procentOfTheScreenUsed/100)/4;
+
 			BG.output("Window for control");
 			BG.refresh(camera1);
 			
