@@ -23,9 +23,13 @@ public class TimeManager : MonoBehaviour
     //private float sunStopLocation = -65f;
     //private float sunFullDayRotation = 0;
 
+    private float time;
+
 	// Use this for initialization
 	void Start ()
 	{
+	    Resources.UnloadUnusedAssets();
+	    time = 0;
         Screen.showCursor = false;
 	    LightsTurnOn = true;
 	    GetRandomSantaTime();
@@ -34,9 +38,17 @@ public class TimeManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-        if (Time.frameCount % 30 == 0)
+	    time += Time.deltaTime;
+        //print(time);
+
+        // restart after 3 hours
+        if (time >= 10800)
+            Application.LoadLevel(0);
+
+        if (Time.frameCount % 100 == 0)
         {
             System.GC.Collect();
+            Resources.UnloadUnusedAssets();
         }
 
         // Hour
