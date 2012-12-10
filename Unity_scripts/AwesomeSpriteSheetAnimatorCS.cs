@@ -36,6 +36,8 @@ public class AwesomeSpriteSheetAnimatorCS : MonoBehaviour
     public Material[] MaterialsForAnimation;
     private int index;
 
+    private GameObject oldObj, newObj;
+
     void Start()
     {
         State = SpriteState.Static;
@@ -48,6 +50,7 @@ public class AwesomeSpriteSheetAnimatorCS : MonoBehaviour
             case SpriteState.Static: // 0
                 if (index != 0)
                 {
+                    Destroy(gameObject.renderer.material);
                     transform.renderer.material = MaterialsForAnimation[0];
                     index = 0;
                 }
@@ -62,6 +65,7 @@ public class AwesomeSpriteSheetAnimatorCS : MonoBehaviour
                 case SpriteState.MovingLeft: // 1
                 if (index != 1)
                 {
+                    Destroy(gameObject.renderer.material);
                     transform.renderer.material = MaterialsForAnimation[1];
                     index = 1;
                 }
@@ -76,6 +80,7 @@ public class AwesomeSpriteSheetAnimatorCS : MonoBehaviour
                 case SpriteState.MovingRight: // 2
                 if (index != 2)
                 {
+                    Destroy(gameObject.renderer.material);
                     transform.renderer.material = MaterialsForAnimation[2];
                     index = 2;
                 }

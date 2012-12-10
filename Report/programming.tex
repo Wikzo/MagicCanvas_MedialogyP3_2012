@@ -19,7 +19,7 @@ wait until nothing moves:
 	Threshold pixel amount
 	Threshold picture amount
 take picture
-\subsection{find roi and enter and exit zone)
+\subsection{find roi and enter and exit zone}
 average brightest pixel in column for Roi
 pixel for enter and exit
 
@@ -77,8 +77,49 @@ First there are are a collection of Christmas trees with some Christmas balls an
 \subsection{Time manager and Santa Claus}
 As mentioned in chapter \ref{hjoerring}, the library is build on the theme of serendipity, e.g. to surprise and be new. When making the program, the group had an idea about having it change depending on the time of the day. Using the clock in Windows, the program could do something different at different times.
 
-In the program, the a sun will gradually rise as time goes, as well as the light will become brighter/dimmer, just as it is happening outside.
+In the program, the a sun will gradually rise as time goes, as well as the light will become brighter/dimmer, just as it is happening outside. Figures \ref{fig:time1}, \ref{fig:time2} and \ref{fig:time3} illustrate this.
 
-Another aspect is Santa Claus who will come at a randomly chosen time. When he arrives, he jingle bell sounds play, as well as his iconic "ho ho ho". Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa doesn't come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
+\begin{figure}[htbp]\centering
+	\begin{minipage}[b]{0.3\textwidth}\centering
+		\includegraphics[width=1.00\textwidth]{Pictures/Design/time1.png} %Venstre billede
+	\end{minipage}\hfill
+	\begin{minipage}[b]{0.3\textwidth}\centering
+		\includegraphics[width=1.00\textwidth]{Pictures/Design/time2.png} %Venstre billede
+	\end{minipage}\hfill	
+	\begin{minipage}[b]{0.3\textwidth}\centering
+		\includegraphics[width=1.00\textwidth]{Pictures/Design/time3.png} %Højre billede
+	\end{minipage}\\ %Captions and labels
+	\begin{minipage}[t]{0.3\textwidth}
+		\caption{Morning.} %Venstre caption og label
+		\label{fig:time1}
+	\end{minipage}\hfill
+	\begin{minipage}[t]{0.3\textwidth}
+		\caption{Noon.} %Venstre caption og label
+		\label{fig:time2}
+	\end{minipage}\hfill	
+	\begin{minipage}[t]{0.3\textwidth}
+		\caption{Evening.} %Højre caption og label
+		\label{fig:time3}
+	\end{minipage}
+\end{figure}
+
+Another aspect is Santa Claus who will come at a randomly chosen time (see figure \ref{fig:santa}. When he arrives, he jingle bell sounds play, as well as his iconic "ho ho ho". Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa doesn't come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{Pictures/Design/santa.png}
+\caption{Santa Claus comes at random times and drop presents. These can be pushed by the characters. They disappear after some time.}
+\label{fig:santa}
+\end{figure}
 
 \subsection{Snow ball}
+To get a little more interaction, a snow ball is placed in the scene. This can be pushed around by the characters, and it will gradually grow bigger and bigger until it at some time explodes and disappear for a short while.
+
+One thing we needed to have in mind was the light setting. On a computer screen the image can be really bright and really dark, but on a canvas and a projector it is not easy to see a dark image. Therefore the brightness level was set a little higher than normal, so it would still be possible to see it properly on the canvas.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.90\textwidth]{Pictures/Design/pushing_snowball.png}
+\caption{The characters can push the snowball to make it grow. When it becomes big enough, it explodes into colorful fireworks.}
+\label{fig:santa}
+\end{figure}
