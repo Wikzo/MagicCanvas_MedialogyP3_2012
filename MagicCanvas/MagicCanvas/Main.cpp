@@ -79,12 +79,19 @@ int main(){
 	//BG.refresh(camera1);
 	configBG(BG, camera1, 100, 10, 5, lroi);
 
+	//struct tm *localtime(const time_t *t);
+
+	time_t t;
+    struct tm *ts;
+	t = time(0);
+	bool notLoggedYet = true;
+
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
 		//BG subtraction with threshold to detect the diferences on the pixels and transform to black the pixels that didn't changeconf
 		//currentPicture.binaryPictureOfWhatMovedInComparrisionTo(BG,10);
 		//currentPicture.refreshBGSubtractAndThreshholdForBnW(camera1,BG,30);
-		
+
 		currentPicture.refreshDiscradBGSubtractAndThreshholdForBnW(camera1,BG,30, procentOfTheScreenUsed, startHeightOfROI, (currentPicture.height/2));
 
 		
@@ -176,11 +183,20 @@ int main(){
 		}
 		else if (keyInput == 27) // <-escape
 		{
-			//currentPicture.saveNumbersOfPersons();
-			//currentPicture.saveNewMoveVector();
+			currentPicture.saveNumbersOfPersons();
+			currentPicture.saveNewMoveVector();
 			cout << "\nEsc was pressed\nThe program exits when you press a key.";
 			waitKey(0);
 			return 0;
+		}
+
+		ts = localtime(&t);
+		// if its 17:00
+		if(ts->tm_hour == 17 && notLoggedYet)
+		{
+			currentPicture.saveNumbersOfPersons();
+			currentPicture.saveNewMoveVector();
+			notLoggedYet = false;
 		}
 	}
 	currentPicture.reset();
@@ -291,6 +307,11 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 			}
 			startHeightOfROI = brightestYProduct/BG.width + BG.height*((float)procentOfTheScreenUsed/100)/4;
 
+			if(startHeightOfROI > BG.height-1)
+				startHeightOfROI = BG.height-1;
+			/*cout << startHeightOfROI;
+			cout << BG.height-1;
+			cin >> startHeightOfROI;*/
 			BG.output("Window for control");
 			BG.refresh(camera1);
 			
