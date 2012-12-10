@@ -1143,9 +1143,10 @@ void Picture::openOldMoveVector()
 	{
 	//the file is empty
 		
-		cout << "the moveVector-file is either empty or nonexistend" << endl
-			<< "enter a guess for the first moveVector" << endl;
-		cin >> initialMoveVector;
+		cout << "the moveVector-file is either empty or nonexistend" << endl;
+		//	<< "enter a guess for the first moveVector" << endl;
+		//cin >> initialMoveVector;
+		initialMoveVector = 0.2f;
 
 		ofstream outputFile;
 		outputFile.open("moveVector.txt");

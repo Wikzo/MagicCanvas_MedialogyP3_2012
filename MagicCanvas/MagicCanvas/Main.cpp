@@ -3,6 +3,8 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
 #include "Picture.h"
 using namespace std;
 using namespace cv;
@@ -23,6 +25,7 @@ automized setup function (both take bg and find height of the upper loi)
 void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi);
 void clipboard(const string &s);
 void setupP(const int &numbersOfpersons, Picture::person personArray[]);
+//void 
 
 //Manuel set:
 int procentOfTheScreenUsed = 30;
@@ -74,7 +77,7 @@ int main(){
 	currentPicture.openOldMoveVector();
 	int lroi = currentPicture.height/4*3-25;
 	//BG.refresh(camera1);
-	configBG(BG, camera1, 50, 10, 5, lroi);
+	configBG(BG, camera1, 100, 10, 5, lroi);
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
@@ -113,7 +116,7 @@ int main(){
 				//either exited or occluded
 				//is the blob not in the range so it can exit?
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!     Removed (!) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) || ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
+					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) && ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
 					{
 						//is not allowed to exit -> it must be occluded
 						if(!currentPicture.p[i].refindOccluded(currentPicture))
@@ -173,8 +176,8 @@ int main(){
 		}
 		else if (keyInput == 27) // <-escape
 		{
-			currentPicture.saveNumbersOfPersons();
-			currentPicture.saveNewMoveVector();
+			//currentPicture.saveNumbersOfPersons();
+			//currentPicture.saveNewMoveVector();
 			cout << "\nEsc was pressed\nThe program exits when you press a key.";
 			waitKey(0);
 			return 0;
