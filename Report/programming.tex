@@ -41,9 +41,12 @@ loop trough persons
 when position is set:
 	first look at the position where the person would be when it would move with the same speed as captured in the last frame.
 	second look if the position has not changed meaning that the person stoped up.
-	now go from the point between the two previously check points and move to the sides until the max distance to move i reached
+	third go from the point between the two previously check points and move to the sides until the max distance to move i reached
+	if the person is not found after this it can be assumed that the person is either gone out of the picture or is occlude by another person. To check if the person is exited, the program checks if the person is close enough to the edge of the picture so it could have exit. If the person is not close enough to the border of the  picture the program will try to find another person that is close enough that it could occlude the person we are looking at.  This is done in the same way as the search for a person in the first place.
 	
 \subsection{find new person}
+
+When all persons are found again the program looks for new persons. To make the program more efficient it loops not through all pixels but through the ones where it is most likely that a person could enter to the picture. Because of the placement of the camera the persons can just enter from left and right so we can limit the enter and exit zone to the most left and most right pixels. 
 
 \subsection{the awesome move vector reconfig}
 
