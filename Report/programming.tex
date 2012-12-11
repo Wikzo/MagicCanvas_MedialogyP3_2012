@@ -64,7 +64,6 @@ After doing the initial prototype, the group realized that for it would be diffi
 
 Then the group came up with the idea of using the Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with the Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages. Even though there are various APIs to get OpenCV and Unity communicate, it was decided for a much simpler approach where OpenCV would copy some position data into a text file that Unity would read.
 
-
 \subsection{Heysa}
 Different possibilities (pros and cons)
 Show code and describe features
@@ -75,6 +74,18 @@ Using Picture struct
 ROI
 Using ClipBoard Manager
 Unity - uses time of day to change stuff
+
+\begin{lstlisting}
+Mat MeanFilter(Mat input)
+{
+	// 5x5 kernel
+
+	// Make a temporary clone of the input image
+	Mat mean = input.clone();
+
+	int jegErSej = 42;
+}
+\end{lstlisting}
 
 \subsection{Using Unity to display the characters}
 The Unity game engine is typically used to make 3D games, but it is still possible to make programs in 2D, using 2D sprites/textures and an orthographic camera that doesn't display depth.
@@ -112,7 +123,7 @@ In the program, the a sun will gradually rise as time goes, as well as the light
 	\end{minipage}
 \end{figure}
 
-Another aspect is Santa Claus who will come at a randomly chosen time (see figure \ref{fig:santa}. When he arrives, he jingle bell sounds play, as well as his iconic "ho ho ho". Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa doesn't come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
+Another aspect is Santa Claus who will come at a randomly chosen time (see figure \ref{fig:santa}. When he arrives, jingle bell sounds play, as well as his iconic "ho ho ho". Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa doesn't come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
 
 \begin{figure}[htbp]
 \centering
@@ -132,3 +143,14 @@ One thing we needed to have in mind was the light setting. On a computer screen 
 \caption{The characters can push the snowball to make it grow. When it becomes big enough, it explodes into colorful fireworks.}
 \label{fig:santa}
 \end{figure}
+
+\section{Conclusion and limitations}
+During the setup at the library multiple things were learned.
+
+\subsection{Use of LED stripes}
+\subsection{Santa Claus ho ho sound}
+\subsection{Shadows on canvas}
+\subsection{Need sound to draw attention}
+\subsection{People walking too fast}
+\subsection{Camera not steady}
+
