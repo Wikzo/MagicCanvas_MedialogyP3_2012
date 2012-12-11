@@ -50,7 +50,7 @@ Figure \eqref{fig:Design_SnowmanAnimation} illustrates the three different anima
 \caption{Picture illustrating 3 different animations for one avatar}
 \label{fig:Design_SnowmanAnimation}
 \end{figure} 
-\subsection{Sprite sheets}
+\subsection{Sprite sheets}\label{spritesheet}
 There are many ways of animating an avatar for use on other platforms. One way is to finalize the animation on beforehand and play the actual footage. This is however not a very efficient way of including an animation as it take up space depending on the file format and size. Ultimately having several animations would slow down the program producing a vague output. Instead another solution was taken into considerations.\\
 It was decided to create complete sprite sheets, to be implemented in Unity for use of animations. A sprite sheet contain all the images needed to create the full cycle and depending on the movement of the user in front of the installation on the library, the different sprite sheets will be activated. Figure \eqref{fig:Design_PixieBoyWalking} illustrates a complete sprite sheet for a user moving horizontally to the right.
 \begin{figure}[htbp]

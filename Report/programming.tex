@@ -78,6 +78,39 @@ Mat MeanFilter(Mat input)
 }
 \end{lstlisting}
 
+\subsection{Getting a link between OpenCV and Unity}
+[this part should be just after "Using Unity to handle the graphical output"]
+
+It was first considered to make C++ write to a text file that could then be read by Unity, this approach was not used, since it would need a lot of readings and writings to the hard drive. Doings this repeatedly could destroy it. Also, there is a chance that there would be a mismatch with Unity trying to read the file while C++ is writing to it. It was also found that this method was quite slow. Therefore, as mentioned previously, it was decided to write to the Clipboard in Windows acting as a buffer.
+
+The clipboard in Windows acts as a short-term buffer to store temporary data in the RAM (Random Access Memory). Using copy and paste functionality, it can work like a gateway for transferring information from one program to another. \citep{clipboard1}. This avoids writings/readings from a physical hard drive and won't wear it out, as well as being faster than saving to a text file on the computer.
+
+\subsubsection{Copy data from C++}
+In the C++ program a text line is saved as a string. This is done using the function SetClipboardData() where the data type is CF\_TEXT, so it stores it as text.\citep{clipboard2} \citep{clipboard3}. This string describes the information of where a person is currently located.
+
+First it assigns an unique ID name, showing what number of person it is, and then a floating point value between 0 (left) and 0.9 (right). If it is -1, it means that the person is currently not there, i.e. there is no person. The reason for this is to make it easier for Unity to move the characters around on the screen. If a position is different from -1, it means that it should be shown on the screen. Else if the position data is -1, the character will be moved outside of the screen area and not shown.
+
+Below is an example of the string that is copied to the Clipboard in the C++ program:
+
+q iObject\_1p0.1 iObject\_2p0.2 iObject\_3p0.3 iObject\_4p0.4 iObject\_5p0.5 iObject\_6p0.6 iObject\_7p0.7 iObject\_8p0.8 iObject\_9p0.9 iObject\_10p-1 q
+
+\subsubsection{Reading data in Unity}
+In Unity, using \texttt{C\#}, the text is read from the Clipboard using the static function GetSystemCopyBufferProperty(). The first thing that happens is that whitespaces are removed. Then the string is split multiple times using different delimit characters such as the q's, i's and p's.
+
+'q' is simply used to start and end the string, so nothing before or after is used. This was to ensure that incorrect data would never be read in Unity, i.e. if there was any leftovers from the last time data was copied to the Clipboard.
+
+The character 'i' is used to identify each person and assign a name. In this case the name consists of a number that increases for each person that has been in front of the camera. Doing this makes it easier to identify a specific character and Unity and check if it is moving as intended. The floating value after the 'p' is the actual position of the character, which is then translated into a coordinate system in Unity where 0.1 is to the left side and 0.9 is to the right side. As mentioned before, a -1 is an invalid value, meaning that the person is not present.
+
+In the end, all the position data are stored in an array with the position data called \textbf{Position[]}. In this case Position[0] would be the character named "Object\_1" and have the position 0.1. Position[9], on the other hand, has a -1 and would therefore not be shown on the screen.
+
+It should be noted that these values are only for the X position. It was chosen not to use Y position to make it simpler, and there is no depth, so Z is totally excluded (the program is held in 2D). However, the characters move somewhat randomly up and down in the Y direction every time the are moving around on the X direction - depending on what type of character it is.
+
+Having this array of position data makes it easy to loop through a list of Unity game objects and move them around properly.
+
+Additional functionality was implemented to make the characters move more smoothly around than simply jumping from point to point. First of all a threshold value is used so a character will only move if the person moves enough for the system to trigger it. This means that if a person is standing still in front of the camera, the character on screen will not jump around due to the small changes in the decimal values (e.g. from 0.542 to 0.523 would not make the character move).
+
+To make the characters move even more smoothly, it was chosen to de-synchronize the position data gathered from the camera and the character's actual position, a target system was implemented. This works by at intervals finding a new target to move to, and then a character will gradually move towards that target. Then after a small period of time, the target will be updated. Like the threshold, it makes the characters move in a more natural line.
+
 \subsection{Using Unity to display the characters}
 The Unity game engine is typically used to make 3D games, but it is still possible to make programs in 2D, using 2D sprites/textures and an orthographic camera that doesn't display depth.
 
@@ -128,12 +161,17 @@ To get a little more interaction, a snow ball is placed in the scene. This can b
 
 One thing we needed to have in mind was the light setting. On a computer screen the image can be really bright and really dark, but on a canvas and a projector it is not easy to see a dark image. Therefore the brightness level was set a little higher than normal, so it would still be possible to see it properly on the canvas.
 
+\subsection{Animation and sprite sheets}
+As mentioned in \ref{spritesheet}, sheets of sprites were used to create a sense of motion. This was done by looping over an image containing multiple frames.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.90\textwidth]{Pictures/Design/pushing_snowball.png}
 \caption{The characters can push the snowball to make it grow. When it becomes big enough, it explodes into colorful fireworks.}
 \label{fig:santa}
 \end{figure}
+
+\section{Making an automatic bat file}
 
 \section{Conclusion and limitations}
 During the setup at the library multiple things were learned.
@@ -144,4 +182,8 @@ During the setup at the library multiple things were learned.
 \subsection{Need sound to draw attention}
 \subsection{People walking too fast}
 \subsection{Camera not steady}
+\subsection{Programs crashing during the day}
+Before testing the program at the library, they hadn't run for more than a few minutes continuously. Since the goal was to let them run for a whole day (10-18), it was important that they would not crash. Initially, there were problems with both C++ and Unity.
+
+[something about C++ crashing]
 
