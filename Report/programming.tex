@@ -253,7 +253,7 @@ To get a little more interaction, a snow ball is placed in the scene. This can b
 One thing we needed to have in mind was the light setting. On a computer screen the image can be really bright and really dark, but on a canvas and a projector it is not easy to see a dark image. Therefore the brightness level was set a little higher than normal, so it would still be possible to see it properly on the canvas.
 
 \subsection{Animation and sprite sheets}
-As mentioned in \ref{spritesheet}, sheets of sprites were used to create a sense of motion. This was done by looping over an image containing multiple frames.
+As mentioned in \ref{spritesheet}, sheets of sprites were used to create a sense of motion. This was done by looping over an image containing multiple frames. Depending on which way the character is facing (left, right or idle), the animation will change.
 
 \begin{figure}[htbp]
 \centering
@@ -272,6 +272,7 @@ During the setup at the library multiple things were learned.
 \subsection{Shadows on canvas}
 \subsection{Need sound to draw attention}
 \subsection{People walking too fast}
+Problem with walking too fast. Characters need to teleport to the right place to catchup. More speed.
 \subsection{Camera not steady}
 \subsection{Programs crashing during the day}
 Before testing the program at the library, they hadn't run for more than a few minutes continuously. Since the goal was to let them run for a whole day (10-18), it was important that they would not crash. Initially, there were problems with both C++ and Unity.
