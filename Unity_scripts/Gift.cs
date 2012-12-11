@@ -24,7 +24,7 @@ public class Gift : MonoBehaviour
 	
 	IEnumerator DieAfterSomeTime()
 	{
-	    float dieTime = Random.Range(8f, 50f);
+	    float dieTime = Random.Range(50f, 300f);
         yield return new WaitForSeconds(dieTime);
         Destroy(gameObject.renderer.material);
         Destroy(gameObject);
