@@ -39,6 +39,9 @@ void Picture::initialize(string fileName)
 }
 void Picture::initialize(VideoCapture captureToStoreCamra)
 {
+	//captureToStoreCamra.set(CV_CAP_PROP_EXPOSURE, 100.0);
+	//captureToStoreCamra.set(CV_CAP_PROP_GAIN, 100.0);
+	//cvSetCaptureProperty(captureToStoreCamra, CV_CAP_PROP_EXPOSURE, 0.1f)
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;
@@ -94,6 +97,9 @@ void Picture::refresh(string fileName)
 }
 void Picture::refresh(VideoCapture captureToStoreCamra)
 {
+	//captureToStoreCamra.set(CV_CAP_PROP_EXPOSURE, 1.0);
+	//captureToStoreCamra.set(CV_CAP_PROP_GAIN, 1.0);
+
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;

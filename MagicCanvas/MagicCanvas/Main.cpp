@@ -57,6 +57,7 @@ int main(){
 
 	currentPicture.initialize(camera1);
 	BG.initialize(camera1);
+	//BG.output("lalalalalalala");
 	tmpPicture.initialize(camera1); //This tmpPicture is used to temporarrily store the picture at different moments
 	hat.initialize("nisse.jpg");
 	
@@ -77,7 +78,7 @@ int main(){
 	currentPicture.openOldMoveVector();
 	int lroi = currentPicture.height/4*3-25;
 	//BG.refresh(camera1);
-	configBG(BG, camera1, 100, 10, 5, lroi);
+	configBG(BG, camera1, 50, 10, 10, lroi);
 
 	//struct tm *localtime(const time_t *t);
 
@@ -85,6 +86,7 @@ int main(){
     struct tm *ts;
 	t = time(0);
 	bool notLoggedYet = true;
+	int lastCheckedHoure = 0;
 
 	while(true){ //To be played all the time.
 		//currentPicture.refresh(testVideo1);
@@ -183,13 +185,14 @@ int main(){
 		}
 		else if (keyInput == 27) // <-escape
 		{
-			currentPicture.saveNumbersOfPersons();
-			currentPicture.saveNewMoveVector();
+			//currentPicture.saveNumbersOfPersons();
+			//currentPicture.saveNewMoveVector();
 			cout << "\nEsc was pressed\nThe program exits when you press a key.";
 			waitKey(0);
 			return 0;
 		}
-
+		t = time(0);
+		//cout << "lalalalala" << ts->tm_hour;
 		ts = localtime(&t);
 		// if its 17:00
 		if(ts->tm_hour == 17 && notLoggedYet)
@@ -197,6 +200,12 @@ int main(){
 			currentPicture.saveNumbersOfPersons();
 			currentPicture.saveNewMoveVector();
 			notLoggedYet = false;
+		}
+		if(ts->tm_hour != lastCheckedHoure)
+		{
+			lastCheckedHoure = ts->tm_hour;
+			configBG(BG, camera1, 100, 10, 10, lroi);
+
 		}
 	}
 	currentPicture.reset();
@@ -312,7 +321,7 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 			/*cout << startHeightOfROI;
 			cout << BG.height-1;
 			cin >> startHeightOfROI;*/
-			BG.output("Window for control");
+			//BG.output("Window for control");
 			BG.refresh(camera1);
 			
 			
