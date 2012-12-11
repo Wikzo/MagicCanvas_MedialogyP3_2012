@@ -8,11 +8,20 @@ Here is how we did stuff
 What we did and why?
 
 \section{Our own picture class}
+
 \subsection{the idea of not using openCV}
+When the group started on working one image processing their supervisor said that they shouldn't use any of the build in function of any image processing program. They gave this demand some thought and agreed on that it would be best when they just would use a image processing library for getting access to the pixel values and showing pictures on the screen. From there they could write all the algorithms by them selves. For these two things openCV seemed like a the right library.
 \subsection{the pixel system}
+In openCV a pixel can be accessed by the function at:
+
+
+
+	The changed pixel system rgb to having them as buffer. 
 \subsection{the functions}
 
 \section{Config Background}
+Background subtraction
+Just the red channel...
 \subsection{Take Background picture}
 wait until nothing moves:
 	Threshold pixel value
@@ -21,7 +30,7 @@ wait until nothing moves:
 take picture
 \subsection{find roi and enter and exit zone}
 average brightest pixel in column for Roi
-pixel for enter and exit
+pixel for enter and exit zone
 
 \section{The four in one function}
 discard information that is not in the ROI(Make the pixels black that aren't used)
