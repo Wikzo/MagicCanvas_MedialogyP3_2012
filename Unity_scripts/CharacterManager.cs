@@ -51,9 +51,9 @@ public class CharacterManager : MonoBehaviour
     private float[] pointX;
 
     private static PropertyInfo _mSystemCopyBufferProperty = null;
-    public float MoveSpeed = 40f;
+    public float MoveSpeed = 80f;
 
-    private float MovingThreshold = 0.1f;
+    private float MovingThreshold = 2;
 
     private float timer;
     private const float WaitTimeToGetNewTarget = 0.1f;
@@ -66,6 +66,8 @@ public class CharacterManager : MonoBehaviour
     private int numberToSpawn = 10;
 
     private List<int> listOfThreeLastCharacters;
+
+    //public AudioClip[] magic;
 
     // Use this for initialization
     void Start()
@@ -98,6 +100,7 @@ public class CharacterManager : MonoBehaviour
     void Update()
     {
         GetReadyToMove();
+        SmoothMove();
 
         // Update target timer
         if (timer < WaitTimeToGetNewTarget)
@@ -206,6 +209,7 @@ public class CharacterManager : MonoBehaviour
     void GetNewTarget()
     {
         target = new Vector3[Position.Length];
+        
         for (int i = 0; i < Characters.Count; i++)
         {
             if (Position[i] == -1) // don't give a target to an invalid character
@@ -213,12 +217,20 @@ public class CharacterManager : MonoBehaviour
                 //Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.NoAnimation;
 
                 if (Characters[i].transform.position.x >= 110)
+                {
                     target[i] = outOfPicture_right;
+                    Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingRight;
+                }
                 else
+                {
                     target[i] = outOfPicture_left;
+                    Characters[i].GetComponent<AwesomeSpriteSheetAnimatorCS>().State = SpriteState.MovingLeft;
+                }
 
                 continue;
             }
+
+            //print(target[0]);
 
             if (Characters[i].tag == "Angel")
             {
@@ -282,6 +294,8 @@ public class CharacterManager : MonoBehaviour
 
             if (wasInvalidLastFrame[i] == true)
             {
+                /*if (i == 0)
+                    audio.PlayOneShot(magic[Random.Range(0, magic.Length)]);*/
                 Characters[i].transform.position = target[i];
                 wasInvalidLastFrame[i] = false;
             }
@@ -322,7 +336,7 @@ public class CharacterManager : MonoBehaviour
         // Update the pixie's positions
         for (int i = 0; i < Characters.Count; i++)
         {
-            SmoothMove();
+            //SmoothMove();
             if (Position[i] == -1f)
             {
                 

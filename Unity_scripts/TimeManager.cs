@@ -207,7 +207,7 @@ public class TimeManager : MonoBehaviour
             santaMoveMinute = Random.Range(1, 59);
             tries++;
             //print("tries:" + tries);
-        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 5 && tries < 10);
+        } while (Math.Abs((60 - lastSantaMoveMinute) - (60 - santaMoveMinute)) < 30 && tries < 10);
 
         //print("Santa move minute: " + santaMoveMinute);
         lastSantaMoveMinute = santaMoveMinute;

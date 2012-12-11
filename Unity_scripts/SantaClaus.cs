@@ -50,7 +50,7 @@ public class SantaClaus : MonoBehaviour
             if (!droppingPackage)
             {
                 droppingPackage = true;
-                StartCoroutine(HoHoSoundEffect());
+                //StartCoroutine(HoHoSoundEffect());
                 StartCoroutine(SpawnPackage());
             }
 
@@ -59,8 +59,8 @@ public class SantaClaus : MonoBehaviour
                 SantaMove = false;
                 transform.position = StartPosition;
                 TimeManager.GetRandomSantaTime();
-                StopCoroutine("HohoSoundEffect");
-                StopCoroutine("HohoSoundEffect");
+                //StopCoroutine("HohoSoundEffect");
+                StopCoroutine("SpawnPackage");
 
             }
         }
