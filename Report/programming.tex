@@ -8,11 +8,102 @@ Here is how we did stuff
 What we did and why?
 
 \section{Our own picture class}
-\subsection{the idea of not using openCV}
-\subsection{the pixel system}
+When the group started on working one image processing their supervisor said that they shouldn't use any of the build in function of any image processing program. They gave this demand some thought and agreed on that it would be best when they just would use a image processing library for getting access to the pixel values and showing pictures on the screen. From there they could write all the algorithms by them selves. For these two things openCV seemed like a the right library.
+\subsection{The pixel system}
+In openCV a pixel value can be accessed by the function at:
+\begin{lstlisting}
+myPicture.at<Vec3b>(y,x)[1];
+\end{lstlisting}
+This piece of code returns a pixel value of a picture called myPicture at the position (x,y). In particular the value that is returned is a 8-bit value that describes the green channel of the pixel. It is the green channel, because the number 1 is written between the square brackets[]. If a 0 would be written it would return the blue channel and when a 2 would be written, the red channel would be returned.
+The question was now how to order structure and store the values we would bet from openCV. One thing the group didn't like at all was that the pixels in openCV had to be accessed reversed; instead of the zero one and two meaning R G B like usual it meant B R G. The same thing about the X and Y that had to be written reversed as arguments for the function "at" (y,x) instead if (x,y).
+The group decided that they wanted to work with their own class for pictures. This class should work in a similar way as the build in Mat class from openCV works. It should hold the values of the pixels in a way that is easy to understand and it should contain the functions that could perform different image processing tasks in the picture.
+The group decided that it would be clearest to store each color channel in a two dimensional array of integers. These values should of course be accessed in the right order in contrast to the the way openCV stores them in.
+\begin{lstlisting}
+void Picture::initialize(string fileName)
+{
+	tmp = imread(fileName);
+	width = tmp.cols;
+	height = tmp.rows;
+
+	pixelR = new int*[width];
+	for(int x = 0; x < width; x++)
+	{
+		pixelR[x] = new int[height];
+		for(int y = 0; y < height; y++)
+			pixelR[x][y] = tmp.at<Vec3b>(y,x)[2];
+	}
+
+	pixelG = new int*[width];
+	for(int x = 0; x < width; x++)
+	{
+		pixelG[x] = new int[height];
+		for(int y = 0; y < height; y++)
+			pixelG[x][y] = tmp.at<Vec3b>(y,x)[1];
+	}
+
+	pixelB = new int*[width];
+	for(int x = 0; x < width; x++)
+	{
+		pixelB[x] = new int[height];
+		for(int y = 0; y < height; y++)
+			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
+	}
+}
+\end{lstlisting}
+This code is one of the first functions that was written in the image processing program. The purpose of the function is to open a picture with openCV and writing the values of the opened picture to two dimensional arrays, that from there on can be processed.
+
+When one then wants to get access to a pixels lets say the same pixel like the one before, one has to write the picture name e.g. \textbf{myPicture}. The next thing is that one has to specify the color channel for instance \textbf{pixelG}, which is a member variable of \textbf{myPicture}. Last the position of the pixel has to be chosen, by choosing the position in the array:
+
+\begin{lstlisting}
+myPicture.pixelG[x][y]
+\end{lstlisting}
+
+When one wants to see the picture again he has to call the output() function that does the opposite of the initialize() function; it takes in the pixels and puts them in a temporary Mat instance that is used to show the picture
+
+\begin{lstlisting}
+void Picture::output(string windowName)
+{
+	if(height == 0||width == 0){
+		cout << "No picture is loaded";
+		waitKey(0);
+		exit(0);
+	}
+	Mat out(height, width, CV_8UC3);
+
+	for(int x = 0; x < width; x++)
+		for(int y = 0; y < height; y++)
+			 out.at<Vec3b>(y,x)[2] = pixelR[x][y];
+	for(int x = 0; x < width; x++)
+		for(int y = 0; y < height; y++)
+			out.at<Vec3b>(y,x)[1] = pixelG[x][y];
+	for(int x = 0; x < width; x++)
+		for(int y = 0; y < height; y++)
+			out.at<Vec3b>(y,x)[0] = pixelB[x][y];			
+	imshow(windowName, out);
+}
+\end{lstlisting}
+
 \subsection{the functions}
+Another big advantage in having our own Picture class is that that each group member can work on a different function in the picture class without disturbing somebody else who works on another function in the same program. Even if a function doesn't work it doesn't break the code as long as it is not called. 
+
+\section{The four in one function}
+
+discard information that is not in the ROI(Make the pixels black that aren't used)
+refresh(Open in openCV, write to write to pointer system)
+
+background subtraction(compare the current picture to the background)
+threshold pixel values and set to true(255) or false(0)- outcome binary picture
+
+
+
+The decision of having all pixels in our own class might sound like a neat way making the access to the pixels easier, but on the other hand it also makes the program slower that it has to go through all the color channels of each and every pixel in each frame. 
+
+
 
 \section{Config Background}
+
+Background subtraction
+Just the red channel...
 \subsection{Take Background picture}
 wait until nothing moves:
 	Threshold pixel value
@@ -21,13 +112,13 @@ wait until nothing moves:
 take picture
 \subsection{find roi and enter and exit zone}
 average brightest pixel in column for Roi
-pixel for enter and exit
+pixel for enter and exit zone
 
-\section{The four in one function}
-discard information that is not in the ROI(Make the pixels black that aren't used)
-refresh(Open in openCV, write to write to pointer system)
-background subtraction(compare the current picture to the background)
-threshold pixel values and set to true(255) or false(0)- outcome binary picture
+
+
+
+
+
 
 \section{Morphology}
 Closing
