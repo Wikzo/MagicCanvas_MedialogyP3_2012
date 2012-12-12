@@ -47,7 +47,14 @@ To great delight, the group was chosen to work with Hj{\o}rring Library, which w
 
 During the first visit to Hj{\o}rring Library, the groups designated to work there got some instructions of what they were expected to do. Although there were no additional predefined projects, the staff of the library expected to get an installation that could be run there and where the visitors could spend some time interacting with.
 
-The first idea that emerged included scanning barcodes of books in the library. The concept was to place a big canvas on some bookshelves, and whenever people walked past it, they would see their silhouette projected onto the canvas. The idea was that people would explore the library and depending on the books gathered and scanned, some specific graphics would appear on the canvas, like a hat or other clothes related to that theme. An example could be scanning a fairy tale written by H.C. Andersen which would then produce a hat on-top of the user; or maybe a book with Sherlock Holmes would spawn his famous hat and pipe, etcetera. This would allow people that casually walk past the shelves see something interesting on the canvas; and if they want to, they could participate further by going around the library to find the correct books, scan them, and thereby change what would be projected on the canvas next time. Maybe they would be told to find a book about dinosaurs, and if they succeed in scanning an arbitrary book containing dinosaurs, everybody walking past the canvas from now on would see themselves with a dinosaur costume. It seemed like a concept with endless possibilities.
+The first idea that emerged included scanning barcodes of books in the library. The concept was to place a big canvas on some bookshelves, and whenever people walked past it, they would see their silhouette projected onto the canvas. The idea was that people would explore the library and depending on the books gathered and scanned, some specific graphics would appear on the canvas, like a hat or other clothes related to that theme. An example could be scanning a fairy tale written by H.C. Andersen which would then produce a hat on-top of the user; or maybe a book with Sherlock Holmes would spawn his famous hat and pipe, etcetera. This would allow people that casually walk past the shelves see something interesting on the canvas; and if they want to, they could participate further by going around the library to find the correct books, scan them, and thereby change what would be projected on the canvas next time. Maybe they would be told to find a book about dinosaurs, and if they succeed in scanning an arbitrary book containing dinosaurs, everybody walking past the canvas from now on would see themselves with a dinosaur costume (see figure \ref{fig:bookTheme}). It seemed like a concept with endless possibilities.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{Pictures/HjoerringLibrary/magician.png}
+\caption{The theme is Harry Potter.}
+\label{fig:bookTheme}
+\end{figure}
 
 After conferencing with the supervisors, it was decided that the concept needed to be narrowed down to something more specific. There were some uncertainties whether it would be possible to make a program that could track people and display graphics on top of them (e.g. a hat), as well as scan barcodes from books and extract some useful data (e.g. book genre, fiction or non-fiction, etc.). Therefore it was suggested to only focus on the first part of the concept, so that instead of trying to do multiple themes we should focus mainly on one, such as fairy tales and hats from this category.
 
@@ -69,7 +76,7 @@ Two members of the group then travelled to Hj{\o}rring to find a proper location
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1.00\textwidth]{Pictures/HjoerringLibrary/LocationJohannesHat.jpg}
+\includegraphics[width=0.7\textwidth]{Pictures/HjoerringLibrary/LocationJohannesHat.jpg}
 \caption{A central location for the canvas was chosen to get at Hj{\o}rring Library.}
 \label{fig:concept_art}
 \end{figure}
@@ -113,27 +120,30 @@ The solution to this turned out to be illuminating the background instead of the
 \label{fig:max_subtracted}
 \end{figure}
 
-\section{Feedback from co-supervisor}
-The 14th of November a meeting was arranged with the co-supervisor Andreas M{\o}gelmose. The meeting was initiated to receive some valuable feedback on the prototype test, as well as help with some programming dilemmas regarding speed and efficiency due to the amount of pixels needed to loop through in the program.\\
-Various suggestions were given, such as adjusting the BLOB analysis to a more specified point of interest, as well as some tips on how to optimize the background subtraction.
+\section{Changes on the main concept}
+After the first short testing session it seemed clear that some things needed to be clarified. For this reason, the group asked for a brief meeting with our supervisors to receive some valuable feedback on the prototype test, as well as help with some programming dilemmas regarding speed and efficiency to loop through to the big amount of pixels of each frame in the program. At first the program code was designed to look for the top-most row of pixels, resulting on causing several different problems. The persons standing in front of the screen could end up wearing the hat on his hand just by raising it. Or it could be that somebody taller came into the picture, resulting on stealing the hat from the previous owner.
 
-After the meeting with Andreas, some changes were made to the concept. It was decided that, considering the new information gathered, to take the project in a slightly different direction.
+Although the group imagined the program to display the whole person as the output with a graphical hat on top, it was suggested to do not show the person directly, and show a shadow figure instead. Still, both approaches seemed to cause problems, since the program would have to loop through the whole image to find the person and then do some calculations. Even with only one person, as in the prototype test, this seemed to be a very slow process. Since the group wanted to track multiple persons, it didn't work as intended.
+
+This dilemmas were brought up and various suggestions were given. Such as looking only for the head instead of the full body; adjusting in this way the BLOB analysis to look for a more specific shape; as well as some tips on how to optimize the background subtraction.
+
+%Considering the new information gathered, it was decided to take the project in a slightly different direction.
 
 \subsection{Using Christmas characters instead of showing the full body}
-Previously, the group imagined the program to display the whole person as the output with a graphical hat on top. Later it was suggested to not show the person directly, but instead show some kind of shadow figure. Both approaches seemed to cause problems, since the program would have to loop through the whole image to find the person and then do some calculations. Even with only a single person, as in the prototype test, this seemed to be a very slow process. Since the group wanted to track multiple people, it didn't work as intended. This dilemma was brought up on the meeting with the co-supervisor. It was suggested not to take the person's full body, but instead only look for the head.
+So instead of outputting the entire input image (the person itself) and performing several image operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the head. Then it would display some pre-drawn characters underneath the head, e.g. a visitor at the library doesn't see himself, but a funny Christmas-themed character running around on the screen.
 
-Instead of outputting the entire input image (the person itself) and performing several image operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the head. Then it would display some pre-drawn characters underneath the head, e.g. a visitor at the library doesn't see himself, but instead a funny Christmas-themed character running around on the screen.
+This would save a lot of calculations, as only the head of the user is matter of interest to be analysed. Hopefully this would lead to a more stable framerate for the program, which is important to create the proper immersion. That's why, it is also relevant that the camera is quick enough to pick up and recognize new people stepping into the scene.
 
-This would save a lot of calculations, so only the head of the user is of interest to analyze. Hopefully this would lead to a more stable framerate for the program, which is important to create the proper immersion. It is important that the camera is quick enough to pick up and recognize new people stepping into the scene.
-
-Another aspect to have in mind is that some people don't like to see themselves portrayed on a screen; they feel it is intimidating. By having drawn characters instead this is avoided. Also, this would allow for more consistent artstyle.
+Another aspect to have in mind is that some people don't like to see themselves portrayed on a screen; they feel it is intimidating. But this can be easily avoided by having drawn characters instead, and it also allows a more consistent artstyle.
   
 \section{Vision and success criteria}
-The vision for the project is to make a simple, yet working, program that is fun and engaging to use at Hj{\o}rring Library. It should be something you can just walk past once and get something fun out of it, or, if you stay for a little longer, you can interact with it even more. It is not meant as a game per se, but more like an interactive playground where you can move around and have a good time. Also, the program should be fairly self-maintained and independent, meaning that little maintenance work is needed from the staff of the library.
+The vision for the project is to make a simple, yet working program, that is fun and engaging to use at Hj{\o}rring Library. It should be something you can just walk past once and get something fun out of it, or, if you stay a little longer, you can interact with even more. It is not meant as a game per se, but more like an interactive playground where you can move around and have a good time. Another interesting aspect would be that the program should be fairly self-maintained and independent, meaning that it should need little maintenance work from the staff of the library.
 
-Based on above-mentioned goals of engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement ended being as shown in \ref{problemStatement}.
+Based on the above-mentioned goals of engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement ended being as shown in \ref{problemStatement}.
 
-The group decided that it wanted to make everything from scratch, i.e. not use any existing functionality. However, since the OpenCV library was taught in the Procedural Programming course, as well as the C++ programming language, it seemed appropriate to use it load basic pixel information from digital images. OpenCV provides a lot of useful functionality that could easily be used for this project, such as applying filters and looking for BLOBs, but it was chosen not to use any of those functions, but instead write the code ourselves. This means that even though the program is going to be slower in overall terms, we don't rely on any third party functionality.
+The group decided to make everything from scratch, i.e. not use any existing functionality. However, since the OpenCV library was taught in the Procedural Programming course, as well as the C++ programming language, it seemed appropriate to use it to load basic pixel information from digital images. OpenCV provides a lot of useful functionalities that could easily be used for this project, such as applying filters and looking for BLOBs, but it was chosen not to use any of those functions and write the code ourselves. This means that even though the program is going to be slower in overall terms, we don't rely on any third-party functionality.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% I am here - Marta %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Problem statement}\label{problemStatement}
 \textbf{Is it possible to make an interactive piece of software that fits into the environment of Hj{\o}rring Library? The program should meet the following sets of requirements:}
