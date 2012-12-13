@@ -65,9 +65,9 @@ When one wants to see the picture again he has to call the output() function tha
 void Picture::output(string windowName)
 {
 	if(height == 0||width == 0) //(1)
-		cout << "No picture is loaded";
-		waitKey(0);
-		exit(0);
+		cout << "No picture is loaded";//(2)
+		waitKey(0);//(2)
+		exit(0);//(2)
 	}
 	Mat out(height, width, CV_8UC3);
 
@@ -80,10 +80,10 @@ void Picture::output(string windowName)
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
 			out.at<Vec3b>(y,x)[0] = pixelB[x][y];			
-	imshow(windowName, out);
+	imshow(windowName, out); //(3)
 }
 \end{lstlisting}
-The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture size is zero(1).  If this is the case 
+The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture size is zero(1). If this is the case the programmer gets the message that \textit{no picture is loaded}, he has to press a key and the program will exit(2). If on the other hand a picture is loaded the program will create a Mat object, write pixel values to it and output show the picture on the screen. 
 
 \subsection{The functions}
 Another big advantage in having our own Picture class is that that each group member can work on a different function in the picture class without disturbing somebody else who works on another function in the same program. Even if a function doesn't work it doesn't break the code as long as it is not called. 
