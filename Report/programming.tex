@@ -10,20 +10,20 @@ What we did and why?
 \section{Our own picture class}
 When the group started on working one image processing their supervisor said that they shouldn't use any of the build in function of any image processing program. They gave this demand some thought and agreed on that it would be best when they just would use a image processing library for getting access to the pixel values and showing pictures on the screen. From there they could write all the algorithms by them selves. For these two things openCV seemed like a the right library.
 \subsection{The pixel system}
-In openCV a pixel value can be accessed by the function at:
+In openCV a pixel value can be accessed by the function at():
 \begin{lstlisting}
 myPicture.at<Vec3b>(y,x)[1];
 \end{lstlisting}
 This piece of code returns a pixel value of a picture called myPicture at the position (x,y). In particular the value that is returned is a 8-bit value that describes the green channel of the pixel. It is the green channel, because the number 1 is written between the square brackets[]. If a 0 would be written it would return the blue channel and when a 2 would be written, the red channel would be returned.
-The question was now how to order structure and store the values we would bet from openCV. One thing the group didn't like at all was that the pixels in openCV had to be accessed reversed; instead of the zero one and two meaning R G B like usual it meant B R G. The same thing about the X and Y that had to be written reversed as arguments for the function "at" (y,x) instead if (x,y).
-The group decided that they wanted to work with their own class for pictures. This class should work in a similar way as the build in Mat class from openCV works. It should hold the values of the pixels in a way that is easy to understand and it should contain the functions that could perform different image processing tasks in the picture.
+The question was now how to order structure and store the values we would bet from openCV. One thing the group didn't like at all, was that the pixels in openCV had to be accessed reversed.  Meaning instead of the zero one and two meaning R, G and B like usual, it meant B, R and G. The same thing applies to to the coordinates X and Y that had to be written reversed as arguments for the function at().
+The group decided that they wanted to work with their own class for pictures. This class should work in a similar way as the build in Mat class from openCV works. It should hold the values of the pixels in a way that is easy to understand and it should contain the functions that could perform different image processing tasks in the picture. They gave the class the name \textbf{Picture}.
 The group decided that it would be clearest to store each color channel in a two dimensional array of integers. These values should of course be accessed in the right order in contrast to the the way openCV stores them in.
 \begin{lstlisting}
 void Picture::initialize(VideoCapture captureToStoreCamra)
 {
-	captureToStoreCamra >> tmp;
-	width = tmp.cols;
-	height = tmp.rows;
+	captureToStoreCamra >> tmp; // (1)
+	width = tmp.cols; //(2)
+	height = tmp.rows; //(2)
 
 	pixelR = new int*[width];
 	for(int x = 0; x < width; x++)
@@ -46,11 +46,12 @@ void Picture::initialize(VideoCapture captureToStoreCamra)
 	{
 		pixelB[x] = new int[height];
 		for(int y = 0; y < height; y++)
-			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0];
+			pixelB[x][y] = tmp.at<Vec3b>(y,x)[0]; // (3)
 	}
 }
 \end{lstlisting}
-This code is one of the first functions that was written in the image processing program. The purpose of the function is to open a picture with openCV and writing the values of the opened picture to two dimensional arrays, that from there on can be processed.
+This code is one of the first functions that was written in the image processing program. The purpose of the function is to open a picture with openCV and writing the values of the opened picture to two dimensional arrays, that from there on can be processed. This two dimensional array is a member variable of an object of type Picture, from where the function was called. 
+The first thing this function does is that it streams a picture from a chosen VideoCapture (e.g. a webcam) to the \textbf{tmp} object of type mat (1). This \textbf{tmp} object, is also a member of the object \textbf{Picture}. It is never used for image processing, just for reading either from an image file or a capture or for outputting the picture to the screen again. The next thing the function does is that it saves the width and the height of the Mat object in the Picture object(2). From there the function just creates the array of integers that shall hold the pixel values in all three channels (3). 
 
 When one then wants to get access to a pixels lets say the same pixel like the one before, one has to write the picture name e.g. \textbf{myPicture}. The next thing is that one has to specify the color channel for instance \textbf{pixelG}, which is a member variable of \textbf{myPicture}. Last the position of the pixel has to be chosen, by choosing the position in the array:
 
@@ -63,12 +64,12 @@ When one wants to see the picture again he has to call the output() function tha
 \begin{lstlisting}
 void Picture::output(string windowName)
 {
-	if(height == 0||width == 0){
-		cout << "No picture is loaded";
-		waitKey(0);
-		exit(0);
+	if(height == 0||width == 0) //(1)
+		cout << "No picture is loaded";//(2)
+		waitKey(0);//(2)
+		exit(0);//(2)
 	}
-	Mat out(height, width, CV_8UC3);
+	Mat out(height, width, CV_8UC3);//(3)
 
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
@@ -79,9 +80,10 @@ void Picture::output(string windowName)
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
 			out.at<Vec3b>(y,x)[0] = pixelB[x][y];			
-	imshow(windowName, out);
+	imshow(windowName, out); //(3)
 }
 \end{lstlisting}
+The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture size is zero(1). If this is the case the programmer gets the message that \textit{no picture is loaded}, he has to press a key and the program will exit(2). If on the other hand a picture is loaded the program will create a Mat object(3), write pixel values to it and output show the picture on the screen. 
 
 \subsection{The functions}
 Another big advantage in having our own Picture class is that that each group member can work on a different function in the picture class without disturbing somebody else who works on another function in the same program. Even if a function doesn't work it doesn't break the code as long as it is not called. 
@@ -373,6 +375,7 @@ One thing that could be interesting to work on in the future would to be the bac
 \label{fig:frontShelf}
 \end{minipage}
 \end{figure}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.70\textwidth]{Pictures/Design/IR_pic}
@@ -380,7 +383,7 @@ One thing that could be interesting to work on in the future would to be the bac
 \label{fig:camera_POV}
 \end{figure}
 
-\subsection{Santa Claus ho ho sound}
+\subsection{Santa Claus and his "ho ho ho" sound}
 As mentioned previously, it was important not to disturb visitors with too much sound. After having the program running for a few hours, one of the library staff members contacted us and asked if it was our program that kept making weird noises. It turned out that she was talking about the Santa Claus "ho ho ho" laughter, which, in her opinion, sounded like a deep and growling voice. Apparently the speakers in that we were using made the "ho ho ho" sound different than on our laptop computers. The staff member said that it was a little disturbing and that she thought kids would be afraid, since it sounded a little creepy. On top of that, it sounded like she was a little annoyed of the sound, since she was working close-by.
 In the end the group decided to just get rid of the sound and only use jingle bells for Santa's appearance.
 
@@ -389,14 +392,24 @@ An unexpected problem was the fact that when somebody stand in front of the came
 
 \textbf{[somebody, Johannes/Simon, needs to write a little more here!]}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.70\textwidth]{Pictures/Design/shadow}
-\caption{If a visitor is standing too close to the red bookshelf, his/hear shadow will cover the canvas.}
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/shadow} % Venstre billede
+\end{minipage} \hfill
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/projector_box} % Højre billede
+\end{minipage} \\ % Captions og labels
+\begin{minipage}[t]{0.45\textwidth}
+\caption{If a visitor is standing too close to the red bookshelf, a shadow will cover the canvas.} % Venstre caption og label
 \label{fig:shadow_canvas}
+\end{minipage} \hfill
+\begin{minipage}[t]{0.45\textwidth}
+\caption{The projector needed to be placed higher to minimize shadows.} % Højre caption og label
+\label{fig:projector_box}
+\end{minipage}
 \end{figure}
 
-When the final setup was built, it turned out that in the worst-case scenario the shadow would hide a lot of the graphics drawn on the canvas (figure \ref{fig:shadow_canvas}). To reduce the shadows, the projector was placed on top of a couple of boxes. However, to completely remove the shadows one needed to use a lot of boxes, or, alternatively, hang the projector in the ceiling. Due to time constraints this was not possible. Also, the library staff was afraid that the projector would be too unstable.
+When the final setup was built, it turned out that in the worst-case scenario the shadow would hide a lot of the graphics drawn on the canvas (figure \ref{fig:shadow_canvas}). To reduce the shadows, the projector was placed on top of a couple of boxes (see figure \ref{fig:projector_box}). However, to completely remove the shadows one needed to use a lot of boxes, or, alternatively, hang the projector in the ceiling. Due to time constraints this was not possible. Also, the library staff was afraid that the projector would be too unstable.
 
 \subsection{Need sound to draw attention}
 One thing that the group quickly learned while setting the equipment up was the fact that a lot of people didn't even realize the fact that they were interacting with the canvas when the walked past. Many people looked straight forward when they were walking, instead of looking to either sides.
@@ -405,7 +418,7 @@ It was suggested to use sounds to draw attention to the canvas. An idea was to m
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.90\textwidth]{Pictures/Design/projector_audio}
+\includegraphics[width=1.0\textwidth]{Pictures/Design/projector_audio}
 \caption{Since the speakers are inside the projector, audio will draw attention to the wrong side.}
 \label{fig:projector_audio}
 \end{figure}

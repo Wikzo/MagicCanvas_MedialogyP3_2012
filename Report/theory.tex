@@ -24,7 +24,7 @@ Figure \ref{fig:ip_framework} illustrates the framework used typically when work
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/imageProcessing_steps.png}
-\caption{Image Processing framework. - WE SHOULD MAKE OUR OWN PICTURE LATER ON!!!!!!!! - Gustav}
+\caption{Image Processing framework. Picture is from \citep{ip_book}.}
 \label{fig:ip_framework}
 \end{figure}
 
@@ -39,17 +39,17 @@ Working around digital images on computers is something that most can relate to,
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ColoredToGrayscaleToBinary.jpg}
-\caption{Image illustrating a conversion from a colored image to grayscale and finally to binary}
+\caption{Image illustrating a conversion from a colored image to grayscale and finally to binary (only black and white).}
 \label{fig:ip_ColoredToGrayscaleToBinary}
 \end{figure}
 
 \subsection{Pixels}
-[Need to write what a pixel is. Use IP book.]
+When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter, a sensor and an output. When light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be. \citep{ip_book}
 
 \subsection{8-bit image and grayscale images}
 In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information there can be stored in a single pixel.
 
-An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue \fixme{define hue - use IP book}. The information stored in each pixel is the intensity \fixme{define intensity - IP book} of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
+An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The hue describes how pure and vivid a color is. \citep{visual_story} The information stored in each pixel is the brightness of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
 
 \begin{figure}[htbp]
 \centering
@@ -81,20 +81,12 @@ In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}) . 
 \label{fig:opencv_matrix}
 \end{figure} 
 
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% GUSTAV NÅEDE HERTIL TIRSDAG 4. DECEMBER 2012, 17:36 %%%
-%%% VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV %%%
 \subsection{Working with coloured images}
 Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a coloured image.\\
 There are several formats for handling color images. In this report we will only decribe RGB, since this is the only format we will encounter. Compared to a grayscale image, a coloured image differs because it consists of 3 channels, opposed to just one channel in grayscale images. Each of the three channels describe the value of the color in the specific pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. The most significant difference between grayscale images and coloured images, is that one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition equal amounts of red, green and blue  will produce a gradient of grey, where a pixel value of 255 will produce white, and a pixel value of 0 would produce black, similar to grayscale images.\\
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would simply have to create a threshold\fixme{Insert footnote telling: "Threshold will be described later in the theory chapter, but means to segment a specific colour only and create a binary picture"} value to segment the pixels depending on values of the red channel. The outcome should be a picture with a limited/controlled amount of red. 
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would have to use thresholding to segment the pixels depending on values of the red channel (thresholding will be described in \ref{sec:Thresholding}). The outcome should be a picture with a limited/controlled amount of red. 
 
-Figure \ref{fig:ip_ColorWheel} Illustrates the making of colors in relation to the RGB system.
+Figure \ref{fig:ip_ColorWheel} illustrates the making of colors in relation to the RGB system.
 
 \begin{figure}[htbp]
 \centering
@@ -104,18 +96,18 @@ Figure \ref{fig:ip_ColorWheel} Illustrates the making of colors in relation to t
 \end{figure} 
 
 \subsection{Binary Images}
-In comparison to the above-mentioned, where images are defined by bit depth and pixel information, binary pictures is represented by two colors only in form of black and white. Using this often correlates to use of a threshold, described in section \ref{sec:Thresholding}. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.\\
+In comparison to the above-mentioned where images are defined by bit depth and pixel information, binary pictures are represented by two colors only in form of black and white. This often correlates to using a threshold. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.
+
 Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input. More about this in the next section.
 
+\section{Histograms}
+What is a histogram? Use IP book! - Gustav
 
-%%% I SKIPPED THIS BECAUSEI WROTE IT MYSELF - JOE 5/12 - 2012 %%%
-%%% I SKIPPED THIS BECAUSEI WROTE IT MYSELF - JOE 5/12 - 2012 %%%
-%%% I SKIPPED THIS BECAUSEI WROTE IT MYSELF - JOE 5/12 - 2012 %%%
-%%% I SKIPPED THIS BECAUSEI WROTE IT MYSELF - JOE 5/12 - 2012 %%%
-\section{Thresholding}
-\label{sec:Thresholding}
-Thresholding is one of the most fundamental operations in point processing \fixme{WHAT is point processing? - Gustav} and it is performed to make an input picture binary, i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only completely black and completely white pixel values. \\
-This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not of importance.\\
+\section{Thresholding}\label{sec:Thresholding}
+Thresholding is one of the most fundamental operations when working with images. It is performed to make an input picture binary, i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only completely black and completely white pixel values.
+
+This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not of importance.
+
 To determine which pixels that should be completely black and which that should be completely white a fixed thresholding value is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy; pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied.
 
 Using the same analogy that somebody decided that the border between being too young and just old enough, should be 18 years. This age could easily be something different, such as 17 or 24. The same is relevant with thresholding. You have to decide when pixels are "old" enough (bright). If they are too young (dark), they cannot get access.
@@ -133,7 +125,7 @@ Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is th
 When setting the thresholding value it is important to think about what is wanted regarding the output. It differs  from image to image how effective thresholding is, based on the contrast difference between the object and the background. If the background, and the object you want to find are very different in color and/or contract, then it is easy to distinguish between them and choose an effective threshold value. However; if the object and background are very similar, it becomes harder to do choose a thresholding value. As you will have to chose between losing information associated to the object of interest or to gather some background noise, but then keeping the object of interest.\\
 To get a better understanding of this, look at the histograms shown in \eqref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
 
-It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, while the rightmost histogram has very similar object and backgrounds.
+It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram. \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -143,11 +135,11 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdPicture} % Højre billede
 \end{minipage} \\ % Captions og labels
 \begin{minipage}[t]{0.45\textwidth}
-\caption{Simple threshold value} % Venstre caption og label
+\caption{Ideal histogram with two "mountains".} % Venstre caption og label
 \label{fig:SimpleThreshold}
 \end{minipage} \hfill
 \begin{minipage}[t]{0.45\textwidth}
-\caption{Complicated threshold value} % Højre caption og label
+\caption{Problematic histogram.} % Højre caption og label
 \label{fig:ComplicatedThreshold}
 \end{minipage}
 \end{figure}
@@ -162,11 +154,11 @@ Looking at picture \eqref{fig:SimpleThresholdAfter} will show that the picture w
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdAfter} % Højre billede
 \end{minipage} \\ % Captions og labels
 \begin{minipage}[t]{0.45\textwidth}
-\caption{Great silhouette after threshold} % Venstre caption og label
+\caption{Good silhouette after thresholding.} % Venstre caption og label
 \label{fig:SimpleThresholdAfter}
 \end{minipage} \hfill
 \begin{minipage}[t]{0.45\textwidth}
-\caption{Bad silhouette after threshold} % Højre caption og label
+\caption{Bad silhouette after thresholding.} % Højre caption og label
 \label{fig:ComplicatedThresholdAfter}
 \end{minipage}
 \end{figure}
@@ -187,7 +179,7 @@ The kernel will be first placed on the corner of the image and it will operate o
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/FitHitKernels.png}
-\caption{Binary image and \textit{Structuring elements}}
+\caption{Binary image and structuring elements.}
 \label{fig:FitHit}
 \end{figure}
 
