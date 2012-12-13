@@ -23,6 +23,13 @@ publisher = {Oxford University Press}
    Url = {http://www.texample.net/media/tikz/examples/PNG/rgb-color-mixing.png}
 }
 
+
+@online{histogram,
+   Lastchecked = {13.12.2012},
+   Title = {Understanding Digital Camera Histograms: Tones and Contrast},
+   Url = {http://www.cambridgeincolour.com/tutorials/histograms1.htm}
+}
+
 @online{clipboard1,
    Lastchecked = {11.12.2012},
    Title = {Techopedia},
@@ -43,15 +50,12 @@ publisher = {Oxford University Press}
    Url = {http://msdn.microsoft.com/en-us/library/windows/desktop/ms649016(v=vs.85).aspx}
 }
 
-%%% DOES NOT SHOW ???%%%
-@booklet{hjoerring_study,
-    %author   = "",
+@book{hjoerring_study,
+    author   = "V. Suenson AND H. Harder AND N. Tradisauskas AND A. K. Simonsen AND M. Knudstrup AND Institut for Arkitektur og Design AND De Ingeni{\o}r-, Natur- og Sundhedsvidenskabelige Fakulteter AND
+Aalborg Universitet",
     title     = {Walking the Library},
-    howpublished   = {Aalborg Universitet},
-    %address  = "",
-    year      = {2010},
-    %month    = "",
-    %note     = "",
+    publisher   = {Aalborg Universitet},
+    year      = {2010}
 }
 
 @book{visual_story,
@@ -61,5 +65,11 @@ year = {2007},
 number = {ISBN: 978-0240807799},
 edition = {Second edition},
 publisher = {Focal Press}
+}
+
+@misc{opencv,
+title = "Image Processing - From Theory to Practice",   
+   author = "Theodore Tsesmelis",
+   year = 2012
 }
 
