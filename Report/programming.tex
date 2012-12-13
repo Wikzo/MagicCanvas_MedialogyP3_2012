@@ -375,6 +375,7 @@ One thing that could be interesting to work on in the future would to be the bac
 \label{fig:frontShelf}
 \end{minipage}
 \end{figure}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.70\textwidth]{Pictures/Design/IR_pic}
@@ -382,7 +383,7 @@ One thing that could be interesting to work on in the future would to be the bac
 \label{fig:camera_POV}
 \end{figure}
 
-\subsection{Santa Claus ho ho sound}
+\subsection{Santa Claus and his "ho ho ho" sound}
 As mentioned previously, it was important not to disturb visitors with too much sound. After having the program running for a few hours, one of the library staff members contacted us and asked if it was our program that kept making weird noises. It turned out that she was talking about the Santa Claus "ho ho ho" laughter, which, in her opinion, sounded like a deep and growling voice. Apparently the speakers in that we were using made the "ho ho ho" sound different than on our laptop computers. The staff member said that it was a little disturbing and that she thought kids would be afraid, since it sounded a little creepy. On top of that, it sounded like she was a little annoyed of the sound, since she was working close-by.
 In the end the group decided to just get rid of the sound and only use jingle bells for Santa's appearance.
 
@@ -391,14 +392,24 @@ An unexpected problem was the fact that when somebody stand in front of the came
 
 \textbf{[somebody, Johannes/Simon, needs to write a little more here!]}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.70\textwidth]{Pictures/Design/shadow}
-\caption{If a visitor is standing too close to the red bookshelf, his/hear shadow will cover the canvas.}
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/shadow} % Venstre billede
+\end{minipage} \hfill
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/projector_box} % Højre billede
+\end{minipage} \\ % Captions og labels
+\begin{minipage}[t]{0.45\textwidth}
+\caption{If a visitor is standing too close to the red bookshelf, a shadow will cover the canvas.} % Venstre caption og label
 \label{fig:shadow_canvas}
+\end{minipage} \hfill
+\begin{minipage}[t]{0.45\textwidth}
+\caption{The projector needed to be placed higher to minimize shadows.} % Højre caption og label
+\label{fig:projector_box}
+\end{minipage}
 \end{figure}
 
-When the final setup was built, it turned out that in the worst-case scenario the shadow would hide a lot of the graphics drawn on the canvas (figure \ref{fig:shadow_canvas}). To reduce the shadows, the projector was placed on top of a couple of boxes. However, to completely remove the shadows one needed to use a lot of boxes, or, alternatively, hang the projector in the ceiling. Due to time constraints this was not possible. Also, the library staff was afraid that the projector would be too unstable.
+When the final setup was built, it turned out that in the worst-case scenario the shadow would hide a lot of the graphics drawn on the canvas (figure \ref{fig:shadow_canvas}). To reduce the shadows, the projector was placed on top of a couple of boxes (see figure \ref{fig:projector_box}). However, to completely remove the shadows one needed to use a lot of boxes, or, alternatively, hang the projector in the ceiling. Due to time constraints this was not possible. Also, the library staff was afraid that the projector would be too unstable.
 
 \subsection{Need sound to draw attention}
 One thing that the group quickly learned while setting the equipment up was the fact that a lot of people didn't even realize the fact that they were interacting with the canvas when the walked past. Many people looked straight forward when they were walking, instead of looking to either sides.
@@ -407,7 +418,7 @@ It was suggested to use sounds to draw attention to the canvas. An idea was to m
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.90\textwidth]{Pictures/Design/projector_audio}
+\includegraphics[width=1.0\textwidth]{Pictures/Design/projector_audio}
 \caption{Since the speakers are inside the projector, audio will draw attention to the wrong side.}
 \label{fig:projector_audio}
 \end{figure}
