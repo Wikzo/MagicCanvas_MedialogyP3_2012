@@ -101,7 +101,16 @@ In comparison to the above-mentioned where images are defined by bit depth and p
 Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input. More about this in the next section.
 
 \section{Histograms}
-What is a histogram? Use IP book! - Gustav
+A commonly-used tool when working with digital images are histograms. A histogram provides an easy overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This can be used to tell whether an image is too dark or too bright, as well as how good the contrast is\citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram where each pixel value from 0-255 has a bin. The more often a specific pixel value is present on the image, the taller the bin will be. On the histogram there is a lot of bins near the edges (0 and 255) and less in the middle. This means that the picture is mostly black and white with few nuances in-between.
+
+One can also use the histogram to describe the contrast in an image. The contrast is a measure of the intensity differences in dark and light areas on the picture \citep{histogram}. This means that a histogram with broad values, i.e. they use the whole spectrum from 0-255, will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{Pictures/Theory/hisogram_contrast.png}
+\caption{Histograms can be used to describe the contrast in an image. Picture from \citep{histogram}.}
+\label{fig:histogram_contrast}
+\end{figure}
 
 \section{Thresholding}\label{sec:Thresholding}
 Thresholding is one of the most fundamental operations when working with images. It is performed to make an input picture binary, i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only completely black and completely white pixel values.
