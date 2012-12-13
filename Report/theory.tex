@@ -2,6 +2,8 @@
 This chapter goes through the various techniques used in image processing. This section is a general description, while chapter \ref{implementation} will describe how they were used for this specific project.
 
 \section{A general framework for image processing}
+During this project image processing has been used to achieve the output needed. Some techniques were used to remove noise from the picture, so that the important parts get all the focus, while others are used to make the important parts more clear or to track specific objects.
+
 Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point (based on \citep{ip_book}):
 
 \textbf{Image Acquisition}
@@ -19,8 +21,6 @@ The object needs to be represented in an intuitive manner.
 \textbf{Classification}
 For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
 
-Figure \ref{fig:ip_framework} illustrates the framework used typically when working with image processing.
-
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/imageProcessing_steps.png}
@@ -28,10 +28,10 @@ Figure \ref{fig:ip_framework} illustrates the framework used typically when work
 \label{fig:ip_framework}
 \end{figure}
 
-%% Maybe a little to blabla and too long sentences - Gustav %%
-During this project image processing has been used achieve an the output needed. Some techniques is being used to remove noise from the picture, so the important parts get all the focus, while others are used for making the important parts more clear or making it possible to track specific objects.
+%% Maybe a little too blabla and too long sentences - Gustav %%
+%% I moved a paragraph to the begining of the section. But I'm still not sure if the above part is useful as we will be describing everything again... - Marta %%
 
-It is all these different techniques combined that makes it possible to get a functional program, but before you can use them, you will have to know how they work and how they can be included to your project. This section is going to explain the different techniques that are being used and also why and how they are being implemented in this project.
+The combination of these different techniques makes it possible to get a functional program, but before use them, it is necessary to know how they work. The next section will explain the different techniques that used and also why and how they were implemented on the project. Figure \ref{fig:ip_framework} illustrates the framework used typically when working with image processing.
 
 \section{The digital image}
 Working around digital images on computers is something that most can relate to, but there is a lot more to it than one realizes. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
