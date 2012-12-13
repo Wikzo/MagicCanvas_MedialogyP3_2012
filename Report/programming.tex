@@ -73,17 +73,17 @@ void Picture::output(string windowName)
 
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
-			 out.at<Vec3b>(y,x)[2] = pixelR[x][y];
+			 out.at<Vec3b>(y,x)[2] = pixelR[x][y]; //(4)
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
-			out.at<Vec3b>(y,x)[1] = pixelG[x][y];
+			out.at<Vec3b>(y,x)[1] = pixelG[x][y]; //(4)
 	for(int x = 0; x < width; x++)
 		for(int y = 0; y < height; y++)
-			out.at<Vec3b>(y,x)[0] = pixelB[x][y];			
-	imshow(windowName, out); //(3)
+			out.at<Vec3b>(y,x)[0] = pixelB[x][y]; //(4)		
+	imshow(windowName, out); //(5)
 }
 \end{lstlisting}
-The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture size is zero(1). If this is the case the programmer gets the message that \textit{no picture is loaded}, he has to press a key and the program will exit(2). If on the other hand a picture is loaded the program will create a Mat object(3), write pixel values to it and output show the picture on the screen. 
+The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture size is zero(1). If this is the case the programmer gets the message that \textit{no picture is loaded}, he has to press a key and the program will exit(2). If on the other hand a picture is loaded the program will create a Mat object(3), write pixel values to it (4) and output show the picture on the screen(5). 
 
 \subsection{The functions}
 Another big advantage in having our own Picture class is that that each group member can work on a different function in the picture class without disturbing somebody else who works on another function in the same program. Even if a function doesn't work it doesn't break the code as long as it is not called. 
@@ -97,9 +97,6 @@ Important to notice when using a loop that is running for ever is that it is a b
 \begin{lstlisting}
 void Picture::refresh(VideoCapture captureToStoreCamra)
 {
-	//captureToStoreCamra.set(CV_CAP_PROP_EXPOSURE, 1.0);
-	//captureToStoreCamra.set(CV_CAP_PROP_GAIN, 1.0);
-
 	captureToStoreCamra >> tmp;
 	width = tmp.cols;
 	height = tmp.rows;
@@ -131,16 +128,16 @@ The decision of having all pixels in our own class might sound like a neat way m
 \section{The Preprocessing}
 WHEN WE LOOK THIS THROUGH WE SHOULD READ THE LED PART BEFORE TO SE IF IT FITS
 \subsection{Region of Interest}
-Like mentioned in the \textit{setup} chapter the group was just interested in the horizontal position of the persons that would step into the shot of the camera. That was why the group just had on strip of leds where persons should be detected. For the image processing program that also meant that just this part of the picture had to be analysed. This also meant that the program could run much faster, when just a little part of the picture had to be analysed. This little part is called the region of interest or short the ROI. 
-The way this was implemented was by initializing the picture int setup, setting all its pixel values to 0 and in the main loop just refreshing the parts, that where in the region of interest. 
+Like mentioned in the \textit{setup} chapter the group was just interested in the horizontal position of the persons that would step into the shot of the camera. That was why the group just had on strip of LEDs where persons should be detected. For the image processing program that also meant that just this part of the picture had to be analysed. This also meant that the program could run much faster, when just a little part of the picture had to be analysed. This little part is called the region of interest or short the ROI. 
+The way this was implemented was by initializing the picture in the setup, setting all its pixel values to 0 and in the main loop just refreshing the parts, that where in the region of interest. 
 \subsection{Background subtraction}
 When the group started to make the program, it seemed like good idea to have a reference picture of what the camera sees without persons and to background subtract this to what the camera sees in every frame. After that the group wanted to threshold the result to get a binary picture. 
 This also worked; the problem was just that it was a lot of work for the computer to do this for every pixel value it got. That is why the group had to look into what of this process could be left out. 
-The thing they knew was that the person would be darker then the background since they had illuminated the background. That meant that they weren't interested in what had become brighter in comparison to the reference picture. The other thing the knew was that the camera just took infra red light, since they had put a filter on it. That made almost all color information disappear. The only color channel that was a little brighter was the red channel. That is why we only chose to look at the red channel. 
+The thing they knew was that the person would be darker then the background since they had illuminated the background. That meant that they weren't interested in what had become brighter in comparison to the reference picture. The other thing they knew was that the camera just took infra red light, since they had put a filter on it. That made almost all color information disappear. The only color channel that was a little brighter was the red channel. That is why we only chose to look at the red channel. 
 
 PUT A PICTURE OF THE INFRA RED PICTURE
 
-Another possibility would have been to put all that color channels together with different weight, like in the conversion from a color picture to a black and white picture. We chose not to do that because the color channels were so similar that this wouldn't have improved the result, and it would have meant that we had to read all color channels, which would have made the program much slower. 
+Another possibility would have been to put all the color channels together with different weight, like in the conversion from a color picture to a black and white picture. We chose not to do that because the color channels were so similar that this wouldn't have improved the result, and it would have meant that we had to read all color channels, which would have made the program much slower. 
 
 \subsection{Putting four function into one}
 The following sentence sums up what we now  know about the information we want to extract from the picture: We are interested in which pixels in the region of interest have been become darker in the red channel in comparison to the reference picture. Also we would like to have the step of reading all the pixels from openCV removed. This can all be written in code in a very simple way that costs much less processing power:
@@ -166,27 +163,94 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 }
 \end{lstlisting}
 This function does exactly what the four functions described before are supposed to do. It refreshes the picture, it looks just at the region of interest and it does something that gives the same outcome as background subtraction and thresh holding the subtracted picture.
-The first thing the function does is that it streams the current picture from the camera to a temporary Mat object called \textbf{tmp} (1). The next thing it does is that it loops through all the x values of the picture and through all the y values that we are interested in (2). The y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter up to a specific percentage of the screen used. For each of these coordinates the program checks if the red channel of the of the new picture is darker by the threshold chosen as parameter (3). If this is the case the current pixel gets the maximum value to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough the pixel gets classified as a pixel that hasn't changed enough, by setting it to zero (5).
+The first thing the function does is that it streams the current picture from the camera to a temporary Mat object called \textbf{tmp} (1). The next thing it does is that it loops through all the x values of the picture and through all the y values that we are interested in (2). The y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter, up to a specific percentage of the screen used. For each of these coordinates the program checks if the red channel of the of the new picture is darker by the threshold chosen as parameter (3). If this is the case the current pixel gets the maximum value to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough the pixel gets classified as a pixel that hasn't changed enough, by setting it to zero (5).
 
-\section{Config Background}
-
-Background subtraction
-Just the red channel...
+\section{The setup loop}
 \subsection{Take Background picture}
-wait until nothing moves:
-	Threshold pixel value
-	Threshold pixel amount
-	Threshold picture amount
-take picture
+Like mentioned before, there is also a loop in the setup. This loop also contains a while loop that has \textbf{true} as its condition. This loop is not supposed to end when the escape-key is pressed, but when it has figured out that there are no people in the picture. The reason for that is, that it has to take a reference picture, which is the one we use in the background subtraction. The function works under the assumption that people when on the picture always move a little. The function has three thresholds. The first is \textbf{threshholdPixelChange}, which is the value from which a pixel can be counted as changed. The second is threshholdPixelsChanged, whcih is the threshhold for how many pixels count as a person, since we are not interested in if just pixel has changed. The third threshold is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row have to be without change, so we can assume that no body is on the picture. 
+\begin{lstlisting}
+void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi)
+{
+	Picture test1;
+	Picture test2;
+	test1.initialize(camera1);
+	test2.initialize(camera1); // (1)
+
+	double framesUnchangeged = 0; //(2)
+	while(true)
+	{
+		test1.refresh(camera1);
+		waitKey(30);
+		test2.refresh(camera1); //(3)
+		double pixelChange = 0; // (4)
+		double pixelsChanged = 0; // (5)
+		
+
+		for(int x = 0; x < test1.width; x++)
+		{
+			for(int y = 0; y < test1.height; y++) // (6)
+			{
+				pixelChange = 0;
+				if(test1.pixelR[x][y] - test2.pixelR[x][y] > 0)
+					pixelChange += test1.pixelR[x][y] - test2.pixelR[x][y];
+				else
+					pixelChange += test2.pixelR[x][y] - test1.pixelR[x][y];
+
+				if(test1.pixelG[x][y] - test2.pixelG[x][y] > 0)
+					pixelChange += test1.pixelG[x][y] - test2.pixelG[x][y];
+				else
+					pixelChange += test2.pixelG[x][y] - test1.pixelG[x][y];
+
+				if(test1.pixelB[x][y] - test2.pixelB[x][y] > 0)
+					pixelChange += test1.pixelB[x][y] - test2.pixelB[x][y];
+				else
+					pixelChange += test2.pixelB[x][y] - test1.pixelB[x][y]; // (7)
+					
+				if(pixelChange > threshholdPixelChange)
+					pixelsChanged++; // (8)
+			}
+		}
+		if(pixelsChanged < threshholdPixelsChanged)
+			framesUnchangeged++; // (9)
+		else
+			framesUnchangeged = 0; // (10)
+
+		if(framesUnchangeged >= threshholdFramesChanged) //(11)
+		{
+			BG.refresh(camera1); //(12)
+			int brightestYProduct = 0;
+			for(int x = 0; x < BG.width; x++) //(13)
+			{
+				int brightestVal = 0;
+				for(int y = 0; y < BG.height; y++) //(13)
+				{
+					if(BG.pixelR[x][y] > brightestVal)
+					{
+						brightestVal = BG.pixelR[x][y];
+						brightestYatX[x] = y; //(14)
+					}
+				}
+				brightestYProduct += brightestYatX[x]; //(15) 
+			}
+			startHeightOfROI = brightestYProduct/BG.width + BG.height*((float)procentOfTheScreenUsed/100)/4; //(16)
+
+			if(startHeightOfROI > BG.height-1)
+				startHeightOfROI = BG.height-1; //(17)
+			return;
+		}
+	}
+}
+\end{lstlisting}
+Before starting the while loop, the function that shall setup the background initializes two pictures(1) and a variable that is supposed to hold the number of frames that are unchanged in a row(2). In the while loop it refreshes the pictures with a time delay of 30 milliseconds (3) and initializes a counter that shall hold how much each pixel is changed(4) and one that shall hold how many pixels are changed(5). After that the program goes through all pixel coordinates (6) and saves the difference between the pixel value of each channel in the variable pixelChange (7). When this pixelChange is bigger then the threshold that classifies a pixel as changed the counter pixelsChanged gets raised by one (8). By this when all the pixels have been looked through, the program knows how many pixels have been changed from one frame to the next. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up(9). When to many pixels have changed the counter gets set to zero(10). 
+If enough pictures have been unchanged, the last part of the loop is entered(11). Here first the a Picture object BG gets refreshed(12). When this is done we analyse two things on the picture. The first one is where is the brightest picture in each column of the picture and the second where do we have to place the region of interest. We find the brightest pixel by going through each pixel of each column (13)and every time we find a pixel that is brighter then the brightest pixel until then it's position will be saved (14). This gets saved in the integer array \textbf{brightestYatX[]}. The number between the square brackets defines the x position of the column and the value the y position, where the brightest pixel is. To find out where the region of interest has to be placed the the program adds all y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check, that makes sure that the region of interest is in the frame(17).
+MAXMAXMAX
 \subsection{find roi and enter and exit zone}
 average brightest pixel in column for Roi
 pixel for enter and exit zone
 
 
-
-
-
-
+\section{Finding and analysing the blobs}
+recursion 
 
 \section{Morphology}
 Closing
