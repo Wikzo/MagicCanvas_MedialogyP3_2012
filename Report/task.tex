@@ -45,14 +45,14 @@ To great delight, the group was chosen to work with Hj{\o}rring Library, which w
 
 %A meeting was arranged with the library travelled to Hj{\o}rring to meet the library staff. Here, the group was let loose in the library to check locations for potential projects. After talking to some of the staff, more specifically our contact person Martin J{\o}rgensen, some general ideas emerged. Afterwards it was decided to go back to the university and do some initial brainstorming based on the library environment.
 
-During the first visit to Hj{\o}rring Library, the groups designated to work there got some instructions of what they were expected to do. Although there were no additional predefined projects, the staff of the library expected to get an installation that could be run there and where the visitors could spend some time interacting with.
+During the first visit to Hj{\o}rring Library, the groups designated to work there received some instructions of what they were expected to do. Although there were no additional predefined projects, the staff of the library expected to get an installation that the visitors could spend some time interacting with.
 
 The first idea that emerged included scanning barcodes of books in the library. The concept was to place a big canvas on some bookshelves, and whenever people walked past it, they would see their silhouette projected onto the canvas. The idea was that people would explore the library and depending on the books gathered and scanned, some specific graphics would appear on the canvas, like a hat or other clothes related to that theme. An example could be scanning a fairy tale written by H.C. Andersen which would then produce a hat on-top of the user; or maybe a book with Sherlock Holmes would spawn his famous hat and pipe, etcetera. This would allow people that casually walk past the shelves see something interesting on the canvas; and if they want to, they could participate further by going around the library to find the correct books, scan them, and thereby change what would be projected on the canvas next time. Maybe they would be told to find a book about dinosaurs, and if they succeed in scanning an arbitrary book containing dinosaurs, everybody walking past the canvas from now on would see themselves with a dinosaur costume (see figure \ref{fig:bookTheme}). It seemed like a concept with endless possibilities.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{Pictures/HjoerringLibrary/magician.png}
-\caption{The theme is Harry Potter.}
+\caption{Scanning Harry Potter book would change the theme to magic.}
 \label{fig:bookTheme}
 \end{figure}
 
@@ -129,12 +129,12 @@ This dilemmas were brought up and various suggestions were given. Such as lookin
 
 %Considering the new information gathered, it was decided to take the project in a slightly different direction.
 
-\subsection{Using Christmas characters instead of showing the full body}
+\subsection{Using Christmas characters instead of showing the actual person}
 So instead of outputting the entire input image (the person itself) and performing several image operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the head. Then it would display some pre-drawn characters underneath the head, e.g. a visitor at the library doesn't see himself, but a funny Christmas-themed character running around on the screen.
 
 This would save a lot of calculations, as only the head of the user is matter of interest to be analysed. Hopefully this would lead to a more stable framerate for the program, which is important to create the proper immersion. That's why, it is also relevant that the camera is quick enough to pick up and recognize new people stepping into the scene.
 
-Another aspect to have in mind is that some people don't like to see themselves portrayed on a screen; they feel it is intimidating. But this can be easily avoided by having drawn characters instead, and it also allows a more consistent artstyle.
+Another aspect to have in mind is that some people don't like to see themselves portrayed on a screen; they feel it is intimidating. But this can be easily avoided by having drawn characters instead, and it also allows a more consistent art style.
   
 \section{Vision and success criteria}
 The vision for the project is to make a simple, yet working program, that is fun and engaging to use at Hj{\o}rring Library. It should be something you can just walk past once and get something fun out of it, or, if you stay a little longer, you can interact with even more. It is not meant as a game per se, but more like an interactive playground where you can move around and have a good time. Another interesting aspect would be that the program should be fairly self-maintained and independent, meaning that it should need little maintenance work from the staff of the library.
@@ -144,7 +144,7 @@ Based on the above-mentioned goals of engaging people at the library, the initia
 The group decided to make everything from scratch, i.e. not use any existing functionality. However, since the OpenCV library was taught in the Procedural Programming course, as well as the C++ programming language, it seemed appropriate to use it to load basic pixel information from digital images. OpenCV provides a lot of useful functionalities that could easily be used for this project, such as applying filters and looking for BLOBs, but it was chosen not to use any of those functions and write the code ourselves. This means that even though the program is going to be slower in overall terms, we don't rely on any third-party functionality.
 
 \subsection{Problem statement}\label{problemStatement}
-\textbf{From the group's point of view, in order to succeed the program should meet the following sets of requirements:}
+\textbf{The group decided that in order to succeed, the program should meet the following sets of requirements:}
 
 \begin{itemize}
 \item Low maintenance: the program should be easy set up and use for the library staff.
