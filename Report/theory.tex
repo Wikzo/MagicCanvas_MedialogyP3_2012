@@ -134,7 +134,7 @@ In practice this means that pixels with values greater than a threshold is set t
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
 When setting the thresholding value it is important to think about what is wanted regarding the output. It differs  from image to image how effective thresholding is, based on the contrast difference between the object and the background. If the background, and the object you want to find are very different in color and/or contract, then it is easy to distinguish between them and choose an effective threshold value. However; if the object and background are very similar, it becomes harder to do choose a thresholding value. As you will have to chose between losing information associated to the object of interest or to gather some background noise, but then keeping the object of interest.\\
-To get a better understanding of this, look at the histograms shown in \eqref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
+To get a better understanding of this, look at the histograms shown in \ref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
 
 It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
 
@@ -177,12 +177,18 @@ Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture wit
 This proves the point that finding a functional thresholding value is not always straightforward. As for finding a silhouette it is of great help to make a clear transition from the object and the background.
 
 \section{Morphology}
-Morphology is a collection of operations used to analyse and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well.
-The processes related to morphology on binary images are oriented to remove noise produced by threshold of an image as well as defining the contours of the objects in order to achieve a proper BLOB analysis.
+Morphology is a collection of operations used to analyze and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}.
 
-Mathematical morphology is a neighborhood processing method\fixme{Is this the right way to describe it, or "home made"?} that applies a \textit{structuring element} (or kernel) to the pixels on the image. The ways that kernel will be structured, how big it will be or the shape that will be used, depends on the designer\fixme{There must be some boundaries or some predefined kernels? These should be described so the reader doesn't think that the designer can make whatever kernel he wants.} and the shape and size of the objects to be analysed. The reason for this is that the structured elements are used to apply by \textit{hitting} or \textit{fitting} operations that will affect the results in different ways. Hit and fit will be described in the next section.
+Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel as well as its surrounding neighbours, e.g. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}.
 
-\subsubsection{Hit and Fit}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{Pictures/Theory/kernel}
+\caption{Neighbourhood processing uses a kernel. Image from \citep{ip_book}.}
+\label{fig:kernel}
+\end{figure}
+
+\subsubsection{Hit and fit}
 Whenever you decide to apply a structured element and \textbf{hit} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a sort of grid that has some values within it. These values are either 1 or 0 if used on a binary pixel. Dependent on these values and the images pixel values different output occurs.
 
 The kernel will be first placed on the corner of the image and it will operate on one pixel at a time. If one of the pixels inside the kernel are "1" where the kernel is "1" as well then it hits. This means that the pixel in the center of the kernel will become a "1" in the output. If none of the pixels inside the kernel "hits" then the pixel in the middle of the kernel becomes a "0" in the output.
@@ -210,7 +216,7 @@ On the contrary, to be able to \textbf{fit} a pixel on the center of the structu
  D &$S_{1}$ &No &No\\\hline
  D &$S_{2}$ &No &No\\\hline
 \end{tabular}
-\caption{Results of Hitting and Fitting with two different structuring elements}
+\caption{Results of hitting and fitting with two different structuring elements.}
 \label{tab:HitFitResults}
 \end{table}
 
