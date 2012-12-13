@@ -2,22 +2,22 @@
 This chapter goes through the various techniques used in image processing. This section is a general description, while chapter \ref{implementation} will show how they were used on this specific project.
 
 \section{A general framework for image processing}
-Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. However, this is a general framework that can be used as a good starting point (based on \citep{ip_book}):
+Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point (based on \citep{ip_book}):
 
 \textbf{Image Acquisition}
-Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, light, etc.
+Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
 
 \textbf{Pre-processing}
-Here the initial setup is completed, e.g. converting the image from color to grayscale.
+Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
 
 \textbf{Segmentation}
-To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation where noise and background elements are removed, so only the object of interest is seen. Thresholding is often applied to make the object stand out, e.g. make the object appear white and the background black.
+To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
 
 \textbf{Representation}
-The object needs to be representative in an intuitive manner.
+The object needs to be represented in an intuitive manner.
 
 \textbf{Classification}
-For the system to actually know that an object is a hand or not, it has to do some classification and compare the data to some knowledge or database. This can be done with template matching and BLOB classification.
+For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
 
 Figure \ref{fig:ip_framework} illustrates the framework used typically when working with image processing.
 
