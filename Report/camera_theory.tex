@@ -70,14 +70,25 @@ For many different image processing procedures it important that the lightning i
 To avoid running into issues with variances in illumination, the descision was quickly made to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration that we had the ability to filter the camera input, allowing only IR-light to pass to the camera. The following options were considered:
 
 \begin{itemize}
-\item Using the normal lighting at the library.
+\item Using the library's lighting.
 \item Making adjustments to the lighting at the library.
 \item Bringing normal lights to light the scene.
 \item Building our own light system to light the scene.
 \end{itemize}
 
-\begin{itemize}
-\item \textbf{The Library's Normal Lighting}
+
+\textbf{Using the library's lighting}:
 The Library's normal lightning consist of two different types of lamps: Flourescent lights and very bright halogen spots. Using the infrared camera, we looked at the normal lighting and the halogen spots radiated too much IR light for us to be able to have a decent contrast between background and the subject we want to track.
 
-\end{itemize}
+\textbf{Making adjustments to the lighting at the library}:
+It was not possible to adjust the flourescent lights, but the halogen spots could be pointed in a different direction. We further considered using some material to direct the cone of light from the spots, as to create the largest contrast between background and subject. Two options present themselves: point the lights at the background or point the lights to the subjects. These two cases offer two different problems. Limiting the cone of the light to only hit the subjects would require the light to be incident from a angle where they could not be placed, on the other hand limiting the spots to illuminating the canvas would interfere with the projection of images, as the spots are very bright.
+\fxnote{Visualise how the spot whould need to be set up inder order for them to illuminate the subject.}
+
+\textbf{Bringing normal light to the scene} 
+By bringing normal lights that emit a high amount of IR lighting, the subject could be illuminated in a sufficient manner, but this would require a mount to be created or bought.
+\fxnote{Maybe expand on the mount thing? Reference the same thing as before, with difficulties with illuminating from the right angles}
+
+\textbf{Building our own light system to light the scene}
+Scratch building a lighting system to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared light, and using this to light up the background, we should be able to create a high contrast between the background and the subject that we want to track. Furthermore this provides us with the added benifit of already having defined a region of interest, thus easing the workload of the image processing. \fxnote{image of ideal setup}
+
+Weighing the pros and cons of each solution it becomes apparant that the best solution is to build a custom lighting system to bring to the library. 
