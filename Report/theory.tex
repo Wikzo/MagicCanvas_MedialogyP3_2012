@@ -177,7 +177,7 @@ This proves the point that finding a functional thresholding value is not always
 \section{Morphology}
 Morphology is a collection of operations used to analyze and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}.
 
-Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel as well as its surrounding neighbours, e.g. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}.
+Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, e.g. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}.
 
 \begin{figure}[htbp]
 \centering
@@ -187,9 +187,9 @@ Morphology is a a part of neighbourhood processing. Whereas point processing is 
 \end{figure}
 
 \subsubsection{Hit and fit}
-Whenever you decide to apply a structured element and \textbf{hit} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a sort of grid that has some values within it. These values are either 1 or 0 if used on a binary pixel. Dependent on these values and the images pixel values different output occurs.
+Whenever one decide to apply a structured element and \textit{hit} the pixels, what happens is calculating the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is grid containing weighted values some values within it. These values are either 1 or 0 if used on a binary pixel. Dependent on these values and the images pixel values different output occurs.
 
-The kernel will be first placed on the corner of the image and it will operate on one pixel at a time. If one of the pixels inside the kernel are "1" where the kernel is "1" as well then it hits. This means that the pixel in the center of the kernel will become a "1" in the output. If none of the pixels inside the kernel "hits" then the pixel in the middle of the kernel becomes a "0" in the output.
+The kernel will be first placed on the corner of the image and it will operate on one pixel at a time. If one of the pixels inside the kernel are '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
 
 \begin{figure}[htbp]
 \centering
@@ -198,7 +198,7 @@ The kernel will be first placed on the corner of the image and it will operate o
 \label{fig:FitHit}
 \end{figure}
 
-On the contrary, to be able to \textbf{fit} a pixel on the center of the structured element, every pixels' values have to be the same both on the kernel and the input image. If one of the pixels on the input image has a different value to the corresponding '1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On Table \ref{tab:HitFitResults} Figure \ref{fig:FitHit} has been represented with two different types of structuring elements.
+On the contrary, to be able to \textit{fit} a pixel on the center of the structured element, every pixel's neighbour values have to be the same both on the kernel and the input image. If one of the pixels on the input image have a different value to the corresponding 1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On table \ref{tab:HitFitResults} figure \ref{fig:FitHit} has been represented with two different types of structuring elements.
 \begin{table}[htbp]
 \centering
 \begin{tabular}{|c|c|c|c|}
@@ -218,17 +218,15 @@ On the contrary, to be able to \textbf{fit} a pixel on the center of the structu
 \label{tab:HitFitResults}
 \end{table}
 
-%%%%%%%%%%%%%%%%%%%%%% SHOULD I TALK A BIT MORE ABOUT THE TABLE? %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%% NO - from Joe %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Dilation}
-Dilation is the process of applying Hit to an entire image and refers to the expansion of an object on an image (see Eq.\ref{Dilation1} for a mathematical definition). The result of this method implies helps filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on Figure \ref{fig:Dilation}. 
+\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see eq.\ref{Dilation1} for a mathematical definition). The result of this method implies helps filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on Figure \ref{fig:Dilation}. 
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\oplus{SE}
 \label{Dilation1}
 	\end{aligned}
 \end{equation}
-A small structured element applied several times will have the same effect as a big structured element passed once. This can be seen on Eq \ref{Dilation2}, where dilating twice with the element {$SE_{1}$} has the same consequences on the object as dilating one time with {$SE_{2}$}, even though the only difference between those two kernels is that {$SE_{2}$} has a radius twice times bigger than the radius of {$SE_{1}$}.
+A small structured element applied several times will have the same effect as a big structured element passed once. This can be seen on eq. \ref{Dilation2} where dilating twice with the element {$SE_{1}$} has the same consequences on the object as dilating one time with {$SE_{2}$}, even though the only difference between those two kernels is that {$SE_{2}$} has a radius twice times bigger than the radius of {$SE_{1}$}.
 \begin{equation}
 \begin{aligned}
 {f(x,y)}\oplus{SE_{2}} \approx ({f(x,y)}\oplus{SE_{1}})\oplus{SE_{1}}
@@ -244,7 +242,7 @@ A small structured element applied several times will have the same effect as a 
 \end{figure}
 
 \subsection{Erosion}
-The Erosion is the process of applying Fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on Eq. \ref{Erosion1}). As the Fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As occurring with Dilation, the effects depend on the size, shape and values of the structured element. An example of \textbf{erosion}
+\textit{ErosionErosion} is the process of applying fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on eq. \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As it is happens with dilation, the effects depend on the size, shape and values of the structured element.
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\ominus{SE}
@@ -261,16 +259,16 @@ The Erosion is the process of applying Fit to an entire figure and refers to the
 \end{figure}
 
 \subsection{Compound operations}
-The term Compound Operations refers to the combination of dilating and eroding objects on an image and can therefore imply the \textit{Union} or \textit{Intersection} of the objects, but also other operations like \textit{Closing}, \textit{Opening} or doing edge detection, also know by \textit{Boundary detection}.
+The term \textit{compound operations} refers to the combination of dilating and eroding objects on an image and can therefore imply the \textit{union} or \textit{intersection} of the objects, but also other operations like \textit{closing}, \textit{opening} or doing edge detection, also know as \textit{boundary detection}.
 \subsubsection{Opening}
-When \textit{eroding} images to erase small noise objects or split parts, it often occurs that the object of interest has decreased its size. The solution to this problem passes by dilating the eroded object. This operation is denoted \textit{Opening} and its mathematical definition is
+When \textit{eroding} images to erase small noise objects or split parts, it often occurs that the object of interest has decreased its size. The solution to this problem is to dilate the eroded image. This operation is denoted \textit{opening}, as shown in eq. \ref{Opening}.
 \begin{equation}
 \begin{aligned}
 {g(x,y)}={f(x,y)}\circ{SE}=({f(x,y)}\ominus{SE})\oplus{SE}
 \label{Opening}
 	\end{aligned}
 \end{equation}
-The effect of Opening can be appreciated on Fig. \ref{fig:Opening}, where a circular kernel is applied to the image. Even though the object still conserves its original size, some information has been lost due to the effect of eroding and dilating the image, even if the same structured element is used along the process.
+The effect of opening can be seen on figure \ref{fig:Opening} where a circular kernel is applied to the image. Even though the object still maintains its original size, some information has been lost due to the effect of eroding and dilating the image, even if the same structured element is used along the process.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT OPENING IMAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
@@ -281,15 +279,16 @@ The effect of Opening can be appreciated on Fig. \ref{fig:Opening}, where a circ
 \end{figure}
 
 \subsubsection{Closing}
-Another situation that often occurs when applying these methods comes from \textit{dilating} objects. When the size of the object is increased but it is still important to constrain the measure as well as filling the holes of the objects, a good solution will be to Erode after the Dilation. This is what Closing stands for and it is denoted by the formula \ref{Closing}. As with the Opening method, the size and shape of the kernel must be the same in order to obtain the desired result.
-On Fig. \ref{fig:Closing} we can observe the effect of this operations: even though the holes are filled and the object maintains its original size, the noise of the background is still there. Therefore, it will be necessary to apply either Closing or a BLOB analysis method to delete those small objects.
+Another situation that often occurs when applying these methods comes from objects. When the size of the object is increased, but it's still important to constrain the measure as well as filling the holes of the objects, a good solution is to erode after the dilation. This is denoted \textit{closing} and uses eq. \ref{Closing}. As with the opening method, the size and shape of the kernel must be the same in order to obtain the desired result.
+
+On figure \ref{fig:Closing} we can observe the effect of this operation: even though the holes are filled and the object maintains its original size, the noise of the background is still there. Therefore, it will be necessary to apply either closing or a BLOB analysis method to delete those small objects {BLOB analysis is described in \ref{blob}).
 \begin{equation}
 \begin{aligned}
 {g(x,y)}={f(x,y)}\bullet{SE}=({f(x,y)}\oplus{SE})\ominus{SE}
 \label{Closing}
 	\end{aligned}
 \end{equation}
-It is also important to remember that we can imply the Closing or Opening methods only one time. Most of the holes of the image will be filled but the size of the object will be the original one. If these operations are applied a second time, the size of the final image will be decreased or increased respectively.
+It is also important to remember that we can imply the closing or opening methods should only be used one time on an image. Most of the holes of the image will be filled but the size of the object will be the original one. If these operations are applied a second time, the size of the final image will be decreased or increased respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE CLOSING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
@@ -300,14 +299,14 @@ It is also important to remember that we can imply the Closing or Opening method
 \end{figure}
 
 \subsubsection{Boundary detection}
-An alternative approach to the edge detection on binary images is the denoted \textit{Boundary Detection}. The performance of this operations is a compound of \textit{erosion} and \textit{subtraction}. Hence the first operation will be eroding the object to get a smaller version of it and then subtract it to the original input image so as to get a final output image with the border of the object. The mathematical definition of these operations is
+An alternative approach to the edge detection on binary images is the denoted \textit{boundary detection}. The performance of this operations is a compound of erosion and subtraction, hence the first operation will be eroding the object to get a smaller version of it and then subtract it to the original input image so as to get a final output image with the border of the object. The mathematical definition of these operations is
 \begin{equation}
 \begin{aligned}
 {g(x,y)}={f(x,y)}-({f(x,y)}\ominus{SE})
 \label{BoundDetec}
 	\end{aligned}
 \end{equation}
-When the purpose of implementing these operations is to find the edges, it is important to remember to apply dilation or erosion before, to remove the noise of the image. The results can be noted on Fig. \ref{fig:Boundary}, where the final result is a thin edge of the object.
+When the purpose of implementing these operations is to find the edges, it is important to remember to apply dilation or erosion before, to remove the noise of the image. The results can be seen on figure \ref{fig:Boundary} where the final result is a thin edge of the object.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE SUBTRACTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
@@ -317,16 +316,14 @@ When the purpose of implementing these operations is to find the edges, it is im
 \label{fig:Boundary}
 \end{figure}
 
-%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
-%%% JOE GOT HERE 5/12 - 2013!!! %%%%%
 \section{Region of interest (ROI)}
-The Region of Interest or just ROI is a great image processing tool to optimize the frame rate of a camera. Cameras are getting improved all the time and the quality and amount of pixels information are enhanced simultaneously.\\
-Generally one would think that the more pixels, the better quality, and the better output. This should however be reconsidered. Having the opportunity to access several pixels is a great opportunity to produce some magnificent pictures, but when a computer makes image manipulations changes to a picture it has to run through every single pixel one at a time. This means that in fact it would mean a lot to decrease the amount of pixels the computer has to process.\\
-Therefore using a technique called Region of Interest or "ROI", is often used to reduce the amount of pixels being processed. ROI takes a region in the picture that is of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI is ignored and unnecessary processing is prevented.
-An example of how this could be used is taking a photo where only the head is of interest. The head then appears as the region of interest and only the pixels within the rectangle is processed. This is illustrated on figure \eqref{fig:Region of Interest}. This figure illustrates how many pixels that can be ignored.
+Generally one would think that the more pixels, the better quality. However, this is not always true. Since there are more pixels to loop through, it will take the program longer time to analyze and process the data. If there are a lot of pixels and calculations to be done, this will result in a slow program.
+
+When working with still pictures, and especially when working with video, it is important to maintain a stable framerate. The more information one needs to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, one should choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are usually going to be. If one only wants to track or recognize a face, the rest of the body can be discarded.
+
+A way to optimize the speed of the program is to decrease the data by using a region of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI are ignored and unnecessary processing is prevented.
+
+An example of how this could be used is taking a photo where only the head is of interest. This is illustrated on figure \eqref{fig:Region of Interest}.
 
 \begin{figure}[htbp] 
 \centering 
@@ -336,17 +333,19 @@ An example of how this could be used is taking a photo where only the head is of
 \end{figure} 
 
 \section{Background subtraction}
-%% Working progress - Johannes %%
-A way to detect changes in a scene and extracting an object, is using background subtraction. As the name simplifies it is done by subtracting the background from the scenery, so that only changes is shown. Background subtraction is very efficient but it is not always as simple as it sounds. \\
-In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is indoor with controllable light conditions. The setup is important as the background should be static. Imagine if sunshine is let inside a room. Then the light conditions will change together with the suns position and changes will be seen everywhere; producing noise and giving an inaccurate result. \\
-However it is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore a threshold value is required - for two reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary. \\
-Therefore the following two bullet points, have to be considered when doing background subtraction:
+A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes is shown.
+
+In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. The setup is important as the background should be static. Imagine if sunshine is let inside the room; then the light will change together with the sun's position, and changes will be seen everywhere and thereby producing noise that gives an inaccurate result.
+
+It is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore a threshold value is required - for two reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
+
+Therefore the following two questions have to be considered when doing background subtraction:
 \begin{enumerate} 
 	\item Is the background consistent? 
 	\item Which threshold value would be optimal for making the picture binary, and distinct the changes from the background? 
 \end{enumerate}
 
-If the first point is false and the background is not consistent, there is a way to automatically update the backgrounds pixel values. The formula is as following:
+If the first point is false and the background is not consistent, there is a way to automatically update the backgrounds pixel values. The formula is shown in \ref{AutomaticBackground}.
 
 \begin{equation}
 	\begin{aligned}
@@ -355,14 +354,13 @@ If the first point is false and the background is not consistent, there is a way
  	\end{aligned}
 \end{equation}  
 
-Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$
-\fixme{Insert reference - formula taken from page 70 in the Image Processing book}
-Now that the background automatically updates, it is time to proceed to the next bullet point.
-If the background is consistent from the beginning then it also leads to the next point. 
-The second point is about defining a threshold value. \\
-To do this; it is necessary to check how much the backgrounds pixel values vary. This can be done by making a histogram for some random pixels in the background and check the values after recording some minutes. This should give an overview of how much the pixel values vary. Lets say that this procedure shows that an efficient threshold value is 20. This means that if a pixel in the background is of the intensity 80, then pixel values captured between the values $60-100$ will not make any changes, as it is thought as being the background. Pixels below 60 and above 100 will however be an object and highlighted.
-Another pixel in the background could have the intensity of 48 and the pixel values captured between $28-68$ would then be thought of as the background while values below 28 and above 68 would be seen as an object and be highlighted. \\
-This type of threshold is a global threshold, which means that the threshold value is the same in every pixel in the scene. Imagine a scene where only part of the picture is being affected by lights. Then a unique threshold value for each pixel could be useful. This is possible using the following formula:
+Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$ \citep{ip_book}.
+
+Now that the background automatically updates, it is time to proceed to the next question: defining the threshold value.
+
+To do this, it is necessary to check how much the backgrounds pixel values vary. This can be done by making a histogram for some random pixels in the background and check the values after recording some minutes. This should give an overview of how much the pixel values vary. Let's say that this procedure shows that an efficient threshold value is 20. This means that if a pixel in the background is of the intensity 80, then pixel values captured between the values $60-100$ will not make any changes, as it is seen as being the background. Pixels below 60 and above 100 will however be an object and highlighted. Another pixel in the background could have the intensity of 48 and the pixel values captured between $28-68$ would then be thought of as the background while values below 28 and above 68 would be seen as an object and be highlighted.
+
+This type of threshold is a global threshold, which means that the threshold value is the same in every pixel in the scene \citep{ip_book}. Imagine a scene where only part of the picture is being affected by lights. Then a unique, local, threshold value for each pixel could be useful. This is possible using the eq. \ref{localthreshold}.
 
 \begin{equation}
 	\begin{aligned}
@@ -370,6 +368,7 @@ This type of threshold is a global threshold, which means that the threshold val
          0, \quad &\text{if } Abs(g(x,y))<\beta * \sigma(x,y)\\
         255, \quad &\text{otherwise}.
         \end{array} \right . \ 
+        \label{localthreshold}  
  	\end{aligned}
 \end{equation} 
 
@@ -377,12 +376,7 @@ Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation
 
 When both points are considered, the background subtraction is ready to be applied. In every frame in the scene, each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows, the pixel will be highlighted; revealing an object in the picture.
 
-
-
-%%% SIMON STILL WORKING ON IT %%%
-%%% SIMON STILL WORKING ON IT %%%
-%%% SIMON STILL WORKING ON IT %%%
-\section{BLOB analysis}
+\section{BLOB analysis}\label{blob}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term BLOB is an acronym for Binary Large Objects and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with a zero value).
 Therefore, BLOB analysis will be split in three main steps: \textit{Extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type \citep{ip_book}.
 
