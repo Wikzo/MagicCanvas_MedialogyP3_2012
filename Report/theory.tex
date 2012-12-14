@@ -2,24 +2,22 @@
 This chapter goes through the various techniques used in image processing. This section is a general description, while chapter \ref{implementation} will describe how they were used for this specific project.
 
 \section{A general framework for image processing}
-During this project image processing has been used to achieve the output needed. Some techniques were used to remove noise from the picture, so that the important parts get all the focus, while others are used to make the important parts more clear or to track specific objects.
+During this project image processing has been used to achieve the output needed. Some techniques were used to remove noise from the picture, so that the important parts get all the focus, while others were used to make the important parts more clear or to track specific objects. Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point (based on \citep{ip_book}). Figure \ref{fig:ip_framework} illustrates a common framework when working with image processing.
 
-Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point (based on \citep{ip_book}):
+%\textbf{Image Acquisition}
+%Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
 
-\textbf{Image Acquisition}
-Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
+%\textbf{Pre-processing}
+%Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
 
-\textbf{Pre-processing}
-Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
+%\textbf{Segmentation}
+%To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
 
-\textbf{Segmentation}
-To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
+%\textbf{Representation}
+%The object needs to be represented in an intuitive manner.
 
-\textbf{Representation}
-The object needs to be represented in an intuitive manner.
-
-\textbf{Classification}
-For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
+%\textbf{Classification}
+%For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
 
 \begin{figure}[htbp]
 \centering
@@ -31,10 +29,10 @@ For the system to actually know if an object is a hand or not, it has to do some
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques used and also why and how they were implemented in the project. Figure \ref{fig:ip_framework} illustrates a common framework when working with image processing.
+The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques used and also why and how they were implemented in the project. 
 
 \section{The digital image}
-Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{Photoshop}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a knowledge of these operations. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
+Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a knowledge of these operations. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
