@@ -9,3 +9,23 @@ Initially a broader strip of light was thought to be desirable, therefore a test
 
 For ease of construction the LEDs were arranged into arrays of 8 LEDs connected in series, which in turn are connected in parrallel. The LEDs have a forward voltage of 1.5V, which means that the power supply has to be able to supply at least 12V to them. Initially a small AC-DC power supply capable of supplying 600mA was used for testing purposes. However the total draw of the LED array is 0,5A and for the project a total of 4 arrays were planned. The current far exceeded what could be supplied by the small AC-DC suplly. Luckily the group managed to salvage a 300 watt computer power supply capable of supplying 12 volts at 8 amperes. After getting the power supply to work without being in a computer, terminals were soldered to LED-strips and the power supply allowing the LED-strips to plug into the power supply.
 
+\subsection{Techincal description of median and mean filters}
+
+\subsubsection{Mean filter}
+One method of filtering is the mean filter. As the name implies a mean filter takes a input image, calculates the mean value of a given pixel and uses this as the output, a mean filter is a type of neighborhood processing. In practical application this means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/Theory/neighborhood_processing.png} 
+\caption{Practical neighborhood processing. All the surrounding pixels contribute to the average value of the output.} 
+\label{fig:neigh_pros} 
+\end{figure}
+
+The calculations that lie behind the average are simple:
+
+$
+\frac{\text{Sum of input- and neighboring pixels}}{\text{number of pixels}}
+$
+
+\subsubsection{Median filter}
+Another method of 
