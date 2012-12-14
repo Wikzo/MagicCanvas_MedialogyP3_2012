@@ -1,4 +1,6 @@
-\section{Camera Theory}
+\section{Camera theory}
+\textbf{Marco needs to put in a lot of sources and images for this whole section about cameras ... - Gustav}
+
 An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this chapter the basics of image acquisition using a digital camera will be explained. To understand how this works it is necessary to have a basic understanding of the physics behind light.
 
 \begin{figure}[htbp] 
@@ -8,7 +10,7 @@ An image captured through a camera is the result of reflected light being detect
 \label{fig:light_cam} 
 \end{figure}
 
-Light is a form of electromagnetic radiation and can be viewed as both waves and particles. This duality is however not something that will be concerned within this chapter; the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy traveling through space. These energy packets are known as photons. Photons can be described by three properties:
+Light is a form of electromagnetic radiation and can be viewed as both waves and particles. This duality is however not something that will be concerned within this chapter; the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons. Photons can be described by three properties:
 
 \begin{itemize}
 \item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
@@ -29,29 +31,39 @@ $\lambda$ and f we are familiar with, and C is the speed of light. The second eq
 E = \frac{hC}{\lambda}
 \label{eq:e_v} 
 \end{align}
-where h is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic wave's frequency. E, C and $\lambda$ are still as explained above.
+Where h is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic wave's frequency. E, C and $\lambda$ are still as explained above.
 
-The wavelength of the photon determines what color one perceives. However; as we know from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color that is perceived. The visible spectrum of light is but a fraction of the full spectrum of electromagnetic radiation \fixme{SEE THE FIGURE THAT IS NOT THERE}. As with images, light interacts additively, with a mix of equal parts of each wavelength resulting in white light.
+\textbf{Marco needs to put in a lot of pictures for this - Gustav
+Maybe the following part is unnecessary? - Gustav}
+
+The wavelength of the photon determines what color one perceives. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color that is perceived. The visible spectrum of light is but a fraction of the full spectrum of electromagnetic radiation \fixme{SEE THE FIGURE THAT IS NOT THERE}. As with images, light interacts additively, with a mix of equal parts of each wavelength resulting in white light.
 \fixme{image of light color by wavelength}
-The most common light source by far is the sun. The white light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This will yield the full color spectrum\fixme{MORE PICTURES; LIGHT REFRACTED}.
-While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, constructed to be sensitive to three colors; red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.\fixme{link to cells and visible spectrum maybe figures?}
+The most common light source is the sun. The white light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This will yield the full color spectrum\fixme{MORE PICTURES; LIGHT REFRACTED}.
+While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, constructed to be sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.\fixme{link to cells and visible spectrum maybe figures?}
+
 \subsection{Digital image acquisition}
-When capturing an image using a digital camera, light is passed through a lens onto the sensor, which acts in much the same way as our eyes. In place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors, one for each pixel in the output image. A camera that can only capture black and white photos have only one type of sensor in each physical pixel whereas a camera that captures RGB color images has three types of sensors in each pixel. \fixme{sources and images?}
+When capturing an image using a digital camera, light is passed through a lens onto the sensor, which acts in much the same way as the human eye. In place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors, one for each pixel in the output image. A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel. \fixme{sources and images? GO MARCOOOOOOOOOOO (-effekten)}
+
 \subsection{Image acquisition in the project}
-In the project, two cameras were contemplated; a normal RGB webcam and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared. 
+In the project, two cameras were considered: a normal RGB webcam and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared.
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/IR_filter.png} 
-\caption{The IR filter only allows infrared ligh to pass} 
+\caption{The IR filter only allows infrared light to pass.} 
 \label{fig:ir_filter} 
 \end{figure}
 
 This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting  \fixme{should be refenrence to place where we state that light is hard to control and the issues inherit in handling lighting "on location"} can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle. Working with IR eliminates this issue.
 
-\subsection{Illuminating the scene}
+\subsection{Infrared light}
+\textbf{I think we should have a section about IR light, maybe here? - Gustav}
 
-For many different image processing procedures it important that the lightning in the scene is constant. Imagine that the scene is captured with a normal webcam, this creates an RGB image, \ref{fig:scene_light}.  In this case, we want to find the shelves, so we can place virtual objects in them for our imaginary augmented reality program. In order to speed things up, the image is converted to grayscale, as part of the  image processing, an algorithm thresholds the image, discarding all pixels with values less than 113. In the right picture the program can easily find the shelves, but in the picture on the left, the program cannot find the shelves, see \ref{fig:scene_thresholded}.
+\subsection{Illuminating the scene}
+\textbf{"imaginary augmented reality program", whaaaat? - Gustav}
+
+
+It is important that the lightning in the scene is constant. Imagine that the scene is captured with a normal webcam: this creates an RGB image (see figure \ref{fig:scene_light}). In this case, we want to find the shelves, so we can place virtual objects in them for our imaginary augmented reality program. In order to speed things up, the image is converted to grayscale. In the right picture the program can easily find the shelves, but in the picture on the left, the program cannot find the shelves, see figure \ref{fig:scene_thresholded}.
 
 \begin{figure}[htbp] 
 \centering 
@@ -67,7 +79,7 @@ For many different image processing procedures it important that the lightning i
 \label{fig:scene_thresholded} 
 \end{figure}
 
-To avoid running into issues with variances in illumination, the descision was quickly made to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration that we had the ability to filter the camera input, allowing only IR-light to pass to the camera. The following options were considered:
+To avoid running into issues with variances in illumination, the decision was made to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration that we had the ability to filter the camera input, allowing only infrared light to pass to the camera. The following options were considered:
 
 \begin{itemize}
 \item Using the library's lighting.
@@ -76,19 +88,20 @@ To avoid running into issues with variances in illumination, the descision was q
 \item Building our own light system to light the scene.
 \end{itemize}
 
+\subsubsection{Using the library's lighting}
+The library's lightning consist of two different types of lamps: fluorescent lights, and very bright halogen spots. Using the infrared camera, we looked at the normal lighting and the halogen spots radiated too much IR light for us to be able to have a decent contrast between background and the subject we want to track.
 
-\textbf{Using the library's lighting}:
-The Library's normal lightning consist of two different types of lamps: Flourescent lights and very bright halogen spots. Using the infrared camera, we looked at the normal lighting and the halogen spots radiated too much IR light for us to be able to have a decent contrast between background and the subject we want to track.
-
-\textbf{Making adjustments to the lighting at the library}:
-It was not possible to adjust the flourescent lights, but the halogen spots could be pointed in a different direction. We further considered using some material to direct the cone of light from the spots, as to create the largest contrast between background and subject. Two options present themselves: point the lights at the background or point the lights to the subjects. These two cases offer two different problems. Limiting the cone of the light to only hit the subjects would require the light to be incident from a angle where they could not be placed, on the other hand limiting the spots to illuminating the canvas would interfere with the projection of images, as the spots are very bright.
+\subsubsection{Making adjustments to the lighting at the library}
+It was not possible to adjust the fluorescent lights, but the halogen spots could be pointed in a different direction. We further considered using some material to direct the cone of light from the spots, as to create the largest contrast between background and subject. Two options presented themselves: point the lights at the background, or point the lights to the subjects. These two cases offer two different problems. Limiting the cone of the light to only hit the subjects would require the light to be incident from a angle where they could not be placed, on the other hand limiting the spots to illuminating the canvas would interfere with the projection of images, as the spots are very bright.
 \fxnote{Visualise how the spot whould need to be set up inder order for them to illuminate the subject.}
 
-\textbf{Bringing normal light to the scene} 
+\subsubsection{Bringing normal light to the scene} 
 By bringing normal lights that emit a high amount of IR lighting, the subject could be illuminated in a sufficient manner, but this would require a mount to be created or bought.
 \fxnote{Maybe expand on the mount thing? Reference the same thing as before, with difficulties with illuminating from the right angles}
 
-\textbf{Building our own light system to light the scene}
-Scratch building a lighting system to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared light, and using this to light up the background, we should be able to create a high contrast between the background and the subject that we want to track. Furthermore this provides us with the added benifit of already having defined a region of interest, thus easing the workload of the image processing. \fxnote{image of ideal setup}
+\subsubsection{Building our own light system to light the scene}
+Building a lighting system from scratch to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared lights, and using this to light up the background, we should be able to create a high contrast between the background and the subject that we want to track. Furthermore, this provides us with the added benefit of already having defined a region of interest, thus easing the workload of the image processing. \fxnote{image of ideal setup}
 
-Weighing the pros and cons of each solution it becomes apparant that the best solution is to build a custom lighting system to bring to the library. 
+Weighing the pros and cons of each solution, it becomes apparent that the best solution is to build a custom lighting system to bring to the library.
+
+\textbf{We should have some sort of conclusion stating what we did and why! - Gustav}
