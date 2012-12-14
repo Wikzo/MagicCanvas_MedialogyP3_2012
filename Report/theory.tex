@@ -66,7 +66,9 @@ Working with pixels in a image is like working with a coordinate system. Startin
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture}
 \caption{The pixel values are stored in a coordinate system. Note that Y goes down and not up.}
 \label{fig:ip_IndexingAPicture}
-\end{figure} 
+\end{figure}
+
+\textbf{[WE NEED TO CHANGE THE PIC!!!!!!!! TOO DARK!!! ... ]}
 
 In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). The size of the matrix holding the pixel values of the X and Y axis is as wide as the proportions of the image, therefore, when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023).
 
@@ -99,42 +101,7 @@ In comparison to the above-mentioned where images are defined by bit depth and p
 Using the tool correctly, it is possible to adjust the input so that only usable pixel information remains in the picture. However, this should be carefully done, as the input can be easily over- and undersegmentated. Threshold would be developed further more on next sections.
 
 \section{Histograms}
-A commonly-used tool when working with digital images are histograms. A histogram provides an easy overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This can be used to tell whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram where each pixel value from 0-255 has a bin. The more often a specific pixel value is present on the image, the taller the bin will be. On the histogram there is a lot of bins near the edges (0 and 255) and less in the middle. This means that the picture is mostly black and white with few nuances in-between.
-
-One can also use the histogram to describe the contrast in an image. The contrast is a measure of the intensity differences in dark and light areas on the picture \citep{histogram}. This means that a histogram with broad values, i.e. they use the whole spectrum from 0-255, will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.80\textwidth]{Pictures/Theory/hisogram_contrast.png}
-\caption{Histograms can be used to describe the contrast in an image. Picture from \citep{histogram}.}
-\label{fig:histogram_contrast}
-\end{figure}
-
-%%%%%%%%%%%%%%%%% This is changed %%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Thresholding}\label{sec:Thresholding}
-Thresholding is one of the most fundamental operations when working with images. It is performed to make an input picture binary, i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only completely black and completely white pixel values.
-
-This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not of importance.
-
-To determine which pixels that should be completely black and which that should be completely white a fixed thresholding value is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy; pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied.
-
-Using the same analogy that somebody decided that the border between being too young and just old enough, should be 18 years. This age could easily be something different, such as 17 or 24. The same is relevant with thresholding. You have to decide when pixels are "old" enough (bright). If they are too young (dark), they cannot get access.
-
-In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up the formula for making a threshold is shown in equation \ref{threshold}.
-\begin{equation}
-  \begin{aligned}
-  	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
-  	\text{if } f(x,y)>T \quad \text{then } g(x,y)&= 255
-	\label{threshold}  
-  \end{aligned} 
-\end{equation}
-Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
-
-When setting the thresholding value it is important to think about what is wanted regarding the output. It differs  from image to image how effective thresholding is, based on the contrast difference between the object and the background. If the background, and the object you want to find are very different in color and/or contract, then it is easy to distinguish between them and choose an effective threshold value. However; if the object and background are very similar, it becomes harder to do choose a thresholding value. As you will have to chose between losing information associated to the object of interest or to gather some background noise, but then keeping the object of interest.\\
-To get a better understanding of this, look at the histograms shown in \ref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
-
-It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
+A commonly-used tool when working with digital images are histograms. Essentially a histogram provides data distribution, which is an easy way to get an overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This is used to show whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram with pixel values from 0-255, which cover the entire graphic as each pixel value has a bin. The more often a specific pixel value is present on the image, the taller the bin will be. The image shows a histogram with a high concentration of bins near the edges (0 and 255). This means that the picture is mostly black and white with few nuances in-between.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -143,6 +110,7 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \begin{minipage}[b]{0.45\textwidth} \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdPicture} % Højre billede
 \end{minipage} \\ % Captions og labels
+%\end{figure}
 \begin{minipage}[t]{0.45\textwidth}
 \caption{Ideal histogram with two "mountains".} % Venstre caption og label
 \label{fig:SimpleThreshold}
@@ -152,6 +120,36 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \label{fig:ComplicatedThreshold}
 \end{minipage}
 \end{figure}
+
+As said before, histograms can also be used to describe the contrast in an image. The contrast is a measure of the difference of intensity levels between the dark and light areas on the picture \citep{histogram}. This means that a histogram with broad values, will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{Pictures/Theory/hisogram_contrast.png}
+\caption{Histograms can be used to describe the contrast in an image. Picture from \citep{histogram}.}
+\label{fig:histogram_contrast}
+\end{figure}
+
+\section{Thresholding}\label{sec:Thresholding}
+Thresholding is one of the most fundamental operations when working with images. It is performed to transform a picture to binary; i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only black and white pixel values.
+
+This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not important.
+
+To determine which pixels should be completely black and which pixels should be completely white a fixed \textit{thresholding value} is required. Using a metaphor, the \textit{threshold value} can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied. The value used to classify which persons (or pixels) can pass and which have to stay out, have to be decided by the gatekeeper (or the programmer, in our case).
+
+In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up, the formula for making a threshold is shown in equation \ref{threshold}.
+\begin{equation}
+  \begin{aligned}
+  	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
+  	\text{if } f(x,y)>T \quad \text{then } g(x,y)&= 255
+	\label{threshold}  
+  \end{aligned} 
+\end{equation}
+Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
+
+When setting the thresholding value it is important to think about what is wanted regarding the output. The effectiveness of the \textit{threshold value} will differ from image to image, depending on the contrast between the object and the background. If the background and the object are very different in color and/or contrast, it will be easy to distinguish them and choose an effective \textit{threshold value}. However, if the object and background are very similar, it will be hard to do choose a value to separate them properly. At that point it will be necessary to chose between losing information associated to the object of interest or to gather some background noise, to preserve it. Pictures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the \textit{threshold value} used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}.
+
+It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
 
 Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \ref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \ref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \ref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
 
