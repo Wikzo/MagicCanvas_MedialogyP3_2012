@@ -438,7 +438,6 @@ The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bou
 \begin{equation}
 	\begin{aligned}
 	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
-	\label{Compact}
 	\label{compact}
 	\end{aligned}
 \end{equation}
@@ -463,11 +462,8 @@ Its coordinates can be found using eq. \ref{centermass}.
 
 Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
 
-GGG
-
-GG
-\item Center of the bounding box\\
-As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with the formula:
+\item \textbf{Center of the bounding box}
+As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with eq. \ref{BoundingBoxCenterX} and \ref{BoundingBoxCenterY}.
 
 \begin{equation}
 	\begin{aligned}	x_{bb}=x_{min}+\displaystyle\frac{x_{max}-x_{min}}{2}=x_{min}+\displaystyle\frac{x_{max}}{2}-\displaystyle\frac{x_{min}}{2}=\displaystyle\frac{x_{min}+x_{max}}{2}
@@ -483,10 +479,11 @@ As the bounding box is a rectangle that surrounds the BLOB, the center of the bo
 \end{equation}
 
 
-\item Perimeter\\
-Scanning along the border of the BLOB and summing the pixels we obtain the length of the contour of the BLOB. In Image Processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.\\
-\item Circularity\\
-Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
+\item \textbf{Perimeter}
+Scanning along the border of the BLOB and summing the pixels, we obtain the length of the contour of the BLOB. In image processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.
+\item \textbf{Circularity}
+Circularity is a common shape-factor that depends on the perimeter and the area. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle. See eq. \ref{Circularity}.
+
 
 \begin{equation}	
 	\begin{aligned}
@@ -496,10 +493,8 @@ Circularity is a very common shape factor that depends on the \textbf{Perimeter}
 \end{equation}
 
 
-After all the feature's extractions, a binary object can be defined by its features value that would be stored into a \textit{feature vector} in order to have a list where to start our BLOB's classification.
-
+After all the features are extracted, a binary object can be defined by its feature values that would be stored into a feature vector in order to have a list where to start the BLOB classification.
 \end{itemize}
-
 
 % IMAGE WITH OBJECTS AND TABLE WITH DATA
 
@@ -514,18 +509,17 @@ After all the feature's extractions, a binary object can be defined by its featu
 \includegraphics[width=1\textwidth]{Pictures/Theory/binary_image_table.png}
 \end{minipage}
 \label{fig:BinaryIm}
-\caption{The figures above show a binary image with a Bounding Box and the Center-of-Mass. The table shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
+\caption{Binary image with a bounding box and the center-of-mass. The table shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{BLOB classification}
-Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to, in order for it to be selected.
-For this reason we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
-Using two features like the circularity and the area we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
+Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to, in order for it to be selected. For this reason we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
 
-Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the \textit{box classifier}.
-This time, the region will not be a rectangle but an ellipse, and is commonly known as the \textit{weighted Euclidean distance}.
+Using two features like the circularity and the area, we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
+
+Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the box classifier. This time, the region will not be a rectangle but an ellipse, and is commonly known as the \textit{weighted Euclidean distance}, as shown in eq. \ref{Euclidean}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -534,8 +528,7 @@ This time, the region will not be a rectangle but an ellipse, and is commonly kn
 	\end{aligned}
 \end{equation}
 
-The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of N different features, the result would be obtained by summing:
-
+The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of N different features, the result would be obtained by eq. \ref{Euclidean1}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -544,7 +537,7 @@ The final result is the distance between the vector {$\vec{f}_{i}$} and the prot
 	\end{aligned}
 \end{equation}
 
-Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are the same all along the list of values, we can ignore it and calculate the Euclidean distance (ED), where the region is a circle in 2D.
+Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are the same all along the list of values, we can ignore it and calculate the Euclidean distance (ED), where the region is a circle in 2D, see eq. \ref{Euclidean2}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -555,8 +548,7 @@ Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are t
 
 But before we can calculate the distances, we need to normalize the values to the same scale and interval.
 
-Therefore, the Area would be done by:
-
+Therefore, the area would be done by \ref{NormArea}.
 \begin{equation}	
 	\begin{aligned}
 {Area \: feature} \: = \: min \begin{Bmatrix} \displaystyle\frac{Area\:of\:BLOB}{Area\:of\:Model}, & \displaystyle\frac{Area\:of\:Model}{Area\:of\:BLOB}\end{Bmatrix}
@@ -564,7 +556,7 @@ Therefore, the Area would be done by:
 	\end{aligned}
 \end{equation}
 
-The Circularity can also be normalized in the same:
+The circularity can also be normalized in the same, eq. \ref{NormCirc}.
 
 \begin{equation}	
 	\begin{aligned}
