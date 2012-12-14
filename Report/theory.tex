@@ -66,7 +66,9 @@ Working with pixels in a image is like working with a coordinate system. Startin
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture}
 \caption{The pixel values are stored in a coordinate system. Note that Y goes down and not up.}
 \label{fig:ip_IndexingAPicture}
-\end{figure} 
+\end{figure}
+
+\textbf{[WE NEED TO CHANGE THE PIC!!!!!!!! TOO DARK!!! ... ]}
 
 In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). The size of the matrix holding the pixel values of the X and Y axis is as wide as the proportions of the image, therefore, when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023).
 
@@ -99,42 +101,7 @@ In comparison to the above-mentioned where images are defined by bit depth and p
 Using the tool correctly, it is possible to adjust the input so that only usable pixel information remains in the picture. However, this should be carefully done, as the input can be easily over- and undersegmentated. Threshold would be developed further more on next sections.
 
 \section{Histograms}
-A commonly-used tool when working with digital images are histograms. A histogram provides an easy overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This can be used to tell whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram where each pixel value from 0-255 has a bin. The more often a specific pixel value is present on the image, the taller the bin will be. On the histogram there is a lot of bins near the edges (0 and 255) and less in the middle. This means that the picture is mostly black and white with few nuances in-between.
-
-One can also use the histogram to describe the contrast in an image. The contrast is a measure of the intensity differences in dark and light areas on the picture \citep{histogram}. This means that a histogram with broad values, i.e. they use the whole spectrum from 0-255, will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.80\textwidth]{Pictures/Theory/hisogram_contrast.png}
-\caption{Histograms can be used to describe the contrast in an image. Picture from \citep{histogram}.}
-\label{fig:histogram_contrast}
-\end{figure}
-
-%%%%%%%%%%%%%%%%% This is changed %%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Thresholding}\label{sec:Thresholding}
-Thresholding is one of the most fundamental operations when working with images. It is performed to make an input picture binary, i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only completely black and completely white pixel values.
-
-This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not of importance.
-
-To determine which pixels that should be completely black and which that should be completely white a fixed thresholding value is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy; pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied.
-
-Using the same analogy that somebody decided that the border between being too young and just old enough, should be 18 years. This age could easily be something different, such as 17 or 24. The same is relevant with thresholding. You have to decide when pixels are "old" enough (bright). If they are too young (dark), they cannot get access.
-
-In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up the formula for making a threshold is shown in equation \ref{threshold}.
-\begin{equation}
-  \begin{aligned}
-  	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
-  	\text{if } f(x,y)>T \quad \text{then } g(x,y)&= 255
-	\label{threshold}  
-  \end{aligned} 
-\end{equation}
-Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
-
-When setting the thresholding value it is important to think about what is wanted regarding the output. It differs  from image to image how effective thresholding is, based on the contrast difference between the object and the background. If the background, and the object you want to find are very different in color and/or contract, then it is easy to distinguish between them and choose an effective threshold value. However; if the object and background are very similar, it becomes harder to do choose a thresholding value. As you will have to chose between losing information associated to the object of interest or to gather some background noise, but then keeping the object of interest.\\
-To get a better understanding of this, look at the histograms shown in \ref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
-
-It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
+A commonly-used tool when working with digital images are histograms. Essentially a histogram provides data distribution, which is an easy way to get an overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This is used to show whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram with pixel values from 0-255, which cover the entire graphic as each pixel value has a bin. The more often a specific pixel value is present on the image, the taller the bin will be. The image shows a histogram with a high concentration of bins near the edges (0 and 255). This means that the picture is mostly black and white with few nuances in-between.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -143,6 +110,7 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \begin{minipage}[b]{0.45\textwidth} \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/ComplicatedThresholdPicture} % Højre billede
 \end{minipage} \\ % Captions og labels
+%\end{figure}
 \begin{minipage}[t]{0.45\textwidth}
 \caption{Ideal histogram with two "mountains".} % Venstre caption og label
 \label{fig:SimpleThreshold}
@@ -152,6 +120,36 @@ It is easy to tell that the leftmost histogram is more ideal to threshold becaus
 \label{fig:ComplicatedThreshold}
 \end{minipage}
 \end{figure}
+
+As said before, histograms can also be used to describe the contrast in an image. The contrast is a measure of the difference of intensity levels between the dark and light areas on the picture \citep{histogram}. This means that a histogram with broad values, will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{Pictures/Theory/hisogram_contrast.png}
+\caption{Histograms can be used to describe the contrast in an image. Picture from \citep{histogram}.}
+\label{fig:histogram_contrast}
+\end{figure}
+
+\section{Thresholding}\label{sec:Thresholding}
+Thresholding is one of the most fundamental operations when working with images. It is performed to transform a picture to binary; i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only black and white pixel values.
+
+This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not important.
+
+To determine which pixels should be completely black and which pixels should be completely white a fixed \textit{thresholding value} is required. Using a metaphor, the \textit{threshold value} can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied. The value used to classify which persons (or pixels) can pass and which have to stay out, have to be decided by the gatekeeper (or the programmer, in our case).
+
+In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up, the formula for making a threshold is shown in equation \ref{threshold}.
+\begin{equation}
+  \begin{aligned}
+  	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
+  	\text{if } f(x,y)>T \quad \text{then } g(x,y)&= 255
+	\label{threshold}  
+  \end{aligned} 
+\end{equation}
+Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
+
+When setting the thresholding value it is important to think about what is wanted regarding the output. The effectiveness of the \textit{threshold value} will differ from image to image, depending on the contrast between the object and the background. If the background and the object are very different in color and/or contrast, it will be easy to distinguish them and choose an effective \textit{threshold value}. However, if the object and background are very similar, it will be hard to do choose a value to separate them properly. At that point it will be necessary to chose between losing information associated to the object of interest or to gather some background noise, to preserve it. Pictures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the \textit{threshold value} used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}.
+
+It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
 
 Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \ref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \ref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \ref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
 
@@ -333,6 +331,10 @@ An example of how this could be used is taking a photo where only the head is of
 \end{figure} 
 
 \section{Noise reduction}
+Noise reduction is very used in image processing, and is almost impossible to go around. When you e.g. threshold a picture then in most cases noise will appear. Either as small dots in the background or maybe small holes in the wanted area. Thankfully this noise can be reduced using different techniques. Two techniques that will be described further in this section is mean and median filters.\\
+These two types of filters can be used to remove noise from the picture, and it is a question of what the output should show when picking technique.\\
+A small description of how these two techniques works will be written in the subsection below.
+
 \subsection{Mean and median filter}
 Somebody write something in here using IP book.
 JOHANNES GO GO GO
@@ -438,7 +440,6 @@ The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bou
 \begin{equation}
 	\begin{aligned}
 	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
-	\label{Compact}
 	\label{compact}
 	\end{aligned}
 \end{equation}
@@ -463,11 +464,8 @@ Its coordinates can be found using eq. \ref{centermass}.
 
 Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
 
-GGG
-
-GG
-\item Center of the bounding box\\
-As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with the formula:
+\item \textbf{Center of the bounding box}
+As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with eq. \ref{BoundingBoxCenterX} and \ref{BoundingBoxCenterY}.
 
 \begin{equation}
 	\begin{aligned}	x_{bb}=x_{min}+\displaystyle\frac{x_{max}-x_{min}}{2}=x_{min}+\displaystyle\frac{x_{max}}{2}-\displaystyle\frac{x_{min}}{2}=\displaystyle\frac{x_{min}+x_{max}}{2}
@@ -483,10 +481,11 @@ As the bounding box is a rectangle that surrounds the BLOB, the center of the bo
 \end{equation}
 
 
-\item Perimeter\\
-Scanning along the border of the BLOB and summing the pixels we obtain the length of the contour of the BLOB. In Image Processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.\\
-\item Circularity\\
-Circularity is a very common shape factor that depends on the \textbf{Perimeter} and the \textbf{Area}. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
+\item \textbf{Perimeter}
+Scanning along the border of the BLOB and summing the pixels, we obtain the length of the contour of the BLOB. In image processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.
+\item \textbf{Circularity}
+Circularity is a common shape-factor that depends on the perimeter and the area. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle. See eq. \ref{Circularity}.
+
 
 \begin{equation}	
 	\begin{aligned}
@@ -496,10 +495,8 @@ Circularity is a very common shape factor that depends on the \textbf{Perimeter}
 \end{equation}
 
 
-After all the feature's extractions, a binary object can be defined by its features value that would be stored into a \textit{feature vector} in order to have a list where to start our BLOB's classification.
-
+After all the features are extracted, a binary object can be defined by its feature values that would be stored into a feature vector in order to have a list where to start the BLOB classification.
 \end{itemize}
-
 
 % IMAGE WITH OBJECTS AND TABLE WITH DATA
 
@@ -514,18 +511,17 @@ After all the feature's extractions, a binary object can be defined by its featu
 \includegraphics[width=1\textwidth]{Pictures/Theory/binary_image_table.png}
 \end{minipage}
 \label{fig:BinaryIm}
-\caption{The figures above show a binary image with a Bounding Box and the Center-of-Mass. The table shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
+\caption{Binary image with a bounding box and the center-of-mass. The table shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{BLOB classification}
-Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to, in order for it to be selected.
-For this reason we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
-Using two features like the circularity and the area we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
+Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to, in order for it to be selected. For this reason we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
 
-Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the \textit{box classifier}.
-This time, the region will not be a rectangle but an ellipse, and is commonly known as the \textit{weighted Euclidean distance}.
+Using two features like the circularity and the area, we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
+
+Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the box classifier. This time, the region will not be a rectangle but an ellipse, and is commonly known as the \textit{weighted Euclidean distance}, as shown in eq. \ref{Euclidean}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -534,8 +530,7 @@ This time, the region will not be a rectangle but an ellipse, and is commonly kn
 	\end{aligned}
 \end{equation}
 
-The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of N different features, the result would be obtained by summing:
-
+The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of N different features, the result would be obtained by eq. \ref{Euclidean1}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -544,7 +539,7 @@ The final result is the distance between the vector {$\vec{f}_{i}$} and the prot
 	\end{aligned}
 \end{equation}
 
-Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are the same all along the list of values, we can ignore it and calculate the Euclidean distance (ED), where the region is a circle in 2D.
+Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are the same all along the list of values, we can ignore it and calculate the Euclidean distance (ED), where the region is a circle in 2D, see eq. \ref{Euclidean2}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -555,8 +550,7 @@ Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are t
 
 But before we can calculate the distances, we need to normalize the values to the same scale and interval.
 
-Therefore, the Area would be done by:
-
+Therefore, the area would be done by \ref{NormArea}.
 \begin{equation}	
 	\begin{aligned}
 {Area \: feature} \: = \: min \begin{Bmatrix} \displaystyle\frac{Area\:of\:BLOB}{Area\:of\:Model}, & \displaystyle\frac{Area\:of\:Model}{Area\:of\:BLOB}\end{Bmatrix}
@@ -564,7 +558,7 @@ Therefore, the Area would be done by:
 	\end{aligned}
 \end{equation}
 
-The Circularity can also be normalized in the same:
+The circularity can also be normalized in the same, eq. \ref{NormCirc}.
 
 \begin{equation}	
 	\begin{aligned}
