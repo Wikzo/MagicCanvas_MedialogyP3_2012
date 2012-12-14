@@ -165,6 +165,11 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 This function does exactly what the four functions described before are supposed to do. It refreshes the picture, it looks just at the region of interest and it does something that gives the same outcome as background subtraction and thresh holding the subtracted picture.
 The first thing the function does is that it streams the current picture from the camera to a temporary Mat object called \textbf{tmp} (1). The next thing it does is that it loops through all the x values of the picture and through all the y values that we are interested in (2). The y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter, up to a specific percentage of the screen used. For each of these coordinates the program checks if the red channel of the of the new picture is darker by the threshold chosen as parameter (3). If this is the case the current pixel gets the maximum value to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough the pixel gets classified as a pixel that hasn't changed enough, by setting it to zero (5).
 
+\section{Morphology}
+Closing
+	erode
+	dilate
+
 \section{The setup loop}
 \subsection{Take Background picture}
 Like mentioned before, there is also a loop in the setup. This loop also contains a while loop that has \textbf{true} as its condition. This loop is not supposed to end when the escape-key is pressed, but when it has figured out that there are no people in the picture. The reason for that is, that it has to take a reference picture, which is the one we use in the background subtraction. The function works under the assumption that people when on the picture always move a little. The function has three thresholds. The first is \textbf{threshholdPixelChange}, which is the value from which a pixel can be counted as changed. The second is threshholdPixelsChanged, whcih is the threshhold for how many pixels count as a person, since we are not interested in if just pixel has changed. The third threshold is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row have to be without change, so we can assume that no body is on the picture. 
@@ -314,14 +319,14 @@ void Picture::startFireLoggingPersons(point startingPoint)
 		if(currentPosition.x > p[currentPersonId].maxX)
 			p[currentPersonId].maxX = currentPosition.x;
 		if(currentPosition.x < p[currentPersonId].minX)
-			p[currentPersonId].minX = currentPosition.x;
+			p[currentPersonId].minX = currentPosition.x; //(11)
 					
 		pixelR[currentPosition.x][currentPosition.y] = 200 + currentPersonId;
 
 		//if right is available, is free and not burned
 		if(currentPosition.x+1 < width && pixelR[currentPosition.x+1][currentPosition.y] == 255) //(3)
 		{
-			pixelCount++;
+			pixelCount++; //(9)
 			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
 			currentPosition.x++; //(6)
 
@@ -329,21 +334,21 @@ void Picture::startFireLoggingPersons(point startingPoint)
 		//if down is available, is free and not burned
 		else if(currentPosition.y+1 < height && pixelR[currentPosition.x][currentPosition.y+1] == 255) //(3)
 		{
-			pixelCount++;
+			pixelCount++; //(9) 
 			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
 			currentPosition.y++; //(6)
 		}
 		//if left is available, is free and not burned
 		else if(currentPosition.x-1 >= 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255) //(3)
 		{
-			pixelCount++;
+			pixelCount++; //(9)
 			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
 			currentPosition.x--; //(6)
 		}
 		//if up is available, is free and not burned
 		else if(currentPosition.y-1 >= 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255) //(3)
 		{
-			pixelCount++;
+			pixelCount++; //(9)
 			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
 			currentPosition.y--; //(6)
 		}
@@ -376,15 +381,13 @@ void Picture::startFireLoggingPersons(point startingPoint)
 			break;
 	}
 	
-	if(pixelCount > minPixelToBeAPerson)
+	if(pixelCount > minPixelToBeAPerson) //(10)
 	{
-		float average = ((p[currentPersonId].minX + p[currentPersonId].maxX)/2);
+		float average = ((p[currentPersonId].minX + p[currentPersonId].maxX)/2); //(12)
 		float zeroToOne = average/width;
 		p[currentPersonId].posX = zeroToOne;
 	}
-	else
-	{...} // This is 
-		//TODO do it again nothing is found !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	else //(10)
 		for(int y = 0; y < height; y++)
 			for(int x = 0; x < width; x++)
 				if(pixelR[x][y] ==  200 + currentPersonId;)
@@ -393,12 +396,7 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	}
 }
 \end{lstlisting}
-This is the function that replaced our previous recursive function. It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture, but the states of the pixel. When the red channel of the pixel is 255 the pixel is found but not analysed by the recursive function yet. When it is 0 it means that nothing is found and when it is another number it is analysed. One can find the blobs index number which this pixel belongs to by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1) and gives this number to every pixel that is found forward (2). When non of the four forward if statements (3) have become true, the function compares the count in the yellow values around it self and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero(5). The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction x or y are either raised or reduced(6). After that the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. This is called the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found (7) and then be set to the \textbf{currentPosition}(8). 
-
-\section{Morphology}
-Closing
-	erode
-	dilate
+This is the function that replaced our previous recursive function. It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture, but the states of the pixel. When the red channel of the pixel is 255 the pixel is found but not analysed by the recursive function yet. When it is 0 it means that nothing is found and when it is another number it is analysed. One can find the blobs index number which this pixel belongs to by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1) and gives this number to every pixel that is found forward (2). When non of the four forward if statements (3) have become true, the function compares the count in the yellow values around it self and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero(5). The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction x or y are either raised or reduced(6). After that the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. This is called the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found (7) and then be set to the \textbf{currentPosition}(8). While going through the blob the function also saves some information about it. Like said before it counts of how many pixels the blob consists(9). We use this information to discard blobs that are to small to be counted as a person(10). If this is the case the personCounter gets reset to waht it was before the function was called and the pixel values get set to zero. The function also saves the maximum the the smallest and the biggest x-position of the blob(11). The average of these two number is afterwards used to output where the person is positioned in front of the screen(12).
 	
 \section{persons}
 why first old and then new
