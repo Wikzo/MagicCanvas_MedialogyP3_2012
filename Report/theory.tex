@@ -2,39 +2,37 @@
 This chapter goes through the various techniques used in image processing. This section is a general description, while chapter \ref{implementation} will describe how they were used for this specific project.
 
 \section{A general framework for image processing}
-During this project image processing has been used to achieve the output needed. Some techniques were used to remove noise from the picture, so that the important parts get all the focus, while others are used to make the important parts more clear or to track specific objects.
+During this project image processing has been used to achieve the output needed. Some techniques were used to remove noise from the picture, so that the important parts get all the focus, while others were used to make the important parts more clear or to track specific objects. Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point (based on \citep{ip_book}). Figure \ref{fig:ip_framework} illustrates a common framework when working with image processing.
 
-Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point (based on \citep{ip_book}):
+%\textbf{Image Acquisition}
+%Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
 
-\textbf{Image Acquisition}
-Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
+%\textbf{Pre-processing}
+%Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
 
-\textbf{Pre-processing}
-Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
+%\textbf{Segmentation}
+%To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
 
-\textbf{Segmentation}
-To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
+%\textbf{Representation}
+%The object needs to be represented in an intuitive manner.
 
-\textbf{Representation}
-The object needs to be represented in an intuitive manner.
-
-\textbf{Classification}
-For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
+%\textbf{Classification}
+%For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/imageProcessing_steps.png}
-\caption{Image Processing framework. Picture is from \citep{ip_book}.}
+\caption{Image Processing framework, from \citep{ip_book}.}
 \label{fig:ip_framework}
 \end{figure}
 
 %% Maybe a little too blabla and too long sentences - Gustav %%
-%% I moved a paragraph to the begining of the section. But I'm still not sure if the above part is useful as we will be describing everything again... - Marta %%
+%% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The combination of these different techniques makes it possible to get a functional program, but before use them, it is necessary to know how they work. The next section will explain the different techniques that used and also why and how they were implemented on the project. Figure \ref{fig:ip_framework} illustrates the framework used typically when working with image processing.
+The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques used and also why and how they were implemented in the project. 
 
 \section{The digital image}
-Working around digital images on computers is something that most can relate to, but there is a lot more to it than one realizes. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
+Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a previous knowledge. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
@@ -44,12 +42,12 @@ Working around digital images on computers is something that most can relate to,
 \end{figure}
 
 \subsection{Pixels}
-When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter, a sensor and an output. When light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be. \citep{ip_book}
+When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter, a sensor and an output. When light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be \citep{ip_book}.
 
 \subsection{8-bit image and grayscale images}
-In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information there can be stored in a single pixel.
+In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information that can be stored in a single pixel.
 
-An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The hue describes how pure and vivid a color is. \citep{visual_story} The information stored in each pixel is the brightness of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
+An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The hue defines how pure and vivid a color is \citep{visual_story}. The information stored in each pixel is the brightness of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
 
 \begin{figure}[htbp]
 \centering
@@ -61,7 +59,7 @@ An image with a single channel of information for each pixel in the X and Y axis
 \subsection{Indexing an image}
 When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image.
 
-Working with pixels in a image is like working with a coordinate system. Starting in the top-left corner is (0,0). Going to the right, the X value increases; going down, the Y value increases. A single pixel can be described as a coordinate, e.g. (255,255) is the bottom-most corner to the right. Figure \ref{fig:ip_IndexingAPicture} illustrates this.
+Working with pixels in a image is like working with a coordinate system. Starting in the top-left corner is (0,0). Going to the right, the X value increases; going down, the Y value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1192,666) is the bottom-most corner to the right.
 
 \begin{figure}[htbp]
 \centering
@@ -82,13 +80,11 @@ In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). T
 \end{figure} 
 
 \subsection{Working with coloured images}
-Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a coloured image.
+Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a colored image.
 
-There are several formats for handling color images. In this report we will only decribe RGB, since this is the only format we will encounter. Compared to a grayscale image, a coloured image differs because it consists of 3 channels, opposed to just one channel in grayscale images. Each of the three channels describe the value of the color in the specific pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. The most significant difference between grayscale images and coloured images, is that one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition equal amounts of red, green and blue  will produce a gradient of grey, where a pixel value of 255 will produce white, and a pixel value of 0 would produce black, similar to grayscale images.
+There are several formats for handling color images. In this report we will only decribe RGB, since this is the only format we will encounter. The main difference when talking about colored and grayscale images, is that colored images have 3 channels, compared to the single channel in grayscale images. Each of the three channels holds the value of its specific color for each pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. Therefore, a colored image doesn't describe the intensity of a specific color, but the amount of the red, green and blue the pixels contain. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with the color channels values of 255 produces a white pixel, and a pixel with the color channels values of 0 will produce a black pixel. This phenomenon can be easily understand by looking to figure \ref{fig:ip_ColorWheel}, where the additive color system of wavelengths illustrates the colors' formation.
 
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would have to use thresholding to segment the pixels depending on values of the red channel (thresholding will be described in \ref{sec:Thresholding}). The outcome should be a picture with a limited/controlled amount of red. 
-
-Figure \ref{fig:ip_ColorWheel} illustrates the making of colors in relation to the RGB system.
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. To exclude a specific color in a mathematical operation, such as red, it's necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
 
 \begin{figure}[htbp]
 \centering
@@ -100,7 +96,7 @@ Figure \ref{fig:ip_ColorWheel} illustrates the making of colors in relation to t
 \subsection{Binary Images}
 In comparison to the above-mentioned where images are defined by bit depth and pixel information, binary pictures are represented by two colors only in form of black and white. This often correlates to using a threshold. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.
 
-Using the tool correctly, one will be able to adjust the input so that only usable pixel information remains in the picture. However one should be careful when using thresholding, as it's easy to over- and undersegmentate an input. More about this in the next section.
+Using the tool correctly, it is possible to adjust the input so that only usable pixel information remains in the picture. However, this should be carefully done, as the input can be easily over- and undersegmentated. Threshold would be developed further more on next sections.
 
 \section{Histograms}
 A commonly-used tool when working with digital images are histograms. A histogram provides an easy overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This can be used to tell whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram where each pixel value from 0-255 has a bin. The more often a specific pixel value is present on the image, the taller the bin will be. On the histogram there is a lot of bins near the edges (0 and 255) and less in the middle. This means that the picture is mostly black and white with few nuances in-between.
@@ -134,7 +130,7 @@ In practice this means that pixels with values greater than a threshold is set t
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
 When setting the thresholding value it is important to think about what is wanted regarding the output. It differs  from image to image how effective thresholding is, based on the contrast difference between the object and the background. If the background, and the object you want to find are very different in color and/or contract, then it is easy to distinguish between them and choose an effective threshold value. However; if the object and background are very similar, it becomes harder to do choose a thresholding value. As you will have to chose between losing information associated to the object of interest or to gather some background noise, but then keeping the object of interest.\\
-To get a better understanding of this, look at the histograms shown in \eqref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
+To get a better understanding of this, look at the histograms shown in \ref{fig:SimpleThreshold} and \eqref{fig:ComplicatedThreshold} that shows to grayscale pictures.
 
 It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
 
@@ -177,12 +173,18 @@ Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture wit
 This proves the point that finding a functional thresholding value is not always straightforward. As for finding a silhouette it is of great help to make a clear transition from the object and the background.
 
 \section{Morphology}
-Morphology is a collection of operations used to analyse and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well.
-The processes related to morphology on binary images are oriented to remove noise produced by threshold of an image as well as defining the contours of the objects in order to achieve a proper BLOB analysis.
+Morphology is a collection of operations used to analyze and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}.
 
-Mathematical morphology is a neighborhood processing method\fixme{Is this the right way to describe it, or "home made"?} that applies a \textit{structuring element} (or kernel) to the pixels on the image. The ways that kernel will be structured, how big it will be or the shape that will be used, depends on the designer\fixme{There must be some boundaries or some predefined kernels? These should be described so the reader doesn't think that the designer can make whatever kernel he wants.} and the shape and size of the objects to be analysed. The reason for this is that the structured elements are used to apply by \textit{hitting} or \textit{fitting} operations that will affect the results in different ways. Hit and fit will be described in the next section.
+Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel as well as its surrounding neighbours, e.g. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}.
 
-\subsubsection{Hit and Fit}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{Pictures/Theory/kernel}
+\caption{Neighbourhood processing uses a kernel. Image from \citep{ip_book}.}
+\label{fig:kernel}
+\end{figure}
+
+\subsubsection{Hit and fit}
 Whenever you decide to apply a structured element and \textbf{hit} the pixels, what you are actually doing is to calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a sort of grid that has some values within it. These values are either 1 or 0 if used on a binary pixel. Dependent on these values and the images pixel values different output occurs.
 
 The kernel will be first placed on the corner of the image and it will operate on one pixel at a time. If one of the pixels inside the kernel are "1" where the kernel is "1" as well then it hits. This means that the pixel in the center of the kernel will become a "1" in the output. If none of the pixels inside the kernel "hits" then the pixel in the middle of the kernel becomes a "0" in the output.
@@ -210,7 +212,7 @@ On the contrary, to be able to \textbf{fit} a pixel on the center of the structu
  D &$S_{1}$ &No &No\\\hline
  D &$S_{2}$ &No &No\\\hline
 \end{tabular}
-\caption{Results of Hitting and Fitting with two different structuring elements}
+\caption{Results of hitting and fitting with two different structuring elements.}
 \label{tab:HitFitResults}
 \end{table}
 

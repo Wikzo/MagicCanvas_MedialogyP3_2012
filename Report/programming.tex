@@ -165,6 +165,11 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 This function does exactly what the four functions described before are supposed to do. It refreshes the picture, it looks just at the region of interest and it does something that gives the same outcome as background subtraction and thresh holding the subtracted picture.
 The first thing the function does is that it streams the current picture from the camera to a temporary Mat object called \textbf{tmp} (1). The next thing it does is that it loops through all the x values of the picture and through all the y values that we are interested in (2). The y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter, up to a specific percentage of the screen used. For each of these coordinates the program checks if the red channel of the of the new picture is darker by the threshold chosen as parameter (3). If this is the case the current pixel gets the maximum value to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough the pixel gets classified as a pixel that hasn't changed enough, by setting it to zero (5).
 
+\section{Morphology}
+Closing
+	erode
+	dilate
+
 \section{The setup loop}
 \subsection{Take Background picture}
 Like mentioned before, there is also a loop in the setup. This loop also contains a while loop that has \textbf{true} as its condition. This loop is not supposed to end when the escape-key is pressed, but when it has figured out that there are no people in the picture. The reason for that is, that it has to take a reference picture, which is the one we use in the background subtraction. The function works under the assumption that people when on the picture always move a little. The function has three thresholds. The first is \textbf{threshholdPixelChange}, which is the value from which a pixel can be counted as changed. The second is threshholdPixelsChanged, whcih is the threshhold for how many pixels count as a person, since we are not interested in if just pixel has changed. The third threshold is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row have to be without change, so we can assume that no body is on the picture. 
@@ -242,20 +247,156 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 }
 \end{lstlisting}
 Before starting the while loop, the function that shall setup the background initializes two pictures(1) and a variable that is supposed to hold the number of frames that are unchanged in a row(2). In the while loop it refreshes the pictures with a time delay of 30 milliseconds (3) and initializes a counter that shall hold how much each pixel is changed(4) and one that shall hold how many pixels are changed(5). After that the program goes through all pixel coordinates (6) and saves the difference between the pixel value of each channel in the variable pixelChange (7). When this pixelChange is bigger then the threshold that classifies a pixel as changed the counter pixelsChanged gets raised by one (8). By this when all the pixels have been looked through, the program knows how many pixels have been changed from one frame to the next. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up(9). When to many pixels have changed the counter gets set to zero(10). 
-If enough pictures have been unchanged, the last part of the loop is entered(11). Here first the a Picture object BG gets refreshed(12). When this is done we analyse two things on the picture. The first one is where is the brightest picture in each column of the picture and the second where do we have to place the region of interest. We find the brightest pixel by going through each pixel of each column (13)and every time we find a pixel that is brighter then the brightest pixel until then it's position will be saved (14). This gets saved in the integer array \textbf{brightestYatX[]}. The number between the square brackets defines the x position of the column and the value the y position, where the brightest pixel is. To find out where the region of interest has to be placed the the program adds all y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check, that makes sure that the region of interest is in the frame(17).
-MAXMAXMAX
-\subsection{find roi and enter and exit zone}
-average brightest pixel in column for Roi
-pixel for enter and exit zone
+When enough pictures have been unchanged, the last part of the loop is entered(11). Here first the a Picture object BG gets refreshed(12). When this is done we analyse two things on the picture. The first one is where the brightest pixels position in each column of the picture is and the second where we have to place the region of interest. We find the brightest pixel by going through each pixel of each column (13). Every time we find a pixel that is brighter then the brightest pixel, until then, it's position gets saved (14). This gets saved in the integer array \textbf{brightestYatX[x]}. The number between the square brackets defines the x position of the column and the value the y position, where the brightest pixel is. To find out where the region of interest has to be placed the the program adds all y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check, that makes sure that the region of interest is in the frame(17).
 
+\subsection{The enter and exit zone}
+Now the question might be why we are interested in the position of the brightest pixel in each column on the background picture. The answer is that when a person goes into the picture and produces pixels that are changed in comparison to the background he will do that in front of the LEDs. If we are looking for this person we don't want to look through all the pixels but just the ones where the LEDs are on the background picture. We will come back to this in the chapter find new persons. 
 
 \section{Finding and analysing the blobs}
-recursion 
+Lets assume that we have examined a pixel that is found to be true or in other words changed in comparison to the background. The next thing would be to find the pixels that are connected to the pixel to categorize them as one object or a BLOB. One method that is often used is recursion (BOOK SOURCE). That's why the group wrote a recursive function that when called could go from pixel to pixel and call it self:
+\begin{lstlisting}
+void Picture::startFire(point startingPoint, Picture &tmpPicture)
+{
+	tmpPicture.makeBlack();
+	findNextPoint(startingPoint, tmpPicture);
+	for(int x = 0; x < width; x++){
+		for(int y = 0; y < height; y++){
+			if(tmpPicture.pixelR[x][y] == 255){ 
+				//pixelR[x][y] = 0;
+				pixelG[x][y] = 150;
+				//pixelB[x][y] = 0;
+			}
+		}
+	}
+}
+void Picture::findNextPoint(point currentPosition, Picture &tmpPicture)
+{
+	tmpPicture.pixelR[currentPosition.x][currentPosition.y] = 255;
+	//if right is available, is free and not burned
+	if(currentPosition.x+1 < width && pixelR[currentPosition.x+1][currentPosition.y] == 255 && tmpPicture.pixelR[currentPosition.x+1][currentPosition.y] != 255)
+		{
+			//cout << "right\n";
+			findNextPoint(point(currentPosition.x+1,currentPosition.y), tmpPicture);
+		}
+	//if down is available, is free and not burned
+	if(currentPosition.y+1 < height && pixelR[currentPosition.x][currentPosition.y+1] == 255 && tmpPicture.pixelR[currentPosition.x][currentPosition.y+1] != 255)
+		{
+			//cout << "down\n";
+			findNextPoint(point(currentPosition.x,currentPosition.y+1), tmpPicture);
+		}
+	//if left is available, is free and not burned
+	if(currentPosition.x-1 > 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255 && tmpPicture.pixelR[currentPosition.x-1][currentPosition.y] != 255)
+		{
+			//cout << "left\n";
+			findNextPoint(point(currentPosition.x-1,currentPosition.y), tmpPicture);
+		}
+	//if up is available, is free and not burned
+	if(currentPosition.y-1 > 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255 && tmpPicture.pixelR[currentPosition.x][currentPosition.y-1] != 255)
+		{
+			//cout << "up\n";
+			findNextPoint(point(currentPosition.x,currentPosition.y-1), tmpPicture);
+		}
+}
+\end{lstlisting}
+This function works just on small blobs. The problem was that for each pixel a new function was called causing a stack overflow. That is why they had to make a new function that wouldn't call more and more functions. The group wrote the logic behind the recursive function down and were able to reformulate it to a function that wasn't recursive, but did the same thing just in a while loop with eight cases for where the function will look next. The first four cases are the ones where the function goes forward to the next pixel, with a priority for each direction. The priorities five to eight are for when the function already has tried to move foreward and the only possibility is to go back. When non of these cases are occurs, the function is done with the analysis and the while loop is exited.
+\begin{lstlisting}
+void Picture::startFireLoggingPersons(point startingPoint)
+{
+	if(pixelR[startingPoint.x][startingPoint.y] != 255) //(7)
+		return;
+	//R is for Input - 255 = blob not classified, 0 = nothing found or to small
+	//G is for way back
 
-\section{Morphology}
-Closing
-	erode
-	dilate
+	resetChannelsExcept('R'); //function that sets all values pixel values to zero besides the one from the red channel
+	point currentPosition = startingPoint; // (8)
+	int pixelCount = 0; //(1)
+
+	p[currentPersonId].minX = height + 100;
+	p[currentPersonId].maxX = -100;
+	
+	while(true)
+	{
+		if(currentPosition.x > p[currentPersonId].maxX)
+			p[currentPersonId].maxX = currentPosition.x;
+		if(currentPosition.x < p[currentPersonId].minX)
+			p[currentPersonId].minX = currentPosition.x; //(11)
+					
+		pixelR[currentPosition.x][currentPosition.y] = 200 + currentPersonId;
+
+		//if right is available, is free and not burned
+		if(currentPosition.x+1 < width && pixelR[currentPosition.x+1][currentPosition.y] == 255) //(3)
+		{
+			pixelCount++; //(9)
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
+			currentPosition.x++; //(6)
+
+		}
+		//if down is available, is free and not burned
+		else if(currentPosition.y+1 < height && pixelR[currentPosition.x][currentPosition.y+1] == 255) //(3)
+		{
+			pixelCount++; //(9) 
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
+			currentPosition.y++; //(6)
+		}
+		//if left is available, is free and not burned
+		else if(currentPosition.x-1 >= 0 && pixelR[currentPosition.x-1][currentPosition.y] == 255) //(3)
+		{
+			pixelCount++; //(9)
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
+			currentPosition.x--; //(6)
+		}
+		//if up is available, is free and not burned
+		else if(currentPosition.y-1 >= 0 && pixelR[currentPosition.x][currentPosition.y-1] == 255) //(3)
+		{
+			pixelCount++; //(9)
+			pixelG[currentPosition.x][currentPosition.y] = pixelCount; //(2)
+			currentPosition.y--; //(6)
+		}
+		//steps back:
+		//if right is available, burned and has the biggest count(also check if the pixel, that is compared to is available) -> we have been there last -> go back 
+		else if(currentPosition.x+1 < width && (currentPosition.y+1 >= height || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x+1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1])) //(4)
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0; //(5)
+			currentPosition.x++; //(6)
+		}
+		//if down is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y+1 < height && (currentPosition.x+1 >= width || pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.x-1 < 0 || pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y-1 < 0||pixelG[currentPosition.x][currentPosition.y+1] > pixelG[currentPosition.x][currentPosition.y-1])) //(4)
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0; //(5)
+			currentPosition.y++; //(6)
+		}
+		//if left is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.x-1 >= 0 && (currentPosition.y+1 >= height || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y+1]) && (currentPosition.x+1 >= width || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.y-1 < 0 || pixelG[currentPosition.x-1][currentPosition.y] > pixelG[currentPosition.x][currentPosition.y-1])) //(4)
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0; //(5)
+			currentPosition.x--; //(6)
+		}
+		//if up is available, burned and has the biggest count -> we have been there last
+		else if(currentPosition.y-1 >= 0 && (currentPosition.x+1 >= width || pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x+1][currentPosition.y]) && (currentPosition.x-1 < 0||pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x-1][currentPosition.y]) && (currentPosition.y+1 >= height||pixelG[currentPosition.x][currentPosition.y-1] > pixelG[currentPosition.x][currentPosition.y+1])) //(4)
+		{
+			pixelG[currentPosition.x][currentPosition.y] = 0; //(5)
+			currentPosition.y--; //(6)
+		}
+		else
+			break;
+	}
+	
+	if(pixelCount > minPixelToBeAPerson) //(10)
+	{
+		float average = ((p[currentPersonId].minX + p[currentPersonId].maxX)/2); //(12)
+		float zeroToOne = average/width;
+		p[currentPersonId].posX = zeroToOne;
+	}
+	else //(10)
+		for(int y = 0; y < height; y++)
+			for(int x = 0; x < width; x++)
+				if(pixelR[x][y] ==  200 + currentPersonId;)
+					pixelR[x][y] = 0;
+		p[currentPersonId].posX = -1;
+	}
+}
+\end{lstlisting}
+This is the function that replaced our previous recursive function. It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture, but the states of the pixel. When the red channel of the pixel is 255 the pixel is found but not analysed by the recursive function yet. When it is 0 it means that nothing is found and when it is another number it is analysed. One can find the blobs index number which this pixel belongs to by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1) and gives this number to every pixel that is found forward (2). When non of the four forward if statements (3) have become true, the function compares the count in the yellow values around it self and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero(5). The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction x or y are either raised or reduced(6). After that the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. This is called the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found (7) and then be set to the \textbf{currentPosition}(8). While going through the blob the function also saves some information about it. Like said before it counts of how many pixels the blob consists(9). We use this information to discard blobs that are to small to be counted as a person(10). If this is the case the personCounter gets reset to waht it was before the function was called and the pixel values get set to zero. The function also saves the maximum the the smallest and the biggest x-position of the blob(11). The average of these two number is afterwards used to output where the person is positioned in front of the screen(12).
 	
 \section{persons}
 why first old and then new
@@ -277,6 +418,9 @@ When all persons are found again the program looks for new persons. To make the 
 After doing the initial prototype, the group realized that it would be difficult to use OpenCV to both extract the data from the camera and display it in some kind of graphical way. Since the program has to loop through a lot of data continuously, there was little resources left for it to actually display the results in an interesting way without being too slow. First the group thought about using multiple threads running in the program, but even then it would be hard to display more sophisticated graphics. OpenCV is not meant as a tool to display graphics, but more to for the analyzing/extracting part.
 
 Then the group came up with the idea of using Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages. Even though there are various APIs to get OpenCV and Unity communicate, it was decided for a much simpler approach using the Clipboard manager in Windows.
+
+\section{test/setup}
+the program has to reconfiger every hour
 
 \subsection{Heysa}
 Different possibilities (pros and cons)
