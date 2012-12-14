@@ -32,7 +32,7 @@ During this project image processing has been used to achieve the output needed.
 The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques used and also why and how they were implemented in the project. 
 
 \section{The digital image}
-Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a previous knowledge. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
+Behind the image acquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \href{http://rsbweb.nih.gov/ij/}{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a previous knowledge. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
@@ -321,12 +321,12 @@ When working with still pictures, and especially when working with video, it is 
 
 A way to optimize the speed of the program is to decrease the data by using a region of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI are ignored and unnecessary processing is prevented.
 
-An example of how this could be used is taking a photo where only the head is of interest. This is illustrated on figure \eqref{fig:Region of Interest}.
+An example of how this could be used is taking a photo where only the head is of interest. This is illustrated on figure \ref{fig:Region of Interest}.
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/RegionOfInterest.jpg} 
-\caption{Region of Interest} 
+\caption{If one needs to only track the face, a region of interest can be applied.} 
 \label{fig:Region of Interest} 
 \end{figure} 
 
@@ -511,7 +511,7 @@ After all the features are extracted, a binary object can be defined by its feat
 \includegraphics[width=1\textwidth]{Pictures/Theory/binary_image_table.png}
 \end{minipage}
 \label{fig:BinaryIm}
-\caption{Binary image with a bounding box and the center-of-mass. The table shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
+\caption{Binary image with a bounding box and the center-of-mass. The table shows two other features that can be calculated: the perimeter and the area. Inspired by \citep{ip_book}.}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
