@@ -166,9 +166,73 @@ This function does exactly what the four functions described before are supposed
 The first thing the function does is that it streams the current picture from the camera to a temporary Mat object called \textbf{tmp} (1). The next thing it does is that it loops through all the x values of the picture and through all the y values that we are interested in (2). The y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter, up to a specific percentage of the screen used. For each of these coordinates the program checks if the red channel of the of the new picture is darker by the threshold chosen as parameter (3). If this is the case the current pixel gets the maximum value to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough the pixel gets classified as a pixel that hasn't changed enough, by setting it to zero (5).
 
 \section{Morphology}
-Closing
-	erode
-	dilate
+Because the group arranged the LEDs on the LED strip in an interval of 4 centimetres there were some light gaps on the token picture. This meant that some of the pixels that actually should have been detected as change, were detected as unchanged. This caused the program to detect some persons doubled, because they were separated even though they were one person. 
+We solved this by applying morphology to it. We used \textit{Closing} to close the caps within the persons. Closing consist of first dilating the picture and then eroding it.
+\begin{lstlisting}
+void Picture::dilate(int radius, Picture &tmpPicture)
+{
+	for(int x = radius; x < width-radius; x++) //(1)
+	{
+		for(int y = radius; y < height-radius; y++) //(1)
+		{
+			bool pixelIsaccepted = false;
+			for(int filterX = x - radius; !pixelIsaccepted && filterX <= x + radius; filterX++) //(2)
+			{
+				for(int filterY = y - radius; !pixelIsaccepted && filterY <= y + radius; filterY++) //(2)
+				{
+					if (pixelR[filterX][filterY] == 255)(3)
+					{
+						pixelIsaccepted = true;
+					}
+				}
+			}
+			if (pixelIsaccepted == true)
+				tmpPicture.pixelR[x][y] = 255; //(5)
+			else
+				tmpPicture.pixelR[x][y] = 0;
+		}
+	}
+	for(int x = 0; x < width; x++)
+		for(int y = 0; y < height; y++){
+			pixelR[x][y] = tmpPicture.pixelR[x][y];
+			pixelG[x][y] = tmpPicture.pixelR[x][y];
+			pixelB[x][y] = tmpPicture.pixelR[x][y];
+		} //(6)
+}
+void Picture::erode(int radius, Picture &tmpPicture)
+{
+	for(int x = radius; x < width-radius; x++) //(1)
+	{
+		for(int y = radius; y < height-radius; y++) //(1)
+		{
+			bool pixelIsaccepted = true;
+			for(int filterX = x - radius; pixelIsaccepted && filterX <= x + radius; filterX++) //(2)
+			{
+				for(int filterY = y - radius; pixelIsaccepted && filterY <= y + radius; filterY++) //(2)
+				{
+					if (pixelR[filterX][filterY] == 0)(4)
+					{
+						pixelIsaccepted = false;
+					}
+				}
+			}
+			if (pixelIsaccepted == true)
+				tmpPicture.pixelR[x][y] = 255; //(5)
+			else
+				tmpPicture.pixelR[x][y] = 0;
+		}
+	}
+	for(int x = 0; x < width; x++)
+		for(int y = 0; y < height; y++)
+		{
+			pixelR[x][y] = tmpPicture.pixelR[x][y];
+			pixelG[x][y] = tmpPicture.pixelR[x][y];
+			pixelB[x][y] = tmpPicture.pixelR[x][y];
+		} //(6)
+}
+
+\end{lstlisting}
+Both the erosion and dilation go through the almost all the pixels of the picture. The pixels that are not analysed are the ones that are to close to the edge of the picture, so the kernel would be empty for some of the values(1).At every pixel, the functions look around the the pixels with the chosen radius(2). The difference between the two functions is that for a pixel to be accepted in  dilation just one pixel in the radius has to be true(3) and in erosion non pixel in the radius has to be false(4). After that the function are identically again. While the program is still look through the pixels image the output has to be stored in a buffer picture. That buffer picture holds the output so the input picture doesn't get influenced(5). When the functions are done with analysing the picture the output from the buffer picture get written to the picture the function is called from(6). 
 
 \section{The setup loop}
 \subsection{Take Background picture}
@@ -396,9 +460,9 @@ void Picture::startFireLoggingPersons(point startingPoint)
 	}
 }
 \end{lstlisting}
-This is the function that replaced our previous recursive function. It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture, but the states of the pixel. When the red channel of the pixel is 255 the pixel is found but not analysed by the recursive function yet. When it is 0 it means that nothing is found and when it is another number it is analysed. One can find the blobs index number which this pixel belongs to by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1) and gives this number to every pixel that is found forward (2). When non of the four forward if statements (3) have become true, the function compares the count in the yellow values around it self and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero(5). The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction x or y are either raised or reduced(6). After that the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. This is called the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found (7) and then be set to the \textbf{currentPosition}(8). While going through the blob the function also saves some information about it. Like said before it counts of how many pixels the blob consists(9). We use this information to discard blobs that are to small to be counted as a person(10). If this is the case the personCounter gets reset to waht it was before the function was called and the pixel values get set to zero. The function also saves the maximum the the smallest and the biggest x-position of the blob(11). The average of these two number is afterwards used to output where the person is positioned in front of the screen(12).
-	
-\section{persons}
+This is the function that replaced our previous recursive function. It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture, but the states of the pixel. When the red channel of the pixel is 255 the pixel is found but not analysed by the recursive function yet. When it is 0 it means that nothing is found and when it is another number it is analysed. One can find the blobs index number which this pixel belongs to by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1) and gives this number to every pixel that is found forward (2). When non of the four forward if statements (3) have become true, the function compares the count in the yellow values around it self and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero(5). The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction x or y are either raised or reduced(6). After that the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. This is called the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found (7) and then be set to the \textbf{currentPosition}(8). While going through the blob the function also saves some information about it. Like said before it counts of how many pixels the blob consists(9). We use this information to discard blobs that are to small to be counted as a person(10). If this is the case the personCounter gets reset to what it was before the function was called and the pixel values get set to zero. The function also saves the maximum the the smallest and the biggest x-position of the blob(11). The average of these two number is afterwards used to output where the person is positioned in front of the screen(12).
+Max Max Max
+\section{Persons}
 why first old and then new
 \subsection{find old person}
 loop trough persons
