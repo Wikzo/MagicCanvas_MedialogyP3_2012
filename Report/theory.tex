@@ -32,7 +32,7 @@ During this project image processing has been used to achieve the output needed.
 The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques used and also why and how they were implemented in the project. 
 
 \section{The digital image}
-Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a knowledge of these operations. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
+Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a previous knowledge. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
@@ -42,12 +42,12 @@ Behind the image adquisition applications often used in our daily life, such as 
 \end{figure}
 
 \subsection{Pixels}
-When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter, a sensor and an output. When light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be. \citep{ip_book}
+When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter, a sensor and an output. When light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be \citep{ip_book}.
 
 \subsection{8-bit image and grayscale images}
-In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information there can be stored in a single pixel.
+In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information that can be stored in a single pixel.
 
-An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The hue describes how pure and vivid a color is. \citep{visual_story} The information stored in each pixel is the brightness of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
+An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The hue defines how pure and vivid a color is \citep{visual_story}. The information stored in each pixel is the brightness of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
 
 \begin{figure}[htbp]
 \centering
@@ -59,7 +59,7 @@ An image with a single channel of information for each pixel in the X and Y axis
 \subsection{Indexing an image}
 When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image.
 
-Working with pixels in a image is like working with a coordinate system. Starting in the top-left corner is (0,0). Going to the right, the X value increases; going down, the Y value increases. A single pixel can be described as a coordinate, e.g. (255,255) is the bottom-most corner to the right. Figure \ref{fig:ip_IndexingAPicture} illustrates this.
+Working with pixels in a image is like working with a coordinate system. Starting in the top-left corner is (0,0). Going to the right, the X value increases; going down, the Y value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1192,666) is the bottom-most corner to the right.
 
 \begin{figure}[htbp]
 \centering
@@ -80,13 +80,11 @@ In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). T
 \end{figure} 
 
 \subsection{Working with coloured images}
-Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a coloured image.
+Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a colored image.
 
-There are several formats for handling color images. In this report we will only decribe RGB, since this is the only format we will encounter. Compared to a grayscale image, a coloured image differs because it consists of 3 channels, opposed to just one channel in grayscale images. Each of the three channels describe the value of the color in the specific pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. The most significant difference between grayscale images and coloured images, is that one would not describe the intensity of one specific color, but a mix of the red, green and blue color. In addition equal amounts of red, green and blue  will produce a gradient of grey, where a pixel value of 255 will produce white, and a pixel value of 0 would produce black, similar to grayscale images.
+There are several formats for handling color images. In this report we will only decribe RGB, since this is the only format we will encounter. The main difference when talking about colored and grayscale images, is that colored images have 3 channels, compared to the single channel in grayscale images. Each of the three channels holds the value of its specific color for each pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. Therefore, a colored image doesn't describe the intensity of a specific color, but the amount of the red, green and blue the pixels contain. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with the color channels values of 255 produces a white pixel, and a pixel with the color channels values of 0 will produce a black pixel. This phenomenon can be easily understand by looking to figure \ref{fig:ip_ColorWheel}, where the additive color system of wavelengths illustrates the colors' formation.
 
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. If one wants to exclude a specific color in a mathematical operation, such as red, one would have to use thresholding to segment the pixels depending on values of the red channel (thresholding will be described in \ref{sec:Thresholding}). The outcome should be a picture with a limited/controlled amount of red. 
-
-Figure \ref{fig:ip_ColorWheel} illustrates the making of colors in relation to the RGB system.
+Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. To exclude a specific color in a mathematical operation, such as red, it's necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
 
 \begin{figure}[htbp]
 \centering
