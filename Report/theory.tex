@@ -332,6 +332,11 @@ An example of how this could be used is taking a photo where only the head is of
 \label{fig:Region of Interest} 
 \end{figure} 
 
+\section{Noise reduction}
+\subsection{Mean and median filter}
+Somebody write something in here using IP book.
+JOHANNES GO GO GO
+
 \section{Background subtraction}
 A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes is shown.
 
@@ -381,62 +386,69 @@ A common problem when dealing with images is to determine if the image data cont
 Therefore, BLOB analysis will be split in three main steps: \textit{extraction} of the BLOBs, \textit{representation} of the BLOBs and, lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type \citep{ip_book}.
 
 \subsection{BLOB extraction}
-To isolate BLOBs in a binary image, we need to locate if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly used kernels in BLOB extraction are the 8-connected and the 4-connected kernels. Where the 8-connected kernel is more accurate, but also requires more computations and consequently, needs more time to process the image.
+To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connected and the 4-connected kernels \citep{ip_book}. The 8-connected kernel is more accurate, but also requires more computations and therefore needs more time to process the image.
 
-\subsubsection{Grass-Fire algorithm}
-One of these connected component labelling algorithms is the \textit{Recursive Grass-Fire Algorithm}, used to erode images but also to track the pixels locations to create a region.
+\subsubsection{Grass-fire algorithm}
+One of these connected component labelling algorithms is the \textit{recursive grass-fire algorithm}, used to erode images, but also to track the pixels locations to create a region.
 To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{Pictures/Theory/8connec_kernel.png}
-\caption{8 connectivity labeling kernel detects 1 single object}
+\caption{8-connectivity labelling kernel detects a single object. Inspired by \citep{ip_book}.}
 \label{fig:8connecK}
 \end{figure}
 
-As we can see on figure \eqref{fig:8connecK}, the Grass-Fire algorithm scans the entire image from the upper-left corner to the right bottom, row by row. When the kernel encounters a non-zero pixel value, it centers on it and burns the center pixel. Then the algorithm looks in the possible directions around that pixel to check if those pixels are connected to the previous one and therefore, together make out an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
+As shown in figure \ref{fig:8connecK}, the grass-fire algorithm scans the entire image from the upper-left corner to the right bottom, row by row. When the kernel encounters a non-zero pixel value, it centers on it and "burns" the center pixel. Then the algorithm looks in the possible directions around that pixel to check if those pixels are connected to the previous one and therefore, together make out an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
+
 Whenever it finds an object, the algorithm labels the pixel in the output image and then burns that pixel on the input image, in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
-The algorithm now looks to the possible directions around that pixel, starting with the pixel on the right. This process is represented on Figure \eqref{fig:8connecK}. Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and restarts the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
-Comparing the figure \eqref{fig:8connecK} and the figure \eqref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using a same picture. Although the 8-connected kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
+
+The algorithm now looks to the possible directions around that pixel, starting with the pixel on the right. This process is represented on figure \ref{fig:8connecK}. Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and repeats the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
+
+Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using the same picture. Although the 8-connected kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.75\textwidth]{Pictures/Theory/4connec_kernel.png}
-\caption{4 connectivity labeling kernel detects 2 objects}
+\caption{4 connectivity labelling kernel detects two objects. Inspired by \citep{ip_book}.}
 \label{fig:4connecK}
 \end{figure}
 
 \subsection{BLOB representation}
-The classification of the BLOBs is made by creating a \textit{prototype model} of the object that we are looking for in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: Determining the features of the BLOB and matching the features with the prototype, to determine if they are part of the type that we were looking for.
+The classification of the BLOBs is made by creating a prototype model of the object that we are looking for in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: determining the features of the BLOB; and matching the features with the prototype to determine if they are part of the type that we were looking for.
 
-This means that a few features like the \textbf{area}, the \textbf{perimeter} and the \textbf{circularity} will be calculated.
+This means that a few features like the area, the perimeter and the circularity will be calculated \citep{ip_book}.
 \subsubsection{The features}
 
-\begin{itemize}
-\item Area\\
-The importance of calculating features like the \textbf{area} of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOBs.\\
-\item Bounding box and Bounding circle\\
-Both \textbf{bounding box} and \textbf{bounding circle} are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two besides the shape, is the way they operate. While the \textbf{bounding box} is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum x and y values than can create a box that encompasses the BLOB. The \textbf{bounding circle} is the minimum circle and needs to find first the center of the BLOB.\\
-\item Convex hull\\
-The minimum convex polygon which contains the BLOB can be described as wrapping a piece of string tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.\\
-\item Bounding box ratio\\
-This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.\\
-\item Compactness\\
-The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box.
+%%% Maybe delete this section? - Gustav, Dec 14 %%%
+%%% Maybe delete this section? - Gustav, Dec 14 %%%
+%%% Maybe delete this section? - Gustav, Dec 14 %%%
 
+\begin{itemize}
+\item \textbf{Area}
+The importance of calculating features like the area of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOB.
+\item \textbf{Bounding box and bounding circle}
+Both bounding box and bounding circle are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two, besides the shape, is the way they operate. While the bounding box is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum X and Y values than can create a box that encompasses the BLOB. The bounding circle is the minimum circle and needs to find first the center of the BLOB.
+\item \textbf{Convex hull}
+The minimum convex polygon that contains the BLOB can be described as wrapping a piece of strings tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
+\item \textbf{Bounding box ratio}
+This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
+\item \textbf{Compactness}
+The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box. See eq. \ref{compact}.
 \begin{equation}
 	\begin{aligned}
 	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
 	\label{Compact}
+	\label{compact}
 	\end{aligned}
 \end{equation}
 
-\item Center of mass\\
+\item \textbf{Center of mass}
 In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
 
-The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average x and y positions of the object on the image.
+The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average X and Y positions of the object on the image.
 
-Its coordinates can be found using the formula:
+Its coordinates can be found using eq. \ref{centermass}.
 
 \begin{equation}
 	\begin{aligned}
@@ -444,11 +456,16 @@ Its coordinates can be found using the formula:
          x_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N x_{i}\\
          y_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N y_{i}
         \end{array} \right . \ 
+\label{centermass} 	
  	\end{aligned}
 \end{equation} 
 
 
-Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.\\
+Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
+
+GGG
+
+GG
 \item Center of the bounding box\\
 As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with the formula:
 
