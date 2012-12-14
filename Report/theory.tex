@@ -334,10 +334,47 @@ An example of how this could be used is taking a photo where only the head is of
 Noise reduction is very used in image processing, and is almost impossible to go around. When you e.g. threshold a picture then in most cases noise will appear. Either as small dots in the background or maybe small holes in the wanted area. Thankfully this noise can be reduced using different techniques. Two techniques that will be described further in this section is mean and median filters.\\
 These two types of filters can be used to remove noise from the picture, and it is a question of what the output should show when picking technique.\\
 A small description of how these two techniques works will be written in the subsection below.
+\subsubsection{Mean filter}
+One method of filtering is the mean filter. As the name implies a mean filter takes a input image, calculates the mean value of a given pixel and uses this as the output, a mean filter is a type of neighborhood processing. In practical application this means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
 
-\subsection{Mean and median filter}
-Somebody write something in here using IP book.
-JOHANNES GO GO GO
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/Theory/neighborhood_processing.png} 
+\caption{Practical neighborhood processing. All the surrounding pixels contribute to the average value of the output.} 
+\label{fig:neigh_pros} 
+\end{figure}
+
+The calculations that lie behind the average are simple:
+
+\begin{equation}
+	\begin{aligned}{
+	\frac{\text{Sum of input $-$ and neighboring pixels}}{\text{number of pixels}}
+	\label{Mean filter}	}
+	\end{aligned}
+\end{equation}
+
+\subsubsection{Median filter}
+Another method of filtering is the median filter. The median once again relies on the neighboring pixels. By indexing the input pixel along with its neighbors in a ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a median filter can be broken down in to two steps: Creating a ordered list of the pixels and finding the mean value.
+
+Taking out input pixels, $n_1$ through $n_9$ we first create a ordered list:
+
+
+\begin{equation}
+\begin{aligned}{
+\text{Ordered list:}[n_1,n_2,n_3,n_4,n_5,n_6,n_7,n_8,n_9]
+	\label{Order list of pixels.}}	
+	\end{aligned}
+\end{equation}
+
+Then we find the median:
+
+\begin{equation}
+\begin{aligned}{
+\text{Mean} [n_1,n_2,n_3,n_4,\textbf{$n_5$},n_6,n_7,n_8,n_9]
+	\label{Finding the mean pixel.}}
+	\end{aligned}
+\end{equation}
+\fxnote{Need to make this work the way it should.}
 
 \section{Background subtraction}
 A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes is shown.
