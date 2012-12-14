@@ -516,10 +516,10 @@ Mat MeanFilter(Mat input)
 
 It was first considered to make C++ write to a text file that could then be read by Unity. This approach was not used in the end, since it would need a lot of readings and writings to the hard drive - doing this repeatedly could destroy it. Also, there is a chance that there would be a mismatch with Unity trying to read the file while C++ is writing to it (the text file has to be opened, then written to, and finally closed). It was also found that this method was quite slow. Therefore it was decided to write to the Clipboard in Windows.
 
-The Clipboard acts as a short-term buffer to store temporary data in the RAM (Random Access Memory). Using copy and paste functionality, it can work like a gateway for transferring information from one program to another. \citep{clipboard1}. This avoids writings/readings from a physical hard drive and won't wear it out, as well as being faster than saving to a text file on the computer.
+The Clipboard acts as a short-term buffer to store temporary data in the RAM (Random Access Memory). Using copy and paste functionality, it can work like a gateway for transferring information from one program to another. \citep{clipboard_one}. This avoids writings/readings from a physical hard drive and won't wear it out, as well as being faster than saving to a text file on the computer.
 
 \subsubsection{Copy data from C++}
-In the C++ program a text line is saved as a string. This is done using the function \textbf{SetClipboardData()} where the data type has a format called CF\_TEXT that stores the data as text.\citep{clipboard2} \citep{clipboard3}. This string describes the information of where a person is currently located.
+In the C++ program a text line is saved as a string. This is done using the function \textbf{SetClipboardData()} where the data type has a format called CF\_TEXT that stores the data as text.\citep{clipboard_two} \citep{clipboard_three}. This string describes the information of where a person is currently located.
 
 First it assigns an unique ID name, showing what number of person it is, and then a floating point value between 0 (left) and 0.9 (right). If it is -1, it means that the person is currently not there, i.e. there is no person. The reason for this is to make it easier for Unity to move the characters around on the screen. If a position is different from -1, it means that it should be shown on the screen. Else if the position data is -1, the character will be moved outside of the screen area and not shown.
 
