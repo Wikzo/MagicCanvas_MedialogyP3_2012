@@ -36,7 +36,7 @@ Where {$h$} is Planck's constant, which describes the proportional relationship 
 \end{itemize}
 
 The wavelength of the photon determines what color will be perceived. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color perceived. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
-While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.
+While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow \citep{perception_book}.
 
 \begin{figure}[htbp] 
 \centering 
@@ -48,6 +48,9 @@ While different wavelengths correspond to different colors, these colors only re
 \subsection{Digital image acquisition}
 When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye: in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel \citep{ip_book}.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRACTICAL LIGHTING PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Image acquisition in the project}
 In the project, two cameras were considered: a normal RGB webcam and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared.
 
@@ -58,16 +61,24 @@ In the project, two cameras were considered: a normal RGB webcam and a similar c
 \label{fig:ir_filter} 
 \end{figure}
 
-This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle. \citep{ip_book} Working with infrared light eliminates this issue.
+This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light eliminates this issue.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Should the next sentences be here? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 \subsection{Infrared light}
 
-Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. Infrared light can be used to illuminate things without having a visible component to the light, but this requires a device capable of capturing IR. Some, generally cheaper, cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
+Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. It can be used to illuminate things without having a visible component to the light, but this requires a device able to capture IR. %Some cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRACTICAL LIGHTING PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Illuminating the scene}
 
-It is important that the lightning in the scene is constant. Imagine that the scene is captured with a normal webcam: this creates an RGB image (see figure \ref{fig:scene_light}). In this case, we imagine a program that is intended to find the shelves. In order to speed things up, the image is converted to grayscale. In the right picture the program can easily find the shelves, but in the picture on the left, the program cannot find the shelves, see figure \ref{fig:scene_thresholded}.
+It is important that the lightning in the scene is constant. Imagine that the scene is captured with a normal webcam: this creates an RGB image (see figure \ref{fig:scene_light}). In this case, imagine a program that is intended to find the shelves. In order to speed things up, the image will be grayscaled and thresholded. Looking to the corresponding picture \ref{fig:scene_thresholded}, after the transformations the program will easily find the shelves on the right picture. But on the picture of the left, the program will not find the shelves due to the illumination.
 
 \begin{figure}[htbp] 
 \centering 
@@ -83,7 +94,7 @@ It is important that the lightning in the scene is constant. Imagine that the sc
 \label{fig:scene_thresholded} 
 \end{figure}
 
-To avoid running into issues with variances in illumination, the decision was made to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration that we had the ability to filter the camera input, allowing only infrared light to pass to the camera. The following options were considered:
+To avoid running into issues with variances on the illumination, it was decided to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration that of having the ability to filter the camera input, allowing only infrared light to pass. The following options were considered:
 
 \begin{itemize}
 \item Using the library's lighting.
@@ -92,23 +103,16 @@ To avoid running into issues with variances in illumination, the decision was ma
 \item Building our own light system to light the scene.
 \end{itemize}
 
-\subsubsection{Using the library's lighting}
-The library's lightning consist of two different types of lamps: fluorescent lights, and very bright halogen spots. Using the infrared camera, we looked at the normal lighting and the halogen spots radiated too much IR light for us to be able to have a decent contrast between background and the subject we want to track.
+The library's lightning consist on two different types of lamps: fluorescent lights and halogen spots. The problem when using the infrared camera in that scenario, was that the normal lighting and the halogen spots radiated too much IR light. This impeded having a decent contrast between background and the subject to track.
 
-\subsubsection{Making adjustments to the lighting at the library}
-It was not possible to adjust the fluorescent lights, but the halogen spots could be pointed in a different direction. We further considered using some material to direct the cone of light from the spots, as to create the largest contrast between background and subject. Two options presented themselves: point the lights at the background, or point the lights to the subjects. These two cases offer two different problems. Limiting the cone of the light to only hit the subjects would require the light to be incident from a angle where they could not be placed, on the other hand limiting the spots to illuminating the canvas would interfere with the projection of images, as the spots are very bright.
+To be able to have a higher contrast between the persons and the background, it was considered to redirect the light. It either could be by pointing to the background (the canvas, in this situation) or the visitors. But limiting the light to the persons passing by, required to position the lamps on an angle that it was not possible to. On the other hand, limiting the spots to illuminate the canvas would interfere with the projection of the images on the canvas.
 
-\subsubsection{Bringing normal light to the scene} 
-By bringing normal lights that emit a high amount of IR lighting, the subject could be illuminated in a sufficient manner, but this would require a mount to be created or bought.
+The problem when bringing normal lights to the scene, was that even though it allowed to illuminate efficiently the persons and create a bigger contrast, it required to install the floor lamps on the corridor.
 
-\subsubsection{Building our own light system to light the scene}
-Building a lighting system from scratch to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared lights, and using this to light up the background, we should be able to create a high contrast between the background and the subject that we want to track. Furthermore, this provides us with the added benefit of already having defined a region of interest, thus easing the workload of the image processing.
+These situations led the group to consider building a lighting system from scratch, allowing a tailored solution for the installation and avoiding the problems caused by the previous situations. The most simple way to achieve our purpose was by using a strip of infrared LEDs. It could be placed to light both the canvas and the persons, and create a high contrast between them. Furthermore, it turn out to be a good way to define a region of interest, thus easing the workload of the image processing.
 
-\subsection{Concluding on the setup}
-Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting still presented a problem. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the project hard to make out. Bringing normal lights result in the same problem. This meant that the final decision was to create a custom infrared lighting for the library.
-
-\section{building the LEDs}
-For illuminating the scene, several different alternative were discussed and ultimately IR LEDs were chosen \fxnote{Refer to the chapter in which this is discussed} because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}. A 5mm with a cone of light of 16 degrees\fxnote{source is datasheet} and a 3mm with a cone of light of 130 degrees\fxnote{source is datasheet}.
+\subsection{Building the LEDs}
+For illuminating the scene, several different alternatives were discussed and ultimately IR LEDs were chosen \fxnote{Refer to the chapter in which this is discussed} because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}. A 5mm with a cone of light of 16 degrees\fxnote{source is datasheet} and a 3mm with a cone of light of 130 degrees\fxnote{source is datasheet}.
 
 During initial testing the focussed beam from the 5mm LED looked as though it might be too focussed, making it  difficult to create a bright line of unbroken illumination. For that reason a series of experiments were conducted: A setup that tested the light that the two LEDs offered were constructed and it was apparant that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
 
