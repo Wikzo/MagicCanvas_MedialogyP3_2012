@@ -315,11 +315,9 @@ When the purpose of implementing these operations is to find the edges, it is im
 \section{Region of interest (ROI)}
 A common thinking when dealing with images is that the more pixels, the better quality. However, this is not always true. Since there are more pixels to loop through, it takes longer time to the program to analyze and process the data. The more pixels to process, the longer time requires the calculations to the program.
 
-When working with video, it is important to maintain a stable framerate. The more information needed to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, one should choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are usually going to be. If one only wants to track or recognize a face, the rest of the body can be discarded.
+When working with video, it is important to maintain a stable framerate. The more information needed to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, the point would be to choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are expected to be, to track or recognize a face and discard the rest of the body. This region is usually enclosed in a rectangle and only the pixels inside this rectangle are being processed, ignoring all the pixels outside of the ROI. This prevents unnecessary processing and optimizes the speed of the program by decreasing the amount of data.
 
-A way to optimize the speed of the program is to decrease the data by using a region of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI are ignored and unnecessary processing is prevented.
-
-An example of how this could be used is taking a photo where only the head is of interest. This is illustrated on figure \ref{fig:Region of Interest}.
+An example of how this could be used is taking a photo where only the head is of interest (see picture \ref{fig:Region of Interest}).
 
 \begin{figure}[htbp] 
 \centering 
@@ -329,11 +327,14 @@ An example of how this could be used is taking a photo where only the head is of
 \end{figure} 
 
 \section{Noise reduction}
-Noise reduction is very used in image processing, and is almost impossible to go around. When you e.g. threshold a picture then in most cases noise will appear. Either as small dots in the background or maybe small holes in the wanted area. Thankfully this noise can be reduced using different techniques. Two techniques that will be described further in this section is mean and median filters.\\
-These two types of filters can be used to remove noise from the picture, and it is a question of what the output should show when picking technique.\\
-A small description of how these two techniques works will be written in the subsection below.
+Noise reduction is very used in image processing and it is almost impossible to work without it. In most of the cases, when thresholding and image noise appears. Either as small dots in the background or maybe small holes in the wanted area. Thankfully this noise can be reduced using different techniques. Two techniques that will be described further in this section are \textit{mean} and \textit{median} filters.
+
+Both filters can be used to remove noise from a picture. The selection of one amount the other only depends on the output needed.
+
 \subsubsection{Mean filter}
-One method of filtering is the mean filter. As the name implies a mean filter takes a input image, calculates the mean value of a given pixel and uses this as the output, a mean filter is a type of neighborhood processing. In practical application this means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
+One method of filtering is the \textit{mean filter}. As the name implies a mean filter takes an input image, and calculates the mean value of a given pixel to use it as the output. This type of neighborhood processing
+
+ In practical application this means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
 
 
 \begin{figure}[htbp] 
