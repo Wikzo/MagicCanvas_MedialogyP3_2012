@@ -464,7 +464,7 @@ Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how 
 \end{figure}
 
 \subsection{BLOB representation}
-The classification of the BLOBs is made by creating a prototype model of the object that we are looking for in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: determining the features of the BLOB; and matching the features with the prototype to determine if they are part of the type that we were looking for.
+The classification of the BLOBs is made by creating a prototype model of the object that we are looking for, in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: determining the features of the BLOB; and matching the features with the prototype to determine if they are part of the type that we were looking for.
 
 This means that a few features like the area, the perimeter and the circularity will be calculated \citep{ip_book}.
 \subsubsection{The features}
@@ -476,56 +476,56 @@ This means that a few features like the area, the perimeter and the circularity 
 \begin{itemize}
 \item \textbf{Area}
 The importance of calculating features like the area of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOB.
-\item \textbf{Bounding box and bounding circle}
-Both bounding box and bounding circle are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two, besides the shape, is the way they operate. While the bounding box is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum X and Y values than can create a box that encompasses the BLOB. The bounding circle is the minimum circle and needs to find first the center of the BLOB.
-\item \textbf{Convex hull}
-The minimum convex polygon that contains the BLOB can be described as wrapping a piece of strings tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
-\item \textbf{Bounding box ratio}
-This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
-\item \textbf{Compactness}
-The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box. See eq. \ref{compact}.
-\begin{equation}
-	\begin{aligned}
-	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
-	\label{compact}
-	\end{aligned}
-\end{equation}
+%\item \textbf{Bounding box and bounding circle}
+%Both bounding box and bounding circle are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two, besides the shape, is the way they operate. While the bounding box is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum X and Y values than can create a box that encompasses the BLOB. The bounding circle is the minimum circle and needs to find first the center of the BLOB.
+%\item \textbf{Convex hull}
+%The minimum convex polygon that contains the BLOB can be described as wrapping a piece of strings tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
+%\item \textbf{Bounding box ratio}
+%This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
+%\item \textbf{Compactness}
+%The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box. See eq. \ref{compact}.
+%\begin{equation}
+%	\begin{aligned}
+%	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
+%	\label{compact}
+%	\end{aligned}
+%\end{equation}
 
-\item \textbf{Center of mass}
-In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
+%\item \textbf{Center of mass}
+%In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
 
-The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average X and Y positions of the object on the image.
+%The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average X and Y positions of the object on the image.
 
-Its coordinates can be found using eq. \ref{centermass}.
+%Its coordinates can be found using eq. \ref{centermass}.
 
-\begin{equation}
-	\begin{aligned}
-  		\ \text{Center of Mass} = \left\{ \begin{array}{ll}
-         x_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N x_{i}\\
-         y_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N y_{i}
-        \end{array} \right . \ 
-\label{centermass} 	
- 	\end{aligned}
-\end{equation} 
+%\begin{equation}
+%	\begin{aligned}
+%  		\ \text{Center of Mass} = \left\{ \begin{array}{ll}
+%         x_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N x_{i}\\
+%         y_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N y_{i}
+%        \end{array} \right . \ 
+%\label{centermass} 	
+% 	\end{aligned}
+%\end{equation} 
 
 
-Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
+%Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
 
-\item \textbf{Center of the bounding box}
-As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with eq. \ref{BoundingBoxCenterX} and \ref{BoundingBoxCenterY}.
+%\item \textbf{Center of the bounding box}
+%As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with eq. \ref{BoundingBoxCenterX} and \ref{BoundingBoxCenterY}.
 
-\begin{equation}
-	\begin{aligned}	x_{bb}=x_{min}+\displaystyle\frac{x_{max}-x_{min}}{2}=x_{min}+\displaystyle\frac{x_{max}}{2}-\displaystyle\frac{x_{min}}{2}=\displaystyle\frac{x_{min}+x_{max}}{2}
-	\label{BoundingBoxCenterX}
-	\end{aligned}
-\end{equation}
+%\begin{equation}
+%	\begin{aligned}	x_{bb}=x_{min}+\displaystyle\frac{x_{max}-x_{min}}{2}=x_{min}+\displaystyle\frac{x_{max}}{2}-\displaystyle\frac{x_{min}}{2}=\displaystyle\frac{x_{min}+x_{max}}{2}
+%	\label{BoundingBoxCenterX}
+%	\end{aligned}
+%\end{equation}
 
-\begin{equation}	
-	\begin{aligned}
-	y_{bb}=y_{min}+\displaystyle\frac{y_{max}-y_{min}}{2}=y_{min}+\displaystyle\frac{y_{max}}{2}-\displaystyle\frac{y_{min}}{2}=\displaystyle\frac{y_{min}+y_{max}}{2}
-	\label{BoundingBoxCenterY}
-	\end{aligned}
-\end{equation}
+%\begin{equation}	
+%	\begin{aligned}
+%	y_{bb}=y_{min}+\displaystyle\frac{y_{max}-y_{min}}{2}=y_{min}+\displaystyle\frac{y_{max}}{2}-\displaystyle\frac{y_{min}}{2}=\displaystyle\frac{y_{min}+y_{max}}{2}
+%	\label{BoundingBoxCenterY}
+%	\end{aligned}
+%\end{equation}
 
 
 \item \textbf{Perimeter}
@@ -533,14 +533,12 @@ Scanning along the border of the BLOB and summing the pixels, we obtain the leng
 \item \textbf{Circularity}
 Circularity is a common shape-factor that depends on the perimeter and the area. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle. See eq. \ref{Circularity}.
 
-
 \begin{equation}	
 	\begin{aligned}
 	{Circularity}=\displaystyle\frac{BLOB's \;\; Perimeter}{2 \; \sqrt{\mathstrut \: \pi \: \cdot \: {BLOB's \;\; Area}}}
 	\label{Circularity}
 	\end{aligned}
 \end{equation}
-
 
 After all the features are extracted, a binary object can be defined by its features' values that would be stored into a feature vector in order to have a list where to start the BLOB classification.
 \end{itemize}
