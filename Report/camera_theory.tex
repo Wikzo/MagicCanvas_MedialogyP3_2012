@@ -1,6 +1,6 @@
 \section{Camera theory}
 
-An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this chapter the basics of image acquisition using a digital camera will be explained. To understand how this works it is necessary to have a basic understanding of the physics behind light.
+An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. But in order to understand how this works it is necessary to have a basic understanding of the physics behind light.
 
 \begin{figure}[htbp] 
 \centering 
@@ -9,7 +9,7 @@ An image captured through a camera is the result of reflected light being detect
 \label{fig:light_cam} 
 \end{figure}
 
-Light is a form of electromagnetic radiation and can be viewed as both waves and particles. This duality is however not something that will be covered within this chapter; the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons. Photons can be described by three properties:
+Light is a form of electromagnetic radiation that can be viewed as both waves and particles. This duality is however not something that will be covered within this chapter, as the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons. Photons can be described by three properties:
 
 \begin{itemize}
 \item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
@@ -17,23 +17,26 @@ Light is a form of electromagnetic radiation and can be viewed as both waves and
 \item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
 \end{itemize}
 
-The formulae for these properties are as follows:
-To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
+The formulas for these properties are as follows:
+\begin{itemize}
+\item To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
 \begin{align}
 \centering 
 \lambda = \frac{C}{f}
 \label{eq:wavelenght} 
 \end{align}
-$\lambda$ and f we are familiar with, and C is the speed of light. The second equation, equation \ref{eq:e_v}, describes the energy:
+where {$C$} is the speed of light.
+\item The second equation, equation \ref{eq:e_v}, describes the energy:
 \begin{align}
 \centering
 E = \frac{hC}{\lambda}
 \label{eq:e_v} 
 \end{align}
-Where h is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic waves frequency. E, C and $\lambda$ are still as explained above.
+Where {$h$} is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic waves frequency.
+\end{itemize}
 
-The wavelength of the photon determines what color one perceives. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color that is perceived. The visible spectrum of light is but a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The most common light source is the sun. The white light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This will yield the full spectrum of visible light, as seen in a rainbow.
-While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, constructed to be sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.
+The wavelength of the photon determines what color will be perceived. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color perceived. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
+While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.
 
 \begin{figure}[htbp] 
 \centering 
@@ -43,7 +46,7 @@ While different wavelengths correspond to different colors, these colors only re
 \end{figure}
 
 \subsection{Digital image acquisition}
-When capturing an image using a digital camera, light is passed through a lens onto the sensor, which acts in much the same way as the human eye. In place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors, one for each pixel in the output image. A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel \citep{ip_book}.
+When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye: in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel \citep{ip_book}.
 
 \subsection{Image acquisition in the project}
 In the project, two cameras were considered: a normal RGB webcam and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared.
@@ -55,12 +58,12 @@ In the project, two cameras were considered: a normal RGB webcam and a similar c
 \label{fig:ir_filter} 
 \end{figure}
 
-This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting \citep{ip_book} can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle. Working with IR eliminates this issue.
+This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle. \citep{ip_book} Working with infrared light eliminates this issue.
 
 \subsection{Infrared light}
 
-Infrared light lies right next to visible light in the electromagnetic spectrum. Looking at the full spectrum in figure \ref{fig:em_rad} 
-\textbf{I think we should have a section about IR light, maybe here? - Gustav}
+Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. Infrared light can be used to illuminate things without having a visible component to the light, but this requires a device capable of capturing IR. Some, generally cheaper, cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
+
 
 \subsection{Illuminating the scene}
 
@@ -103,3 +106,37 @@ Building a lighting system from scratch to light the scene would allow a tailore
 
 \subsection{Concluding on the setup}
 Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting still presented a problem. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the project hard to make out. Bringing normal lights result in the same problem. This meant that the final decision was to create a custom infrared lighting for the library.
+
+\section{building the LEDs}
+For illuminating the scene, several different alternative were discussed and ultimately IR LEDs were chosen \fxnote{Refer to the chapter in which this is discussed} because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}. A 5mm with a cone of light of 16 degrees\fxnote{source is datasheet} and a 3mm with a cone of light of 130 degrees\fxnote{source is datasheet}.
+
+During initial testing the focussed beam from the 5mm LED looked as though it might be too focussed, making it  difficult to create a bright line of unbroken illumination. For that reason a series of experiments were conducted: A setup that tested the light that the two LEDs offered were constructed and it was apparant that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
+
+\begin{figure}[htbp] \centering
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/5mm.jpg} % Venstre billede
+\end{minipage} \hfill
+\begin{minipage}[b]{0.45\textwidth} \centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/3mm.jpg} % Højre billede
+\end{minipage} \\ % Captions og labels
+\begin{minipage}[t]{0.45\textwidth}
+\caption{5mm LED illuminates a sheet, that will later be used for projection.} % Venstre caption og label
+\label{fig:5_mm_test}
+\end{minipage} \hfill
+\begin{minipage}[t]{0.45\textwidth}
+\caption{3mm LED illuminates the same sheet.} % Højre caption og label
+\label{fig:3_mm_led}
+\end{minipage}
+\end{figure}
+
+Initially a broader strip of light was thought to be desirable, therefore a test was conducted where the LEDs had their lens sanded down in order to make the light less focussed. Figure \ref{fig:leds_sanded} shows an image where the LEDs in progression from left to right get more and more sanded down. As the figure illustrates the intensity of the light decreases as the LED-lens is sanded down. After conducting these tests,  it became clear that an unaltered LED performed better than the modified ones, providing a more intense illumination.
+
+\begin{figure} [htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/sanded_leds.jpg}
+\caption{The LEDs have been sanded down in progressive order from left to right.}
+\label{fig:leds_sanded}
+\end{figure}
+
+For ease of construction the LEDs were arranged into arrays of 8 LEDs connected in series, which in turn are connected in parallel. The LEDs have a forward voltage of 1.5V, which means that the power supply has to be able to supply at least 12V to power all 8 of them. Initially a small AC-DC power supply capable of supplying 12V at 600mA was used for testing purposes. However the total draw of a single LED array is 0,5A and for the project a total of 4 arrays were planned. The current far exceeded what could be supplied by the small AC-DC supply. Luckily the group managed to salvage a 300 watt computer power supply capable of supplying 12 volts at 8 amperes. After getting the power supply to work without being in a computer, terminals were soldered to LED-strips and the power supply allowing the LED-strips to plug into the power supply.
+
