@@ -332,9 +332,7 @@ Noise reduction is very used in image processing and it is almost impossible to 
 Both filters can be used to remove noise from a picture. The selection of one amount the other only depends on the output needed.
 
 \subsubsection{Mean filter}
-One method of filtering is the \textit{mean filter}. As the name implies a mean filter takes an input image, and calculates the mean value of a given pixel to use it as the output. This type of neighborhood processing
-
- In practical application this means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
+One method of filtering is the \textit{mean filter}. As the name implies a mean filter takes an input image, and calculates the mean value of a given pixel to use it as the output. This type of neighborhood processing, in practical application it means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
 
 
 \begin{figure}[htbp] 
@@ -354,9 +352,9 @@ The calculations that lie behind the average are simple:
 \end{equation}
 
 \subsubsection{Median filter}
-Another method of filtering is the median filter. The median once again relies on the neighboring pixels. By indexing the input pixel along with its neighbors in a ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a median filter can be broken down in to two steps: Creating a ordered list of the pixels and finding the mean value.
+Another method of filtering is the \textit{median filter}. The median once again relies on the neighboring pixels. By indexing the input pixel along with its neighbors in a ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a median filter can be broken down in to two steps: Creating an ordered list of the pixels and finding the mean value.
 
-Taking out input pixels, $n_1$ through $n_9$ we first create a ordered list:
+Taking out input pixels, from $n_1$ through $n_9$ we first create a ordered list:
 
 
 \begin{equation}
@@ -370,26 +368,25 @@ Then we find the median:
 
 \begin{equation}
 \begin{aligned}{
-\text{Mean} [n_1,n_2,n_3,n_4,\textbf{$n_5$},n_6,n_7,n_8,n_9]
+\text{Mean} [n_1,n_2,n_3,n_4,\boldsymbol{n_5},n_6,n_7,n_8,n_9]
 	\label{Finding the mean pixel.}}
 	\end{aligned}
 \end{equation}
-\fxnote{Need to make this work the way it should.}
 
 \section{Background subtraction}
-A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes is shown.
+A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes are shown.
 
-In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. The setup is important as the background should be static. Imagine if sunshine is let inside the room; then the light will change together with the sun's position, and changes will be seen everywhere and thereby producing noise that gives an inaccurate result.
+In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. This is important as the background should be static. Imagine that sunshine is let inside the room; then the light will change together with the sun's position, and changes will be seen everywhere and thereby produce noise that gives an inaccurate result.
 
-It is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore a threshold value is required - for two reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
+It is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore, a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
 
-Therefore the following two questions have to be considered when doing background subtraction:
+Two questions have to be considered when doing background subtraction:
 \begin{enumerate} 
 	\item Is the background consistent? 
-	\item Which threshold value would be optimal for making the picture binary, and distinct the changes from the background? 
+	\item Which threshold value would be optimal to make the picture binary, and distinct the changes from the background? 
 \end{enumerate}
 
-If the first point is false and the background is not consistent, there is a way to automatically update the backgrounds pixel values. The formula is shown in \ref{AutomaticBackground}.
+If the first point is false and the background is not consistent, there is a way to automatically update the background pixels' values. The formula is shown in \ref{AutomaticBackground}.
 
 \begin{equation}
 	\begin{aligned}
