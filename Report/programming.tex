@@ -1,4 +1,4 @@
-CHAPTERS: Design and setup + Implementation
+\chapter{Implementation}
 
 \section{Programming in OpenCV and Unity}
 Now that most of the design decisions have been described, it is time to go more in-depth with how the program was actually implemented. As mentioned earlier, the C++ programming language was used, along with the open source library \href{http://opencv.org/}{OpenCV} to work with image data, such as loading and writing to each individual pixel. While C++ was used to do the actual image processing part, it was decided to use \href{http://unity3d.com/}{Unity game engine} to display the actual result in an intuitive manner. This approach will be described in \ref{unityStart}.
@@ -107,7 +107,7 @@ Then there is the main loop which is a while loop that constantly runs for while
 
 Besides the main loop there is also a while loop in the setup, but this will be described a little later in \ref{backgroundConfig}.
 
-It is important to notice that when using a loop, if the program is running for a long time, it is a bad programming practice to make the program allocate memory in the loop, since it will use more and more memory, unless the memory gets released again. That is why it would run out of memory very fast when the function \textbf{initialize()} would be called in the main loop. Since we still need to get new input from the camera, a function called \textbf{refresh()} was implemented. It does almost the same as \textbf{initialize()}, just that it instead of creating a new integer for each pixel value assigns the old integer a new pixel value, as shown in the following code snippet:
+It's important to note that it is bad programming practice to make the program allocate memory in the loop, since it will use more and more memory, unless the memory gets released again. That is why it would run out of memory very fast when the function \textbf{initialize()} would be called in the main loop. Since we still need to get new input from the camera, a function called \textbf{refresh()} was implemented. It does almost the same as \textbf{initialize()}, just that it instead of creating a new integer for each pixel value assigns the old integer a new pixel value, as shown in the following code snippet:
 
 \begin{lstlisting}
 void Picture::refresh(VideoCapture captureToStoreCamra)
@@ -139,13 +139,13 @@ void Picture::refresh(VideoCapture captureToStoreCamra)
 \subsection{The downside of the custom-written pixel system}
 The decision to have all pixels in our own class might sound like a neat way getting access to the pixels easier, but on the other hand it also makes the program slower, since it has to go through all the color channels of each and every pixel in each frame. To circumvented this problem, and thereby achieve a faster framerate for the program, another system was implemented. This will be described later in \ref{forInOne}. 
 
-\section{The Preprocessing}
+\section{The preprocessing}
 \textbf{WHEN WE LOOK THIS THROUGH WE SHOULD READ THE LED PART BEFORE TO SE IF IT FITS - Max}
 
 \subsection{Region of Interest}
-Like mentioned in \ref{roi}, the group was just interested in the horizontal position of the library visitors that would step into the camera's field of view. That is why the group had a narrow strip of LEDs where persons are detected. For the program that also meant that just this part of the picture had to be analyzed. This also means that the program will run much faster when just a little part of the picture has to be analyzed.
+Like mentioned in \ref{roi}, the group was only interested in the horizontal position of the person that would step into the camera's field of view. That is why the group had a narrow strip of LEDs where people are detected. That also means that just this part of the picture had to be analyzed. The result is a faster-running program, since only a part of the picture has to be analyzed.
 
-This part is the the region of interest (ROI). The way this was implemented was by initializing the picture in \textbf{setup()}, setting all the pixel values to 0, and in the main loop just refreshing the parts that are in the region of interest.
+This part is the the region of interest (ROI). This was implemented by initializing the picture in \textbf{setup()}, setting all the pixel values to 0, and in the main loop just refreshing the parts that are in the region of interest.
  
 \subsection{Background subtraction}
 When the group started to make the program, it seemed like a good idea to have a reference picture of what the camera sees without people in the picture. This would then be used to background subtract in every frame. After that the group wanted to threshold the result to get a binary picture. 
@@ -161,11 +161,10 @@ The thing they knew was that the person would be darker than the background, sin
 \label{fig:ir_max}
 \end{figure}
 
-Another possibility would have been to put all the color channels together with different weight, like in the conversion from a color picture to a black and white picture. We chose not to do that because the color channels were so similar that this wouldn't have improved the result, and it would have meant that we had to read all color channels, which would have made the program much slower. 
+Another possibility would have been to put all the color channels together with different weight factors, like in the conversion from a color image to grayscale image. It was chosen not to do this, because the color channels were so similar that it wouldn't have improved the final result, and it would have meant that we had to read all color channels, making the program slower. 
 
-\subsection{Putting four function into one}\label{forInOne}
-The following sentence sums up what we now  know about the information we want to extract from the picture: \textit{We are interested in which pixels in the region of interest have been become darker in the red channel in comparison to the reference picture.} 
-Also we would like to have the step of reading all the pixels from openCV removed. This can all be written in code in a very simple way that costs much less processing power:
+\subsection{Optimizing the code}\label{forInOne}
+Having the previous sections in mind, we are now interested in the pixels inside the ROI that have become darker in comparison to the reference picture. Also, we would like to have the steps of reading all the pixels using OpenCV removed. This can all be written in code in a simple way, using fewer steps than needed before:
 
 \begin{lstlisting}
 void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureToStoreCamra, Picture refPicture, int threshhold, int procentOfScreenUsed, int heightOfLowerROI)
@@ -187,12 +186,24 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 	}
 }
 \end{lstlisting}
-This function does exactly what the four things described before are supposed to do. It refreshes the picture, it looks just at the region of interest and it does something that gives the same outcome as background subtraction and thresh holding the subtracted picture.
-The first thing the function does is that it streams the current picture from the camera to a temporary Mat object called \textbf{tmp} (1). The next thing it does is that it loops through all the x values of the picture and through all the y values that we are interested in (2). The y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter, up to a specific percentage of the screen used. For each of these coordinates the program checks if the red channel of the of the new picture is darker by the threshold chosen as parameter (3). If this is the case the current pixel gets the maximum value to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough the pixel gets classified as a pixel that hasn't changed enough, by setting it to zero (5).
+This function does four things, as described previously: reading in pixel values with help from OpenCV; doing thresholding; using the region of interest to discard unnecessary data; and background subtraction.
+
+\textbf{refreshDiscradBGSubtractAndThreshholdForBnW()} refreshes the picture, looking just at the region of interest, and performs calculations that provides the same result by using background subtraction and threshholding.
+
+The first thing the function does is that it streams the current picture from the camera to a temporary \textbf{Mat} object called \textbf{tmp} (1). The next thing it does is that it loops through all the X values of the picture and through all the Y values that we are interested in (2). The Y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter to the function, up to a specific percentage of the screen. For each of these coordinates the program checks if the red channel of the of the new picture is darker than the threshold value (3). If this is the case, the current pixel gets the maximum value, to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough, the pixel's value is set to to zero (5).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{Pictures/Design/led_max}
+\caption{The LEDs are put on a long strip at 4 centimetres intervals.}
+\label{fig:led_max}
+\end{figure}
 
 \section{Morphology}
-Because the group arranged the LEDs on the LED strip in an interval of 4 centimetres there were some light gaps on the taken picture. This meant that some of the pixels that actually should have been detected as change, were detected as unchanged. This caused the program to detect some persons doubled, because they were separated even though they were one person. 
-The group solved this by applying morphology to the picture. We used \textit{Closing} to close the caps within the persons. Closing consist of first dilating the picture and then eroding it.
+Because the group arranged the LEDs on a long strip in an interval of 4 centimetres (see figure \ref{fig:led_max}), there were some light gaps on the taken picture. This meant that some of the pixels that actually should have been detected as changed were detected as unchanged. This caused the program to detect some persons doubled, because they were separated, even though there was in fact only a single person in front of the camera.
+
+The group solved this by applying morphology to the picture. Closing was applied to close the gaps within the persons. As mentioned in \ref{closing}, it consist of first dilating the picture and then eroding it. This is shown in the following code:
+
 \begin{lstlisting}
 void Picture::dilate(int radius, Picture &tmpPicture)
 {
@@ -257,7 +268,9 @@ void Picture::erode(int radius, Picture &tmpPicture)
 }
 
 \end{lstlisting}
-Both the erosion and dilation go through the almost all the pixels of the picture. The pixels that are not analysed are the ones that are to close to the edge of the picture, so the kernel would be empty for some of the values(1). At every pixel, the functions look around the the pixels with the chosen radius(2). The difference between the two functions is that for a pixel to be accepted in dilation just one pixel in the radius has to be true(3) and in erosion non pixel in the radius has to be false(4). After that the function are identically again. While the program is still look through the pixels image the output has to be stored in a buffer picture. That buffer picture holds the output so the input picture doesn't get influenced(5). When the functions are done with analysing the picture the output from the buffer picture gets written to the picture the function is called from(6). 
+Both the erosion and dilation go through almost all the pixels in the picture. The pixels that are not analyzed are the ones that are too close to the edge of the picture, so the kernel would be empty for some of the values (1).
+
+At every pixel, the functions look around the the pixels with the chosen radius (2). The difference between the two functions is that for a pixel to be accepted in dilation just one pixel in the radius has to be true(3) and in erosion non pixel in the radius has to be false(4). After that the function are identically again. While the program is still look through the pixels image the output has to be stored in a buffer picture. That buffer picture holds the output so the input picture doesn't get influenced(5). When the functions are done with analysing the picture the output from the buffer picture gets written to the picture the function is called from(6). 
 
 \section{The setup loop}
 \subsection{Take Background picture}\label{backgroundConfig}
