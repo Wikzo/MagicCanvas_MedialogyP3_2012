@@ -86,71 +86,72 @@ Two members of the group then travelled to Hj{\o}rring to find a proper location
 %\subsection{The initial goal}
 
 \section{Prototyping}
-The first step into developing the needed software was to write some initial code that would run and produce a useful output. This was done by dividing the group into two smaller groups of three persons, with the goal of coming up with a solution on how to produce a segmentation of a video input. A competition within the group turned up to create the best code to be presented in three days. And so the "winner's code", or parts from both projects, would be incorporated in a testable file to be elaborated on in the following months.
+The first step into developing the software was to write some initial code that would run and produce a useful output. This was done by dividing the group into two smaller groups of three persons, with the goal of coming up with a solution of how to track an object in a video. The two sub groups competed over a course of three days, the winner would be the group that came up with the best idea. And so the winners code, or parts from both projects, would be incorporated in program that would be expanded upon in the following months.
 
-At the end of the week, two programs were ready to be tested. Both programs were able to do the same things, only the code differed. Some of the techniques used were: median filtering; morphology (opening/closing); background subtraction; conversion from a color image to a grayscale image; and, most importantly, a first draft of the BLOB analysis that is needed to analyze the shape of the head where the Christmas hat has to be placed. All of these concepts are going to be explained more in-depth in chapter \ref{theory_part}.
+At the end of the week, two programs were ready to be tested. Both programs were able to do the same things, only the code differed. Some of the techniques used were: Median filtering, morphology (opening/closing), background subtraction, conversion from a color image to a grayscale image, and most importantly a first draft of the BLOB analysis needed to analyze the shape of the head where the Christmas hat has to be placed. All of these concepts are going to be explained more in-depth in chapter \ref{theory_part}.
 
-The basic idea for the technical part is to have a canvas on which the shade of the visitors is projected together with the Christmas hat on the top of their head. To do this it would be necessary to have a camera gathering input about people passing by, a computer to run the program, a projector to display the output from the computer, a canvas on which the output is projected, and, lastly, controllable light conditions.
+The basic idea for the technical part is to have a canvas on which the silhouette of the visitors is projected. To achieve this it would be necessary to have the following:
 
-%\begin{itemize}
-%\item A web camera to gather input about people walking past
-%\item A computer to run the program code
-%\item A projector to display the output from the computer
-%\item A canvas on which the output is projected
-%\item Controllable light conditions
-%\item Power, cables, etc.
-%\end{itemize}
+% a camera gathering input about people passing by, a computer to run the program, a projector to display the output from the computer, a canvas on which the output is projected, and, lastly, controllable light conditions.
+
+\begin{itemize}
+\item A device to gather information about peoples position while walking past
+\item A computer to run the program code
+\item A projector to display the output from the computer
+\item A canvas on which the output is projected
+\item Controllable light conditions
+\end{itemize}
 
 \subsection{Running the first test}
-As the first prototype of the program was completed, it was decided to test the code and the  equipment, to look at the video output, to test the framerate of the video and the threshold values. Figure \ref{fig:ir_cam_test} illustrates the initial setup for the first prototype testing.
+As the first prototype of the program was completed, it was decided to test the code and the  equipment. The test was performed to investigate the video output, the framerate of the video and the threshold values. Figure \ref{fig:ir_cam_test} illustrates the initial setup for the first prototype testing.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.80\textwidth]{Pictures/Test/TestSetup.jpg}
-\caption{An early prototype test using temporary equipment.}
+\caption{A prototype test using temporary equipment.}
 \label{fig:ir_cam_test}
 \end{figure} 
 
-At first a normal camera was used, but due to changes in the light conditions that came from the objects walking past, causing glitters on the output, it was decided to use a camera with an infrared filter. In addition to the infrared camera, four light bulbs were used to illuminate the person properly, so that the contrast between background and object became as big as possible. This produced a good output of the test person, but one problem still remained: once the test person faced the screen, the head was too small and didn't look very precise on the output, producing the misplacement of the Christmas hat.
+At first a normal camera was used, but changes in the light conditions that was a result of the subjects walking past, created noise on the output image. Based on these observations it was decided to use a camera with an infrared filter. In addition to the infrared camera, four light bulbs were used to illuminate the person properly, so that the contrast between background and object became as clear as possible. This produced a good output, but one problem still remained: once the test person faced the screen, the head was too small and did not look very precise on the output, producing misplacement of the Christmas hat.
 
-The solution to this turned out to be illuminating the background instead of the person, which produced a better result, as shown in figure \ref{fig:max_subtracted}. The goal was to create as much contrast between foreground/object and background (see figure \ref{fig:max_subtracted}) as possible, and since the background is static, it seemed easier to illuminate.
+The solution to this turned out to be illuminating the background instead of the person, which produced a better result, as shown in figure \ref{fig:max_subtracted}. The goal was to create as much contrast between foreground/subject and background (see figure \ref{fig:max_subtracted}) as possible, and since the background is static, it is easier to illuminate.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.80\textwidth]{Pictures/Test/MaxSubtracted.jpg}
-\caption{Complete background subtraction of object outputted as binary picture. There is also some simple BLOB analysis that looks for the top-most row of pixels (the head) and displays a hat at that position.}
+\caption{An image showing output from the prototype test projected onto a wall.}
 \label{fig:max_subtracted}
 \end{figure}
 
 \section{Changes on the main concept}
-After the first short testing session it seemed clear that some things needed to be clarified. For this reason, the group asked for a brief meeting with its supervisors to receive some valuable feedback on the prototype test, as well as help with some programming dilemmas regarding speed and efficiency to loop through the big amount of pixels in each frame. At first the program code was designed to look for the top-most row of pixels, resulting on causing several different problems. The persons standing in front of the screen could end up wearing the hat on his hand just by raising it. Or it could be that somebody taller came into the picture, resulting in stealing the hat from the previous owner.
+After the first short testing session it seemed clear that some things needed to be clarified. For this reason, the group asked for a brief meeting with the supervisors to receive some valuable feedback on the prototype test. Further the group wanted help with some programming dilemmas regarding speed and efficiency looping through the big amount of pixels in each frame. At first the program code was designed to look for the top-most row of pixels, resulting in several different problems. The persons standing in front of the screen could end up wearing the hat on his hand just by raising it. Another problem could be that somebody taller came into the picture, resulting in the taller person "stealing" the hat from the previous owner.
 
-Although the group imagined the program to display the whole person as the output with a graphical hat on top, it was suggested to do not show the person directly, but instead show a shadow figure. Still, both approaches seemed to cause problems, since the program would have to loop through the whole image to find the person and then do some calculations. Even with only one person, as in the prototype test, this seemed to be a somewhat slow approach. Since the group wanted to track multiple persons, it didn't work as intended.
+Although the group imagined the program to display the whole person in the output with a graphical hat on top, it was suggested to not show the person directly, but instead show a silhouette. Both approaches seemed to suffer from the same problem: The program would have to loop through the entire image to find the person and then do further computations. Even with only one person, as in the prototype test, this seemed to be a somewhat slow approach. Since the group wanted to track multiple persons, it didn't work as intended.
 
-This dilemma were brought up and various suggestions were given, such as looking only for the head instead of the full body; adjusting the BLOB analysis to look for a more specific shape; as well as some tips on how to optimize the background subtraction.
+This dilemma was brought up and various suggestions were given, such as looking only for the head instead of the full body, adjusting the BLOB analysis to look for a more specific shape, as well as some tips on how to optimize the background subtraction.
 
 %Considering the new information gathered, it was decided to take the project in a slightly different direction.
 
 \subsection{Using Christmas characters instead of showing the actual person}
-Instead of outputting the entire input image (the person itself) and performing several image operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the head. Then it would display some pre-drawn characters underneath the head, e.g. a visitor at the library doesn't see himself, but a funny Christmas-themed character running around on the screen.
+Instead of outputting the entire input image (the person) and performing several image processing operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the head. Then it would display some pre-drawn characters underneath the head, i.e. a visitor at the library doesn't see himself, but a funny Christmas-themed character running around on the screen.
 
-This would save a lot of calculations, as only the head of the person is of needed to be analysed. Hopefully this would lead to a more stable framerate for the program, which is important to create the proper immersion. That is why it's also relevant that the camera is quick enough to pick up and recognize new people stepping into the scene.
-
-Another aspect to have in mind is that some people don't like to see themselves portrayed on a screen; they feel it is intimidating. But this can be easily avoided by having drawn characters instead, and it also allows a more consistent art style and the Christmas theme.
+This would save a lot of calculations, as only the head of the person is needed to be analysed. Hopefully leading to a higher framerate for the program, which is important to create the proper immersion. That is why it is also relevant that the camera is quick enough to pick up and recognize new people stepping into the scene.
   
-\section{Vision and success criteria}
-The vision for the project is to make a simple, yet working program, that is fun and engaging to use at Hj{\o}rring Library. It should be something you can just walk past once and get something fun out of it, or, if you stay a little longer, you can interact with even more. It is not meant as a game per se, but more like an interactive playground where you can move around and have a good time. Another interesting aspect would be that the program should be fairly self-maintained and independent, meaning that it should need little maintenance work from the staff of the library.
+\section{Vision}
+The vision for the project is to make a simple, yet working program that is fun and engaging to use. It should be something you can just walk past once and enjoy without actively engaging in the installation. Simultaneously it should be possible to engage on a deeper level; you should also be able to interact with the installation. It is not meant as a game per se, but more like an interactive playground where you can move around and have fun. Another interesting aspect would be that the program should be fairly self-maintained and independent.
 
-Based on the above-mentioned goals of engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement ended being as shown in \ref{problemStatement}.
+Based on the above-mentioned goals of engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement ended up being as shown in \ref{problemStatement}.
 
-The group decided to make everything from scratch, i.e. not use any existing functionality. However, since the OpenCV library was taught in the Procedural Programming course, as well as the C++ programming language, it seemed appropriate to use it to load basic pixel information from digital images. OpenCV provides a lot of useful functionalities that could easily be used for this project, such as applying filters and looking for BLOBs, but it was chosen not to use any of those functions and write the code ourselves. This means that even though the program is going to be slower in overall terms, we don't rely on any third-party functionality.
+The group decided to make everything from scratch, i.e. not using any existing functionality. However, since the OpenCV library was taught in the semester courses, as well as the C++ programming language, it seemed appropriate to use OpenCV to extract basic pixel information from video input. OpenCV provides a lot of useful functionalities that could easily be used for this project, such as applying filters and looking for BLOBs. It was decided not to use any of those functions and write the code ourselves. This means that even though the program is going to be slower in overall terms, we do not rely on any third-party functionality.
 
 \subsection{Problem statement}\label{problemStatement}
-The group decided that in order to succeed, the final program should meet the following sets of requirements:
+The group decided that in order to succeed, the final program should meet the following set of requirements:
 
 \begin{itemize}
-\item Low maintenance: the program should be easy set up and use for the library staff.
-\item Fits with the theme of Hj{\o}rring Library during December: Christmas. The program should be ready for the beginning of December.
-\item It should be engaging for short periods of time, as well as for multiple uses. Multiple people should be able to use it simultaneously.
-\item The program would be written in C++ and using the OpenCV library for reading/writing images, but all of the image processing functionality should be written by the group.
+\item Low maintenance: The program should be easy to use for the library staff.
+\item The installation should fit the overall theme of Hj{\o}rring Library during December.
+\item The program should be ready at the beginning of December.
+\item It should be entertaining for both active and passive users.
+\item Multiple people should be able to use it simultaneously.
+\item All of the image processing functionality should be written by the group.
 \end{itemize}
