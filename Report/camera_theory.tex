@@ -1,6 +1,6 @@
 \section{Camera theory}
 
-An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this chapter the basics of image acquisition using a digital camera will be explained. To understand how this works it is necessary to have a basic understanding of the physics behind light.
+An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. But in order to understand how this works it is necessary to have a basic understanding of the physics behind light.
 
 \begin{figure}[htbp] 
 \centering 
@@ -9,7 +9,7 @@ An image captured through a camera is the result of reflected light being detect
 \label{fig:light_cam} 
 \end{figure}
 
-Light is a form of electromagnetic radiation and can be viewed as both waves and particles. This duality is however not something that will be covered within this chapter; the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons. Photons can be described by three properties:
+Light is a form of electromagnetic radiation that can be viewed as both waves and particles. This duality is however not something that will be covered within this chapter, as the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons. Photons can be described by three properties:
 
 \begin{itemize}
 \item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
@@ -17,23 +17,26 @@ Light is a form of electromagnetic radiation and can be viewed as both waves and
 \item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
 \end{itemize}
 
-The formulae for these properties are as follows:
-To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
+The formulas for these properties are as follows:
+\begin{itemize}
+\item To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
 \begin{align}
 \centering 
 \lambda = \frac{C}{f}
 \label{eq:wavelenght} 
 \end{align}
-$\lambda$ and f we are familiar with, and C is the speed of light. The second equation, equation \ref{eq:e_v}, describes the energy:
+where {$C$} is the speed of light.
+\item The second equation, equation \ref{eq:e_v}, describes the energy:
 \begin{align}
 \centering
 E = \frac{hC}{\lambda}
 \label{eq:e_v} 
 \end{align}
-Where h is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic waves frequency. E, C and $\lambda$ are still as explained above.
+Where {$h$} is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic waves frequency.
+\end{itemize}
 
-The wavelength of the photon determines what color one perceives. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color that is perceived. The visible spectrum of light is but a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The most common light source is the sun. The white light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This will yield the full spectrum of visible light, as seen in a rainbow.
-While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, constructed to be sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.
+The wavelength of the photon determines what color will be perceived. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color perceived. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
+While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow.\citep{perception_book}.
 
 \begin{figure}[htbp] 
 \centering 
@@ -43,7 +46,7 @@ While different wavelengths correspond to different colors, these colors only re
 \end{figure}
 
 \subsection{Digital image acquisition}
-When capturing an image using a digital camera, light is passed through a lens onto the sensor, which acts in much the same way as the human eye. In place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors, one for each pixel in the output image. A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel \citep{ip_book}.
+When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye: in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel \citep{ip_book}.
 
 \subsection{Image acquisition in the project}
 In the project, two cameras were considered: a normal RGB webcam and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared.
