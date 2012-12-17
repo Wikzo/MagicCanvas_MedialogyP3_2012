@@ -332,8 +332,7 @@ Noise reduction is very used in image processing and it is almost impossible to 
 Both filters can be used to remove noise from a picture. The selection of one amount the other only depends on the output needed.
 
 \subsubsection{Mean filter}
-One method of filtering is the \textit{mean filter}. As the name implies a mean filter takes an input image, and calculates the mean value of a given pixel to use it as the output. This type of neighborhood processing, in practical application it means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
-
+One method of filtering is the \textit{mean filter}. As the name implies a mean filter takes an input image, and calculates the mean value of a given pixel to use it as the output. This type of neighborhood processing, means that the average of the input pixel and the surrounding pixels decides the value of the output pixel (see figure \ref{fig:neigh_pros}).
 
 \begin{figure}[htbp] 
 \centering 
@@ -343,20 +342,17 @@ One method of filtering is the \textit{mean filter}. As the name implies a mean 
 \end{figure}
 
 The calculations that lie behind the average are simple:
-
 \begin{equation}
-	\begin{aligned}{
-	\frac{\text{Sum of input $-$ and neighboring pixels}}{\text{number of pixels}}
-	\label{Mean filter}	}
+	\begin{aligned}
+	\text{Mean} = \frac{\text{Sum of input and neighboring pixels}}{\text{Number of pixels}}
+	\label{Mean filter}
 	\end{aligned}
 \end{equation}
 
 \subsubsection{Median filter}
-Another method of filtering is the \textit{median filter}. The median once again relies on the neighboring pixels. By indexing the input pixel along with its neighbors in a ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a median filter can be broken down in to two steps: Creating an ordered list of the pixels and finding the mean value.
+The second method of neighboring pixels is the \textit{median filter}. By indexing the input pixel along with its neighbors in an ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a \textit{median filter} can be broken down in to two steps: Creating an ordered list of the pixels and finding the mean value.
 
 Taking out input pixels, from $n_1$ through $n_9$ we first create a ordered list:
-
-
 \begin{equation}
 \begin{aligned}{
 \text{Ordered list:}[n_1,n_2,n_3,n_4,n_5,n_6,n_7,n_8,n_9]
@@ -365,7 +361,6 @@ Taking out input pixels, from $n_1$ through $n_9$ we first create a ordered list
 \end{equation}
 
 Then we find the median:
-
 \begin{equation}
 \begin{aligned}{
 \text{Mean} [n_1,n_2,n_3,n_4,\boldsymbol{n_5},n_6,n_7,n_8,n_9]
@@ -374,11 +369,11 @@ Then we find the median:
 \end{equation}
 
 \section{Background subtraction}
-A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes are shown.
+A way to detect changes in a scene and extract an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes are shown.
 
 In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. This is important as the background should be static. Imagine that sunshine is let inside the room; then the light will change together with the sun's position, and changes will be seen everywhere and thereby produce noise that gives an inaccurate result.
 
-It is not realistic that each pixel in the background keeps the exact same pixel value all the time. Therefore, a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
+It is not realistic that each pixel in the background keeps the exact same pixel's value all the time. Therefore, a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
 
 Two questions have to be considered when doing background subtraction:
 \begin{enumerate} 
@@ -397,11 +392,11 @@ If the first point is false and the background is not consistent, there is a way
 
 Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$ \citep{ip_book}.
 
-Now that the background automatically updates, it is time to proceed to the next question: defining the threshold value.
+Now that the background is updating automatically, it is time to proceed to the next question: defining the threshold value.
 
-To do this, it is necessary to check how much the backgrounds pixel values vary. This can be done by making a histogram for a group of pixels in the background and check the values after recording a few minutes. This should give an overview of how much the pixel values vary. Let's say that this procedure shows that an efficient threshold value is 20. This means that if a pixel in the background is of the intensity 80, then pixel values captured between the values $60-100$ will not make any changes, as it is seen as being the background. Pixels below 60 and above 100 will however be an object and highlighted. Another pixel in the background could have the intensity of 48 and the pixel values captured between $28-68$ would then be thought of as the background while values below 28 and above 68 would be seen as an object and be highlighted.
+To do this, it is necessary to check how much the background pixels' values vary. This can be done by making a histogram for a group of pixels in the background and check the values after recording a few minutes. This should give an overview of how much the pixels' values vary. Let's say that this procedure shows that an efficient threshold value is 20. This means that if a pixel on the background has an intensity value of 80, then the pixels' values captured between $60-100$ will not produce any changes, as it is understood as part of the background. However, pixels below 60 and above 100 will will be considered as an object and therefore, highlighted.
 
-This type of threshold is a global threshold, which means that the threshold value is the same in every pixel in the scene \citep{ip_book}. Imagine a scene where only part of the picture is being affected by lights. Then a unique, local, threshold value for each pixel could be useful. This is possible using the eq. \ref{localthreshold}.
+This type of threshold is a \textit{global threshold}, which means that the threshold value is the same in every pixel in the scene \citep{ip_book}. Imagine a scene where only part of the picture is being affected by lights. Then a unique and local threshold value for each pixel could be useful. This is possible using the eq. \ref{localthreshold}.
 
 \begin{equation}
 	\begin{aligned}
@@ -413,16 +408,14 @@ This type of threshold is a global threshold, which means that the threshold val
  	\end{aligned}
 \end{equation} 
 
-Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. Using this formula creates a local threshold.
-
-When both questions have been considered, the background subtraction is ready to be applied. In every frame in the scene, each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows, the pixel will be highlighted, revealing an object in the picture.
+Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. This formula creates a local threshold that answers to the second question. When both questions have been considered, the background subtraction is ready to be applied. In every frame in the scene, each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows, the pixel will be highlighted, revealing an object in the picture.
 
 \section{BLOB analysis}\label{blob}
 A common problem when dealing with images is to determine if the image data contains a particular object or shape. The term \textit{BLOB} is an acronym for Binary Large Object and refers to a region of connected pixels in a binary image. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties, like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with values equal to zero).
-Therefore, BLOB analysis will be split in three main steps: \textit{extraction} of the BLOBs, \textit{representation} of the BLOBs and, lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type \citep{ip_book}.
+The process of BLOB analysis will be split in three main steps: \textit{extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type \citep{ip_book}.
 
 \subsection{BLOB extraction}
-To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connected and the 4-connected kernels \citep{ip_book}. The 8-connected kernel is more accurate, but also requires more computations and therefore needs more time to process the image.
+To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connected and the 4-connected kernels \citep{ip_book}. Where even though the 8-connected kernel is more accurate, it also requires more computations and therefore needs more time to process the image.
 
 \subsubsection{Grass-fire algorithm}
 One of these connected component labelling algorithms is the \textit{recursive grass-fire algorithm}, used to erode images, but also to track the pixels locations to create a region.
@@ -529,7 +522,7 @@ Circularity is a common shape-factor that depends on the perimeter and the area.
 \end{equation}
 
 
-After all the features are extracted, a binary object can be defined by its feature values that would be stored into a feature vector in order to have a list where to start the BLOB classification.
+After all the features are extracted, a binary object can be defined by its features' values that would be stored into a feature vector in order to have a list where to start the BLOB classification.
 \end{itemize}
 
 % IMAGE WITH OBJECTS AND TABLE WITH DATA
@@ -555,7 +548,7 @@ Once we have extracted and represented each object on the binary image by its fe
 
 Using two features like the circularity and the area, we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.
 
-Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the box classifier. This time, the region will not be a rectangle but an ellipse, and is commonly known as the \textit{weighted Euclidean distance}, as shown in eq. \ref{Euclidean}.
+Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the box classifier. This time, the region will not be a rectangle but an ellipse, commonly known as the \textit{weighted Euclidean distance}, as shown in eq. \ref{Euclidean}.
 
 \begin{equation}	
 	\begin{aligned}
@@ -564,7 +557,7 @@ Another way to achieve this would be to create a \textit{statistical classifier}
 	\end{aligned}
 \end{equation}
 
-The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of N different features, the result would be obtained by eq. \ref{Euclidean1}.
+The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of {$N$} different features, the result would be obtained by eq. \ref{Euclidean1}.
 
 \begin{equation}	
 	\begin{aligned}
