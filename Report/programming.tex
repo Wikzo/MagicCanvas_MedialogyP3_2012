@@ -657,45 +657,41 @@ This function contains the three priorities for where we would like to look for 
 	%% GO HERE
 	
 \subsection{Occluded or exited}
-The last thing that can happen now is that the person can disappear. When person disappears it can have three reasons: The persons blob is occluded by another blob, the person has exited the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
+The last thing that can happen now is that the person can disappear. When a person disappears it can have three reasons: The persons blob is occluded by another blob, the person has exited the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
 \begin{lstlisting}
 for(int i = 0; i < maxNumberOfPersons; i++) //(1)
 		{
-			if(currentPicture.p[i].posX != -1) // <- does the person exist?
+			if(currentPicture.p[i].posX != -1) //(2)
+			//the person does exist
 			{
-			float prePos = currentPicture.p[i].posX; // <-save the current position
-				if(!currentPicture.p[i].refind(currentPicture)) // <- find the new position of the person, when not found do the following:
+			float prePos = currentPicture.p[i].posX;  //(3)
+				if(!currentPicture.p[i].refind(currentPicture))  //(4)
 				{
-					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
+				//new position of the person not found
+				//either person is exited or occluded
+					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) && ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) //(5)
+					// check if the person is NOT close enogth to the edge of the picture to exit
 					{
-						if(currentPicture.personCount-1 >= 0) // <- when this is not the first person
+						//is not close enough to the border of the picture to exit -> it must be occluded
+						if(!currentPicture.p[i].refindOccluded(currentPicture)) //(7)
 						{
-							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1); // <- add the average of the until now found initial move vectors to the move vector product
-							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
+						//the person is not found, not occluded and not exited 
+							currentPicture.p[i].posX = -1; //(8)
+							cout << "Person is magical disappeared"
 						}
-						else // when this is the first person:
-						{
-							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- since there is nothig to take the average from take the movevector the prgram started with
-							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
-						}
-					}
-				//either exited or occluded
-				//is the blob not in the range so it can exit?
-					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) && ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
-					{
-						//is not allowed to exit -> it must be occluded
-						if(!currentPicture.p[i].refindOccluded(currentPicture))
-						{
-							currentPicture.p[i].posX = -1;
-							cout << "there is a fuckup with a person that is neither exited or occluded\n";
-						}
-					
 					}
 					else 
 					{
-						currentPicture.p[i].posX = -1;
-						cout << "normal exit\n";
+					//the person is exited normally 
+						currentPicture.p[i].posX = -1; //(6)
 					}
+
+
+					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
+					{
+						currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- since there is nothig to take the average from take the movevector the epigram started with
+					}
+
 
 				}
 				currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
@@ -705,21 +701,51 @@ for(int i = 0; i < maxNumberOfPersons; i++) //(1)
 						currentPicture.newInitialMoveVectorProduct += -currentPicture.p[i].moveVector;
 					else
 						currentPicture.newInitialMoveVectorProduct += currentPicture.p[i].moveVector;
-					currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
 				}
 			}
+			currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
 		}
-
 \end{lstlisting}
-This logic is looping through all the person objects of the current picture(1). At every person the program first finds out if the person was previously found, by asking if its position not is equal to -1(2). When the person was found in the previous frame, the program saves its posX in a float called prePos(3). After that the function that is supposed to refind the person is called in a if statement. I the person is just refound ther
+This logic is looping through all the person objects of the current picture(1). At every person the program first finds out if the person was previously found, by asking if its position not is equal to -1(2). When the person was found in the previous frame, the program saves its \textbf{posX} in a float called \textbf{prePos}(3). After that the function that is supposed to find the old person is called in an if statement(4). If the person can't be found again, the function tests if the person is close enough to the border that it could have exited it(5). In this case the person gets deleted out of the person array, by setting its \textbf{posX} to -1(6). If the person on the other hand is so far away that it can't exit the picture the only logical explanation is that the person is occluded by another person. This is tested by the function \textbf{refindOccluded()}, which is positioned in a if statement like the \textbf{refind()} function(7). The \textbf{refindOccluded()} function is very similar to the refind() function just that it looks for values that are not 0 instead of some that are 255. It also sets the \textbf{xPos} value of the occluded blobs equal to each other, when an occlusion is detected.
+\begin{lstlisting}
+bool Picture::person::refindOccluded(Picture& parent)
+{
+	point currentPoint;
+	bool found = false;
+	int maxAmountToMove = parent.maxAmountToMove;
+	parent.currentPersonId = pId;
 
-
-loop trough persons
-when position is set:
-	first look at the position where the person would be when it would move with the same speed as captured in the last frame.
-	second look if the position has not changed meaning that the person stopped up.
-	third go from the point between the two previously check points and move to the sides until the max distance to move i reached
-	if the person is not found after this it can be assumed that the person is either gone out of the picture or is occlude by another person. To check if the person is exited, the program checks if the person is close enough to the edge of the picture so it could have exit. If the person is not close enough to the border of the  picture the program will try to find another person that is close enough that it could occlude the person we are looking at.  This is done in the same way as the search for a person in the first place.
+	if(posX+moveVector < 1 && posX+moveVector >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] != 0)
+	{
+		//first priority to look is the position+the move vector (has moved normal)
+		posX = parent.p[parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI]-200].posX;
+		found = true;
+	} 
+	if(posX < 1 && posX >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] != 0 && !found)
+	{
+		//second priority to look is the position (has stoped)
+		posX = parent.p[parent.pixelR[(int)(posX*parent.width)][heightOfROI]-200].posX;
+		found = true;
+	} 
+	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++/*check if this works*/)
+	{
+		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] != 0)
+		{
+			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI]-200].posX;
+			found = true;
+			break;
+		}
+		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] != 0)
+		{
+			posX = parent.p[parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI]-200].posX;
+			found = true;
+			break;
+		}
+	}
+	return found;
+}
+\end{lstlisting}
+If this function also returns false it means that there must have been a mistake with the person that is is disappeared magical out of the picture.
 
 \subsection{the awesome move vector reconfig}
 
