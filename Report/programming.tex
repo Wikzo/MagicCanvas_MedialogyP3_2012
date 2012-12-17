@@ -1,23 +1,28 @@
-\textbf{write about how the programs interaction work}
 \section{Programming in OpenCV and Unity}
+Now that most of the design decisions have been described, it is time to go more in-depth with how the program was actually implemented. As mentioned earlier, the C++ programming language was used, along with the open source library \href{http://opencv.org/}{OpenCV} to work with image data, such as loading and writing to each individual pixel. While C++ was used to do the actual image processing part, it was decided to use \href{http://unity3d.com/}{Unity game engine} to display the actual result in an intuitive manner. This approach will be described in \ref{unityStart}.
 
-In the end, the result should be a smoother experience than if only OpenCV was used.
+\section{Writing the program from scratch}
+When the group started working on on the image processing part for the project, they were recommended by the supervisors to try to avoid using too much built-in functionality in OpenCV. Instead, they were told, they should try to write as much of the code themselves to get a better understanding of the underlying algorithms. Even if the program would be slower, in the end the group would walk away with more knowledge and experience if they programmed everything from scratch.
 
-Here is how we did stuff
+The group decided to agree to this approach. Therefore the OpenCV library was used only for getting access to the pixel values, and to be able to show a result on the screen. From there they could write all the algorithms by themselves.
 
-What we did and why?
+In the following we will not explain all the code written for this project, but instead focus on essential code snippets (the complete code is available in appendix \ref{appendixCode}). When we want to refer to a specific line of code, this will be done using a number inside parentheses like this: (0). Function names, classes, variables, etc. will have their names written in bold font, such as the \textbf{Picture} class.
 
-\section{Our own picture class}
-When the group started working on image processing their supervisor told them they shouldn't use any of the build in function of any image processing program. They gave this demand some thought and agreed on that it would be best when they just would use a image processing library for getting access to the pixel values and showing pictures on the screen. From there they could write all the algorithms by them selves. For these two things openCV seemed like a the right library.
 \subsection{The pixel system}
-In openCV a pixel value can be accessed by the function at():
+In OpenCV a pixel value can be accessed by the function \textbf{at()}:
 \begin{lstlisting}
-myPicture.at<Vec3b>(y,x)[1];
+myOpenCVPicture.at<Vec3b>(y,x)[0]; // blue
+myOpenCVPicture.at<Vec3b>(y,x)[1]; // green
+myOpenCVPicture.at<Vec3b>(y,x)[2]; // red
 \end{lstlisting}
-This piece of code returns a pixel value of a picture called \textbf{myPicture} at the position \textbf{(x,y)}. In particular the value that is returned is a 8-bit value that describes the green channel of the pixel. It is the green channel, because the number \textbf{1} is written between the square brackets\textbf{[]}. If a 0 would be written it would return the blue channel and when a 2 would be written, the red channel would be returned.
-The question was now how the group should order, structure and store the values they would get from openCV. One thing the group doesn't like, is that the pixels in openCV have to be accessed reversed.  Meaning instead of the zero one and two between the square brackets meaning R, G and B like usual, it means B, R and G. The same thing applies to to the coordinates X and Y that have to be written in the reversed order as arguments for the function at().
-The group decided that they wanted to work with their own class for pictures. This class should work in a similar way as the build in Mat class from openCV works. It should hold the values of the pixels in a way that is easy to understand and it should contain the functions that could perform different image processing tasks in the picture. They gave the class the name \textbf{Picture}.
-The group decided that it would be clearest to store each color channel in a two dimensional array of integers. These values should of course be accessed in the right order in contrast to the the way openCV stores them in.
+
+This piece of code returns a pixel value of a picture called \textbf{myOpenCVPicture} at the position \textbf{(X, Y)}. In particular, the value that is returned is a 8-bit value that describes the green channel of the pixel. It returns the green channel, because the index number inside the square brackets is a '1'.
+
+The question was now how the group should order, structure, and store the values they would get from OpenCV. One thing the group didn't like was the fact that pixels in OpenCV have to be accessed reversed; meaning that instead of the common RGB format (red, green and blue), OpenCV uses BGR (blue, green and red). The same thing applies to to the coordinates X and Y that have to be written in the reversed order as arguments for the function \textbf{at()}.
+
+The group decided that they wanted to write their own class for pictures. This class should work in a similar way as the OpenCV matrix class called \textbf{Mat}. It should hold the values of the pixels in a way that is easy to understand, and it should contain the functions that can perform different image processing algorithms. This class was named \textbf{Picture} and used throughout the whole program.
+
+The group decided that it would be easiest to store each color channel in a two-dimensional array of integers. These values should be accessed in the right order, in contrast to the the way OpenCV stores them.
 \begin{lstlisting}
 void Picture::initialize(VideoCapture captureToStoreCamra)
 {
@@ -50,16 +55,19 @@ void Picture::initialize(VideoCapture captureToStoreCamra)
 	}
 }
 \end{lstlisting}
-This code is one of the first functions that was written in the image processing program. The purpose of the function is to open a picture with openCV and writing the values of the opened picture to two dimensional arrays, that from there can be processed. These two dimensional arrays are member variable of an object of type Picture as well as the function is a member function. 
-The first thing this function does is that it streams a picture from a chosen VideoCapture (e.g. a webcam) to the \textbf{tmp} object of type mat (1). This \textbf{tmp} object, is also a member of the object \textbf{Picture}. It is never used for image processing, just for reading either from an image file or a capture or for outputting the picture to the screen again. The next thing the function does is that it saves the width and the height of the Mat object in the Picture object(2). From there the function just creates the arrays of integers that shall hold the pixel values in all three channels (3). 
+This code is one of the first functions that was written. The purpose of the function is to open an image with OpenCV, as well as writing the values of the opened picture to three two-dimensional arrays, that from there can be processed. These two-dimensional arrays are member variable of an object of type \textbf{Picture}, as well as the function is a member function.
 
-When one then wants to get access to a pixels, one first has to write the picture name e.g. \textbf{myPicture}. The next thing is that one has to specify the color channel for instance \textbf{pixelG}, which is a member variable of \textbf{myPicture}. Last the position of the pixel has to be chosen, by choosing the position in the array:
+The first thing this function does is that it streams a picture from a chosen a camera. Streams provides a character-based interface to read/write data from one place to another, for instance a text file or OpenCV's \textbf{VideoCapture} that allows for the use of webcams \citep{stream}. We store a temporary object of type type \textbf{Mat} and the name \textbf{tmp} (1). This \textbf{tmp} object is also a member of the class \textbf{Picture}. It is never used for image processing, just for reading either from an image file, or a capture for outputting the picture to the screen.
+
+The next thing the function does is that it saves the width and the height of the \textbf{Mat} object in the \textbf{Picture} object (2). From there the function creates the arrays of integers that hold the pixel values in all three channels (3). 
+
+When one then wants to access a pixel, one first has to write the picture's name, e.g. \textbf{myCustomPicture}. The next thing is to specify the color channel, for instance \textbf{pixelG}, which is a member variable of \textbf{myCustomPicture}. Lastly, the position of the pixel has to be chosen, by writing the position in the array, as shown in the following code:
 
 \begin{lstlisting}
-myPicture.pixelG[x][y]
+myCustomPicture.pixelG[x][y] // getting pixel access using the custom-written Picture class
 \end{lstlisting}
 
-When one wants to see the picture again he has to call the output() function that does the opposite of the initialize() function; it takes in the pixels and puts them in a temporary Mat instance that is used to show the picture
+When one wants to see the picture again, one performs a call to the \textbf{output()} function that does the opposite of the \textbf{initialize()}; it takes in the pixels and puts them in a temporary \textbf{Mat} instance that is used to show the picture.
 
 \begin{lstlisting}
 void Picture::output(string windowName)
@@ -83,16 +91,21 @@ void Picture::output(string windowName)
 	imshow(windowName, out); //(5)
 }
 \end{lstlisting}
-The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture size is zero(1). If this is the case the programmer gets the message that \textit{no picture is loaded}, he has to press a key and the program will exit(2). If on the other hand a picture is loaded the program will create a Mat object(3), write pixel values to it (4) and output show the picture on the screen(5). 
+The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture's size is zero (1). If this is the case, the programmer gets the an error message with the text \textit{No picture is loaded}. Pressing a key will then close down the program (2). If, on the other hand, a picture is loaded correctly, the program will create a \textbf{Mat} object (3), write pixel values to it (4), and show the picture on the screen (5) in an output window.
 
-\subsection{The functions}
-Another big advantage in having our own Picture class is that that each group member can work on a different function in the picture class without disturbing somebody else who works on another function in the same program. Even if a function doesn't work it doesn't break the code as long as it is not called. 
+\textbf{INSERT PICTURE OF BLOB COLOR THING-YS HERE - Gustav} 
+
+\subsection{Structuring the functions}
+Another big advantage in having our own \textbf{Picture} class is that that each group member can work on a different function in the \textbf{Picture} class without disturbing somebody else who is working on another function. Even if a function doesn't work, it doesn't break the code as long as it is not called.
 
 \section{The structure of the program}
+The main structure of the program is very simple. It is basically divided in two part: the setup and the main loop. The setup is everything that just need to happen one time when the program starts.
 
-The main structure of the program is very simple, it is basically divided in two part, the setup and the main loop. The setup is every thing that just has to happen one time when the program starts. The main loop is a while loop that is running as long as the program is running. The condition that is given in the main loop is \textbf{true}. That means that the loop is never exited unless something in the loop makes it exit. This happens just when the user of the program presses the escape key his key board.
-Besides the main loop there is also a while loop in the setup , but this will be described a little later in the chapter \textit{Config Background}. 
-Important to notice when using a loop that is running for ever is that it is a bad idea to make the program allocate memory in the loop, since it will use more and more memory, unless the memory gets released again. That is why the program would run out of memory very fast when the function initialize would be called in the main loop. Since we still need to get new input from the camera we made a function that is called refresh. The refresh function makes almost the same as the initialize function, just that it instead of creating a new integer for each pixel value gives the old integer a new pixel value:
+Then there is the main loop which is a while loop that constantly runs for while the program is open. The condition that is given in the main loop is \textbf{TRUE}. This means that the loop is never exited, unless something in the loop makes stop, in this case by hitting the Escape key. This makes it possible to exit what would else be an infinite loop.
+
+Besides the main loop there is also a while loop in the setup, but this will be described a little later in \ref{backgroundConfig}.
+
+It is important to notice that when using a loop, if the program is running for a long time, it is a bad programming practice to make the program allocate memory in the loop, since it will use more and more memory, unless the memory gets released again. That is why it would run out of memory very fast when the function \textbf{initialize()} would be called in the main loop. Since we still need to get new input from the camera, a function called \textbf{refresh()} was implemented. It does almost the same as \textbf{initialize()}, just that it instead of creating a new integer for each pixel value assigns the old integer a new pixel value, as shown in the following code snippet:
 
 \begin{lstlisting}
 void Picture::refresh(VideoCapture captureToStoreCamra)
@@ -121,14 +134,14 @@ void Picture::refresh(VideoCapture captureToStoreCamra)
 }
 \end{lstlisting}
 
-\subsection{The downside of our own pixel system}
-
-The decision of having all pixels in our own class might sound like a neat way making the access to the pixels easier, but on the other hand it also makes the program slower that it has to go through all the color channels of each and every pixel in each frame. The solution to this problem comes in the subsection \textit{Putting four function into one}, where we simplify the program. 
+\subsection{The downside of the custom-written pixel system}
+The decision to have all pixels in our own class might sound like a neat way getting access to the pixels easier, but on the other hand it also makes the program slower, since it has to go through all the color channels of each and every pixel in each frame. To circumvented this problem, and thereby achieve a faster framerate for the program, another system was implemented. This will be described later in \ref{forInOne}. 
 
 \section{The Preprocessing}
-WHEN WE LOOK THIS THROUGH WE SHOULD READ THE LED PART BEFORE TO SE IF IT FITS
+\textbf{WHEN WE LOOK THIS THROUGH WE SHOULD READ THE LED PART BEFORE TO SE IF IT FITS - Max}
+
 \subsection{Region of Interest}
-Like mentioned in the \textit{setup} chapter the group was just interested in the horizontal position of the persons that would step into the shot of the camera. That was why the group just had on strip of LEDs where persons should be detected. For the image processing program that also meant that just this part of the picture had to be analysed. This also meant that the program could run much faster, when just a little part of the picture had to be analysed. This little part is called the region of interest or short the ROI. 
+Like mentioned in \ref{roi}, the group was just interested in the horizontal position of the persons that would step into the shot of the camera. That was why the group just had on strip of LEDs where persons should be detected. For the image processing program that also meant that just this part of the picture had to be analysed. This also meant that the program could run much faster, when just a little part of the picture had to be analysed. This little part is called the region of interest or short the ROI. 
 The way this was implemented was by initializing the picture in the setup, setting all its pixel values to 0 and in the main loop just refreshing the parts, that where in the region of interest. 
 \subsection{Background subtraction}
 When the group started to make the program, it seemed like good idea to have a reference picture of what the camera sees without persons and to background subtract this to what the camera sees in every frame. After that the group wanted to threshold the result to get a binary picture. 
@@ -139,7 +152,7 @@ PUT A PICTURE OF THE INFRA RED PICTURE
 
 Another possibility would have been to put all the color channels together with different weight, like in the conversion from a color picture to a black and white picture. We chose not to do that because the color channels were so similar that this wouldn't have improved the result, and it would have meant that we had to read all color channels, which would have made the program much slower. 
 
-\subsection{Putting four function into one}
+\subsection{Putting four function into one}\label{forInOne}
 The following sentence sums up what we now  know about the information we want to extract from the picture: \textit{We are interested in which pixels in the region of interest have been become darker in the red channel in comparison to the reference picture.} 
 Also we would like to have the step of reading all the pixels from openCV removed. This can all be written in code in a very simple way that costs much less processing power:
 
@@ -233,10 +246,10 @@ void Picture::erode(int radius, Picture &tmpPicture)
 }
 
 \end{lstlisting}
-Both the erosion and dilation go through the almost all the pixels of the picture. The pixels that are not analysed are the ones that are to close to the edge of the picture, so the kernel would be empty for some of the values(1). At every pixel, the functions look around the the pixels with the chosen radius(2). The difference between the two functions is that for a pixel to be accepted in  dilation just one pixel in the radius has to be true(3) and in erosion non pixel in the radius has to be false(4). After that the function are identically again. While the program is still look through the pixels image the output has to be stored in a buffer picture. That buffer picture holds the output so the input picture doesn't get influenced(5). When the functions are done with analysing the picture the output from the buffer picture gets written to the picture the function is called from(6). 
+Both the erosion and dilation go through the almost all the pixels of the picture. The pixels that are not analysed are the ones that are to close to the edge of the picture, so the kernel would be empty for some of the values(1). At every pixel, the functions look around the the pixels with the chosen radius(2). The difference between the two functions is that for a pixel to be accepted in dilation just one pixel in the radius has to be true(3) and in erosion non pixel in the radius has to be false(4). After that the function are identically again. While the program is still look through the pixels image the output has to be stored in a buffer picture. That buffer picture holds the output so the input picture doesn't get influenced(5). When the functions are done with analysing the picture the output from the buffer picture gets written to the picture the function is called from(6). 
 
 \section{The setup loop}
-\subsection{Take Background picture}
+\subsection{Take Background picture}\label{backgroundConfig}
 Like mentioned before, there is also a loop in the setup. This loop also contains a while loop that has \textbf{true} as its condition. This loop is not supposed to end when the escape-key is pressed, but when it has figured out that there are no people in the picture. The reason for that is, that it has to take a reference picture, which is the one we use in the background subtraction. The function works under the assumption that people when on the picture always move a little. The function has three thresholds. The first threshold is called \textbf{threshholdPixelChange}, which is the value from which a pixel can be counted as changed. The second is \textbf{threshholdPixelsChanged}, which is the threshold for how many pixels count as a person, since we are not interested in if just pixel has changed. The third threshold \textbf{threshholdFramesChanged} is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row have to be without change, so we can assume that no body is on the picture. 
 \begin{lstlisting}
 void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi)
@@ -640,6 +653,9 @@ bool Picture::person::refind(Picture& parent)
 \end{lstlisting}
 This function contains the three priorities for where we would like to look for the blob: First the position is checked for where the blob should have move when it has move with a constant speed (1). The next priority is for when the object has stopped abrupt (2). The last priority for looking is several places. Starting from the position between the two previous points the function goes to both sides until it on one of the side hit the border for the maximum distance to move. This is done, by having a for-loop, that iterates through from 0 up(3). This number is then added (4)and subtracted (5)to the midpoint of the two first points. Like when looking for new persons, the program starts the startFireLoggingPersons() with the point the function has found to be true (red channel is 255)(6). If this function has set the persons position to to something that is not -1(7), it will end it self by setting bool found to true(8) in the loop breaking (9). In the end of the function it will return if the person was found or not (10).
 	
+	
+	%% GO HERE
+	
 \subsection{Occluded or exited}
 The last thing that can happen now is that the person can disappear. When person disappears it can have three reasons: The persons blob is occluded by another blob, the person has exited the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
 \begin{lstlisting}
@@ -707,7 +723,7 @@ when position is set:
 
 \subsection{the awesome move vector reconfig}
 
-\section{Using Unity to handle the graphical output}
+\section{Using Unity to handle the graphical output}\label{unityStart}
 After doing the initial prototype, the group realized that it would be difficult to use OpenCV to both extract the data from the camera and display it in some kind of graphical way. Since the program has to loop through a lot of data continuously, there was little resources left for it to actually display the results in an interesting way without being too slow. First the group thought about using multiple threads running in the program, but even then it would be hard to display more sophisticated graphics. OpenCV is not meant as a tool to display graphics, but more to for the analyzing/extracting part.
 
 Then the group came up with the idea of using Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages. Even though there are various APIs to get OpenCV and Unity communicate, it was decided for a much simpler approach using the Clipboard manager in Windows.

@@ -29,7 +29,7 @@ During this project image processing has been used to achieve the output needed.
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The next sections will explain different techniques in image processing, starting with basic information about digital images.
+The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques in theory, starting with basic information about digital images.
 
 \section{Digital images}
 One doesn't realize all the hidden mechanics happening when capturing an image with a camera, or when editing it in a program like Photoshop or ImageJ. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
@@ -181,9 +181,9 @@ This proves the point that finding a functional thresholding value is not always
 \textbf{Maybe write a few lines here? - Gustav}
 
 \section{Morphology}
-Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}, described in \ref{blob}.
+Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}. BLOBs are described in \ref{blob}.
 
-Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, i.e. to get an average pixel value. For this purpose a kernel (also called \textit{structuring element}) is used, as shown in figure \ref{fig:kernel}. %is the last sentence correct there?
+Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, i.e. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}. %is the last sentence correct there?
 
 \begin{figure}[htbp]
 \centering
@@ -193,7 +193,7 @@ Morphology is a a part of neighbourhood processing. Whereas point processing is 
 \end{figure}
 
 \subsubsection{Hit and fit}
-Whenever one decides to apply a structuring element and \textit{hit} the pixels, what happens is that the function will calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a grid containing weighted values. These values are either '1' or '0' if used on a binary pixel. Depending on these values and the images pixel values different output occur.
+Whenever one decides to apply a structured element and \textit{hit} the pixels, what happens is that the function will calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a grid containing weighted values. These values are either '1' or '0' if used on a binary pixel. Depending on these values and the images pixel values different output occur.
 
 The process of hitting the pixels starts by positioning the kernel on the corner of the image, so that it operates on one pixel at a time. If one of the pixels inside the kernel is a '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
 
@@ -204,7 +204,7 @@ The process of hitting the pixels starts by positioning the kernel on the corner
 \label{fig:FitHit}
 \end{figure}
 
-On the contrary, to be able to \textit{fit} a pixel on the center of the structuring element, every pixel's neighbour values have to be the same both on the kernel and the input image. If one of the pixels on the input image have a different value to the corresponding 1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On table \ref{tab:HitFitResults} an example image, figure \ref{fig:FitHit}, is being represented with two different types of structuring elements.
+On the contrary, to be able to \textit{fit} a pixel on the center of the structured element, every pixel's neighbour values have to be the same both on the kernel and the input image. If one of the pixels on the input image have a different value to the corresponding 1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On table \ref{tab:HitFitResults} an example image, figure \ref{fig:FitHit}, is being represented with two different types of structuring elements.
 \begin{table}[htbp]
 \centering
 \begin{tabular}{|c|c|c|c|}
@@ -225,14 +225,14 @@ On the contrary, to be able to \textit{fit} a pixel on the center of the structu
 \end{table}
 
 \subsection{Dilation}
-\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see eq.\ref{Dilation1} for a mathematical definition). The result of this method implies filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structuring element (how big it is and which shape it has), this can be seen on figure \ref{fig:Dilation}. 
+\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see eq.\ref{Dilation1} for a mathematical definition). The result of this method implies filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on figure \ref{fig:Dilation}. 
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\oplus{SE}
 \label{Dilation1}
 	\end{aligned}
 \end{equation}
-A small structuring element applied several times will have the same effect as a big structuring element applied once. This can be seen on eq. \ref{Dilation2} where dilating twice with the element {$SE_{1}$} has the same consequences on the object as dilating one time with {$SE_{2}$}, even though the only difference between those two kernels is that {$SE_{2}$} has a radius twice times bigger than the radius of {$SE_{1}$}.
+A small structured element applied several times will have the same effect as a big structured element applied once. This can be seen on eq. \ref{Dilation2} where dilating twice with the element {$SE_{1}$} has the same consequences on the object as dilating one time with {$SE_{2}$}, even though the only difference between those two kernels is that {$SE_{2}$} has a radius twice times bigger than the radius of {$SE_{1}$}.
 \begin{equation}
 \begin{aligned}
 {f(x,y)}\oplus{SE_{2}} \approx ({f(x,y)}\oplus{SE_{1}})\oplus{SE_{1}}
@@ -248,7 +248,7 @@ A small structuring element applied several times will have the same effect as a
 \end{figure}
 
 \subsection{Erosion}
-\textit{Erosion} is the process of applying fit to an entire image and refers to the reduction of the size of an object in an image (the mathematical definition is provided in eq. \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be broken down into smaller ones. As it happens with dilation, the effects depend on the size and shape of the structuring element.
+\textit{Erosion} is the process of applying fit to an entire image and refers to the reduction of the size of an object in an image (the mathematical definition is provided in eq. \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be broken down into smaller ones. As it happens with dilation, the effects depend on the size and shape of the structured element.
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\ominus{SE}
@@ -274,13 +274,13 @@ When eroding images to erase noisy objects or split parts, it often occurs that 
 \label{Opening}
 	\end{aligned}
 \end{equation}
-The effect of opening can be seen on figure \ref{fig:Opening} where a circular kernel is applied to the image. Even though the object still maintains its original size, some information has been lost due to the effect of eroding and dilating the image, even if the same structuring element is used along the process.
+The effect of opening can be seen on figure \ref{fig:Opening} where a circular kernel is applied to the image. Even though the object still maintains its original size, some information has been lost due to the effect of eroding and dilating the image, even if the same structured element is used along the process.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT OPENING IMAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/OpeningCirc.png}
-\caption{Opening produced by a circular structuring element. Inspired by \citep{ip_book}.}
+\caption{Opening produced by a circular structured element. Inspired by \citep{ip_book}.}
 \label{fig:Opening}
 \end{figure}
 
@@ -301,7 +301,7 @@ It should be noted that using closing and/or opening multiple times will not ach
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/ClosingSq.png}
-\caption{Closing produced by a squared structuring element. Inspired by \citep{ip_book}.}
+\caption{Closing produced by a squared structured element. Inspired by \citep{ip_book}.}
 \label{fig:Closing}
 \end{figure}
 
@@ -319,11 +319,11 @@ When the purpose of implementing these operations is to find the edges, it is im
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/BoundaryEdges_circ.png}
-\caption{Result of subtracting an eroded picture to the original one with a circular structuring element. Inspired by \citep{ip_book}.}
+\caption{Result of subtracting an eroded picture to the original one with a circular structured element. Inspired by \citep{ip_book}.}
 \label{fig:Boundary}
 \end{figure}
 
-\section{Region of interest (ROI)}
+\section{Region of interest (ROI)}\label{roi}
 A common thinking when dealing with images is that the more pixels, the better quality. However, this is not always true. Since there are more pixels to loop through, it takes longer time for the computer to analyze and process the pixel data. The more pixels to process, the longer time is required for the program to do the calculations.
 
 When working with video, it is important to maintain a stable framerate. The more information needed to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, the point would be to choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are expected to be, to track or recognize a face and discard the rest of the body. This region is usually enclosed in a rectangle and only the pixels inside this rectangle are being processed, ignoring all the pixels outside of the ROI. This prevents unnecessary processing and optimizes the speed of the program by decreasing the amount of data.
