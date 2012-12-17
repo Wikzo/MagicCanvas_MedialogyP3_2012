@@ -1,3 +1,5 @@
+CHAPTERS: Design and setup + Implementation
+
 \section{Programming in OpenCV and Unity}
 Now that most of the design decisions have been described, it is time to go more in-depth with how the program was actually implemented. As mentioned earlier, the C++ programming language was used, along with the open source library \href{http://opencv.org/}{OpenCV} to work with image data, such as loading and writing to each individual pixel. While C++ was used to do the actual image processing part, it was decided to use \href{http://unity3d.com/}{Unity game engine} to display the actual result in an intuitive manner. This approach will be described in \ref{unityStart}.
 
@@ -141,14 +143,23 @@ The decision to have all pixels in our own class might sound like a neat way get
 \textbf{WHEN WE LOOK THIS THROUGH WE SHOULD READ THE LED PART BEFORE TO SE IF IT FITS - Max}
 
 \subsection{Region of Interest}
-Like mentioned in \ref{roi}, the group was just interested in the horizontal position of the persons that would step into the shot of the camera. That was why the group just had on strip of LEDs where persons should be detected. For the image processing program that also meant that just this part of the picture had to be analysed. This also meant that the program could run much faster, when just a little part of the picture had to be analysed. This little part is called the region of interest or short the ROI. 
-The way this was implemented was by initializing the picture in the setup, setting all its pixel values to 0 and in the main loop just refreshing the parts, that where in the region of interest. 
-\subsection{Background subtraction}
-When the group started to make the program, it seemed like good idea to have a reference picture of what the camera sees without persons and to background subtract this to what the camera sees in every frame. After that the group wanted to threshold the result to get a binary picture. 
-This also worked; the problem was just that it was a lot of work for the computer to do this for every pixel value it got. That is why the group had to look into what of this process could be left out. 
-The thing they knew was that the person would be darker then the background since they had illuminated the background. That meant that they weren't interested in what had become brighter in comparison to the reference picture. The other thing they knew was that the camera just took infra red light, since they had put a filter on it. That made almost all color information disappear. The only color channel that was a little brighter was the red channel. That is why we only chose to look at the red channel. MAYBE LEAVE TE PART OF THE REDCHANNEL OUT
+Like mentioned in \ref{roi}, the group was just interested in the horizontal position of the library visitors that would step into the camera's field of view. That is why the group had a narrow strip of LEDs where persons are detected. For the program that also meant that just this part of the picture had to be analyzed. This also means that the program will run much faster when just a little part of the picture has to be analyzed.
 
-PUT A PICTURE OF THE INFRA RED PICTURE
+This part is the the region of interest (ROI). The way this was implemented was by initializing the picture in \textbf{setup()}, setting all the pixel values to 0, and in the main loop just refreshing the parts that are in the region of interest.
+ 
+\subsection{Background subtraction}
+When the group started to make the program, it seemed like a good idea to have a reference picture of what the camera sees without people in the picture. This would then be used to background subtract in every frame. After that the group wanted to threshold the result to get a binary picture. 
+
+This approach worked fine, however, it was also quite slow, since the computer had to do it for every pixel value it received. That is why the group had to look into what of this process could be left out for optimizing the program.
+
+The thing they knew was that the person would be darker than the background, since they had illuminated the background with external lights. That meant that they the program was not interested in what had become brighter in comparison to the reference picture. The other thing the group knew was that the camera just took infrared light, since the camera contained an IR filter, making most of the color information disappear (see figure \ref{fig:ir_max}). That's why it was chosen to use a single color channel.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{Pictures/Design/ir_max}
+\caption{Image seen from the IR camera.}
+\label{fig:ir_max}
+\end{figure}
 
 Another possibility would have been to put all the color channels together with different weight, like in the conversion from a color picture to a black and white picture. We chose not to do that because the color channels were so similar that this wouldn't have improved the result, and it would have meant that we had to read all color channels, which would have made the program much slower. 
 
