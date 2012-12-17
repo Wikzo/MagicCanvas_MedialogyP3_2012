@@ -32,7 +32,7 @@ During this project image processing has been used to achieve the output needed.
 The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques used and also why and how they were implemented in the project. 
 
 \section{The digital image}
-Behind the image adquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \textit{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a previous knowledge. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
+Behind the image acquisition applications often used in our daily life, such as cameras, or the image manipulation programs like \href{http://rsbweb.nih.gov/ij/}{ImageJ}, several different computations are needed. Even when the users do not need to understand the physics behind the light, the electronics inside their machines and the data structure on the programs. To be able to get some useful information from images and use it for further purposes it is necessary to have a previous knowledge. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
@@ -321,12 +321,12 @@ When working with still pictures, and especially when working with video, it is 
 
 A way to optimize the speed of the program is to decrease the data by using a region of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI are ignored and unnecessary processing is prevented.
 
-An example of how this could be used is taking a photo where only the head is of interest. This is illustrated on figure \eqref{fig:Region of Interest}.
+An example of how this could be used is taking a photo where only the head is of interest. This is illustrated on figure \ref{fig:Region of Interest}.
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/RegionOfInterest.jpg} 
-\caption{Region of Interest} 
+\caption{If one needs to only track the face, a region of interest can be applied.} 
 \label{fig:Region of Interest} 
 \end{figure} 
 
@@ -334,10 +334,47 @@ An example of how this could be used is taking a photo where only the head is of
 Noise reduction is very used in image processing, and is almost impossible to go around. When you e.g. threshold a picture then in most cases noise will appear. Either as small dots in the background or maybe small holes in the wanted area. Thankfully this noise can be reduced using different techniques. Two techniques that will be described further in this section is mean and median filters.\\
 These two types of filters can be used to remove noise from the picture, and it is a question of what the output should show when picking technique.\\
 A small description of how these two techniques works will be written in the subsection below.
+\subsubsection{Mean filter}
+One method of filtering is the mean filter. As the name implies a mean filter takes a input image, calculates the mean value of a given pixel and uses this as the output, a mean filter is a type of neighborhood processing. In practical application this means that the average of the input pixel and the surrounding pixels decides the value of the output pixel, see figure \ref{fig:neigh_pros}.
 
-\subsection{Mean and median filter}
-Somebody write something in here using IP book.
-JOHANNES GO GO GO
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/Theory/neighborhood_processing.png} 
+\caption{Practical neighborhood processing. All the surrounding pixels contribute to the average value of the output.} 
+\label{fig:neigh_pros} 
+\end{figure}
+
+The calculations that lie behind the average are simple:
+
+\begin{equation}
+	\begin{aligned}{
+	\frac{\text{Sum of input $-$ and neighboring pixels}}{\text{number of pixels}}
+	\label{Mean filter}	}
+	\end{aligned}
+\end{equation}
+
+\subsubsection{Median filter}
+Another method of filtering is the median filter. The median once again relies on the neighboring pixels. By indexing the input pixel along with its neighbors in a ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a median filter can be broken down in to two steps: Creating a ordered list of the pixels and finding the mean value.
+
+Taking out input pixels, $n_1$ through $n_9$ we first create a ordered list:
+
+
+\begin{equation}
+\begin{aligned}{
+\text{Ordered list:}[n_1,n_2,n_3,n_4,n_5,n_6,n_7,n_8,n_9]
+	\label{Order list of pixels.}}	
+	\end{aligned}
+\end{equation}
+
+Then we find the median:
+
+\begin{equation}
+\begin{aligned}{
+\text{Mean} [n_1,n_2,n_3,n_4,\textbf{$n_5$},n_6,n_7,n_8,n_9]
+	\label{Finding the mean pixel.}}
+	\end{aligned}
+\end{equation}
+\fxnote{Need to make this work the way it should.}
 
 \section{Background subtraction}
 A way to detect changes in a scene and extracting an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes is shown.
@@ -511,7 +548,7 @@ After all the features are extracted, a binary object can be defined by its feat
 \includegraphics[width=1\textwidth]{Pictures/Theory/binary_image_table.png}
 \end{minipage}
 \label{fig:BinaryIm}
-\caption{Binary image with a bounding box and the center-of-mass. The table shows two other features that can be calculated (the \textbf{\textit{perimeter}} and the \textbf{\textit{area}})}
+\caption{Binary image with a bounding box and the center-of-mass. The table shows two other features that can be calculated: the perimeter and the area. Inspired by \citep{ip_book}.}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

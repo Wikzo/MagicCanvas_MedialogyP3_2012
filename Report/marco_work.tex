@@ -28,4 +28,13 @@ $
 $
 
 \subsubsection{Median filter}
-Another method of 
+Another method of filtering is the median filter. The median once again relies on the neighboring pixels. By indexing the input pixel along with its neighbors in a ordered list and choosing the middle value, i.e. the \textit{mean}, the output pixel is determined. In practical applications the algorithm required for a median filter can be broken down in to two steps: Creating a ordered list of the pixels and finding the mean value.
+
+Taking out input pixels, $n_1$ through $n_9$ we first create a ordered list:
+$
+\text{Ordered list:}\sqsubset n_1,n_2,n_3,n_4,n_5,n_6,n_7,n_8,n_9 \sqsupset
+$
+Then we find the median:
+$
+\text{Mean}\sqsubset n_1,n_2,n_3,n_4,\textbf{n_5},n_6,n_7,n_8,n_9 \sqsupset
+$
