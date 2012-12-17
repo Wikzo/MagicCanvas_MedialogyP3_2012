@@ -1,3 +1,5 @@
+
+
 @book{ip_book,
 	title = {Introduction to Video and Image Processing - Building real systems and applications},
 	author = {Thomas B. Moeslund},
@@ -16,38 +18,63 @@ edition = {Second edition},
 publisher = {Oxford University Press}
 }
 
-@online{colorMixing,
-   Lastchecked = {23.11.2012},
-   Urldate = {2008-10-27},
-   Title = {RGB color mixing},
-   Url = {http://www.texample.net/media/tikz/examples/PNG/rgb-color-mixing.png}
+@MISC{5mm_led,
+   author = {SIEMENS},
+   note = {Datasheet: SFH484/485 - GaAIAs INFRARED EMITTER},
+   year = {2004}
+   }
+   
+@online{em_spectrum,
+	lastchecked = {17.12.2012},	
+	title = {Lunar and Planetary institute},
+	urldate = {17.07.2005},
+	url = {http://www.lpi.usra.edu/education/fieldtrips/2005/activities/ir_spectrum/}
 }
 
+@misc{3mm_led,
+   author = {SIEMENS},
+   note = {Datasheet: SFH484/485 - GaAIAs INFRARED EMITTER},
+   year = {2004}
+   }
 
 @online{histogram,
    Lastchecked = {13.12.2012},
+   Author = {Cambridgeincolour.com},
+   Urldate = {2012-12-12},
    Title = {Understanding Digital Camera Histograms: Tones and Contrast},
    Url = {http://www.cambridgeincolour.com/tutorials/histograms1.htm}
 }
+@online{clipboard_one,
+	Lastchecked = {11.12.2012},
+	Author = {Cory Janssen},
+	Urldate = {2012-12-12},
+	Title = {Techopedia},
+	URL = {http://www.techopedia.com/definition/4646/clipboard}
 
-@online{clipboard1,
-   Lastchecked = {11.12.2012},
-   Title = {Techopedia},
-   Url = {http://www.techopedia.com/definition/4646/clipboard}
 }
 
-@online{clipboard2,
+@online{clipboard_two,
    Lastchecked = {11.12.2012},
+   Author = {Microsoft},
    Urldate = {2012-03-16},
    Title = {How the Clipboard Works, Part 1 - Ntdebugging Blog},
    Url = {http://blogs.msdn.com/b/ntdebugging/archive/2012/03/16/how-the-clipboard-works-part-1.aspx}
 }
 
-@online{clipboard3,
+@online{clipboard_three,
    Lastchecked = {11.12.2012},
+   Author = {Microsoft},
    Urldate = {2012-03-16},
    Title = {Using the Clipboard (Windows)},
    Url = {http://msdn.microsoft.com/en-us/library/windows/desktop/ms649016(v=vs.85).aspx}
+}
+
+@online{colorPencils,
+Author = {Visualizeus.com},
+   Lastchecked = {17.12.2012},
+   Urldate = {2012-03-16},
+   Title = {Color pencils},
+   Url = {http://cdnimg.visualizeus.com/thumbs/fb/72/color,colorful,heart,love,photoart,photography-fb725aeec58606d28e4b3375569be31e_h.jpg}
 }
 
 @book{hjoerring_study,
@@ -68,8 +95,8 @@ publisher = {Focal Press}
 }
 
 @misc{opencv,
-title = "Image Processing - From Theory to Practice",   
-   author = "Theodore Tsesmelis",
-   year = 2012
+title = {Image Processing - From Theory to Practice},   
+   author = {Theodore Tsesmelis},
+   year = {2012}
 }
 
