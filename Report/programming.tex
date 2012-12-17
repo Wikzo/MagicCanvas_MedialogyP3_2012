@@ -698,9 +698,12 @@ for(int i = 0; i < maxNumberOfPersons; i++) //(1)
 					}
 
 
-					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
-					{
-						currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- since there is nothig to take the average from take the movevector the epigram started with
+					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet)
+					{ 
+					//when the initial movevector isn't mesured yet
+					
+						currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; 
+						//since there is nothig to take the average from take the movevector the epigram started with
 					}
 
 
@@ -756,9 +759,14 @@ bool Picture::person::refindOccluded(Picture& parent)
 	return found;
 }
 \end{lstlisting}
-If this function also returns false it means that there must have been a mistake with the person that is is disappeared magical out of the picture.
+If this function also returns false it means that there must have been a mistake with the person that is is disappeared magical out of the picture(8).
 
-\subsection{the awesome move vector reconfig}
+\subsection{The move vector adaption}
+When configuring and setting the threshold values for the program it was often quit hard to find the optimal values at which the program would operate the best. Especially when having to say how fast the persons initially moved into the frame. That's why the group decided to let the program it self measure how fast people where moving from the first frame to the second. Here we have to look at the rest of the loop that goes through the persons, that isn't explained yet. The idea was that when the program was running it would take the average of the initial move vector of all the person that walked into the picture and write that to a file. This file could be read the next time the program started. The way the average of the initial move vectors was taken was by every time the person counter was raised, the measured actual initial move vector was added to the product of all the move vectors. 
+
+\section{Using Unity to handle the graphical output}
+
+MOVEVECTOR SUBTRACT???
 
 \section{Using Unity to handle the graphical output}\label{unityStart}
 After doing the initial prototype, the group realized that it would be difficult to use OpenCV to both extract the data from the camera and display it in some kind of graphical way. Since the program has to loop through a lot of data continuously, there was little resources left for it to actually display the results in an interesting way without being too slow. First the group thought about using multiple threads running in the program, but even then it would be hard to display more sophisticated graphics. OpenCV is not meant as a tool to display graphics, but more to for the analyzing/extracting part.
