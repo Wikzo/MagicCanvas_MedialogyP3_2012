@@ -314,7 +314,7 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 Before starting the while loop, the function that shall setup the background, initializes two pictures(1) and a variable that is supposed to hold the number of frames that are unchanged in a row(2). In the while loop it refreshes the pictures with a time delay of 30 milliseconds (3) and initializes a counter that shall hold how much each pixel is changed(4) and one that shall hold how many pixels are changed(5). After that the program goes through all pixel coordinates (6) and saves the difference between the pixel value of each channel in the variable pixelChange (7). When this pixelChange is bigger then the threshold that classifies a pixel as changed the counter pixelsChanged gets raised by one (8). By this when all the pixels have been looked through, the program knows how many pixels have been changed. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up(9). When to many pixels have changed the counter gets set to zero(10). 
 When enough pictures have been unchanged, the last part of the loop is entered(11). Here first the a Picture object BG gets refreshed(12). When this is done we analyse two things on the picture. The first one is where the brightest pixels position in each column of the picture is and the second where we have to place the region of interest. We find the brightest pixel by going through each pixel of each column (13). Every time we find a pixel that is brighter then the brightest pixel, until then, it's position gets saved (14). This gets saved in the integer array \textbf{brightestYatX[x]}. The number between the square brackets defines the x position of the column and the value it holds the y position, where the brightest pixel is positioned. To find out where the region of interest has to be placed the the program adds all y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check, that makes sure that the region of interest is in the frame(17).
 
-\subsection{The enter and exit zone}
+\subsection{The enter zone}
 Now the question might be why we are interested in the position of the brightest pixel in each column on the background picture. The answer is that when a person goes into the picture and produces pixels that are changed in comparison to the background he will do that in front of the LEDs. If we are looking for this person we don't want to look through all the pixels but just the ones where the LEDs are on the background picture. We are looking for the brightest pixel, because we hope to find the pixel at the position of each LED. We will come back to this in the chapter find new persons. 
 
 \section{Finding and analysing the blobs}
@@ -463,10 +463,10 @@ void Picture::startFireLoggingPersons(point startingPoint)
 \end{lstlisting}
 This is the function that replaced our previous recursive function. It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture any more. Instead the states of the analysis of the pixels are saved in the color channels. 
 When the red channel of the pixel is has a value of 255 the pixel is found but not analysed by the function yet. When it is 0 it means that nothing is found and when it is another number it is analysed. One can find the blobs index number which this pixel belongs to by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1). The count is assigned to the green channel of every pixel that is found forwards (2). When non of the four forward if statements (3) have become true, the function compares the count in the green values around it self and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero, when going backwards(5).
-The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction, x or y are either raised or reduced(6). After that, the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. The group called this point the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found to be 255 in the red channel(7) and then be set to the \textbf{currentPosition}(8). While going through the blob the function also saves some information about it. Like said before it counts of how many pixels the blob consists(9). We use this information to discard blobs that are to small to be counted as a person(10). If this is the case the \textbf{personCounter} gets reset to what it was before the function was called and the pixel values get set to zero. The function also saves the maximum the the smallest and the biggest x-position of the blob(11). In case the \textbf{personCounter} is heigh enough, the average of these two number is used to output where the person is positioned in front of the screen(12).
-Max Max Max 3
+The function move through the pixels by in all eight cases updating the object \textbf{currentPosition}, which is a struct of type point. This struct contains two integers called \textbf{x} and \textbf{y}. When the object move in a direction, x or y are either raised or reduced(6). After that, the while loop runs with the new given position. When calling the function the programmer has to put in the point where the function will start to analyse the BLOB. The group called this point the \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found to be 255 in the red channel(7) and then be set to the \textbf{currentPosition}(8). While going through the blob the function also saves some information about it. Like said before it counts of how many pixels the blob consists(9). We use this information to discard blobs that are to small to be counted as a person(10). If this is the case the \textbf{personCounter} gets reset to what it was before the function was called and the pixel values get set to zero. The function also saves the maximum the the smallest and the biggest x-position of the blob(11). In case the \textbf{personCounter} is heigh enough, the average of these two number is stored in the \textbf{posX} and is later used to output where the person is positioned in front of the screen(12).
+
 \section{Persons}
-Now the group was able to categories which and give each blob an number in the picture. The next question was how to keep track of where which person went from frame to frame. When we just would go through the hole picture in every frame the blobs would always be numbered in the order they were found, from the upper left corner to the lower right corner. The group decided that the persons found in the picture had to be stored in an array of found persons. From frame too frame the persons had then to be re-found, so there was a connection between the person from the previous frame to the current frame. It was important that the program first would try to re-find the persons and than would look for new persons among the blobs that weren't touched yet. 
+Now the group was able to categories the pixels in blobs and give them a number in the picture. The next question was how to keep track of where which person went from frame to frame. When we just would go through the hole picture in every frame, the blobs would always be numbered in the order they were found, from the upper left corner to the lower right corner. The group decided that the persons found in the picture had to be stored in an array of found persons. From frame too frame the persons had then to be re-found, so there was a connection between the person from the previous frame to the current frame. It was important that the program first would try to re-find the persons and than would look for new persons among the blobs that weren't touched yet. 
 Another thing that was to be considered was when were persons allowed to enter the picture. How to handle a person that from one frame to the next frame  just disappeared? Was it likely that the person reached the edge of the shot and then walked out of it? There was also a possibility for that the person were occluded by another persons. How to separate this case from the case of exiting the picture.
 Here we will at first describe how a person is stored, secondly how it is found initially, and in the end how it is re-found. We structure it like this even though in our main loop we first try to re-find the person and then look for new persons. 
 \subsection{The person class}
@@ -493,13 +493,15 @@ public:
 		bool refind(Picture& parent); //(9)
 		bool refindOccluded(Picture& parent);//(10)
 
-	}p[50];
+	}p[50]; //(8)
 	{...}
 }
 \end{lstlisting}
-The \textbf{posX}(1), the \textbf{minX}(2) and the \textbf{maxX}(3) were discussed in the previous chapter. The \textbf{moveVector}(4) is the vector with which the person has moved from the last frame to the current frame. This vector has just on dimension, because we just were interested in the x position. The \textbf{heightOfROI}(5) is a variable that should hold the height of the region of interest where the person was found. The \textbf{id}(6) is the id that is global. Meaning that the e.g. the 221 person since the program was turned on gets the id 221. The pId(7) is the id the persons id in its own array. The boolean and the two function will be discussed in a later chapter.
+The \textbf{posX}(1), the \textbf{minX}(2) and the \textbf{maxX}(3) were discussed in the previous chapter. The \textbf{moveVector}(4) is the vector with which the person has moved from the last frame to the current frame. This vector has just one dimension. The \textbf{heightOfROI}(5) is a variable that should hold the height of the region of interest where the person was found. The \textbf{id}(6) is the id that tells at which place the the person stepped into the picture. For instance the 221st person since the program was turned on gets the id 221. On the other hand the pId(7) is the id the persons id in its own array. This array is also a member of the Picture class(8). Since there are 50 elemtents for maximum 50 persons in the picture, that \textbf{pId} is always between 0 and 49. 
+The boolean and the two function will be discussed in a later chapter.
+
 \subsection{Find new person}
-When trying to find new persons the group limited the search to looking at the leftmost and the right most pixels since nobody could come from above or from the underneath the camera. It was also most likely, that the person would cross the brightest point in the column most left and most right. The brightest point in the background were already found in the \textbf{configBG()} function described earlier. 
+When trying to find new persons the group limited the search to looking at the leftmost and the right most pixels since nobody could come from above or from the underneath the camera. Since they also limited the their previous image processing to a region of interest, they also just had to look for new persons in this area. They actually decided just to look at the brightest pixel, where hopefully the LED strip was positioned. The brightest points in the background were already found in the \textbf{configBG()} function described earlier. 
 \begin{lstlisting}
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int brightestYatX[])
 {
@@ -563,20 +565,145 @@ void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int brig
 		}
 }
 \end{lstlisting}
-When calling this function a programmer has to put in how many percentages of the screen he wants to use for the enter/exit zone(the zone where persons are detected). These percentages refer to the percent of the x axis he want to use. The program than loops through the relevant x values in two for loops(1). If the pixel that is at that x value and the brightest y value is found to be 255, meaning that it is found but not analysed, the program starts to analyse the blob(2). This is done by first finding a person object in the array that is empty, by looking for one which x Position is minus one(3). Minus one is the value we give all persons objects initially and when they disappear. After that the function \textbf{startFireLoggingPersons()} is called(4). Since a empty person object was found the \textbf{startFireLoggingPersons()} function fills the empty person unless the blob is to small. When the blob is to small the person gets the status empty by setting its  posX to minus one again. 
-When the function \textbf{startFireLoggingPersons()} and the posX is not -1(5), the person counter gets raised by one(6) and the persons id gets set to it(7). Furthermore \textbf{notAddedToTheNewInitialMoveVectorProductYet} gets set to true, the \textbf{moveVector} gets set to something initial since we it didn't exist one frame ago and the y value in which the blob was found gets saved in the \textbf{heightOfROI}(8).
+When calling this function a programmer has to put in how many percentages of the screen he wants to use for the enter zone(the zone where new persons are allowed to enter the picture). These percentages refer to the percent of the x axis he want to use. The program than loops through the relevant x values in two for loops(1). The array of the brightest y values is then used in combination with the x value to find the position where we want to look for a new person. When the red channel of the pixel is 255, meaning that it is found by the preprocessing, but not analysed, the program starts to analyse the blob(2). This is done by first finding a person object in the array that is empty, by looking for one which x Position is minus one(3). Minus one is the value we give all persons objects initially and when they disappear. After that the function \textbf{startFireLoggingPersons()} is called(4). Since a empty person object was found the \textbf{startFireLoggingPersons()} function fills the empty person unless the blob is to small. When the blob is to small the person gets the status empty by setting its  posX to minus one again. 
+When the function \textbf{startFireLoggingPersons()} and the posX is not -1(5), the person counter gets raised by one(6) and the persons id gets set to it(7). Furthermore \textbf{notAddedToTheNewInitialMoveVectorProductYet} gets set to true and  the \textbf{moveVector} gets set to something initial since we it didn't exist one frame ago. In the next chapter in which we describe how we find the pre-found persons again we are finally explaining what we use the \textbf{moveVector} for.
+Finally the y value in which the blob was found gets saved in the \textbf{heightOfROI}(8).
 MAYBE REMOVE??????????????????!!!!!!!!!!!!!!!????????????????
 
 \subsection{find old person}
-In the next loop when max max max
+When trying to find a blob again, there are different approaches. A often used method is to analyse the blob and save specific data of it so it can be recognized in the next frame again. Here one could for example use the color of the object or the shape of the object. In the case of the chosen setup this wasn't really possible. This was due to the fact that the group chose to filter all the visible light out and just collect the infra-red light. This made that all the color informations disappeared. Also almost all the information about the shape got discarded since the camera just looks at a small strip of LEDs, that does just tell us the position of the blob in the x-axis. To be onest the only information we have is the x-position. Luckily there are also methods designed for such a situation. These methods try on the background of the previous movements to predict where the object is gone move to in the next frame.
+These methods are highly dependent on the continuity of movement. SOURCE - PAPER - THEORY
+The group predicts the movement of blobs by looking at how the blob moved from the previous frame to the current frame. This is saved in the move vector. The theory is that when the move vector is added to the current position again that we would get the new position. 
+When the program shouldn't find anything at this point the group assumed that the object would maybe have stopped. So this is the next thing that is checked. If this isn't true again, the program should take the midpoint of these two points and move to the edges until a maximum distance to move is reached. 
+\begin{lstlisting}
+bool Picture::person::refind(Picture& parent)
+{
+	point currentPoint;
+	bool found = false;
+	int maxAmountToMove = parent.maxAmountToMove;
+	parent.currentPersonId = pId;
+
+	if(posX+moveVector < 1 && posX+moveVector >= 0 && parent.pixelR[(int)((posX+moveVector)*parent.width)][heightOfROI] == 255) //(1)
+	{
+		//first priority to look is the position+the move vector (has moved normal)
+		currentPoint.x = (int)((posX+moveVector)*parent.width);
+		currentPoint.y = heightOfROI;
+		parent.startFireLoggingPersons(currentPoint); //(6)
+		if(parent.p[parent.currentPersonId].posX != -1) //(7)
+		{
+			cout << "found first try \n";
+			found = true; //(8)
+		}
+	} 
+	if(posX < 1 && posX >= 0 && parent.pixelR[(int)(posX*parent.width)][heightOfROI] == 255 && !found) //(2)
+	{
+		//second priority to look is the position (has stoped)
+		currentPoint.x = (int)(posX*parent.width);
+		currentPoint.y = heightOfROI;
+		parent.startFireLoggingPersons(currentPoint); //(6)
+		if(parent.p[parent.currentPersonId].posX != -1) //(7)
+		{
+			cout << "found second try \n";
+			found = true; //(8)
+		}
+	} 
+	//third priority is to look around the most likely point until the max amount to move is reached
+	for(int i = 0; (int)((moveVector/2)*parent.width)+i <= maxAmountToMove && (int)((moveVector/2)*parent.width)-i >= -maxAmountToMove && !found; i++) //(3)
+	{
+		if((int)((posX+moveVector/2)*parent.width)+i < parent.width && (int)((posX+moveVector/2)*parent.width)+i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)+i][heightOfROI] == 255) //(4)
+		{
+			currentPoint.x = (int)((posX+moveVector/2)*parent.width)+i;
+			currentPoint.y = heightOfROI;
+			parent.startFireLoggingPersons(currentPoint); //(6)
+			if(parent.p[parent.currentPersonId].posX != -1) //(7)
+			{
+				cout << "found normal \n";
+				found = true; //(8)
+				break; //(9)
+			}
+		}
+		if((int)((posX+moveVector/2)*parent.width)-i < parent.width && (int)((posX+moveVector/2)*parent.width)-i >= 0 && parent.pixelR[(int)((posX+moveVector/2)*parent.width)-i][heightOfROI] == 255) //(5)
+		{
+			currentPoint.x = (int)((posX+moveVector/2)*parent.width)-i;
+			currentPoint.y = heightOfROI;
+			parent.startFireLoggingPersons(currentPoint); //(6)
+			if(parent.p[parent.currentPersonId].posX != -1) //(7)
+			{
+				cout << "found normal \n";
+				found = true; //(8)
+				break; //(9)
+			}
+		}
+	}
+	return found; //(10)
+}
+\end{lstlisting}
+This function contains the three priorities for where we would like to look for the blob: First the position is checked for where the blob should have move when it has move with a constant speed (1). The next priority is for when the object has stopped abrupt (2). The last priority for looking is several places. Starting from the position between the two previous points the function goes to both sides until it on one of the side hit the border for the maximum distance to move. This is done, by having a for-loop, that iterates through from 0 up(3). This number is then added (4)and subtracted (5)to the midpoint of the two first points. Like when looking for new persons, the program starts the startFireLoggingPersons() with the point the function has found to be true (red channel is 255)(6). If this function has set the persons position to to something that is not -1(7), it will end it self by setting bool found to true(8) in the loop breaking (9). In the end of the function it will return if the person was found or not (10).
+	
+\subsection{Occluded or exited}
+The last thing that can happen now is that the person can disappear. When person disappears it can have three reasons: The persons blob is occluded by another blob, the person has exited the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
+\begin{lstlisting}
+for(int i = 0; i < maxNumberOfPersons; i++) //(1)
+		{
+			if(currentPicture.p[i].posX != -1) // <- does the person exist?
+			{
+			float prePos = currentPicture.p[i].posX; // <-save the current position
+				if(!currentPicture.p[i].refind(currentPicture)) // <- find the new position of the person, when not found do the following:
+				{
+					if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet) // <- when the initial movevector isn't mesured yet
+					{
+						if(currentPicture.personCount-1 >= 0) // <- when this is not the first person
+						{
+							currentPicture.newInitialMoveVectorProduct += currentPicture.newInitialMoveVectorProduct/(currentPicture.personCount-1); // <- add the average of the until now found initial move vectors to the move vector product
+							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
+						}
+						else // when this is the first person:
+						{
+							currentPicture.newInitialMoveVectorProduct = currentPicture.initialMoveVector; // <- since there is nothig to take the average from take the movevector the prgram started with
+							currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
+						}
+					}
+				//either exited or occluded
+				//is the blob not in the range so it can exit?
+					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) && ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
+					{
+						//is not allowed to exit -> it must be occluded
+						if(!currentPicture.p[i].refindOccluded(currentPicture))
+						{
+							currentPicture.p[i].posX = -1;
+							cout << "there is a fuckup with a person that is neither exited or occluded\n";
+						}
+					
+					}
+					else 
+					{
+						currentPicture.p[i].posX = -1;
+						cout << "normal exit\n";
+					}
+
+				}
+				currentPicture.p[i].moveVector = currentPicture.p[i].posX - prePos;
+				if(currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet)
+				{
+					if(currentPicture.p[i].moveVector < 0)
+						currentPicture.newInitialMoveVectorProduct += -currentPicture.p[i].moveVector;
+					else
+						currentPicture.newInitialMoveVectorProduct += currentPicture.p[i].moveVector;
+					currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false;
+				}
+			}
+		}
+
+\end{lstlisting}
+This logic is looping through all the person objects of the current picture(1). At every person the program first finds out if the person was previously found, by asking if its position not is equal to -1(2). When the person was found in the previous frame, the program saves its posX in a float called prePos(3). After that the function that is supposed to refind the person is called in a if statement. I the person is just refound ther
+
+
 loop trough persons
 when position is set:
 	first look at the position where the person would be when it would move with the same speed as captured in the last frame.
-	second look if the position has not changed meaning that the person stoped up.
+	second look if the position has not changed meaning that the person stopped up.
 	third go from the point between the two previously check points and move to the sides until the max distance to move i reached
 	if the person is not found after this it can be assumed that the person is either gone out of the picture or is occlude by another person. To check if the person is exited, the program checks if the person is close enough to the edge of the picture so it could have exit. If the person is not close enough to the border of the  picture the program will try to find another person that is close enough that it could occlude the person we are looking at.  This is done in the same way as the search for a person in the first place.
-	
-
 
 \subsection{the awesome move vector reconfig}
 

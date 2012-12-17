@@ -124,7 +124,6 @@ int main(){
 					}
 				//either exited or occluded
 				//is the blob not in the range so it can exit?
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!     Removed (!) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 					if(((prePos*currentPicture.width) - currentPicture.maxAmountToMove > 0) && ((prePos*currentPicture.width) + currentPicture.maxAmountToMove < currentPicture.width)) // check if the person is NOT close enogth to the edge of the picture to exit
 					{
 						//is not allowed to exit -> it must be occluded
