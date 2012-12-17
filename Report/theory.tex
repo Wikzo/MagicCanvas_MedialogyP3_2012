@@ -29,7 +29,7 @@ During this project image processing has been used to achieve the output needed.
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques in theory, starting with basic information about digital images.
+The next sections will explain different techniques in image processing, starting with basic information about digital images.
 
 \section{Digital images}
 One doesn't realize all the hidden mechanics happening when capturing an image with a camera, or when editing it in a program like Photoshop or ImageJ. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
@@ -137,6 +137,14 @@ As said before, histograms can also be used to describe the contrast in an image
 \label{fig:histogram_contrast}
 \end{figure}
 
+\section{Segmentation}
+
+Segmenting an image or video is the process of extracting the information you are interested in from an image. Segmentation is often a compound operation that consists of different sub operations, all with the same goal of getting the information you want from the input image. Before segmentation algorithms are applied an image undergoes preprocessing, this might be converting from a color image to a grayscale image to ease the computations required. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} serves as an illustration of preprocessing and segmentation. First the image is converted to a grayscale image, this step is part of the preprocessing. Then the image is thresholded, which yields a binary image with only the pens and the heart. Further applying segmentation algorithms will help to reach the goal the programmer has in mind.
+
+Two possible problems can arise while segmenting an image. If the segmentation algorithms are too strict, and do not include enough in their extraction, the object meant to be extracted might not be complete and therefore might not be recognised or labelled correctly. This case is called \textit{under-segmentation}.
+
+In the opposite case if the algorithm is too sloppily designed, and too much of the input image is included in the segmentation. The final segmented image might contain too much noise, artifacts or objects might be connected even though they were separate entities. This is called \textit{over-segmentation}
+
 \section{Thresholding}\label{sec:Thresholding}
 Thresholding is one of the most fundamental operations when working with images. It is performed to transform a picture to binary; i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only black and white pixel values.
 
@@ -176,9 +184,6 @@ When setting the thresholding value it is important to think about what is wante
 \end{figure}
  
 This proves the point that finding a functional thresholding value is not always straightforward. As for finding a silhouette it is of great help to make a clear transition from the object and the background.
-
-\subsection{Oversegmentation and undersegmentated}
-\textbf{Maybe write a few lines here? - Gustav}
 
 \section{Morphology}
 Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}, described in \ref{blob}.
