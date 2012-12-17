@@ -147,11 +147,9 @@ In practice this means that pixels with values greater than a threshold is set t
 \end{equation}
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
-When setting the thresholding value it is important to think about what is wanted regarding the output. The effectiveness of the \textit{threshold value} will differ from image to image, depending on the contrast between the object and the background. If the background and the object are very different in color and/or contrast, it will be easy to distinguish them and choose an effective \textit{threshold value}. However, if the object and background are very similar, it will be hard to do choose a value to separate them properly. At that point it will be necessary to chose between losing information associated to the object of interest or to gather some background noise, to preserve it. Pictures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the \textit{threshold value} used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}.
+When setting the thresholding value it is important to think about what is wanted regarding the output. The effectiveness of the \textit{threshold value} will differ from image to image, depending on the contrast between the object and the background. If the background and the object are very different in color and/or contrast, it will be easy to distinguish them and choose an effective \textit{threshold value}. However, if the object and background are very similar, it will be hard to choose a value to separate them properly. At that point it will be necessary to choose between losing information associated to the object of interest or to gather some background noise, to preserve it. Pictures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the \textit{threshold value} used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}. Looking to the histograms, it is easy to tell that the leftmost is more ideal to threshold because the object and background are very different. That is shown graphically with two "mountains" in the histogram (see picture \ref{fig:SimpleThreshold}), also called a \textbf{bi-modal histogram} \citep{ip_book}. The effect of a good threshold value can be seen on picture \ref{fig:SimpleThresholdAfter}, where the output gives a clear outline of the silhouette of the woman. On the other hand, the histogram to the right does not have two clear mountains, but a big one and two smaller. This means that the color values are distributed more equally and therefore, it will be hard to define a good threshold value. The result in this case is a poor silhouette of a woman (see picture \ref{fig:ComplicatedThresholdAfter}), due to the fact that the background and the object have similar colors.
 
-It is easy to tell that the leftmost histogram is more ideal to threshold because the object and background are very different, which is shown with two "mountains" in the histogram. This is also called a bi-modal histogram \citep{ip_book}. On the other hand, the histogram to the right does not have two clear mountains; instead it has one big mountain and two smaller ones. This makes it hard to define a good threshold value.
-
-Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \ref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \ref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \ref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
+%Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \ref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \ref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \ref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -173,9 +171,9 @@ Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture wit
 This proves the point that finding a functional thresholding value is not always straightforward. As for finding a silhouette it is of great help to make a clear transition from the object and the background.
 
 \section{Morphology}
-Morphology is a collection of operations used to analyze and process structures. Although these techniques is commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}.
+Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}.
 
-Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, e.g. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}.
+Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, i.e. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}. %is the last sentence correct there?
 
 \begin{figure}[htbp]
 \centering
@@ -185,9 +183,9 @@ Morphology is a a part of neighbourhood processing. Whereas point processing is 
 \end{figure}
 
 \subsubsection{Hit and fit}
-Whenever one decide to apply a structured element and \textit{hit} the pixels, what happens is calculating the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is grid containing weighted values some values within it. These values are either 1 or 0 if used on a binary pixel. Dependent on these values and the images pixel values different output occurs.
+Whenever one decides to apply a structured element and \textit{hit} the pixels, what happens is that the function will calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a grid containing weighted values. These values are either 1 or 0 if used on a binary pixel. Depending on these values and the images pixel values different output occur.
 
-The kernel will be first placed on the corner of the image and it will operate on one pixel at a time. If one of the pixels inside the kernel are '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
+The process of hitting the pixels starts positioning the kernel on the corner of the image so that it operates on one pixel at a time. If one of the pixels inside the kernel are '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
 
 \begin{figure}[htbp]
 \centering
@@ -217,7 +215,7 @@ On the contrary, to be able to \textit{fit} a pixel on the center of the structu
 \end{table}
 
 \subsection{Dilation}
-\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see eq.\ref{Dilation1} for a mathematical definition). The result of this method implies helps filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on Figure \ref{fig:Dilation}. 
+\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see eq.\ref{Dilation1} for a mathematical definition). The result of this method implies filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on figure \ref{fig:Dilation}. 
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\oplus{SE}
@@ -240,7 +238,7 @@ A small structured element applied several times will have the same effect as a 
 \end{figure}
 
 \subsection{Erosion}
-\textit{ErosionErosion} is the process of applying fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on eq. \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As it is happens with dilation, the effects depend on the size, shape and values of the structured element.
+\textit{Erosion} is the process of applying fit to an entire figure and refers to the reduction of the size of an object in an image (the mathematical definition is provided on eq. \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be break down into smaller ones. As it happens with dilation, the effects depend on the size and shape of the structured element.
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\ominus{SE}
@@ -279,14 +277,14 @@ The effect of opening can be seen on figure \ref{fig:Opening} where a circular k
 \subsubsection{Closing}
 Another situation that often occurs when applying these methods comes from objects. When the size of the object is increased, but it's still important to constrain the measure as well as filling the holes of the objects, a good solution is to erode after the dilation. This is denoted \textit{closing} and uses eq. \ref{Closing}. As with the opening method, the size and shape of the kernel must be the same in order to obtain the desired result.
 
-On figure \ref{fig:Closing} we can observe the effect of this operation: even though the holes are filled and the object maintains its original size, the noise of the background is still there. Therefore, it will be necessary to apply either closing or a BLOB analysis method to delete those small objects {BLOB analysis is described in \ref{blob}).
+The effect of this operation can be seen on figure \ref{fig:Closing}: even though the holes are filled and the object maintains its original size, the noise of the background is still there. Therefore, it will be necessary to apply either closing or a BLOB analysis method to delete those small objects {BLOB analysis is described in \ref{blob}).
 \begin{equation}
 \begin{aligned}
 {g(x,y)}={f(x,y)}\bullet{SE}=({f(x,y)}\oplus{SE})\ominus{SE}
 \label{Closing}
 	\end{aligned}
 \end{equation}
-It is also important to remember that we can imply the closing or opening methods should only be used one time on an image. Most of the holes of the image will be filled but the size of the object will be the original one. If these operations are applied a second time, the size of the final image will be decreased or increased respectively.
+It is also important to remember that the closing or opening methods should only be used one time on an image. Most of the holes of the image will be filled but the size of the object will be the original one. If these operations are applied a second time, the size of the final image will be decreased or increased respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE CLOSING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
@@ -315,9 +313,9 @@ When the purpose of implementing these operations is to find the edges, it is im
 \end{figure}
 
 \section{Region of interest (ROI)}
-Generally one would think that the more pixels, the better quality. However, this is not always true. Since there are more pixels to loop through, it will take the program longer time to analyze and process the data. If there are a lot of pixels and calculations to be done, this will result in a slow program.
+A common thinking when dealing with images is that the more pixels, the better quality. However, this is not always true. Since there are more pixels to loop through, it takes longer time to the program to analyze and process the data. The more pixels to process, the longer time requires the calculations to the program.
 
-When working with still pictures, and especially when working with video, it is important to maintain a stable framerate. The more information one needs to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, one should choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are usually going to be. If one only wants to track or recognize a face, the rest of the body can be discarded.
+When working with video, it is important to maintain a stable framerate. The more information needed to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, one should choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are usually going to be. If one only wants to track or recognize a face, the rest of the body can be discarded.
 
 A way to optimize the speed of the program is to decrease the data by using a region of interest. This region is usually enclosed in a rectangle and only the pixels inside this rectangle is being processed. That means that all the pixels outside of the ROI are ignored and unnecessary processing is prevented.
 
