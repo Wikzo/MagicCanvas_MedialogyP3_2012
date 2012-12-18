@@ -283,7 +283,9 @@ The effect of this operation can be seen in figure \ref{fig:Closing}: even thoug
 	\end{aligned}
 \end{equation}
 
-It should be noted that using closing and/or opening multiple times will not achieve a better result that doing it only once on the image. Most of the holes of the image will be filled, but the size of the object will be the original one. If these operations are applied a second time, the size of the final image will be decreased or increased respectively.
+When applying closing, most of the holes of the image will be filled, but the size of the object will be the original one. 
+
+It should be noted that using closing and/or opening combination multiple times will not achieve a better result than doing it only once on the image. However if the same operation is applied a second time, the size of the final image will be decreased and increased respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE CLOSING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
@@ -293,40 +295,22 @@ It should be noted that using closing and/or opening multiple times will not ach
 \label{fig:Closing}
 \end{figure}
 
-\subsubsection{Boundary detection}
-One way to detect edges in a binary image is by using \textit{boundary detection}. The performance of this operations is a compound of erosion and subtraction, hence the first operation will be eroding the object to get a smaller version of it and then subtract it from the input image to get the final output image with the border of the object. The mathematical definition of these operations is shown in eq. \ref{BoundDetec}.
-\begin{equation}
-\begin{aligned}
-{g(x,y)}={f(x,y)}-({f(x,y)}\ominus{SE})
-\label{BoundDetec}
-	\end{aligned}
-\end{equation}
-When the purpose of implementing these operations is to find the edges, it is important to remember to apply dilation or erosion before, to remove the noise of the image. The outcome can be seen in figure \ref{fig:Boundary} where the final result is a thin edge of the object.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% IMAGE SUBTRACTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1\textwidth]{Pictures/Theory/BoundaryEdges_circ.png}
-\caption{Result of subtracting an eroded picture to the original one with a circular structured element. Inspired by \citep{ip_book}.}
-\label{fig:Boundary}
-\end{figure}
-
 \section{Region of interest (ROI)}\label{roi}
-When dealing with images some might think that more pixels is always better. However this is not always true. Since there are more pixels to loop through, it takes longer time for the computer to analyze and process the image data. The more pixels to process, the more time is required for the program to do the necessary calculations.
+When dealing with images some might think that more pixels are always better. However this is not always true. Since there are more pixels to loop through, it takes longer time for the computer to analyze and process the image data. The more pixels to process, the more time is required for the program to do the necessary calculations.
 
-When working with video, it is important to maintain a stable frame rate. The more information needed to be processed, the slower the program will be. One way to ease the computational requirements is to use what is called a \textit{region of interest} (ROI). As the name suggests, the point is to choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are expected to be. This region is usually enclosed in a rectangle and only the pixels inside this rectangle are being processed, ignoring all the pixels outside of the ROI. This prevents unnecessary processing and optimizes the speed of the program by decreasing the amount of data.
+When working with video, it is important to maintain a stable frame rate. The more information needed to be processed, the slower the program will be. One way to ease the computational requirements is to use what is called a \textit{region of interest} (ROI). As the name suggests, the point is to choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are expected to be. This region is usually enclosed in a rectangle and only the pixels inside this rectangle are being processed, ignoring all the pixels outside of the ROI. This prevents unnecessary processing and optimizes the speed of the program by decreasing the amount of data processed.
 
 An example of how this could be used is taking a photo where only the head is of interest (see picture \ref{fig:Region of Interest}).
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/RegionOfInterest.jpg} 
-\caption{Illustrating the principle of region of interest} 
+\caption{Illustrating the principle of region of interest.} 
 \label{fig:Region of Interest} 
 \end{figure} 
 
 \section{Filters}
-A filter can be applied to an image to either remove unwanted noise or to blur the image. In most of the cases, when thresholding an image, noise appears. Noise could be in form of small dots in the background or small holes in the object of interest. By using filters on the image it is possible to remove noise. Two techniques will be described in this section: The mean and median filters.
+A filter can be applied to an image to either remove unwanted noise or to blur the image. In most of the cases, when thresholding an image, noise appears. Noise can be in form of small dots in the background or small holes in the object of interest. By using filters on the image it is possible to remove noise. Two techniques will be described in this section: the mean and median filters.
 
 \subsubsection{Mean filter}
 One method of image filtering is the \textit{mean filter}. As the name implies, a mean filter takes an input image and calculates the mean value of a given pixel and outputs this value. This type of neighborhood processing takes the average of the input pixel and its surrounding pixels and thereby decides the value of the output pixel (see figure \ref{fig:neigh_pros}).
@@ -346,7 +330,7 @@ The calculations behind the average is shown in equation \ref{Mean filter}.
 	\end{aligned}
 \end{equation}
 
-Mean filters are often used to blur an image, e.g. when a person's face should stay anonymous. The amount blur depends on the kernel's size \citep{ip_book}.
+Mean filters are often used to blur an image, e.g. when a person's face should stay anonymous. The amount of blur depends on the kernel's size \citep{ip_book}.
 
 \subsubsection{Median filter}
 The second method is the \textit{median filter}. This works by taking the value from a pixel, as well as its surrounding neighbors and ordering them so that the lowest value appears to the most-left and the highest value to the far-right. The method outputs the value in the very middle of the list. (see \ref{Order list of pixels.}).
@@ -367,67 +351,28 @@ Median filters are good for removing noise, especially the so-called "salt and p
 \end{figure}
 
 \section{Border problem}
-In neighborhood processing a kernel is applied to an image. A kernel size of 3x3 would mean that the kernel can not be centered on the very edge of the input image. A kernel centered on the first pixel in the image will not have enough neighbors to be susceptible to neighborhood processing. This means that the output image will be smaller than the input image. This can be circumvented by either increasing the size of the output image after the neighborhood processing, by increasing the size of the input image before neighborhood processing or by using special kernels for the edge-pixels.
+In neighborhood processing a kernel is applied to an image. The problem is that the kernel will always, when placed at the edge of the image, try to access pixels outside of it. Three different solutions exist to this problem, increasing the size of the output image after the neighborhood processing, increasing the size of the input image before neighborhood processing or by using special kernels for the edge-pixels.
+
 
 \section{Background subtraction}
 A way to detect changes in a scene and extract an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes are shown.
 
-In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. This is important as the background should be static. Imagine that sunshine is let inside a room, the light will change together with the sun's position. The difference in illumination would mean that changes will be seen everywhere and thereby produce noise that gives an inaccurate result.
+In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. This is important as the background should be static. Imagine that sunshine is let inside a room. The light will change together with the sun's position. The difference in illumination would mean that changes will be seen everywhere, which gives an inaccurate result. When doing background subtraction, it is important that the background stays the same.
 
-It is not realistic that each pixel in the background keeps the exact same pixel-value at all times. Therefore a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
-
-Two questions have to be considered when doing background subtraction:
-\begin{enumerate} 
-	\item Is the background consistent? 
-	\item Which threshold value would be optimal to make the image binary and distinguish changes from the background? 
-\end{enumerate}
-
-If the first point is false and the background is not consistent, then there is a way to automatically update the background pixels' values. The formula is shown in \ref{AutomaticBackground}.
-
-\begin{equation}
-	\begin{aligned}
-  		r_{new}(x,y)=\alpha*r_{old}(x,y)+(1-\alpha)*f(x,y)
-		\label{AutomaticBackground}  
- 	\end{aligned}
-\end{equation}  
-
-Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$ \citep{ip_book}.
-
-Now that the background is updating automatically, it is time to proceed to the next bullet point: defining the threshold value.
-
-A threshold value is an interval that defines how much a pixel can vary in intensity and still be considered as the background.
-
-In order to define a threshold value, it is necessary to check how much the values of the individual pixels vary in the background. This can be done by capturing a series of pixel-values for a group of background pixels over an amount of time and checking the minimum and maximum values. This should give an overview of how much the pixels' values vary. Let's say that this procedure shows a variation of 20, this means that the optimal threshold value is 20. If a pixel on the background has an intensity value of 80, then the pixels' values captured between 60 and 100 will not produce any changes, as it is considered part of the background. However, pixels below 60 and above 100 will be considered an object and therefore highlighted.
-
-This type of thresholding is called a \textit{global threshold}, which means that the threshold value is the same in every pixel in the scene \citep{ip_book}. Imagine a scene where only part of the picture is being affected by lights. Then a unique and local threshold value for each pixel could be useful. This is possible using the equation\ref{localthreshold}.
-
-\begin{equation}
-	\begin{aligned}
-  		\ \text{Binary image} = \left\{ \begin{array}{ll}
-         0, \quad &\text{if } Abs(g(x,y))<\beta * \sigma(x,y)\\
-        255, \quad &\text{otherwise}.
-        \end{array} \right . \ 
-        \label{localthreshold}  
- 	\end{aligned}
-\end{equation} 
-
-Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. This formula creates a local threshold. 
-
-When a static background has been achieved and a suitable threshold value chosen, the background subtraction is ready to be applied. In every frame in the scene, each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows, the pixel will be highlighted, revealing an object in the picture.
-
+%It is not realistic that each pixel in the background keeps the exact same pixel-value at all times. Therefore a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
 
 \section{BLOB analysis}\label{blob}
-A common task when dealing with images is determining if the image contains a particular object or shape. The term \textit{BLOB} is an acronym for Binary Large Object and refers to a region of connected pixels in a binary image \citep{ip_book}. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties, like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with values equal to zero).
-The process of BLOB analysis will be split in three main steps: \textit{extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs to know which ones belong to the expected type \citep{ip_book}.
+A common task when dealing with images is determining if the image contains a particular object or shape. The term \textit{BLOB} is an acronym for Binary Large Object and refers to a region of connected pixels in a binary image \citep{ip_book}. This technique can be used to extract meaningful information from images. It can be achieved by separating the pixels in points or regions that differ in properties, like brightness, color or differences compared to the background.
+
+The process of BLOB analysis will be split in three main steps: \textit{extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs \citep{ip_book}.
 
 \subsection{BLOB extraction}
-To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connected and the 4-connected kernels \citep{ip_book}. Where even though the 8-connected kernel is more accurate, it also requires more computations and therefore needs more time to process the image.
+To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connectivity and the 4-connectivity kernels \citep{ip_book}. Even though the 8-connectivity kernel is more accurate, it requires more computations and therefore needs more time to process the image.
 
 \subsubsection{Grass-fire algorithm}
-One of these connected component labelling algorithms is the \textit{recursive grass-fire algorithm}, used to erode images, but also to track the pixel's location to create a region.
-To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result.
+One of these connected component labelling algorithms is the \textit{recursive grass-fire algorithm}, used to label the regions of foreground pixels to separate the BLOBs from the background.
+To explain this algorithm, we will use both 8-connectivity and 4-connectivity kernels to illustrate how these choices can affect to the final result. The algorithm is denoted as recursive because it is contained within a function that calls itself \cite{ip_book}.
 
-\textbf{DEFINE WHAT RECURSION MEANS - GUSTAV}
 
 \begin{figure}[htbp]
 \centering
@@ -436,13 +381,13 @@ To explain this algorithm, we will use both 8-connectivity and 4-connectivity ke
 \label{fig:8connecK}
 \end{figure}
 
-As shown in figure \ref{fig:8connecK}, the grass-fire algorithm scans the entire image from the upper-left corner to the right bottom, row by row. When the kernel encounters a non-zero pixel value, it centers on it and "burns" the center pixel. Then the algorithm looks in the possible directions around that pixel to check if those pixels are connected to the previous one and therefore, together make out an object. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
+As shown in figure \ref{fig:8connecK}, the grass-fire algorithm scans the entire image from the upper-left corner to the bottom right, row by row. When the kernel encounters a non-zero pixel value, it centers on it and "burns" the center pixel. Then the algorithm looks in the possible directions around that pixel to check if the surrounding pixels are connected to the burned pixel. The way the algorithm will do this will depend on the connectivity used (for a 8-connected kernel, the algorithm will look in 8 directions, but for the 4-connected kernel, the algorithm will look in 4 directions).
 
 Whenever it finds an object, the algorithm labels the pixel in the output image and then burns that pixel on the input image, in order to turn it into a zero and ensure that the pixel will not be part of a new grassfire.
 
-The algorithm now looks to the possible directions around that pixel, starting with the pixel on the right. This process is represented on figure \ref{fig:8connecK}. Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and repeats the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
+The algorithm now looks to the possible directions around the new pixel, starting with the pixel on the right. This process is represented on figure \ref{fig:8connecK}. Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and repeats the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
 
-Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using the same picture. Although the 8-connected kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
+Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using the same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
