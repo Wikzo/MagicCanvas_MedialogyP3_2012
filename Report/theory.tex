@@ -3,22 +3,7 @@ This chapter covers the various techniques used in image processing, explained i
 
 \section{A general framework for image processing}
 During this third semester project, image processing has been used to achieve the goals of the project.
-Image processing is an umbrella term\footnote{An umbrella term is a single term that covers several  different items} that covers a set of tools used to process images and/or video. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest in a digital image. This is achieved by using multiple steps. It should be noted that the order of the steps sometimes change and there might be more focus on some steps than others, depending on the specific goal. Figure \ref{fig:ip_framework} is a general framework that can be used as a good starting point.
-
-%\textbf{Image Acquisition}
-%Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
-
-%\textbf{Pre-processing}
-%Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
-
-%\textbf{Segmentation}
-%To be able to work with a specific object, for instance a hand, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
-
-%\textbf{Representation}
-%The object needs to be represented in an intuitive manner.
-
-%\textbf{Classification}
-%For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
+Image processing is an umbrella term that covers a set of tools used to process images and/or video. \citep{ip_book} writes that image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest in a digital image. This is achieved by using multiple steps. It should be noted that the order of the steps sometimes change and there might be more focus on some steps than others, depending on the specific goal. Figure \ref{fig:ip_framework} shows a general framework that can be used as a good starting point \citep{ip_book}.
 
 \begin{figure}[htbp]
 \centering
@@ -27,13 +12,28 @@ Image processing is an umbrella term\footnote{An umbrella term is a single term 
 \label{fig:ip_framework}
 \end{figure}
 
+\textbf{Image Acquisition}
+Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
+
+\textbf{Pre-processing}
+Here the initial arrangement is completed, e.g. converting the image from color to grayscale.
+
+\textbf{Segmentation}
+To be able to work with a specific object, it needs to be separated from the rest of the picture. This is done using segmentation to remove noise and background elements, so that only the object of interest is seen. Thresholding is often applied to make the object stand out, i.e. make the object appear white and the background black.
+
+\textbf{Representation}
+The object needs to be represented in an intuitive manner.
+
+\textbf{Classification}
+For the system to actually know if an object is a hand or not, it has to do some features extraction and classifications to compare the data to some predefined database. This can be done with template matching and BLOB classification.
+
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
 The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The following sections will explain the different techniques in theory, starting with basic information about digital images.
 
 \section{Digital images}
-One does perhaps not realise the mechanics behind capturing an image with a camera, or editing it in a program like Photoshop or ImageJ. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about, working with color-, grayscale- or binary images and the different attributes of each type.
+One does perhaps not realize the technical aspects happening when capturing an image with a camera. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, such as altering the image in an image editing program, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about: working with color, grayscale, and binary images, as well as the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
@@ -43,10 +43,10 @@ One does perhaps not realise the mechanics behind capturing an image with a came
 \end{figure}
 
 \subsection{Pixels}
-When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter and a sensor. As light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be \citep{ip_book}.
+When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter and a sensor. As light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image is \citep{ip_book}.
 
 \subsection{Bits and bytes}
-The way computers store data is using bits and bytes. One bit can be compared to a switch that can be turned on or off. However instead of on/off buttons, a computer uses digits in form of 1's and 0's. A byte consist of 8 bits and is a row of eight "switches" capable of holding the values 0 and 1. This provides one byte with the ability to store 256 different values, since $2^{8}$ is equal to 256. 
+The way computers store data is using bits and bytes. One bit can be thought of as a switch that can be turned on or off. However, instead of on/off buttons, a computer uses digits in form of 0's and 1's. A byte consist of 8 bits and is a row of eight "switches" capable of holding the values 0 and 1. This provides one byte with the ability to store 256 different values, since $2^{8}$ is equal to 256. 
 
 %Figure \ref{fig:bits} displays the concept behind bits and bytes. To give an example of how a byte could be used, this \href{http://www.asciitable.com/}{ASCII table} shows that the letter 'K' has the number 107. To write 'K' in binary, the byte has to equal to 107 using all 8 bits. It would be written in binary form like this: 0110100.
 
@@ -59,12 +59,12 @@ The way computers store data is using bits and bytes. One bit can be compared to
 %\label{fig:bits}
 %\end{figure}
 
-\subsection{8-bit image and grayscale images}
+\subsection{8-bit images and grayscale images}
 In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information that can be stored in a single pixel.
 
 %The hue defines how pure and vivid a color is \citep{visual_story}. 
 
-An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The information stored in each pixel is the gray-level value of the particular pixel. Considering an 8-bit image each pixel can hold 256 different levels of gray. In the case of a zero-based computer system, this equates to a pixel holding a value between 0-255 (see figure \ref{fig:ip_grayscale}). While 8-bit images are widely-used as a format for images, it is also possible to create images capable of holding more than 256 gray-level values for each individual pixel. Examples of this are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold one of 65,536 different gray-level values.
+An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image. The information stored in each pixel is the gray-level value of the particular pixel \citep{ip_book}. Considering an 8-bit image, each pixel can hold 256 different levels of gray. In the case of a zero-based computer system, this equates to a pixel holding a value between 0-255 (see figure \ref{fig:ip_grayscale}). While 8-bit images are widely-used as a format for images, it is also possible to create images capable of holding more than 256 gray-level values for each individual pixel.
 
 \begin{figure}[htbp]
 \centering
@@ -75,6 +75,8 @@ An image with a single channel of information for each pixel in the X and Y axis
  
 \subsection{Indexing an image}
 When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image.
+
+\fxfatal{MARco WAS MERHASE}
 
 Working with pixels in a image is similar to working with a coordinate system. The image is indexed from the top-left corner instead of the bottom-left corner. Both X- and Y-axes are indexed beginning with (0,0). Going to the right the X-value increases, going down the Y-value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1191,665) is the bottom-most corner to the right.
 
