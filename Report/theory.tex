@@ -30,7 +30,46 @@ For the system to actually know if an object is a hand or not, it has to do some
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The following sections will explain the different techniques in theory, starting with basic information about digital images.
+The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The following sections will explain the different techniques in theory, starting with a basic information about digital image acquisition.
+
+\section{Image acquisition}
+
+An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition}. In this section the basics of image acquisition using a digital camera will be explained. Though it is necessary to have a basic understanding of the physics behind light to get through this process.
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/Theory/light_from_sun.png} 
+\caption{Light as captured by a camera} 
+\label{fig:light_cam} 
+\end{figure}
+
+Light is a form of electromagnetic radiation that can be viewed as both waves and particles. This duality is however not something that will be covered within this section, as the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons and they can be described by three properties:
+
+\begin{itemize}
+\item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
+\item \textbf{Frequency} - Measured in oscillations per second, Hz, denoted $f$.
+\item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
+\end{itemize}
+
+To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
+\begin{align}
+\centering 
+\lambda = \frac{C}{f}
+\label{eq:wavelenght} 
+\end{align}
+where {$C$} is the speed of light.
+
+The wavelength of the photon determines what color will be perceived. As the speed of light is constant, changing the frequency will alter the wavelength. When photons impact objects, the material provokes a refraction that changes the frequency of the wavelength and therefore, a color can be perceived. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=1\textwidth]{Pictures/Theory/em_rad.png} 
+\caption{Figure illustrating the full spectrum of electromagnetic radiation.} 
+\label{fig:em_rad} 
+\end{figure}
+
+\subsection{Digital image acquisition}
+When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye, in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that can capture color images has three types of sensors in each pixel\citep{ip_book}.
 
 \section{Digital images}
 One does perhaps not realize the technical aspects happening when capturing an image with a camera. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, such as altering the image in an image editing program, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about: working with color, grayscale, and binary images, as well as the different attributes of each type.
