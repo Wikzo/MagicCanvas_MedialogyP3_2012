@@ -1,10 +1,7 @@
 \chapter{Setup}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FOR SETUP - cameras %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Image acquisition in the project}
-In the project, two cameras were considered: a normal RGB web camera and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared light. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
-
+\section{Image acquisition in the project}
+For image acquisition in the project, two cameras were considered. Both were the same model, a Logitech Pro 9000. One was a normal RGB web camera the other camera had an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared light. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
 
 \begin{figure}[htbp] 
 \centering 
@@ -61,13 +58,11 @@ By bringing normal lights that emit a high amount of IR light, the subject could
 \subsubsection{Building our own light system to light the scene}
 Building a lighting system from scratch to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared lights, and using this to light up the background. It should be possible to create a high contrast between the background and the subject of interest. Furthermore this provides us with the benefit of already having defined a region of interest, thus easing the workload of the image processing.
 
-\subsection{Concluding on the setup}
+\subsection{Part conlusion}
 Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting non viable. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the projector hard to see. Bringing normal lights would result in the same problem. This meant that the final decision was to create a custom infrared lighting for the project.
 
 
-%%%%%%%%%%%%%%%% practical LED-part
-
-\section{building the LEDs}
+\section{Building the LED illumination}
 For illuminating the scene IR LEDs were chosen because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}, a 5mm with a cone of light of 16 degrees and a 3mm with a cone of light of 130 degrees.
 
 During initial testing the light from the 5mm LED looked as though it might be too focussed, making it difficult to create a bright line of unbroken illumination, which was needed. For that reason a series of experiments were conducted: A setup that tested the light, that the two different LEDs offered were constructed and it was apparant that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
