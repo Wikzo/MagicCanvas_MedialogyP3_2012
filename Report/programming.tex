@@ -100,10 +100,10 @@ The check in the beginning looks if the programmer tries to output a picture tha
 \subsection{Structuring the functions}
 Another big advantage in having our own \textbf{Picture} class is that that each group member can work on a different function in the \textbf{Picture} class without disturbing somebody else who is working on another function. Even if a function doesn't work, it doesn't break the code as long as it is not called.
 
-\section{The structure of the program}
+\section{The structure of the program}\label{program_structure}
 The main structure of the program is very simple. It is basically divided in two part: the setup and the main loop. The setup is everything that just need to happen one time when the program starts.
 
-Then there is the main loop which is a while loop that constantly runs for while the program is open. The condition that is given in the main loop is \textbf{TRUE}. This means that the loop is never exited, unless something in the loop makes stop, in this case by hitting the Escape key. This makes it possible to exit what would else be an infinite loop.
+Then there is the main loop which is a while loop that constantly runs for while the program is open. The condition that is given in the main loop is \textbf{true}. This means that the loop is never exited, unless something in the loop makes stop, in this case by hitting the Escape key. This makes it possible to exit what would else be an infinite loop.
 
 Besides the main loop there is also a while loop in the setup, but this will be described a little later in \ref{backgroundConfig}.
 
@@ -268,13 +268,19 @@ void Picture::erode(int radius, Picture &tmpPicture)
 }
 
 \end{lstlisting}
-Both the erosion and dilation go through almost all the pixels in the picture. The pixels that are not analyzed are the ones that are too close to the edge of the picture, so the kernel would be empty for some of the values (1).
+Both the erosion and dilation go through almost all the pixels in the picture. The pixels that are not analyzed are the ones that are too close to the edge of the picture, so the kernel would be empty for some of the values (1). There is various ways to circumvent this edge problem, but it was decided not to pursue these, since the pixel edges are not so important for the program, especially since the final output image will show something completely different thanks to Unity (more about this in \ref{unityStart}).
 
-At every pixel, the functions look around the the pixels with the chosen radius (2). The difference between the two functions is that for a pixel to be accepted in dilation just one pixel in the radius has to be true(3) and in erosion non pixel in the radius has to be false(4). After that the function are identically again. While the program is still look through the pixels image the output has to be stored in a buffer picture. That buffer picture holds the output so the input picture doesn't get influenced(5). When the functions are done with analysing the picture the output from the buffer picture gets written to the picture the function is called from(6). 
+At every pixel, the functions look around the given pixel with the chosen radius (2). The difference between the \textbf{erosion()} and \textbf{dilation()} is that for a pixel to be accepted in dilation, just a single pixel in the radius has to be true (3). With erosion, there can't be any pixels in the radius that are false (4). Other than that the two functions work the same way. While the program is still looking through the image, the output has to be stored in a buffer picture. This buffer picture holds the output, so the the original input picture is left intact (5). When the functions are finished with analyzing the picture, the output from the buffer picture gets written to the picture that the function is called from (6). 
 
 \section{The setup loop}
-\subsection{Take Background picture}\label{backgroundConfig}
-Like mentioned before, there is also a loop in the setup. This loop also contains a while loop that has \textbf{true} as its condition. This loop is not supposed to end when the escape-key is pressed, but when it has figured out that there are no people in the picture. The reason for that is, that it has to take a reference picture, which is the one we use in the background subtraction. The function works under the assumption that people when on the picture always move a little. The function has three thresholds. The first threshold is called \textbf{threshholdPixelChange}, which is the value from which a pixel can be counted as changed. The second is \textbf{threshholdPixelsChanged}, which is the threshold for how many pixels count as a person, since we are not interested in if just pixel has changed. The third threshold \textbf{threshholdFramesChanged} is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row have to be without change, so we can assume that no body is on the picture. 
+\subsection{Take a background picture}\label{backgroundConfig}
+Like mentioned before in \ref{program_structure}, there is also a loop in the setup. This loop contains a while loop that has \textbf{true} as its condition. The loop is not supposed to end when the Escape key is pressed, but when it has figured out that there are no people in the picture. The reason for this is that it has to take a reference picture, which is the one used in the background subtraction.
+
+The function works under the assumption that people in front of the camera always move a little and aren't standing 100\%. The function has three thresholds. The first threshold is called \textbf{threshholdPixelChange} and is the value from which a pixel can be counted as changed.
+
+The second is \textbf{threshholdPixelsChanged} which is the threshold for how many pixels count as a person, since we are not interested if just a single pixel has changed.
+
+The third threshold, \textbf{threshholdFramesChanged}, is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row that have to taken without changes, so we can assume that nobody is on the picture. 
 \begin{lstlisting}
 void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi)
 {
@@ -348,14 +354,21 @@ void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int
 	}
 }
 \end{lstlisting}
-Before starting the while loop, the function that shall setup the background, initializes two pictures(1) and a variable that is supposed to hold the number of frames that are unchanged in a row(2). In the while loop it refreshes the pictures with a time delay of 30 milliseconds (3) and initializes a counter that shall hold how much each pixel is changed(4) and one that shall hold how many pixels are changed(5). After that the program goes through all pixel coordinates (6) and saves the difference between the pixel value of each channel in the variable pixelChange (7). When this pixelChange is bigger then the threshold that classifies a pixel as changed the counter pixelsChanged gets raised by one (8). By this when all the pixels have been looked through, the program knows how many pixels have been changed. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up(9). When to many pixels have changed the counter gets set to zero(10). 
-When enough pictures have been unchanged, the last part of the loop is entered(11). Here first the a Picture object BG gets refreshed(12). When this is done we analyse two things on the picture. The first one is where the brightest pixels position in each column of the picture is and the second where we have to place the region of interest. We find the brightest pixel by going through each pixel of each column (13). Every time we find a pixel that is brighter then the brightest pixel, until then, it's position gets saved (14). This gets saved in the integer array \textbf{brightestYatX[x]}. The number between the square brackets defines the x position of the column and the value it holds the y position, where the brightest pixel is positioned. To find out where the region of interest has to be placed the the program adds all y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check, that makes sure that the region of interest is in the frame(17).
+Before starting the while loop, \textbf{configBG()} configures the background; initializes two pictures (1); as well as a variable that will hold the number of frames that are unchanged in a row (2).
+
+In the while loop it refreshes the pictures with a time delay of 30 milliseconds (3), and it initializes a counter that holds how much each pixel is changed (4). It also has a variable that knows how many pixels that have been changed (5). After this the program goes through all pixel coordinates (6) and saves the difference between the pixel value of each channel in the variable \textbf{pixelChange} (7).
+
+When \textbf{pixelChange} is bigger than the threshold that classifies a pixel as being changed, the counter \textbf{pixelsChanged} gets raised by one (8). When all the pixels have been looked through, the program knows how many pixels have been changed. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up(9). When to many pixels have changed the counter gets set to zero (10).
+ 
+When enough pictures have been unchanged, the last part of the loop is entered (11). Here, first the  \textbf{Picture} object called \textbf{BG} gets refreshed (12). When this is done, we analyze two things on the picture. The first one is finding the brightest pixel's position in each column of the picture. The second is placing the region of interest. We find the brightest pixel by going through each pixel of each column (13). The brightest pixels ant their values are then stored (14). This gets saved in the integer array \textbf{brightestYatX[X]}. When feeding in an X value, it returns the Y position of the brightest pixel at that X position.
+
+To find out where the region of interest has to be placed, the program adds all Y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check that makes sure that the region of interest is in the frame (17).
 
 \subsection{The enter zone}
-Now the question might be why we are interested in the position of the brightest pixel in each column on the background picture. The answer is that when a person goes into the picture and produces pixels that are changed in comparison to the background he will do that in front of the LEDs. If we are looking for this person we don't want to look through all the pixels but just the ones where the LEDs are on the background picture. We are looking for the brightest pixel, because we hope to find the pixel at the position of each LED. We will come back to this in the chapter find new persons. 
+Now the question might be why we are interested in the position of the brightest pixel in each column on the background picture. The answer to that is that when a person goes into the picture and produces pixels that have been changed in comparison to the background, the person will do that in front of the LEDs. If we are looking for this person, we don't want to look through all the pixels but only the ones where the LEDs are on the background picture. We are looking for the brightest pixel, because we hope to find the pixel at the position of each LED. We will come back to this \ref{findPerson}.
 
-\section{Finding and analysing the blobs}
-Lets assume that we have examined a pixel that is found to be true or in other words changed in comparison to the background. The next thing would be to find the pixels that are connected to the pixel to categorize them as one object or a BLOB. One method that is often used is recursion (BOOK SOURCE). That's why the group wrote a recursive function that when called could go from pixel to pixel and call it self:
+\section{Finding and analysing the BLOBs}
+Let's assume that we have examined a pixel that is found to be true or in other words changed in comparison to the background. The next thing would be to find the pixels that are connected to this single pixel, categorizing them as one object, also known as a BLOB (Binary Large Object). One method that is often used is recursion. That's why a recursive function, when called, could go from pixel to pixel and call itself:
 \begin{lstlisting}
 void Picture::startFire(point startingPoint, Picture &tmpPicture)
 {
@@ -400,7 +413,13 @@ void Picture::findNextPoint(point currentPosition, Picture &tmpPicture)
 		}
 }
 \end{lstlisting}
-This function works just on small blobs. The problem was that for each pixel a new function was called causing a stack overflow. That is why they had to make a new function that wouldn't call more and more functions. The group wrote the logic behind the recursive function down and analysed what it was doing. They were able to reformulate its logic to a function that wasn't recursive, but did the same thing just in a while loop with eight cases for where the function will look next. The first four cases are the ones where the function goes forward to the next pixel, with a priority for each direction. The priorities five to eight are for when the function already had tried to move forward and the only possibility is to go back. When non of these cases occur, the function is done with the analysis and the while loop is exited.
+This function works just on smaller BLOBs. The problem was that for each pixel a new function was called causing a stack overflow. A stack overflow is when occurs when too much memory is used on the call stack and often results in the program crashing.
+
+That is why there was a need to write a new function that wouldn't call itself multiple times, since it would make the program unstable and in the end stop working. To get a better overview, the logic behind behind the recursive function was written down on paper to be analyzed.
+
+This lead to a reformulation of the logic, making the function non-recursive. However, it kept the same functionality, just in a while loop with eight cases for where the function should look next.
+
+The first four cases are the ones where the function goes forward to the next pixel, with a priority for each direction. The priorities five to eight are for when the function already has tried to move forward and the only possibility is to go back. When none of these cases occur, the function is done with the analysis and the while loop is exited, as it is shown in the following code:
 \begin{lstlisting}
 void Picture::startFireLoggingPersons(point startingPoint)
 {
@@ -537,7 +556,7 @@ public:
 The \textbf{posX}(1), the \textbf{minX}(2) and the \textbf{maxX}(3) were discussed in the previous chapter. The \textbf{moveVector}(4) is the vector with which the person has moved from the last frame to the current frame. This vector has just one dimension. The \textbf{heightOfROI}(5) is a variable that should hold the height of the region of interest where the person was found. The \textbf{id}(6) is the id that tells at which place the the person stepped into the picture. For instance the 221st person since the program was turned on gets the id 221. On the other hand the pId(7) is the id the persons id in its own array. This array is also a member of the Picture class(8). Since there are 50 elemtents for maximum 50 persons in the picture, that \textbf{pId} is always between 0 and 49. 
 The boolean and the two function will be discussed in a later chapter.
 
-\subsection{Find new person}
+\subsection{Find new person}\label{findPerson}
 When trying to find new persons the group limited the search to looking at the leftmost and the right most pixels since nobody could come from above or from the underneath the camera. Since they also limited the their previous image processing to a region of interest, they also just had to look for new persons in this area. They actually decided just to look at the brightest pixel, where hopefully the LED strip was positioned. The brightest points in the background were already found in the \textbf{configBG()} function described earlier. 
 \begin{lstlisting}
 void Picture::lookForNewPersons(int procentOfScreenUsedForEnterAndExit, int brightestYatX[])
