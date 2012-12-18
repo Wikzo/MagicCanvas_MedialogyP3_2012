@@ -1,8 +1,9 @@
 \chapter{Theory}\label{theory_part}
-This chapter goes through the various techniques used in image processing, explained in theory but not in practice. Afterwards, in chapter \ref{implementation}, we will return to the Magic Canvas program and explain how those theories were applied and implemented for this project.
+This chapter covers the various techniques used in image processing, explained in theory but not in practice. Later, in chapter \ref{implementation}, we will return to the Magic Canvas program and explain how those theories were applied and implemented.
 
 \section{A general framework for image processing}
-During this project image processing has been used to achieve the output needed. Some techniques were used to remove noise from the picture, so that the important parts get all the focus, while others were used to make the important parts more clear or to track specific objects. Image processing can be described as an umbrella term. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest on a digital image. This is achieved by using multiple steps. It should be noted, however, that the order of the steps sometimes changes, and there might be more focus on some than others. Still, this is a general framework that can be used as a good starting point. Figure \ref{fig:ip_framework} illustrates a common framework when working with image processing.
+During this third semester project, image processing has been used to achieve the goals of the project.
+Image processing is an umbrella term\footnote{An umbrella term is a single term that covers several  different items} that covers a set of tools used to process images and/or video. \citep{ip_book} writes that Image processing comes from the general field of signal processing, and that it covers ways to segment objects of interest in a digital image. This is achieved by using multiple steps. It should be noted that the order of the steps sometimes change and there might be more focus on some steps than others, depending on the specific goal. Figure \ref{fig:ip_framework} is a general framework that can be used as a good starting point.
 
 %\textbf{Image Acquisition}
 %Before anything can be processed, data needs to be captured, typically using a camera. This step is all about the setup, as well as the environment, setting, lighting and so on.
@@ -29,10 +30,10 @@ During this project image processing has been used to achieve the output needed.
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The next sections will explain the different techniques in theory, starting with basic information about digital images.
+The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The following sections will explain the different techniques in theory, starting with basic information about digital images.
 
 \section{Digital images}
-One doesn't realize all the hidden mechanics happening when capturing an image with a camera, or when editing it in a program like Photoshop or ImageJ. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about; working with color, grayscale or binary images, and the different attributes of each type.
+One does perhaps not realise the mechanics behind capturing an image with a camera, or editing it in a program like Photoshop or ImageJ. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about, working with color-, grayscale- or binary images and the different attributes of each type.
 
 \begin{figure}[htbp]
 \centering
@@ -42,51 +43,56 @@ One doesn't realize all the hidden mechanics happening when capturing an image w
 \end{figure}
 
 \subsection{Pixels}
-When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter, a sensor and an output. When light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be \citep{ip_book}.
+When a digital camera takes a picture, it uses an image sensor consisting of an array of interconnected cells. All cells hold a filter and a sensor. As light hits the cells, the energy is converted into a digital number via an analog-to-digital converter (ADC). This value is denoted a \textit{pixel} and describes how bright a specific part of the image should be \citep{ip_book}.
 
 \subsection{Bits and bytes}
-The way computers store data is using bits and bytes. One bit can be compared to a switch which can be turned on or off; however instead of on/off buttons, a computer uses digits in form of 0's and 1's.
+The way computers store data is using bits and bytes. One bit can be compared to a switch that can be turned on or off. However instead of on/off buttons, a computer uses digits in form of 1's and 0's. A byte consist of 8 bits and is a row of eight "switches" capable of holding the values 0 and 1. This provides one byte with the ability to store 256 different values, since $2^{8}$ is equal to 256. 
 
-A byte consist of 8 bits and is a row of eight "switches" with the values 0 and 1. This provides one byte to have 256 different values, since $2^{8}$ is equal to 256. In a byte the leftmost bit is the most-significant bit, while the rightmost bit is the least-significant bit. 
+%Figure \ref{fig:bits} displays the concept behind bits and bytes. To give an example of how a byte could be used, this \href{http://www.asciitable.com/}{ASCII table} shows that the letter 'K' has the number 107. To write 'K' in binary, the byte has to equal to 107 using all 8 bits. It would be written in binary form like this: 0110100.
 
-Figure \ref{fig:bits} displays the concept behind bits and bytes. To give an example of how a byte could be used, this \href{http://www.asciitable.com/}{ASCII table} shows that the letter 'K' has the number 107. To write 'K' in binary, the byte has to equal to 107 using all 8 bits. It would be written in binary form like this: 0110100.
+%The reason is that (0*128)+(1*64)+(1*32)+(0*16)+(1*8)+(0*4)+(1*2)+(1*1)=107
 
-The reason is that (0*128)+(1*64)+(1*32)+(0*16)+(1*8)+(0*4)+(1*2)+(1*1)=107
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.0\textwidth]{Pictures/Theory/BitAndByte}
-\caption{When reading bits, you start from right and go left. Each value is in the power of two.}
-\label{fig:bits}
-\end{figure}
+%\begin{figure}[htbp]
+%\centering
+%\includegraphics[width=1.0\textwidth]{Pictures/Theory/BitAndByte}
+%\caption{When reading bits, you start from right and go left. Each value is in the power of two.}
+%\label{fig:bits}
+%\end{figure}
 
 \subsection{8-bit image and grayscale images}
 In an 8-bit image, the 8-bit prefix describes the \textit{bit depth} of the image. The bit depth tells us about the amount of information that can be stored in a single pixel.
 
-An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The hue defines how pure and vivid a color is \citep{visual_story}. The information stored in each pixel is the brightness of the particular pixel. 8 bit evaluates to $2^8$ different states, meaning that a single 8-bit pixel can display 256 different levels of intensity, or in the case of a zero-based computer system, 0-255 (see figure \ref{fig:ip_grayscale}). An 8-bit image is a widely-used format for images, but it is also possible to create images with more depth and with more information for each individual pixel. Examples of that are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold any one of 65,536 different shades of gray. Simultaneously, a 32-bit depth is equal to $2^{32}$, which gives 4,294,967,296 different shades of gray.
+%The hue defines how pure and vivid a color is \citep{visual_story}. 
+
+An image with a single channel of information for each pixel in the X and Y axis is typically a grayscale image, since each pixel is limited to information about a single hue. The information stored in each pixel is the gray-level value of the particular pixel. Considering an 8-bit image each pixel can hold 256 different levels of gray. In the case of a zero-based computer system, this equates to a pixel holding a value between 0-255 (see figure \ref{fig:ip_grayscale}). While 8-bit images are widely-used as a format for images, it is also possible to create images capable of holding more than 256 gray-level values for each individual pixel. Examples of this are images in 16 and 32 bits. A 16-bit depth is equal to $2^{16}$ different states, which means that each pixel can hold one of 65,536 different gray-level values.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{Pictures/Theory/Grayscale.jpg}
-\caption{Image illustrating the 256 different gradients of an 8 bit picture.}
+\caption{Image illustrating the 256 different gray-level values of an 8 bit picture.}
 \label{fig:ip_grayscale}
 \end{figure}
  
 \subsection{Indexing an image}
 When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image.
 
-Working with pixels in a image is like working with a coordinate system. Starting in the top-left corner is (0,0). Going to the right, the X value increases; going down, the Y value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1192,666) is the bottom-most corner to the right.
+Working with pixels in a image is similar to working with a coordinate system. The image is indexed from the top-left corner instead of the bottom-left corner. Both X- and Y-axes are indexed beginning with (0,0). Going to the right the X-value increases, going down the Y-value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1191,665) is the bottom-most corner to the right.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/IndexingAPicture}
-\caption{The pixel values are stored in a coordinate system. Note that Y goes down and not up.}
+\caption{The pixel values are stored in a coordinate system. Note that the Y-axis is reversed.}
 \label{fig:ip_IndexingAPicture}
 \end{figure}
 
-In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). The size of the matrix holding the pixel values of the X and Y axis is as wide as the proportions of the image, therefore, when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023).
+In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). The size of the matrix holding the pixels, is the same as the size of the input image, in regards to the X- and Y-axis. Therefore when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023).
 
-\textbf{[WE NEED TO DESCRIBE OPENCV MATRICES BETTER!!! ... Max?]}
+\fxnote{[WE NEED TO DESCRIBE OPENCV MATRICES BETTER!!! ... Max?]}
+
+\subsection{Working with color images}
+Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a color image.
+
+There are several formats for handling color images. In this report we will only describe RGB (red-green-blue), since this is the only format we will encounter. The main difference when talking about color and grayscale images, is that color images have 3 channels, compared to the single channel in grayscale images. Each of the three channels holds the value of a specific color for each pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. Therefore, a color image does not describe the intensity of a specific color, but the amount of red, green and blue the pixels contain. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with each color channels holding a value of 255 produces a white pixel, and a pixel with the color channel values of 0 will produce a black pixel. This phenomenon is explained by the additive mixing of colors in RGB images\citep{ip_book}. Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming.% To exclude a specific color in a mathematical operation, such as red, it is necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
 
 \begin{figure}[htbp]
 \centering
@@ -95,20 +101,21 @@ In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). T
 \label{fig:opencv_matrix}
 \end{figure} 
 
-\subsection{Working with color images}
-Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a color image.
-
-There are several formats for handling color images. In this report we will only describe RGB (red-green-blue), since this is the only format we will encounter. The main difference when talking about color and grayscale images, is that color images have 3 channels, compared to the single channel in grayscale images. Each of the three channels holds the value of its specific color for each pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. Therefore, a color image doesn't describe the intensity of a specific color, but the amount of the red, green and blue the pixels contain. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with the color channels values of 255 produces a white pixel, and a pixel with the color channels values of 0 will produce a black pixel. This phenomenon can be easily understand by looking to figure \ref{fig:ip_ColorWheel}, where the additive color system of wavelengths illustrates the colors' formation.
-
-Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming. To exclude a specific color in a mathematical operation, such as red, it's necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
-
 \subsection{Binary images}
-In comparison to the above-mentioned where images are defined by bit depth and pixel information, binary pictures are represented by two colors only in form of black and white. This often correlates to using a threshold. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take one of two values.
+In comparison to the above-mentioned where images are defined by bit depth and pixel information, binary pictures are represented by two colors only in form of black and white. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take only one of two values.
 
-Using the tool correctly, it is possible to adjust the input so that only usable pixel information remains in the picture.
+\fxnote{do we use binary or pseudo binary images?}
+
+\section{Segmentation}
+
+Segmenting an image or video is the process of extracting the information you are interested in from an image or video. Segmentation is often a compound operation that consists of different sub operations, all with the same goal of getting the information you want from the input image. Before segmentation algorithms are applied, an image undergoes preprocessing. This might be converting from a color image to a grayscale image to ease the computations required. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} serves as an illustration of preprocessing and segmentation. First the image is converted to a grayscale image, this step is part of the preprocessing. Then the image is thresholded, which yields a binary image with only the pens and the heart. Further applying segmentation algorithms will help to reach the goal the programmer has in mind.
+
+Two possible problems can arise while segmenting an image. If the segmentation algorithms are too strict, and do not include enough in their extraction, the object meant to be extracted might not be complete. Therefore it might not be recognized or labelled correctly. This case is called \textit{under-segmentation}.
+
+In the opposite case if the algorithm is too sloppily designed, and too much of the input image is included in the segmentation, the final segmented image might contain too much noise, artifacts or objects might be connected even though they were separate entities. This is called \textit{over-segmentation}
 
 \section{Histograms}
-A commonly-used tool when working with digital images are histograms. Essentially a histogram provides data distribution, which is an easy way to get an overview of the frequency of events. An image histogram is a graphical representation of the pixel values. This is used to show whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram with pixel values from 0-255, which cover the entire graphic as each pixel value has a bin (column). The more often a specific pixel value is present on the image, the taller the bin will be.
+A commonly-used tool when working with digital images is the histogram. Essentially a histogram provides data distribution, which is an easy way to get an overview of the frequency of events. An image histogram is a graphical representation of how many times a specific pixel value appears. This can be used to show whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram with pixel values from 0-255, the more often a specific pixel value is present on the image, the taller the bin representing the particular pixel value will be.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -128,7 +135,7 @@ A commonly-used tool when working with digital images are histograms. Essentiall
 \end{minipage}
 \end{figure}
 
-As said before, histograms can also be used to describe the contrast in an image. The contrast is a measure of the difference of intensity levels between the dark and light areas on the picture \citep{histogram}. This means that a histogram with broad values will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
+As said before, histograms can also be used to describe the contrast in an image. The contrast is a measure of the difference of intensity levels between the dark and light areas on the picture \citep{histogram}. This means that a histogram with a broader distribution of values will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
 
 \begin{figure}[htbp]
 \centering
@@ -137,22 +144,14 @@ As said before, histograms can also be used to describe the contrast in an image
 \label{fig:histogram_contrast}
 \end{figure}
 
-\section{Segmentation}
-
-Segmenting an image or video is the process of extracting the information you are interested in from an image. Segmentation is often a compound operation that consists of different sub operations, all with the same goal of getting the information you want from the input image. Before segmentation algorithms are applied an image undergoes preprocessing, this might be converting from a color image to a grayscale image to ease the computations required. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} serves as an illustration of preprocessing and segmentation. First the image is converted to a grayscale image, this step is part of the preprocessing. Then the image is thresholded, which yields a binary image with only the pens and the heart. Further applying segmentation algorithms will help to reach the goal the programmer has in mind.
-
-Two possible problems can arise while segmenting an image. If the segmentation algorithms are too strict, and do not include enough in their extraction, the object meant to be extracted might not be complete and therefore might not be recognised or labelled correctly. This case is called \textit{under-segmentation}.
-
-In the opposite case if the algorithm is too sloppily designed, and too much of the input image is included in the segmentation. The final segmented image might contain too much noise, artifacts or objects might be connected even though they were separate entities. This is called \textit{over-segmentation}
-
 \section{Thresholding}\label{sec:Thresholding}
-Thresholding is one of the most fundamental operations when working with images. It is performed to transform a picture to binary; i.e. either black, which relates to the pixel value of 0 or white, which relates to the pixel value of 255. Making an image binary means to show the image in only black and white pixel values.
+Thresholding is one of the most fundamental operations when working with images. It is performed to transform a picture to binary, i.e. either black, which corresponds to the pixel value of 0 or white, which corresponds to the pixel value of 255. Making an image binary means to show the image in only black and white pixel values.
 
 This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not important.
 
-To determine which pixels should be completely black and which should be completely white, a \textit{threshold value} is required. Using a metaphor, the \textit{threshold value} can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied. The value used to classify which persons (or pixels) can pass and which have to stay out, have to be decided by the gatekeeper (or the programmer, in our case).
+To determine which pixels should be completely black and which should be completely white, a \textit{threshold value} is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied. The value used to classify which persons (or pixels) can pass and which have to stay out, have to be decided by the gatekeeper (or the programmer, in this case).
 
-In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. To sum this up, the formula for making a threshold is shown in equation \ref{threshold}.
+In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. The formula for calculating a threshold is shown in equation \ref{threshold}.
 \begin{equation}
   \begin{aligned}
   	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
@@ -162,7 +161,7 @@ In practice this means that pixels with values greater than a threshold is set t
 \end{equation}
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
-When setting the thresholding value it is important to think about what is wanted in the output. The effectiveness of the \textit{threshold value} will differ from image to image, depending on the contrast between the object and the background. If the background and the object are very different in color and/or contrast, it will be easy to distinguish them and choose an effective threshold value. However, if the object and background are very similar, it will be hard to choose a value to separate them properly. At that point it will be necessary to choose between losing information associated to the object of interest or to gather some background noise to preserve it. Figures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the threshold value used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}. Looking to the histograms, it is easy to tell that the leftmost is more ideal to threshold because the object and background are very different. That is shown graphically with two "mountains" in the histogram (see picture \ref{fig:SimpleThreshold}), also called a \textbf{bi-modal histogram} \citep{ip_book}. The effect of a good threshold value can be seen on picture \ref{fig:SimpleThresholdAfter}, where the output gives a clear outline of the silhouette of the woman. On the other hand, the histogram to the right does not have two clear mountains, but a big one and two smaller. This means that the color values are distributed more equally and therefore, it will be hard to define a good threshold value. The result in this case is a poor silhouette of a woman (see picture \ref{fig:ComplicatedThresholdAfter}), due to the fact that the background and the object have similar colors.
+When setting the threshold value it is important to consider what you want as the output. The effectiveness of the threshold value will differ from image to image, depending on the contrast between the object and the background. If the background and the object have a high contrast or are very different in color, it will be easy to distinguish them and choose an effective threshold value. However, if the object and background are very similar, it will be hard to choose a value to separate them properly. At that point it will be necessary to choose between losing information associated to the object of interest or to gather some background noise to preserve it. Figures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the threshold value used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}. Looking to the histograms, it is easy to tell that the leftmost is more ideal to threshold because the object and background are very different. That is shown graphically with two "mountains" in the histogram (see picture \ref{fig:SimpleThreshold}), also called a \textbf{bi-modal histogram} \citep{ip_book}. The effect of a good threshold value can be seen on picture \ref{fig:SimpleThresholdAfter}, where the output gives a clear outline of the silhouette of the woman. On the other hand, the histogram to the right does not have two clear mountains, but a big one and two smaller. This means that the color values are distributed more equally and therefore, it will be hard to define a good threshold value. The result in this case is a poor silhouette of a woman (see picture \ref{fig:ComplicatedThresholdAfter}), due to the fact that the background and the object have similar colors.
 
 %Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \ref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \ref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \ref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
 
@@ -178,27 +177,31 @@ When setting the thresholding value it is important to think about what is wante
 \label{fig:SimpleThresholdAfter}
 \end{minipage} \hfill
 \begin{minipage}[t]{0.45\textwidth}
-\caption{Bad silhouette after thresholding.} % Højre caption og label
+\caption{Poor silhouette after thresholding.} % Højre caption og label
 \label{fig:ComplicatedThresholdAfter}
 \end{minipage}
 \end{figure}
  
-This proves the point that finding a functional thresholding value is not always straightforward. As for finding a silhouette it is of great help to make a clear transition from the object and the background.
+This proves the point that finding a functional thresholding value is not always straightforward. For finding a silhouette using thresholding, it is of great help to have a distinct transition between the object and the background.
 
 \section{Morphology}
-Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. The processes related to morphology on binary images are often used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}. BLOBs are described in \ref{blob}.
+Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. Morphology on binary images can be used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}. BLOBs are described in \ref{blob}.
 
-Morphology is a a part of neighbourhood processing. Whereas point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, i.e. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}. %is the last sentence correct there?
+Morphology is a type of neighborhood processing. In neighborhood processing the neighbors of the input pixel contributes to the output of the operation.
+\fxnote{Mayhaps we need a part about point and neighborhood processing}
+
+%Where point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, i.e. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}. %is the last sentence correct there?
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{Pictures/Theory/kernel}
-\caption{Neighbourhood processing uses a kernel. Image from \citep{ip_book}.}
+\caption{Neighborhood processing uses a kernel. Image from \citep{ip_book}.}
 \label{fig:kernel}
 \end{figure}
+\fxnote{this is where we decided to throw the towel in the ring...}
 
 \subsubsection{Hit and fit}
-Whenever one decides to apply a structured element and \textit{hit} the pixels, what happens is that the function will calculate the value of the output pixel by comparing the values of the pixels on the input image and the kernel. A kernel is a grid containing weighted values. These values are either '1' or '0' if used on a binary pixel. Depending on these values and the images pixel values different output occur.
+A kernel is a grid containing weighted values. These values are either '1' or '0' if used on a binary image. Whenever one decides to apply a kernel and \textit{hit} the pixels, what happens is that the function will compare the values of the pixels on the input image to the kernel. Depending on these values and the image's pixel values different output occur.
 
 The process of hitting the pixels starts by positioning the kernel on the corner of the image, so that it operates on one pixel at a time. If one of the pixels inside the kernel is a '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
 
@@ -289,7 +292,7 @@ The effect of opening can be seen on figure \ref{fig:Opening} where a circular k
 \label{fig:Opening}
 \end{figure}
 
-\subsubsection{Closing}
+\subsubsection{Closing}\label{closing}
 When the size of the object is increased, but it's still important to constrain the measure as well as filling the holes of the objects, a good solution is to erode after the dilation. This is denoted \textit{closing} and uses eq. \ref{Closing}. As with the opening method, the size and shape of the kernel must be the same in order to obtain the desired result.
 
 The effect of this operation can be seen in figure \ref{fig:Closing}: even though the holes are filled and the object maintains its original size, the noise of the background is still there. Therefore, it will be necessary to apply either closing or a BLOB analysis to delete those small objects.
@@ -329,33 +332,33 @@ When the purpose of implementing these operations is to find the edges, it is im
 \end{figure}
 
 \section{Region of interest (ROI)}\label{roi}
-A common thinking when dealing with images is that the more pixels, the better quality. However, this is not always true. Since there are more pixels to loop through, it takes longer time for the computer to analyze and process the pixel data. The more pixels to process, the longer time is required for the program to do the calculations.
+When dealing with images some might think that more pixels is always better. However this is not always true. Since there are more pixels to loop through, it takes longer time for the computer to analyze and process the image data. The more pixels to process, the more time is required for the program to do the necessary calculations.
 
-When working with video, it is important to maintain a stable framerate. The more information needed to process, the slower the overall program will be. One way to minimize the amount of data is to use what is called a \textit{region of interest} (ROI). As the name suggests, the point would be to choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are expected to be, to track or recognize a face and discard the rest of the body. This region is usually enclosed in a rectangle and only the pixels inside this rectangle are being processed, ignoring all the pixels outside of the ROI. This prevents unnecessary processing and optimizes the speed of the program by decreasing the amount of data.
+When working with video, it is important to maintain a stable frame rate. The more information needed to be processed, the slower the program will be. One way to ease the computational requirements is to use what is called a \textit{region of interest} (ROI). As the name suggests, the point is to choose a specific region of the image that is of interest. This could for instance be the upper part of an image where heads are expected to be. This region is usually enclosed in a rectangle and only the pixels inside this rectangle are being processed, ignoring all the pixels outside of the ROI. This prevents unnecessary processing and optimizes the speed of the program by decreasing the amount of data.
 
 An example of how this could be used is taking a photo where only the head is of interest (see picture \ref{fig:Region of Interest}).
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/RegionOfInterest.jpg} 
-\caption{If one needs to only track the face, a region of interest can be applied.} 
+\caption{Illustrating the principle of region of interest} 
 \label{fig:Region of Interest} 
 \end{figure} 
 
 \section{Filters}
-A filter can be applied to an image to either remove unwanted noise or to blur the image. In most of the cases, when thresholding an image, noise appears. Either as small dots in the background or maybe small holes in the wanted area. By using filters on the image it is possible to remove a lot of the noise. Two techniques will be described in this section: the the mean and median filters.
+A filter can be applied to an image to either remove unwanted noise or to blur the image. In most of the cases, when thresholding an image, noise appears. Noise could be in form of small dots in the background or small holes in the object of interest. By using filters on the image it is possible to remove noise. Two techniques will be described in this section: The mean and median filters.
 
 \subsubsection{Mean filter}
-One method of image filtering is the \textit{mean filter}. As the name implies, a mean filter takes an input image and calculates the mean value of a given pixel to use it as the output. This type of neighborhood processing takes the average of the input pixel and its surrounding pixels and thereby decides the value of the output pixel (see figure \ref{fig:neigh_pros}).
+One method of image filtering is the \textit{mean filter}. As the name implies, a mean filter takes an input image and calculates the mean value of a given pixel and outputs this value. This type of neighborhood processing takes the average of the input pixel and its surrounding pixels and thereby decides the value of the output pixel (see figure \ref{fig:neigh_pros}).
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/neighborhood_processing.png} 
-\caption{Practical neighborhood processing. All the surrounding pixels contribute to the average value of the output. From \citep{ip_book}.} 
+\caption{Practical neighborhood processing. All the surrounding pixels contribute to the value of the output. From \citep{ip_book}.} 
 \label{fig:neigh_pros} 
 \end{figure}
 
-The calculations behind the average is shown in eq. \ref{Mean filter}.
+The calculations behind the average is shown in equation \ref{Mean filter}.
 \begin{equation}
 	\begin{aligned}
 	\text{Mean} = \frac{\text{Sum of input and neighboring pixels}}{\text{Number of pixels}}
@@ -363,10 +366,10 @@ The calculations behind the average is shown in eq. \ref{Mean filter}.
 	\end{aligned}
 \end{equation}
 
-Mean filters are often used to blur an image, e.g. when a person's face should stay anonymous. How much blur depends on the kernel's size \citep{ip_book}.
+Mean filters are often used to blur an image, e.g. when a person's face should stay anonymous. The amount blur depends on the kernel's size \citep{ip_book}.
 
 \subsubsection{Median filter}
-The second method is the \textit{median filter}. This works by taking the value from a pixel, as well as its sorrounding neighbors, and order them, so that the smaller values are followed by bigger values (see \ref{Order list of pixels.}).
+The second method is the \textit{median filter}. This works by taking the value from a pixel, as well as its surrounding neighbors and ordering them so that the lowest value appears to the most-left and the highest value to the far-right. The method outputs the value in the very middle of the list. (see \ref{Order list of pixels.}).
 
 \begin{equation}
 \begin{aligned}{
@@ -375,31 +378,31 @@ The second method is the \textit{median filter}. This works by taking the value 
 	\end{aligned}
 \end{equation}
 
-Median filters are good for removing noise, especially the so-called "salt and peper noise", as shown in \ref{fig:salt} \citep{ip_book}.
+Median filters are good for removing noise, especially the so-called "salt and pepper noise", as shown on figure \ref{fig:salt} \citep{ip_book}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/saltNoise}
-\caption{If one have an image with noise like this, a median filter can be used to remove it.}
+\caption{A median filter can be used to remove salt and pepper noise similar to this.}
 \label{fig:salt}
 \end{figure}
 
 \section{Border problem}
-\textbf{We need to write about the border problem, see IP slides about neighborhood processing - Gustav}
+In neighborhood processing a kernel is applied to an image. A kernel size of 3x3 would mean that the kernel can not be centered on the very edge of the input image. A kernel centered on the first pixel in the image will not have enough neighbors to be susceptible to neighborhood processing. This means that the output image will be smaller than the input image. This can be circumvented by either increasing the size of the output image after the neighborhood processing, by increasing the size of the input image before neighborhood processing or by using special kernels for the edge-pixels.
 
 \section{Background subtraction}
 A way to detect changes in a scene and extract an object is using \textit{background subtraction}. As the name implies, it is done by subtracting the background from the scenery, so that only changes are shown.
 
-In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. This is important as the background should be static. Imagine that sunshine is let inside the room; then the light will change together with the sun's position, and changes will be seen everywhere and thereby produce noise that gives an inaccurate result.
+In order to be able to use background subtraction efficiently, a controlled setup is required. The optimal setup is an indoor environment with controllable lights. This is important as the background should be static. Imagine that sunshine is let inside a room, the light will change together with the sun's position. The difference in illumination would mean that changes will be seen everywhere and thereby produce noise that gives an inaccurate result.
 
-It is not realistic that each pixel in the background keeps the exact same pixel's value all the time. Therefore, a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
+It is not realistic that each pixel in the background keeps the exact same pixel-value at all times. Therefore a threshold value is required for two main reasons. First of all to make the changes in the scene more distinct from the background, but also to have a threshold value in which the background may vary.
 
 Two questions have to be considered when doing background subtraction:
 \begin{enumerate} 
 	\item Is the background consistent? 
-	\item Which threshold value would be optimal to make the picture binary and distinguish changes from the background? 
+	\item Which threshold value would be optimal to make the image binary and distinguish changes from the background? 
 \end{enumerate}
 
-If the first point is false and the background is not consistent, there is a way to automatically update the background pixels' values. The formula is shown in \ref{AutomaticBackground}.
+If the first point is false and the background is not consistent, then there is a way to automatically update the background pixels' values. The formula is shown in \ref{AutomaticBackground}.
 
 \begin{equation}
 	\begin{aligned}
@@ -410,11 +413,13 @@ If the first point is false and the background is not consistent, there is a way
 
 Where $r(x,y)$ is the reference image, $f(x,y)$ is the current image, and $\alpha$ is the weighting factor. The weighting factor $\alpha$ defines how fast the reference image updates. A typical weighting factor value is  $\alpha = 0.95$ \citep{ip_book}.
 
-Now that the background is updating automatically, it is time to proceed to the next question: defining the threshold value.
+Now that the background is updating automatically, it is time to proceed to the next bullet point: defining the threshold value.
 
-To do this, it is necessary to check how much the background pixels' values vary. This can be done by making a histogram for a group of pixels in the background and check the values after recording a few minutes. This should give an overview of how much the pixels' values vary. Let's say that this procedure shows that an efficient threshold value is 20. This means that if a pixel on the background has an intensity value of 80, then the pixels' values captured between $60-100$ will not produce any changes, as it is understood as part of the background. However, pixels below 60 and above 100 will will be considered as an object and therefore, highlighted.
+A threshold value is an interval that defines how much a pixel can vary in intensity and still be considered as the background.
 
-This type of thresholding is called a \textit{global threshold}, which means that the threshold value is the same in every pixel in the scene \citep{ip_book}. Imagine a scene where only part of the picture is being affected by lights. Then a unique and local threshold value for each pixel could be useful. This is possible using the eq. \ref{localthreshold}.
+In order to define a threshold value, it is necessary to check how much the values of the individual pixels vary in the background. This can be done by capturing a series of pixel-values for a group of background pixels over an amount of time and checking the minimum and maximum values. This should give an overview of how much the pixels' values vary. Let's say that this procedure shows a variation of 20, this means that the optimal threshold value is 20. If a pixel on the background has an intensity value of 80, then the pixels' values captured between 60 and 100 will not produce any changes, as it is considered part of the background. However, pixels below 60 and above 100 will be considered an object and therefore highlighted.
+
+This type of thresholding is called a \textit{global threshold}, which means that the threshold value is the same in every pixel in the scene \citep{ip_book}. Imagine a scene where only part of the picture is being affected by lights. Then a unique and local threshold value for each pixel could be useful. This is possible using the equation\ref{localthreshold}.
 
 \begin{equation}
 	\begin{aligned}
@@ -426,7 +431,10 @@ This type of thresholding is called a \textit{global threshold}, which means tha
  	\end{aligned}
 \end{equation} 
 
-Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. This formula creates a local threshold that answers to the second question. When both questions have been considered, the background subtraction is ready to be applied. In every frame in the scene, each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows, the pixel will be highlighted, revealing an object in the picture.
+Where $\beta$ is the scaling factor, and $\sigma(x,y)$ is the standard deviation at the position $(x,y)$. This formula creates a local threshold. 
+
+When a static background has been achieved and a suitable threshold value chosen, the background subtraction is ready to be applied. In every frame in the scene, each pixel will be checked for a possible change. If there is a change larger than what the threshold value allows, the pixel will be highlighted, revealing an object in the picture.
+
 
 \section{BLOB analysis}\label{blob}
 A common task when dealing with images is determining if the image contains a particular object or shape. The term \textit{BLOB} is an acronym for Binary Large Object and refers to a region of connected pixels in a binary image \citep{ip_book}. This technique is used to extract meaningful information from images. This is achieved by separating the pixels in points or regions that differ in properties, like brightness or color changes (i.e., their value), and classifying them into one of two categories: the foreground (pixels with a non-zero value) and the background (pixels with values equal to zero).
