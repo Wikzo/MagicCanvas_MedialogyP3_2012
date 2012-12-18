@@ -72,27 +72,23 @@ In the project, two cameras were considered: a normal RGB web camera and a simil
 
 \subsection{Illuminating the scene}
 
-It is important that the lighting in the scene is constant. Figure \ref{fig:scene_light} illustrates the same scene captured at different illuminations. Imagine a program that is intended to find a the shelves in the image. 
-
-In figure \ref{fig:scene_thresholded} this 
-
- Looking at the corresponding picture \ref{fig:scene_thresholded}, after the transformations the program will easily find the shelves on the right picture. But on the picture of the left, the program will not find the shelves due to the illumination.
+It is important that the lighting in the scene is constant. Figure \ref{fig:scene_light} illustrates the same scene captured at different illuminations. Imagine a program that is intended to find the shelves in the image. Before any segmentation is applied, the image is converted to grayscale. Then the image is segmented using a threshold. In figure \ref{fig:scene_thresholded} the output is displayed. It is easy for the imaginary program to find the shelves in the right image, but not possible in the left, due to the difference in illumination.  
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/HjoerringLibrary/scene_lighting.png} 
-\caption{The difference in illumination on different times of day is clearly visible when compared next to each other} 
+\caption{The difference in illumination on different times of day is clearly visible when compared next to each other.} 
 \label{fig:scene_light} 
 \end{figure}
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/HjoerringLibrary/scene_lighting_thresholded.png} 
-\caption{The same image converted to 8bit grayscale and thresholded.} 
+\caption{The same image converted to 8-bit grayscale and thresholded.} 
 \label{fig:scene_thresholded} 
 \end{figure}
 
-To avoid running into issues with variances on the illumination, it was decided to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration that of having the ability to filter the camera input, allowing only infrared light to pass. The following options were considered:
+To avoid running into issues with variances in the illumination, it was decided to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration of having the ability to filter the camera input, allowing only infrared light through. The following options were considered:
 
 \begin{itemize}
 \item Using the library's lighting.
