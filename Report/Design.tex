@@ -1,11 +1,7 @@
-\chapter{Design and setup}\label{implementation}
-This chapter of the report will focus on design and implementation of the project. This chapter of the report will cover all material.... bla bla
+\chapter{Graphical design}\label{implementation}
+Several decisions were made regarding the graphical style of the program. The drawings should be easy to distinguish, funny-looking and related to the Christmas theme. 
 
-\section{Designing the graphical layout}
-\subsection{Drawing the scene}
-Several decisions were made regarding to the graphical style of the program. The drawings should be easy to distinguish, funny-looking and related to the Christmas theme. 
-
-The first step was to draw a suitable background that ultimately would create a Christmas mood. The original idea was to have a few different sets to choose from, depending on the time of the day or week. Due to time constrains only one background was drawn in the end. As shown on figure \ref{fig:ip_Background}, it consists on some mountain hills and a blue sky. It was important not to have too many details, since the focus should be on the characters themselves.
+The first step was to draw a suitable background that ultimately would create a Christmas mood. The original idea was to have a few different sets to choose from, depending on the time of the day or week. Due to time constrains only one background was drawn in the end. As shown on figure \ref{fig:ip_Background}, it consists of some mountain hills and a blue sky. It was important not to have too many details, since the focus should be on the characters themselves.
 
 \begin{figure}[htbp]
 \centering
@@ -14,7 +10,7 @@ The first step was to draw a suitable background that ultimately would create a 
 \label{fig:ip_Background}
 \end{figure}
 
-In addition, due to light conditions at the library, the colors chosen for the background are bright (see figure \ref{fig:background_projector}), in order to get an usable illustration from the projector. If the colors were too dark, it would be difficult to distinguish them on the canvas.
+In addition, due to light conditions at the library, the colors chosen for the background are bright (see figure \ref{fig:background_projector}), in order to get an usable output from the projector. If the colors were too dark, it would be difficult to see them properly on the canvas.
 
 To make the scene feel more alive, Christmas trees were added, as well as falling snowflakes.
 
@@ -26,19 +22,18 @@ To make the scene feel more alive, Christmas trees were added, as well as fallin
 \end{figure}
 
 \subsection{Drawing the characters}
-In addition to the background a group of Christmas characters were drawn. It was decided to have a small selection of characters that were visually different from each other in, and behaved differently.
-The different characters are: A snowman, a pixie boy, a pixie girl, an angle, and a squirrel.
+In addition to the background a group of Christmas characters were drawn. It was decided to have a small selection of characters that were visually different from each other. The different characters are: a snowman, a pixie boy, a pixie girl, an angle, and a squirrel.
 
-It was decided to draw the characters by hand instead of using pre-made drawings from the Internet. In the beginning, outlines of the characters were drawn on sheets of paper (see figure \ref{fig:boy_sketch}). When the drafts were satisfying, they were imported to the computer and re-drawn in Photoshop using drawing tablets. The drawing tablets have pressure sensors, which make the line's thickness change according to pressure of the pen. Having different strokes makes the characters spring more to life. The last stage was then to color the characters, keeping a contrast to the background.
+It was decided to draw the characters by hand, instead of using pre-made drawings from the Internet, to achieve a personal art style. In the beginning, outlines of the characters were drawn on sheets of paper (see figure \ref{fig:boy_sketch}). When the drafts were satisfying, they were imported to the computer and re-drawn in Photoshop using drawing tablets. The drawing tablets have pressure sensors, which make the line's thickness change according to pressure of the pen. Having different strokes makes the characters spring more to life. The last step was then to color the characters, keeping a contrast to the background.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.30\textwidth]{Pictures/Design/boy_sketch}
+\includegraphics[width=0.50\textwidth]{Pictures/Design/boy_sketch}
 \caption{The characters were first drawn on paper, then imported to and colored in Photoshop.}
 \label{fig:boy_sketch}
 \end{figure}
 
-It was decided to give the characters a cartoon-like look, to appeal to a broader target group. This was done by using a variety of techniques. One of which was oversizing body parts e.g. oversized heads. Two of the characters, the snowman and the angel, are shown on figures \ref{fig:PixieGirl} and \ref{fig:Angel}.
+It was decided to give the characters a cartoon-like look, to appeal to a broader target group. This was done by using a variety of techniques. One of which was oversized body parts, e.g. oversized heads. Two of the characters, the snowman and the angel, are shown on figures \ref{fig:PixieGirl} and \ref{fig:Angel}.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -58,7 +53,7 @@ It was decided to give the characters a cartoon-like look, to appeal to a broade
 \end{figure}
 
 \subsection{Making animations}
-It was decided to give three animations for each movement, in order to achieve more vivid characters. This creates a sense of motion, and makes the characters appear more life-like. The primary animation is an idle stance that will play whenever a visitor is standing still in front of the camera (see figure \ref{fig:squirrel_animation}), plus two walking animations: one for each direction (left and right).
+It was decided to give three animations for each character, in order to achieve more vivid characters. This creates a sense of motion, and makes the characters appear more life-like. The primary animation is an idle stance that will play whenever a visitor is standing still in front of the camera (see figure \ref{fig:squirrel_animation}). In addition, there are two walking animations: one for each direction (left and right).
 
 \begin{figure}[htbp]
 \centering
@@ -67,7 +62,7 @@ It was decided to give three animations for each movement, in order to achieve m
 \label{fig:squirrel_animation}
 \end{figure}
 
-The animations were created as sprite sheets, which is a single image containing multiple frames. This approach was decided for practical purposes, since it is relatively easy to create a single character and then move small parts of it for each frame, such as arms, legs and eyes. In the program the image is looped through, showing each frame for an amount of time. Figure \ref{fig:Design_PixieBoyWalking} shows an example of the pixie boy walk cycle that will play whenever a visitor is moving.
+The animations were created as sprite sheets, which is a single image containing multiple frames. This approach was decided for practical purposes. In the program, the sprite sheet is looped through, showing each frame for a specific amount of time. Figure \ref{fig:Design_PixieBoyWalking} shows an example of the pixie boy's walk cycle that will play whenever a visitor is moving.
 
 \begin{figure}[htbp]
 \centering

@@ -1,57 +1,7 @@
-\section{Camera theory}
-
-An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition}. The process is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. But in order to understand how this works it is necessary to have a basic understanding of the physics behind light.
-
-\begin{figure}[htbp] 
-\centering 
-\includegraphics[width=0.5\textwidth]{Pictures/Theory/light_from_sun.png} 
-\caption{Light as captured by a camera} 
-\label{fig:light_cam} 
-\end{figure}
-
-Light is a form of electromagnetic radiation that can be viewed as both waves and particles. This duality is however not something that will be covered within this chapter, as the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons. Photons can be described by three properties:
-
-\begin{itemize}
-\item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
-\item \textbf{Frequency} - Measured in oscillations per second, Hz, denoted $f$.
-\item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
-\end{itemize}
-
-The formulas for these properties are as follows:
-\begin{itemize}
-\item To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
-\begin{align}
-\centering 
-\lambda = \frac{C}{f}
-\label{eq:wavelenght} 
-\end{align}
-where {$C$} is the speed of light.
-\item The second equation, equation \ref{eq:e_v}, describes the energy:
-\begin{align}
-\centering
-E = \frac{hC}{\lambda}
-\label{eq:e_v} 
-\end{align}
-Where {$h$} is Planck's constant, which describes the proportional relationship between the energy of a photon and the frequency of the corresponding electromagnetic wave.
-\end{itemize}
-
-The wavelength of the photon determines what color will be perceived. As known from physics, the speed of light is constant, thus changing the frequency will alter the wavelength and therefore the perceived color. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
-
-\begin{figure}[htbp] 
-\centering 
-\includegraphics[width=1\textwidth]{Pictures/Theory/em_rad.png} 
-\caption{Figure illustrating the full spectrum of electromagnetic radiation.} 
-\label{fig:em_rad} 
-\end{figure}
-
-\subsection{Digital image acquisition}
-When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye, in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that can capture color images has three types of sensors in each pixel\citep{ip_book}.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRACTICAL LIGHTING PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FOR SETUP - cameras %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Image acquisition in the project}
-In the project, two cameras were considered: a normal RGB web camera and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
+In the project, two cameras were considered: a normal RGB web camera and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared light. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
 
 
 \begin{figure}[htbp] 
@@ -60,8 +10,6 @@ In the project, two cameras were considered: a normal RGB web camera and a simil
 \caption{Figure illustrating how the IR filter only allows infrared light to pass.} 
 \label{fig:ir_filter} 
 \end{figure}
-
-\fxnote{CORRECT THE GOD DAMN PICTURE}
 
 %\subsection{Infrared light}
 %Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. It can be used to illuminate things without having a visible component to the light, but this requires a device able to capture IR. %Some cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
@@ -90,11 +38,13 @@ It is important that the lighting in the scene is constant. Figure \ref{fig:scen
 
 To avoid running into issues with variances in the illumination, it was decided to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration of having the ability to filter the camera input, allowing only infrared light through. The following options were considered:
 
+%%%%%%%%%%%%%%%%%%%%%%%% Section describing different illumination options
+
 \begin{itemize}
 \item Using the library's lighting.
 \item Making adjustments to the lighting at the library.
-\item Bringing normal lights to light the scene.
-\item Building our own light system to light the scene.
+\item Bringing normal lights to illuminate the scene.
+\item Building our own light system to illuminate the scene.
 \end{itemize}
 
 \subsubsection{Using the library's lighting}
@@ -111,6 +61,9 @@ Building a lighting system from scratch to light the scene would allow a tailore
 
 \subsection{Concluding on the setup}
 Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting non viable. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the projector hard to see. Bringing normal lights would result in the same problem. This meant that the final decision was to create a custom infrared lighting for the project.
+
+
+%%%%%%%%%%%%%%%% practical LED-part
 
 \section{building the LEDs}
 For illuminating the scene IR LEDs were chosen because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}, a 5mm with a cone of light of 16 degrees and a 3mm with a cone of light of 130 degrees.
@@ -138,7 +91,7 @@ While the 3mm LEDs quickly proved too weak, the 5mm LEDs were tested further in 
 
 \begin{figure} [htbp]
 \centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/sanded_leds.jpg}
+\includegraphics[width=0.50\textwidth]{Pictures/Theory/sanded_leds.jpg}
 \caption{The LEDs have been sanded down in progressive order from left to right.}
 \label{fig:leds_sanded}
 \end{figure}
