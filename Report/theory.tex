@@ -30,7 +30,46 @@ For the system to actually know if an object is a hand or not, it has to do some
 %% Maybe a little too blabla and too long sentences - Gustav %%
 %% I moved a paragraph to the begining of the section and changed some things. But I'm still not sure if the above part is useful, as we will be describing everything again... - Marta %%
 
-The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The following sections will explain the different techniques in theory, starting with basic information about digital images.
+The combination of these different techniques makes it possible to get a functional program, but before using them, it is necessary to know how they work. The following sections will explain the different techniques in theory, starting with a basic information about digital image acquisition.
+
+\section{Image acquisition}
+
+An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition}. In this section the basics of image acquisition using a digital camera will be explained. Though it is necessary to have a basic understanding of the physics behind light to get through this process.
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=0.5\textwidth]{Pictures/Theory/light_from_sun.png} 
+\caption{Light as captured by a camera} 
+\label{fig:light_cam} 
+\end{figure}
+
+Light is a form of electromagnetic radiation that can be viewed as both waves and particles. This duality is however not something that will be covered within this section, as the wave model is sufficient to build the foundation of the understanding we need. A light wave is a small packet of energy travelling through space. These energy packets are known as photons and they can be described by three properties:
+
+\begin{itemize}
+\item \textbf{Wavelenght} - Measured in meters from wave top to wave top and denoted as $\lambda$.
+\item \textbf{Frequency} - Measured in oscillations per second, Hz, denoted $f$.
+\item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
+\end{itemize}
+
+To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
+\begin{align}
+\centering 
+\lambda = \frac{C}{f}
+\label{eq:wavelenght} 
+\end{align}
+where {$C$} is the speed of light.
+
+The wavelength of the photon determines what color will be perceived. As the speed of light is constant, changing the frequency will alter the wavelength. When photons impact objects, the material provokes a refraction that changes the frequency of the wavelength and therefore, a color can be perceived. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
+
+\begin{figure}[htbp] 
+\centering 
+\includegraphics[width=1\textwidth]{Pictures/Theory/em_rad.png} 
+\caption{Figure illustrating the full spectrum of electromagnetic radiation.} 
+\label{fig:em_rad} 
+\end{figure}
+
+\subsection{Digital image acquisition}
+When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye. In place of photoreceptors sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can capture color images has three types of sensors in each pixel\citep{ip_book}.
 
 \section{Digital images}
 One does perhaps not realize the technical aspects happening when capturing an image with a camera. In fact, several different computations are happening simultaneously. To be able to get some useful information from images and use it for further purposes, such as altering the image in an image editing program, it is necessary to have some fundamental knowledge about how images work on a computer. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} shows what this chapter is all about: working with color, grayscale, and binary images, as well as the different attributes of each type.
@@ -367,7 +406,7 @@ A common task when dealing with images is determining if the image contains a pa
 The process of BLOB analysis will be split in three main steps: \textit{extraction} of the BLOBs, \textit{representation} of the BLOBs and lastly, \textit{classification} of the BLOBs \citep{ip_book}.
 
 \subsection{BLOB extraction}
-To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connectivity and the 4-connectivity kernels \citep{ip_book}. Even though the 8-connectivity kernel is more accurate, it requires more computations and therefore needs more time to process the image.
+To isolate BLOBs in a binary image, we need to know if two pixels are connected or not. This is done by applying algorithms that will help to determine the connectivity of the pixels, but also the number of BLOBs contained in an image. The most commonly-used kernels in BLOB extraction are the 8-connectivity and the 4-connectivity kernels \citep{ip_book}. As the 8-connectivity kernel checks for more connectivity, it requires more computations.
 
 \subsubsection{Grass-fire algorithm}
 One of these connected component labelling algorithms is the \textit{recursive grass-fire algorithm}, used to label the regions of foreground pixels to separate the BLOBs from the background.
@@ -387,7 +426,7 @@ Whenever it finds an object, the algorithm labels the pixel in the output image 
 
 The algorithm now looks to the possible directions around the new pixel, starting with the pixel on the right. This process is represented on figure \ref{fig:8connecK}. Once it finds a non-zero pixel value, the algorithm once again centers its attention on it and repeats the process, labelling the pixel with the number of the previous one. At the end of that row the algorithm will check the surrounding pixels on the row below. If a non-zero pixel value is found, the algorithm will continue the process of burning and labelling pixels, otherwise the algorithm will start its way back to the beginning checking the surrounding pixels one by one to verify that it has checked all the possible directions and non-zero pixels values.
 
-Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using the same picture. Although the 8-connectivity kernel is more accurate it seems to be unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
+Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how the choice of a certain kernel will affect the final result of the algorithm using the same picture. The 8-connectivity kernel is unable to separate the different objects as intended in this particular case, whereas the 4-connectivity kernel finds the different objects performing less operations.
 
 \begin{figure}[htbp]
 \centering
@@ -397,84 +436,20 @@ Comparing figures \ref{fig:8connecK} and \ref{fig:4connecK}, we can realize how 
 \end{figure}
 
 \subsection{BLOB representation}
-The classification of the BLOBs is made by creating a prototype model of the object that we are looking for, in order to state the features the BLOB should contain, and the deviations that would be acceptable. This process consists of two steps: determining the features of the BLOB; and matching the features with the prototype to determine if they are part of the type that we were looking for.
+When looking for several different features, the classification of the BLOBs can be made by creating a prototype model of the object that we are looking for. This will allow to state the features that the BLOBs should contain, and the deviations that would be acceptable. This process consists of two steps: determining the features of the BLOBs; and matching the features with the prototype to determine if they belong to the expect ones. Still, a few features like the area, the perimeter and the circularity can already help classifying the BLOBs \citep{ip_book}.
 
-This means that a few features like the area, the perimeter and the circularity will be calculated \citep{ip_book}.
 \subsubsection{The features}
-
-%%% Maybe delete this section? - Gustav, Dec 14 %%%
-%%% Maybe delete this section? - Gustav, Dec 14 %%%
-\textbf{Maybe delete this section? - Gustav, Dec 14}
 
 \begin{itemize}
 \item \textbf{Area}
-The importance of calculating features like the area of a BLOB is well understood if we keep in mind that one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOB.
-%\item \textbf{Bounding box and bounding circle}
-%Both bounding box and bounding circle are methods that operate in a similar way, as the particularity of these features is to find the minimum box or circle that can enclose the BLOB. The difference between these two, besides the shape, is the way they operate. While the bounding box is the minimum rectangle and operates by finding four pixels; $x_max$, $x_min$, $y_max$ and $y_min$, which represent the minimum and maximum X and Y values than can create a box that encompasses the BLOB. The bounding circle is the minimum circle and needs to find first the center of the BLOB.
-%\item \textbf{Convex hull}
-%The minimum convex polygon that contains the BLOB can be described as wrapping a piece of strings tightly around the BLOB. Starting from the topmost pixel of the BLOB and searching to the right along a horizontal line and in a clockwise motion till it finds a BLOB pixel and creates the first side of the polygon.
-%\item \textbf{Bounding box ratio}
-%This is the height of the bounding box divided by the width, indicating the height-to-width ratio of the BLOB.
-%\item \textbf{Compactness}
-%The compactness of a BLOB is the ratio of the BLOBs area to the ratio of the bounding box. See eq. \ref{compact}.
-%\begin{equation}
-%	\begin{aligned}
-%	\text{Compactness}=\displaystyle\frac{BLOB's Area}{width\cdot{height}}
-%	\label{compact}
-%	\end{aligned}
-%\end{equation}
-
-%\item \textbf{Center of mass}
-%In physics, the center of mass is the unique point where the mass of an object is equally distributed. The common example to explain this would be the place where you have to place your finger on an object in order to have it balanced.
-
-%The distribution of mass is balanced around the center of mass and the average of the weighted position coordinates of the distributed mass defines its coordinates. On a binary image, this center will be the average X and Y positions of the object on the image.
-
-%Its coordinates can be found using eq. \ref{centermass}.
-
-%\begin{equation}
-%	\begin{aligned}
-%  		\ \text{Center of Mass} = \left\{ \begin{array}{ll}
-%         x_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N x_{i}\\
-%         y_{c}=\displaystyle\frac{1}{N} \displaystyle\sum_{i=1}^N y_{i}
-%        \end{array} \right . \ 
-%\label{centermass} 	
-% 	\end{aligned}
-%\end{equation} 
-
-
-%Where N is the number of pixels in the BLOB and $x_i$ and $y_i$ are the coordinates of each single pixel inside that BLOB. In some situation where we will need to calculate the center of mass of an object with annexed parts, a median filter or an erosion before using the previous formula would be appropriate.
-
-%\item \textbf{Center of the bounding box}
-%As the bounding box is a rectangle that surrounds the BLOB, the center of the bounding box is an approximation of the center of mass and can be found with eq. \ref{BoundingBoxCenterX} and \ref{BoundingBoxCenterY}.
-
-%\begin{equation}
-%	\begin{aligned}	x_{bb}=x_{min}+\displaystyle\frac{x_{max}-x_{min}}{2}=x_{min}+\displaystyle\frac{x_{max}}{2}-\displaystyle\frac{x_{min}}{2}=\displaystyle\frac{x_{min}+x_{max}}{2}
-%	\label{BoundingBoxCenterX}
-%	\end{aligned}
-%\end{equation}
-
-%\begin{equation}	
-%	\begin{aligned}
-%	y_{bb}=y_{min}+\displaystyle\frac{y_{max}-y_{min}}{2}=y_{min}+\displaystyle\frac{y_{max}}{2}-\displaystyle\frac{y_{min}}{2}=\displaystyle\frac{y_{min}+y_{max}}{2}
-%	\label{BoundingBoxCenterY}
-%	\end{aligned}
-%\end{equation}
-
-
+The importance of calculating features like the area of a BLOB is well understood since one of the first steps while classifying the detected objects is to delete those that are bigger or smaller than the prototype. One way of doing this is by calculating the area of the BLOB.
 \item \textbf{Perimeter}
 Scanning along the border of the BLOB and summing the pixels, we obtain the length of the contour of the BLOB. In image processing, this could be done by using morphology techniques like erosion to get a smaller version of the object and then subtracting this to the input image in order to get the edges.
 \item \textbf{Circularity}
-Circularity is a common shape-factor that depends on the perimeter and the area. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle. See eq. \ref{Circularity}.
-
-\begin{equation}	
-	\begin{aligned}
-	{Circularity}=\displaystyle\frac{BLOB's \;\; Perimeter}{2 \; \sqrt{\mathstrut \: \pi \: \cdot \: {BLOB's \;\; Area}}}
-	\label{Circularity}
-	\end{aligned}
-\end{equation}
+Circularity is a common shape-factor that depends on the perimeter and the area. There are several ways to define how circular an object can be, but usually applying the ratio to get a value lower or equal to 1 will indicate how circular the BLOB is, where 1 is a complete circle.
+\end{itemize}
 
 After all the features are extracted, a binary object can be defined by its features' values that would be stored into a feature vector in order to have a list where to start the BLOB classification.
-\end{itemize}
 
 % IMAGE WITH OBJECTS AND TABLE WITH DATA
 
@@ -495,52 +470,4 @@ After all the features are extracted, a binary object can be defined by its feat
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{BLOB classification}
-Once we have extracted and represented each object on the binary image by its features, we need to determine the minimum characteristics that the object has to comply to in order for it to be selected. For this reason we will define a \textit{prototype model} based on ideal measurements that is used as a reference to which the extracted values are compared. As the real object will not be perfect, a deviation is needed to create a tolerance range.
-
-Using two features like the circularity and the area, we will create a frame, also known as a \textit{box classifier}, and every object belonging to that \textit{feature space}, also know as \textit{decision region}, will then be understood as a desired object.\citep{ip_book}.
-
-Another way to achieve this would be to create a \textit{statistical classifier} using means and variances of the features, where the task would be to measure the distance between a new feature vector and the prototype. The smaller the distance between those two, the more likely the object will be part of the same type. But before getting to this point, we need to threshold the distance and consequently have a binary decision region like the box classifier. This time, the region will not be a rectangle but an ellipse, commonly known as the \textit{weighted Euclidean distance}, as shown in eq. \ref{Euclidean}.
-
-\begin{equation}	
-	\begin{aligned}
-{WED(\vec{f}_{i} \; , \: prototype)} \: = \: \sqrt{\mathstrut \:  \displaystyle\frac{(f_{i}(cir) \: - \: mean(cir))^2}{variance(cir)} \: + \: \displaystyle\frac{(f_{i}(area) \: - \: mean(area))^2}{variance(area)}}
-\label{Euclidean}
-	\end{aligned}
-\end{equation}
-
-The final result is the distance between the vector {$\vec{f}_{i}$} and the prototype. The values of {$f_{i}(cir)$} and {$f_{i}(area)$} correspond to the circularity and the area of every object found on the binary image. For an image with a number of {$N$} different features, the result would be obtained by eq. \ref{Euclidean1}.
-
-\begin{equation}	
-	\begin{aligned}
-{WED(\vec{f}_{i} \; , \: prototype)} \: = \: \displaystyle\sum_{i=1}^N \: \: \sqrt{\mathstrut \:  \displaystyle\frac{(f_{i}(m_{j}) \: - \: mean(m_{j}))^2}{variance(m_{j})}}
-\label{Euclidean1}
-	\end{aligned}
-\end{equation}
-
-Where {$m_{j}$} is the {$jth$} feature. When the variances of the features are the same all along the list of values, we can ignore it and calculate the Euclidean distance (ED), where the region is a circle in 2D, see eq. \ref{Euclidean2}.
-
-\begin{equation}	
-	\begin{aligned}
-{ED(\vec{f}_{i} \; , \: prototype)} \: = \: \displaystyle\sum_{i=1}^N \: \sqrt{\mathstrut (f_{i}(m{j}) - mean(m_{j}))^2}
-\label{Euclidean2}
-	\end{aligned}
-\end{equation}
-
-But before we can calculate the distances, we need to normalize the values to the same scale and interval.
-
-Therefore, the area would be done by \ref{NormArea}.
-\begin{equation}	
-	\begin{aligned}
-{Area \: feature} \: = \: min \begin{Bmatrix} \displaystyle\frac{Area\:of\:BLOB}{Area\:of\:Model}, & \displaystyle\frac{Area\:of\:Model}{Area\:of\:BLOB}\end{Bmatrix}
-\label{NormArea}
-	\end{aligned}
-\end{equation}
-
-The circularity can also be normalized in the same, eq. \ref{NormCirc}.
-
-\begin{equation}	
-	\begin{aligned}
-{Circularity \: feature} \: = \: min \begin{Bmatrix} {Circularity}, & \displaystyle\frac{1}{Circularity}\end{Bmatrix}
-\label{NormCirc}
-	\end{aligned}
-\end{equation}
+Once the BLOBs are extracted, their features will be used to determine if they are the BLOBs looked for. Further more, one can use the found features to build a \textit{prototype model}. This prototype model is used to keep track of more complex features like circularity or combined features. As some extracted features will not fit perfectly the prototype model features, a deviation will still be acceptable.
