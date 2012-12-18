@@ -717,10 +717,24 @@ bool Picture::person::refind(Picture& parent)
 	return found; //(10)
 }
 \end{lstlisting}
-This function contains the three priorities for where we would like to look for the BLOB: first the position is checked for where the BLOB should have moved to when it moves with a constant speed (1). The next priority is when the object has stopped abruptly (2). The last priority is to look several places: starting from the position between the two previous points, the function goes to both sides until it on one of the side hits the border for the maximum distance to move. This is done by having a for loop that iterates from 0 and up (3). This number is then added (4) and subtracted (5) to the midpoint of the two first points. Like when looking for new persons, the program starts the \textbf{startFireLoggingPersons()} with the point the function has found to be true (red channel is 255) (6). If this function has set the person's position to to something that is not -1 (7), it will end itself by setting the bool \textbf{found} to true (8) in the loop, breaking it (9). In the end of the function, it will return whether the person was found or not (10).
-
+This function contains the three priorities for where we would like to look for the blob: First the position is checked for where the blob should have move when it has move with a constant speed (1). The next priority is for when the object has stopped abrupt (2). The last priority for looking is several places. Starting from the position between the two previous points the function goes to both sides until it on one of the side hit the border for the maximum distance to move. This is done, by having a for-loop, that iterates through from 0 up(3). This number is then added (4)and subtracted (5)to the midpoint of the two first points. Like when looking for new persons, the program starts the startFireLoggingPersons() with the point the function has found to be true (red channel is 255)(6). If this function has set the persons position to to something that is not -1(7), it will end it self by setting bool found to true(8) in the loop breaking (9). In the end of the function it will return if the person was found or not (10).
 \subsection{Occluded or exited}
-The last thing that can happen now is that the person can disappear. When a person disappears it can have three reasons: The persons blob is occluded by another blob, the person has exited the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
+The last thing that can happen now is that the person can disappear. When a person disappears it can have three reasons: The persons blob is occluded by another blob (see figure \ref{fig:enterexit}), the person has exited (see figure \ref{fig:occlusion}) the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/enterexit.jpg}
+\caption{Illustration of how a Person B stays in the picture, while a Person A exits it. The Red and the blue bar show their detected blobs.}
+\label{fig:enterexit}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/occluded.jpg}
+\caption{Illustration of how a Person B occludes a Person A. The Red and the blue bar show their detected blobs and on the last frame their purple occluded blob.}
+\label{fig:occlusion}
+\end{figure}
+
 \begin{lstlisting}
 for(int i = 0; i < maxNumberOfPersons; i++) //(1)
 		{
