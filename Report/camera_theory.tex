@@ -1,6 +1,6 @@
 \section{Camera theory}
 
-An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition}. The process is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. But in order to understand how this works it is necessary to have a basic understanding of the physics behind light.
+An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition}. The process is generally not something one thinks about when capturing an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. In order to understand how this works it is necessary to have a basic understanding of the physics behind light.
 
 \begin{figure}[htbp] 
 \centering 
@@ -17,23 +17,13 @@ Light is a form of electromagnetic radiation that can be viewed as both waves an
 \item \textbf{Energy} - Measured in electronvolts, eV, denoted $E$.
 \end{itemize}
 
-The formulas for these properties are as follows:
-\begin{itemize}
-\item To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
+To derive the wavelength or the frequency, formula \ref{eq:wavelenght} is applied:
 \begin{align}
 \centering 
 \lambda = \frac{C}{f}
 \label{eq:wavelenght} 
 \end{align}
 where {$C$} is the speed of light.
-\item The second equation, equation \ref{eq:e_v}, describes the energy:
-\begin{align}
-\centering
-E = \frac{hC}{\lambda}
-\label{eq:e_v} 
-\end{align}
-Where {$h$} is Planck's constant, which describes the proportional relationship between the energy of a photon and the frequency of the corresponding electromagnetic wave.
-\end{itemize}
 
 The wavelength of the photon determines what color will be perceived. As known from physics, the speed of light is constant, thus changing the frequency will alter the wavelength and therefore the perceived color. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
 
@@ -51,7 +41,7 @@ When capturing an image using a digital camera, light passes through a lens onto
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRACTICAL LIGHTING PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Image acquisition in the project}
-In the project, two cameras were considered: a normal RGB web camera and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
+In the project, two cameras were considered: a normal RGB web camera and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared light. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
 
 
 \begin{figure}[htbp] 
@@ -93,8 +83,8 @@ To avoid running into issues with variances in the illumination, it was decided 
 \begin{itemize}
 \item Using the library's lighting.
 \item Making adjustments to the lighting at the library.
-\item Bringing normal lights to light the scene.
-\item Building our own light system to light the scene.
+\item Bringing normal lights to illuminate the scene.
+\item Building our own light system to illuminate the scene.
 \end{itemize}
 
 \subsubsection{Using the library's lighting}
