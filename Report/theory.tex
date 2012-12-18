@@ -76,9 +76,7 @@ An image with a single channel of information for each pixel in the X and Y axis
 \subsection{Indexing an image}
 When working with images on a computer and performing image processing, one often has to look at the individual pixels within an image.
 
-\fxfatal{MARco WAS MERHASE}
-
-Working with pixels in a image is similar to working with a coordinate system. The image is indexed from the top-left corner instead of the bottom-left corner. Both X- and Y-axes are indexed beginning with (0,0). Going to the right the X-value increases, going down the Y-value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1191,665) is the bottom-most corner to the right.
+Working with pixels in an image is similar to working with a coordinate system. The image is indexed from the top-left corner. Both X- and Y-axes are indexed beginning with (0,0). Going to the right the X value increases, going down the Y value increases. A single pixel can be described as a coordinate, e.g. on figure \ref{fig:ip_IndexingAPicture} the pixel (1191,665) is the bottom-most corner to the right.
 
 \begin{figure}[htbp]
 \centering
@@ -90,23 +88,20 @@ Working with pixels in a image is similar to working with a coordinate system. T
 \subsection{Working with color images}
 Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a color image.
 
-There are several formats for handling color images. In this report we will only describe RGB (red-green-blue), since this is the only format we will encounter. The main difference when talking about color and grayscale images, is that color images have 3 channels, compared to the single channel in grayscale images. Each of the three channels holds the value of a specific color for each pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. Therefore, a color image does not describe the intensity of a specific color, but the amount of red, green and blue the pixels contain. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with each color channels holding a value of 255 produces a white pixel, and a pixel with the color channel values of 0 will produce a black pixel. This phenomenon is explained by the additive mixing of colors in RGB images\citep{ip_book}. Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming.% To exclude a specific color in a mathematical operation, such as red, it is necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
+There are several formats for handling color images. In this report we will only describe RGB (red-green-blue). The main difference when talking about color and grayscale images, is that color images have three channels, compared to the single channel in grayscale images. Each of the three channels holds the value of a specific color for each pixel in red, green and blue, which are the primary colors our eyes are sensitive to. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with each color channels holding a value of 255 produces a white pixel, and a pixel with the color channel values of 0 will produce a black pixel. This  is explained by the additive mixing of colors in RGB images \citep{ip_book}. % To exclude a specific color in a mathematical operation, such as red, it is necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
 
 \subsection{Binary images}
-In comparison to the above-mentioned where images are defined by bit depth and pixel information, binary pictures are represented by two colors only in form of black and white. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take only one of two values.
-
-\fxnote{do we use binary or pseudo binary images?}
+In a binary image a pixel is either white or black (true or false). Binary pictures are less resource-demanding when performing mathematical operations as each pixel can take only one of two values.
 
 \section{Segmentation}
+Segmenting an image or video is the process of extracting the information you are interested in. Segmentation often consists of different sub operations, all with the same goal of getting the information you want from the input image \citep{ip_book}. Before segmentation is applied, an image undergoes preprocessing. This might be converting from a color image to a grayscale image to ease the computations required. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} serves as an illustration of preprocessing and segmentation. First the image is converted to a grayscale image, this step is part of the preprocessing. Then the image is thresholded, which yields a binary image with only the pens and the heart. 
 
-Segmenting an image or video is the process of extracting the information you are interested in from an image or video. Segmentation is often a compound operation that consists of different sub operations, all with the same goal of getting the information you want from the input image. Before segmentation algorithms are applied, an image undergoes preprocessing. This might be converting from a color image to a grayscale image to ease the computations required. Figure \ref{fig:ip_ColoredToGrayscaleToBinary} serves as an illustration of preprocessing and segmentation. First the image is converted to a grayscale image, this step is part of the preprocessing. Then the image is thresholded, which yields a binary image with only the pens and the heart. Further applying segmentation algorithms will help to reach the goal the programmer has in mind.
+Two possible problems can arise while segmenting an image. If the segmentation algorithms are too strict, and do not include enough in their extraction, the object meant to be extracted might not be complete. Therefore it might not be recognized correctly. This case is called \textit{under-segmentation} \citep{ip_book}.
 
-Two possible problems can arise while segmenting an image. If the segmentation algorithms are too strict, and do not include enough in their extraction, the object meant to be extracted might not be complete. Therefore it might not be recognized or labelled correctly. This case is called \textit{under-segmentation}.
-
-In the opposite case if the algorithm is too sloppily designed, and too much of the input image is included in the segmentation, the final segmented image might contain too much noise, artifacts or objects might be connected even though they were separate entities. This is called \textit{over-segmentation}
+In the opposite case, the algorithm is too sloppily designed. The result is that too much of the input image is included in the segmentation. The final segmented image might contain too much noise or objects might be connected, even though they were separate entities. This is called \textit{over-segmentation} \citep{ip_book}.
 
 \section{Histograms}
-A commonly-used tool when working with digital images is the histogram. Essentially a histogram provides data distribution, which is an easy way to get an overview of the frequency of events. An image histogram is a graphical representation of how many times a specific pixel value appears. This can be used to show whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram with pixel values from 0-255, the more often a specific pixel value is present on the image, the taller the bin representing the particular pixel value will be.
+A commonly-used tool when working with digital images is the histogram. Essentially a histogram provides data distribution, which is an easy way to get an overview of the frequency of events. An image histogram is a graphical representation of how many times a specific pixel value appears. This can be used to show whether an image is too dark or too bright, as well as how good the contrast is \citep{ip_book}. Figure \ref{fig:SimpleThreshold} shows a histogram with pixel values from 0-255. The more often a specific pixel value is present on the image, the taller the bin representing what the particular pixel value will be.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -126,7 +121,7 @@ A commonly-used tool when working with digital images is the histogram. Essentia
 \end{minipage}
 \end{figure}
 
-As said before, histograms can also be used to describe the contrast in an image. The contrast is a measure of the difference of intensity levels between the dark and light areas on the picture \citep{histogram}. This means that a histogram with a broader distribution of values will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
+Histograms can also be used to describe the contrast in an image. The contrast is a measure of the difference of intensity levels between the dark and light areas on the picture \citep{histogram}. This means that a histogram with a broader distribution of values will represent an image with good contrast. On the other hand, if the histogram is very narrow, the contrast in the image is smaller, and it will appear more flat and dull (see figure \ref{fig:histogram_contrast}).
 
 \begin{figure}[htbp]
 \centering
@@ -136,13 +131,11 @@ As said before, histograms can also be used to describe the contrast in an image
 \end{figure}
 
 \section{Thresholding}\label{sec:Thresholding}
-Thresholding is one of the most fundamental operations when working with images. It is performed to transform a picture to binary, i.e. either black, which corresponds to the pixel value of 0 or white, which corresponds to the pixel value of 255. Making an image binary means to show the image in only black and white pixel values.
+Thresholding is one of the most fundamental operations when working with images. It is performed to convert an image to a binary image. This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not important.
 
-This is useful in programs where you need to find silhouettes, such as tracking a person, where smaller details are not important.
+To determine which pixels should be completely black and which should be completely white, a \textit{threshold value} is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied. The value used to classify which persons (pixels) can pass and which have to stay out, have to be decided by the gatekeeper (or the programmer, in this case).
 
-To determine which pixels should be completely black and which should be completely white, a \textit{threshold value} is required. Using a metaphor, the threshold value can be compared to a gatekeeper that lets everyone who is 18 years old or older inside the club, but denies access to people who are 17 or younger. Using this analogy, pixels that are "old" (bright) enough are let in, while "younger" pixels (dark) are denied. The value used to classify which persons (or pixels) can pass and which have to stay out, have to be decided by the gatekeeper (or the programmer, in this case).
-
-In practice this means that pixels with values greater than a threshold is set to TRUE (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to FALSE (black) or 0. The formula for calculating a threshold is shown in equation \ref{threshold}.
+In practice this means that pixels with values greater than a threshold is set to true (or white), which typically is 255 when talking in bytes. On the other hand, if a pixel is less than the threshold value, it is set to false (black) or 0. The formula for calculating a threshold is shown in equation \ref{threshold}.
 \begin{equation}
   \begin{aligned}
   	\text{if } f(x,y)\leq T \quad \text{then } g(x,y)&= 0 \\
@@ -152,7 +145,9 @@ In practice this means that pixels with values greater than a threshold is set t
 \end{equation}
 Where $T$ is the threshold value, $f(x,y)$ is the input pixel and $g(x,y)$ is the output pixel. 
 
-When setting the threshold value it is important to consider what you want as the output. The effectiveness of the threshold value will differ from image to image, depending on the contrast between the object and the background. If the background and the object have a high contrast or are very different in color, it will be easy to distinguish them and choose an effective threshold value. However, if the object and background are very similar, it will be hard to choose a value to separate them properly. At that point it will be necessary to choose between losing information associated to the object of interest or to gather some background noise to preserve it. Figures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the threshold value used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}. Looking to the histograms, it is easy to tell that the leftmost is more ideal to threshold because the object and background are very different. That is shown graphically with two "mountains" in the histogram (see picture \ref{fig:SimpleThreshold}), also called a \textbf{bi-modal histogram} \citep{ip_book}. The effect of a good threshold value can be seen on picture \ref{fig:SimpleThresholdAfter}, where the output gives a clear outline of the silhouette of the woman. On the other hand, the histogram to the right does not have two clear mountains, but a big one and two smaller. This means that the color values are distributed more equally and therefore, it will be hard to define a good threshold value. The result in this case is a poor silhouette of a woman (see picture \ref{fig:ComplicatedThresholdAfter}), due to the fact that the background and the object have similar colors.
+When setting the threshold value it is important to consider what you want as the output. The effect of thresholding will differ from image to image, depending on the contrast between the object and the background. If the background and the object have a high contrast or are very different in color, it will be easy to distinguish them and choose an effective threshold value. However, if the object and background are very similar, it will be hard to choose a value to separate them properly. At that point it will be necessary to choose between losing information associated to the object of interest, or to gather some background noise to preserve it.
+
+Figures \ref{fig:SimpleThreshold} and \ref{fig:ComplicatedThreshold} show the threshold value used on the images \ref{fig:SimpleThresholdAfter} and \ref{fig:ComplicatedThresholdAfter}. Looking to the histograms, it is easy to tell that the leftmost is more ideal to threshold because the object and background are very different. That is shown graphically with two "mountains" in the histogram (see figure \ref{fig:SimpleThreshold}), also called a \textbf{bi-modal histogram} \citep{ip_book}. The effect of a good threshold value can be seen on picture \ref{fig:SimpleThresholdAfter}, where the output gives a clear outline of the silhouette of the woman. On the other hand, the histogram to the right does not have two clear mountains, but a big one and two smaller. This means that the color values are distributed more equally and therefore, it will be hard to define a good threshold value. The result in this case is a poor silhouette of the woman (see figure \ref{fig:ComplicatedThresholdAfter}), due to the fact that the background and the object are too similar.
 
 %Looking at picture \ref{fig:SimpleThresholdAfter} will show that the picture with the leftmost histogram, figure \ref{fig:SimpleThreshold}, gives a clear outline of the silhouette of a woman after the thresholding value is applied. However, looking at figure \ref{fig:ComplicatedThresholdAfter} shows that the picture with the rightmost histogram, figure \ref{fig:ComplicatedThreshold}, produces a poor silhouette of a woman, due to the fact that the background and the object has very similar colors. 
 
@@ -172,16 +167,11 @@ When setting the threshold value it is important to consider what you want as th
 \label{fig:ComplicatedThresholdAfter}
 \end{minipage}
 \end{figure}
- 
-This proves the point that finding a functional thresholding value is not always straightforward. For finding a silhouette using thresholding, it is of great help to have a distinct transition between the object and the background.
 
 \section{Morphology}
 Morphology is a collection of operations used to analyze and process structures. Although these techniques are commonly used on binary images, it is possible to apply them to grayscale images as well. Morphology on binary images can be used to remove noise produced by thresholding an image, as well as defining the contours of the objects in order to achieve a proper BLOB analysis \citep{ip_book}. BLOBs are described in \ref{blob}.
 
-Morphology is a type of neighborhood processing. In neighborhood processing the neighbors of the input pixel contributes to the output of the operation.
-\fxnote{Mayhaps we need a part about point and neighborhood processing}
-
-%Where point processing is about each individual point (pixel), neighbourhood processing is about taking a pixel and its surrounding neighbours, i.e. to get an average pixel value. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}. %is the last sentence correct there?
+Morphology is a type of neighborhood processing. In neighborhood processing the surrounding pixels of the input pixel contributes to the operation that is performed on the pixel itself. For this purpose a kernel is used, as shown in figure \ref{fig:kernel}. A kernel, also called \textit{structuring element}, is a grid containing numbers, denoted \textit{kernel coefficients}. These coefficients differ depending on the image processing applied.
 
 \begin{figure}[htbp]
 \centering
@@ -189,12 +179,11 @@ Morphology is a type of neighborhood processing. In neighborhood processing the 
 \caption{Neighborhood processing uses a kernel. Image from \citep{ip_book}.}
 \label{fig:kernel}
 \end{figure}
-\fxnote{this is where we decided to throw the towel in the ring...}
 
 \subsubsection{Hit and fit}
-A kernel is a grid containing weighted values. These values are either '1' or '0' if used on a binary image. Whenever one decides to apply a kernel and \textit{hit} the pixels, what happens is that the function will compare the values of the pixels on the input image to the kernel. Depending on these values and the image's pixel values different output occur.
+Whenever one decides to apply a kernel and \textit{hit} or \textit{fit} the pixels, what happens is that the algorithm will compare the values of the pixels on the input image to the kernel. Depending on these values and the image's pixel values, different output occur.
 
-The process of hitting the pixels starts by positioning the kernel on the corner of the image, so that it operates on one pixel at a time. If one of the pixels inside the kernel is a '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
+The process of hitting the pixels starts by positioning the kernel on the image, so that it operates on one pixel at a time. If one of the pixels on the input image is a '1' where the kernel is '1' as well, then it is said to hit. This means that the pixel in the center of the kernel will become a '1' (white) in the output. If none of the pixels inside the kernel "hits", then the pixel in the middle of the kernel becomes a '0' (black) in the output.
 
 \begin{figure}[htbp]
 \centering
@@ -203,7 +192,7 @@ The process of hitting the pixels starts by positioning the kernel on the corner
 \label{fig:FitHit}
 \end{figure}
 
-On the contrary, to be able to \textit{fit} a pixel on the center of the structured element, every pixel's neighbour values have to be the same both on the kernel and the input image. If one of the pixels on the input image have a different value to the corresponding 1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On table \ref{tab:HitFitResults} an example image, figure \ref{fig:FitHit}, is being represented with two different types of structuring elements.
+The opposite operation is fitting the pixels. But in this case, all the values of the pixels on the area of the kernel have to be the same both on the kernel and the input image. If one of the pixels on the input image have a different value to the corresponding 1's of the kernel, the pixel in which the kernel is centred will be a '0' on the output image. On table \ref{tab:HitFitResults} an example image, figure \ref{fig:FitHit}, is being represented with two different types of kernel.
 \begin{table}[htbp]
 \centering
 \begin{tabular}{|c|c|c|c|}
@@ -224,17 +213,17 @@ On the contrary, to be able to \textit{fit} a pixel on the center of the structu
 \end{table}
 
 \subsection{Dilation}
-\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see eq.\ref{Dilation1} for a mathematical definition). The result of this method implies filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the structured element (how big it is and which shape it has), this can be seen on figure \ref{fig:Dilation}. 
+\textit{Dilation} is the process of applying the hit process to an entire image, and it refers to the expansion of an object on an image (see equation \ref{Dilation1} for a mathematical definition). The result of this method implies filling small holes and merging objects. As mentioned before, the final effect on these objects will depend on the kernel, how big it is and which shape it has. This can be seen on figure \ref{fig:Dilation}. 
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\oplus{SE}
 \label{Dilation1}
 	\end{aligned}
 \end{equation}
-A small structured element applied several times will have the same effect as a big structured element applied once. This can be seen on eq. \ref{Dilation2} where dilating twice with the element {$SE_{1}$} has the same consequences on the object as dilating one time with {$SE_{2}$}, even though the only difference between those two kernels is that {$SE_{2}$} has a radius twice times bigger than the radius of {$SE_{1}$}.
+A small kernel applied several times will have the same effect as a big kernel applied once. This can be seen on equation \ref{Dilation2} where dilating twice with the element {$S_{1}$} has the same effect on the object as dilating one time with {$S_{2}$}, even though the only difference between those two kernels is that {$SE_{2}$} has a radius twice times bigger than the radius of {$S_{1}$}.
 \begin{equation}
 \begin{aligned}
-{f(x,y)}\oplus{SE_{2}} \approx ({f(x,y)}\oplus{SE_{1}})\oplus{SE_{1}}
+{f(x,y)}\oplus{S_{2}} \approx ({f(x,y)}\oplus{S_{1}})\oplus{S_{1}}
 \label{Dilation2}
 	\end{aligned}
 \end{equation}
@@ -242,12 +231,12 @@ A small structured element applied several times will have the same effect as a 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/Dilation.png}
-\caption{Dilation produced by two different structuring elements. Inspired by \citep{ip_book}.}
+\caption{Dilation produced by two different kernel. Inspired by \citep{ip_book}.}
 \label{fig:Dilation}
 \end{figure}
 
 \subsection{Erosion}
-\textit{Erosion} is the process of applying fit to an entire image and refers to the reduction of the size of an object in an image (the mathematical definition is provided in eq. \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be broken down into smaller ones. As it happens with dilation, the effects depend on the size and shape of the structured element.
+\textit{Erosion} is the process of applying fit to an entire image and refers to the reduction of the size of an object in an image (the mathematical definition is provided in equation \ref{Erosion1}). As the fit method is applied, small objects will also disappear and larger objects will be broken down into smaller ones. As it happens with dilation, the effects depend on the size and shape of the kernel.
 \begin{equation}
 \begin{aligned}
 {g(x, y)}={f(x,y)}\ominus{SE}
@@ -259,21 +248,21 @@ A small structured element applied several times will have the same effect as a 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\textwidth]{Pictures/Theory/Erosion.png}
-\caption{Erosion produced by two different structuring elements. Inspired by \citep{ip_book}.}
+\caption{Erosion produced by two different kernels. Inspired by \citep{ip_book}.}
 \label{fig:Erosion}
 \end{figure}
 
-\subsection{Compound operations}
+\subsection{Compound operations} \label{compound}
 The term \textit{compound operations} refers to the combination of dilating and eroding objects on an image and can therefore imply the \textit{union} or \textit{intersection} of the objects, but also other operations like \textit{closing}, \textit{opening} or doing edge detection, also know as \textit{boundary detection}.
 \subsubsection{Opening}
-When eroding images to erase noisy objects or split parts, it often occurs that the object of interest has decreased its size. The solution to this problem is to dilate the eroded image. This operation is denoted \textit{opening}, as shown in eq. \ref{Opening}.
+When eroding images to erase noisy objects or split parts, it often occurs that the object of interest has decreased its size. The solution to this problem is to dilate the eroded image. This operation is denoted \textit{opening}, as shown in equation \ref{Opening}.
 \begin{equation}
 \begin{aligned}
 {g(x,y)}={f(x,y)}\circ{SE}=({f(x,y)}\ominus{SE})\oplus{SE}
 \label{Opening}
 	\end{aligned}
 \end{equation}
-The effect of opening can be seen on figure \ref{fig:Opening} where a circular kernel is applied to the image. Even though the object still maintains its original size, some information has been lost due to the effect of eroding and dilating the image, even if the same structured element is used along the process.
+The effect of opening can be seen on figure \ref{fig:Opening} where a circular kernel is applied to the image. Even though the object still maintains its original size, some information has been lost due to the effect of eroding and dilating the image. Although the same structuring element is used along the process.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INSERT OPENING IMAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[htbp]
