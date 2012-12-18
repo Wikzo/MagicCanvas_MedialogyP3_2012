@@ -1,7 +1,7 @@
 \chapter{Setup}
 
 \section{Image acquisition in the project}
-For image acquisition in the project, two cameras were considered. Both were the same model, a Logitech Pro 9000. One was a normal RGB web camera the other camera had an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared light. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
+For image acquisition in the project, two cameras were considered. Both were the same model, a Logitech Pro 9000. One was an RGB web camera, the other camera had an infrared (IR) filter installed. The filter consists of a small strip of an analogue film. The film strip allows only infrared light to pass, making the only light that reaches the sensor infrared light. Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. It can be used to illuminate things without having a visible component to the light, but this requires a device able to capture IR. This enables a larger degree of control over the illumination in the scene. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
 
 \begin{figure}[htbp] 
 \centering 
@@ -10,34 +10,9 @@ For image acquisition in the project, two cameras were considered. Both were the
 \label{fig:ir_filter} 
 \end{figure}
 
-%\subsection{Infrared light}
-%Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. It can be used to illuminate things without having a visible component to the light, but this requires a device able to capture IR. %Some cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRACTICAL LIGHTING PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{Illuminating the scene}
 
-It is important that the lighting in the scene is constant. Figure \ref{fig:scene_light} illustrates the same scene captured at different illuminations. Imagine a program that is intended to find the shelves in the image. Before any segmentation is applied, the image is converted to grayscale. Then the image is segmented using a threshold. In figure \ref{fig:scene_thresholded} the output is displayed. It is easy for the imaginary program to find the shelves in the right image, but not possible in the left, due to the difference in illumination.  
-
-\begin{figure}[htbp] 
-\centering 
-\includegraphics[width=0.5\textwidth]{Pictures/HjoerringLibrary/scene_lighting.png} 
-\caption{The difference in illumination on different times of day is clearly visible when compared next to each other.} 
-\label{fig:scene_light} 
-\end{figure}
-
-\begin{figure}[htbp] 
-\centering 
-\includegraphics[width=0.5\textwidth]{Pictures/HjoerringLibrary/scene_lighting_thresholded.png} 
-\caption{The same image converted to 8-bit grayscale and thresholded.} 
-\label{fig:scene_thresholded} 
-\end{figure}
-
-To avoid running into issues with variances in the illumination, it was decided to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration of having the ability to filter the camera input, allowing only infrared light through. The following options were considered:
-
-%%%%%%%%%%%%%%%%%%%%%%%% Section describing different illumination options
+It is important that the lighting in the scene is constant. To avoid running into issues with variances in the illumination, it was decided to illuminate the scene artificially. Different options were evaluated for the illumination, all under the consideration of having the ability to filter the camera input, allowing only infrared light through. The following options were considered:
 
 \begin{itemize}
 \item Using the library's lighting.
@@ -47,10 +22,10 @@ To avoid running into issues with variances in the illumination, it was decided 
 \end{itemize}
 
 \subsubsection{Using the library's lighting}
-The library's lighting consists of two different types of lamps: Fluorescent lights and very bright halogen spots. Using the infrared camera, the library's normal lighting was investigated. The investigation proved that too much IR light was emitted from the halogen spots, preventing a decent contrast between the background and the subject.
+The library's lighting consists of two different types of lamps: Fluorescent lights and very bright halogen spots. Using the infrared camera, the library's normal lighting was investigated. The investigation proved that too much light was emitted from the halogen spots, preventing a decent contrast between the background and the subject.
 
 \subsubsection{Making adjustments to the lighting at the library}
-It was not possible to adjust the fluorescent lights, but the halogen spots could be pointed in a different direction. Using some material to direct the cone of light from the spots, as to create the largest contrast between background and subject was considered. Two options emerged, pointing the lights at the background, or pointing the lights at the subjects. These two cases offered two different problems. Limiting the cone of light to only hit the subjects was not possible due to the placement of the spots. On the other hand limiting the spots to illuminate the canvas would interfere with the projection of images, as the spots are very bright.
+It was not possible to adjust the fluorescent lights, but the halogen spots could be pointed in a different direction. Using cardboard to direct the cone of light from the spots, as to create the largest contrast between background and subject was considered. Two options emerged, pointing the lights at the background, or pointing the lights at the subjects. These two cases offered two different problems. Limiting the cone of light to only hit the subjects was not possible due to the placement of the spots. On the other hand limiting the spots to illuminate the canvas would interfere with the projection of images, as the spots are very bright.
 
 \subsubsection{Bringing normal lights to the scene} 
 By bringing normal lights that emit a high amount of IR light, the subject could be illuminated in a sufficient manner, but this would require a setup to be constructed. One pitfall was the high amount of visible light emitted. This would once again interfere with the image projected on the canvas.
@@ -58,14 +33,13 @@ By bringing normal lights that emit a high amount of IR light, the subject could
 \subsubsection{Building our own light system to light the scene}
 Building a lighting system from scratch to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared lights, and using this to light up the background. It should be possible to create a high contrast between the background and the subject of interest. Furthermore this provides us with the benefit of already having defined a region of interest, thus easing the workload of the image processing.
 
-\subsection{Part conlusion}
-Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting non viable. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the projector hard to see. Bringing normal lights would result in the same problem. This meant that the final decision was to create a custom infrared lighting for the project.
-
+\subsection{Concluding on the lighting}
+Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting non-viable. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the projector hard to see. Bringing normal lights would result in the same problem. This meant that the final decision was to create a custom infrared lighting setup for the project.
 
 \section{Building the LED illumination}
-For illuminating the scene IR LEDs were chosen because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}, a 5mm with a cone of light of 16 degrees and a 3mm with a cone of light of 130 degrees.
+For illuminating the scene, IR LEDs were chosen because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}, a 5mm with a cone of light of 16 degrees and a 3mm with a cone of light of 130 degrees.
 
-During initial testing the light from the 5mm LED looked as though it might be too focussed, making it difficult to create a bright line of unbroken illumination, which was needed. For that reason a series of experiments were conducted: A setup that tested the light, that the two different LEDs offered were constructed and it was apparant that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
+During initial testing the light from the 5mm LED looked as though it might be too focussed, making it difficult to create a bright line of unbroken illumination. For that reason a series of experiments were conducted: A setup that tested the light that the two different LEDs offered were constructed and it was apparent that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -84,7 +58,7 @@ During initial testing the light from the 5mm LED looked as though it might be t
 \end{minipage}
 \end{figure}
 
-While the 3mm LEDs quickly proved too weak, the 5mm LEDs were tested further in an experiment to see whether is was possible to improve their lighting properties. A test was conducted where the LEDs had their lens sanded down in order to make the light less focussed. Figure \ref{fig:leds_sanded} shows an image where the LEDs in progression from left to right get more and more sanded down. As the figure illustrates the intensity of the light decreases as the LED-lens is sanded down. After conducting these tests, it became clear that an unaltered 5mm LED performed better than the modified ones, providing a more intense illumination.
+The 5mm LEDs were tested further to see whether is was possible to improve their lighting properties. A test was conducted where the LEDs had their lens sanded down in order to make the light less focussed. Figure \ref{fig:leds_sanded} shows an image where the LEDs in progression from left to right get more and more sanded down. As the figure illustrates the intensity of the light decreases as the LED-lens is sanded down. After conducting these tests, it became clear that an unaltered 5mm LED performed better than the modified ones.
 
 \begin{figure} [htbp]
 \centering
@@ -93,30 +67,23 @@ While the 3mm LEDs quickly proved too weak, the 5mm LEDs were tested further in 
 \label{fig:leds_sanded}
 \end{figure}
 
-For ease of construction the LEDs were arranged into arrays of 8 LEDs connected in series, which in turn are connected in parallel. The LEDs have a forward voltage of 1.5V, which means that the power supply has to be able to supply at least 12V to power all 8 of them. Initially a small AC-DC power supply capable of supplying 12V at 600mA was used for testing purposes. However the total draw of a single LED array is 0,5A and for the project a total of 4 arrays were planned. The current far exceeded what could be supplied by the small AC-DC supply. Luckily the group managed to salvage a 300 watt computer power supply capable of supplying 12 volts at 8 amperes. After getting the power supply to work without being in a computer, terminals were soldered to LED-strips and the power supply, allowing the LED-strips to plug into the power supply.
+For ease of construction the LEDs were arranged into arrays of eight LEDs connected in series, which in turn are connected in parallel. The LEDs have a forward voltage of 1.5V, which means that the power supply has to be able to supply at least 12V to power all eight LEDs in a series. Initially a small AC-DC power supply capable of supplying 12V at 600mA was used for testing purposes. However, the total draw of a single LED array is 500mA and for the project a total of four arrays were planned. The current far exceeded what could be supplied by the small AC-DC supply. Luckily the group managed to salvage a 300 watt computer power supply capable of supplying 12V at 8A. After getting the power supply to work without being in a computer, terminals were soldered to LED-strips and the power supply, allowing the LED strips to plug into the power supply.
 
 \section{Setup at Hj{\o}rring Library}
-The initial steps of the setup was to determine the location at the library where the installation would be located. The library offered a series of different locations. The chosen location is in the middle of the library. The main reason for this choice was that the area had artificial lighting and is also the most direct path from the entrance to the working area and the children's area. In figure \ref{fig:library_floorplans} the layout of the library is shown along with the designated project area.
+The initial steps of the setup was to determine the location at the library where the installation would be located. The library offered a series of different locations. The chosen location is in the middle of the library. The main reason for this choice was that the area had artificial lighting and is also the most direct path from the entrance to the working area and the children's area. In figure \ref{fig:library_floorplans} the layout of the library is shown along with the designated project area. The area was also provides a good place for the projector and canvas. The bookshelf is a sturdy and relatively unreachable place for the projector, so no visitor will accidentally touch or mess with it.
 
-%During the last weeks of the project, the group setup the project at Hj{\o}rring Library in order to test it and make the final arrangements. The project itself requires a canvas, some illumination from infrared LEDs, an infrared camera and a projector.
-
-Before the actual installation a sketch of the setup was created and discussed.
-
-The area was selected because it provides a good place for the projector and canvas. The bookshelf is a sturdy and relatively unreachable place for the projector, so no visitor will accidentally touch or mess with it.
-
-Behind the canvas a strip of LEDs are placed. Between the projector and the canvas there is a long red bookshelf (dubbed "den r{\o}de tr{\aa}d"); this will also be used to mount a strip of infrared LEDs. In figure \ref{fig:setup_model} the setup is illustrated:
+Behind the canvas a strip of LEDs are placed. Between the projector and the canvas there is a long red bookshelf (dubbed "den r{\o}de tr{\aa}d"); this will also be used to mount a strip of infrared LEDs. In figure \ref{fig:setup_model} the setup is illustrated in figure\ref{fig:setup_model}.
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.8\textwidth]{Pictures/Setup/sideview_camera_with_person_two_strips.png} 
-\caption{Sketch of the setup: Canvas is red; LED strips are purple; camera with IR filter is blue; projector is faded green.} 
+\caption{Sketch of the setup: Canvas is red; LED strips are purple; camera with IR filter is blue; projector is faded green; den r{\o}de tr{\aa}d is black.} 
 \label{fig:setup_model} 
 \end{figure}
 
 The feasibility of the model was tested during several visits at the library. The projector's and camera's placements were tested, and proved to be suitable for implementation.
 
-\textbf{Maybe move this to implementation about limitations and choices? - Gustav}
-However, there proved to be a problem with one of the two LED strips: the strip mounted on the wall did not, due to the angle of and distance to the camera, cover the intended ROI. Therefore adjustments were made to the installation, and one row of LEDs were removed.
+However, there proved to be a problem with one of the two LED strips: the strip mounted on the wall did not, due to the angle of and distance to the camera, covering the intended ROI. Therefore adjustments were made to the installation, and one row of LEDs were disabled.
 
 \subsection{LED strips}
 The first step on the construction of the canvas was to position two LEDs strips in order to get the desired illumination for the infrared camera. As the placement of this project is a corridor divided by a red bookshelf that crosses the whole library, it was decided to add one strip on the lower part of this shelve and another LED stripes on the background covered by the canvas (see figure \ref{fig:LEDsPosition}).
@@ -144,9 +111,6 @@ The construction of these LED strips was made as simple in order to make it as l
 \end{figure}
 
 \subsection{Building the canvas}
-\textbf{Need to write more here? - Gustav}
-
-
 For the projection it was decided to use a sheet to cover the bookcase behind it. Two sheets were needed to cover the area. Originally it was planned to build a custom wood box for the sheets, but due to time constraints it was instead chosen to use velcro tape to hang it up.
 \begin{figure}[htbp] 
 \centering 
