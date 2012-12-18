@@ -1,8 +1,6 @@
-\chapter{Target group analysis}
-In this chapter we will investigate the target group for the project. A preliminary assessment will be made to gather information that will help towards making the program suit the target group best.
-
+\chapter{Vision and goals}
 \section{Hj{\o}rring Library: a place for experiences}\label{hjoerring}
-
+In this chapter we will investigate the target group for the project. A preliminary assessment will be made to gather information that will help towards making the program suit the target group best.
 
 Hj{\o}rring Library aims to distinguish itself from most other Danish libraries. The first distinguishing factor is the location of the library: a big shopping mall. Inside, visitors find themselves in a big open hall with modern architecture. The different sections are divided by bookshelves and a red stripe that runs throughout the library (called "den r{\o}de tr{\aa}d"). While the library first and foremost is a library as any other, one of the prevalent feelings that visitors get is that Hj{\o}rring Library is a place to "hang out" and relax (see figure \ref{fig:p1}), but also a place to have fun or do some work. There are many unique pieces of furniture, creating a great environment for all purposes. Especially kids can have a fun time playing games (physical or digital) and recording videos in the children zone (see figures \ref{fig:p2} and \ref{fig:p3}).
 
@@ -58,9 +56,9 @@ Hj{\o}rring Library is always looking for new projects to involve its visitors i
 Generally the atmosphere at the library is the same as that of any other library, as such the visitors (mainly students and adult visitors) naturally expect a quiet and calm working area.
 
 \subsection{Considerations}
-The goal for the finished program is to fit into the library without disturbing visitors who do not wish to interact with the installation. This means that the final product will not have loud sounds that disturb visitors.
+The goal for the program is to fit into the library without disturbing visitors, who do not wish to interact with the installation. This means that the program should not emit loud sounds that disturb visitors.
 
-In order for the installation to be a fun experience for both a passive- and an active user, the final program will function on more than one level. This means that you can pass by and admire the installation, but you will also be able to spend more time in front of it.
+In order for the installation to be a fun experience for both a passive and an active user, the program will function on more than one level. This means that you can pass by and admire the installation, but you will also be able to spend more time in front of it.
 
 \subsection{Visitor data and placement of the canvas}
 The library is divided into several parts, each aiming to give a different experience. It is important for the group to get a central location for the placement of the canvas. This ensures that people will have the chance to interact with the program. In fact, the bookshelves chosen are just in the middle of the library, so it is hard not to walk past it at some point (see figure \ref{fig:library_floorplans}).
@@ -94,3 +92,22 @@ Several cylinder and flow maps were made to visualize the gathered data. Two are
 \label{fig:library_flowmap}
 \end{minipage}
 \end{figure}
+
+\section{Vision}
+The vision for the project is to make a simple, yet working program that is fun and engaging to use. It should be something you can just walk past once and enjoy without actively engaging in the installation. Simultaneously it should be possible to engage on a deeper level; you should also be able to interact with the installation. It is not meant as a game per se, but more like an interactive playground where you can move around and have fun. Another interesting aspect would be that the program should be fairly self-maintained and independent.
+
+Based on the above-mentioned goals of engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement ended up being as shown in \ref{problemStatement}.
+
+The group decided to make everything from scratch, i.e. not using any existing functionality. However, since the OpenCV library was taught in the semester courses, as well as the C++ programming language, it seemed appropriate to use OpenCV to extract basic pixel information from video input. OpenCV provides a lot of useful functionalities that could easily be used for this project, such as applying filters and looking for BLOBs. It was decided not to use any of those functions and write the code ourselves. This means that even though the program is going to be slower in overall terms, in the end the group will have a deeper understanding of image processing implemented in the program.
+
+\subsection{Problem statement}\label{problemStatement}
+The group decided that in order to succeed, the final program should meet the following set of requirements:
+
+\begin{itemize}
+\item Low maintenance: The program should be easy to use for the library staff.
+\item The installation should fit the overall theme of Hj{\o}rring Library during December.
+\item The program should be ready at the beginning of December.
+\item It should be entertaining for both active and passive users.
+\item Multiple people should be able to use it simultaneously.
+\item All of the image processing functionality should be written by the group.
+\end{itemize}

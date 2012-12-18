@@ -131,22 +131,4 @@ This dilemma was brought up and various suggestions were given, such as looking 
 Instead of outputting the entire person and performing several image processing operations, it was chosen to limit the amount of data used to find the person. Instead of looking at the whole shape, the program should only look for the position of the person. Then it would display some pre-drawn characters underneath the head, i.e. a visitor at the library does not see himself, but a funny Christmas-themed character running around on the screen.
 
 This would save a lot of calculations, as only the position of the person is needed to be found. This is expected to make the program react faster, which is important in order to create the proper immersion. That is why it is also relevant that the camera is quick enough to pick up and recognize new people stepping into the scene.
-  
-\section{Vision}
-The vision for the project is to make a simple, yet working program that is fun and engaging to use. It should be something you can just walk past once and enjoy without actively engaging in the installation. Simultaneously it should be possible to engage on a deeper level; you should also be able to interact with the installation. It is not meant as a game per se, but more like an interactive playground where you can move around and have fun. Another interesting aspect would be that the program should be fairly self-maintained and independent.
-
-Based on the above-mentioned goals of engaging people at the library, the initial vision of this semester project is to engage visitors, both passively and actively. Ultimately, the final problem statement ended up being as shown in \ref{problemStatement}.
-
-The group decided to make everything from scratch, i.e. not using any existing functionality. However, since the OpenCV library was taught in the semester courses, as well as the C++ programming language, it seemed appropriate to use OpenCV to extract basic pixel information from video input. OpenCV provides a lot of useful functionalities that could easily be used for this project, such as applying filters and looking for BLOBs. It was decided not to use any of those functions and write the code ourselves. This means that even though the program is going to be slower in overall terms, in the end the group will have a deeper understanding of image processing implemented in the program.
-
-\subsection{Problem statement}\label{problemStatement}
-The group decided that in order to succeed, the final program should meet the following set of requirements:
-
-\begin{itemize}
-\item Low maintenance: The program should be easy to use for the library staff.
-\item The installation should fit the overall theme of Hj{\o}rring Library during December.
-\item The program should be ready at the beginning of December.
-\item It should be entertaining for both active and passive users.
-\item Multiple people should be able to use it simultaneously.
-\item All of the image processing functionality should be written by the group.
-\end{itemize}
+ 
