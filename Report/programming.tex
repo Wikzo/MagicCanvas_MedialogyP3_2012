@@ -20,7 +20,14 @@ myOpenCVPicture.at<Vec3b>(y,x)[2]; // red
 
 This piece of code returns a pixel value of a picture called \textbf{myOpenCVPicture} at the position \textbf{(X, Y)}. In particular, the value that is returned is a 8-bit value that describes the green channel of the pixel. It returns the green channel, because the index number inside the square brackets is a '1'.
 
-The question was now how the group should order, structure, and store the values they would get from OpenCV. One thing the group didn't like was the fact that pixels in OpenCV have to be accessed reversed; meaning that instead of the common RGB format (red, green and blue), OpenCV uses BGR (blue, green and red). The same thing applies to to the coordinates X and Y that have to be written in the reversed order as arguments for the function \textbf{at()}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Theory/opencv_matrix}
+\caption{OpenCV stores the values of the color channels reversed in a matrix system. Picture from \citep{opencv}.}
+\label{fig:opencv_matrix}
+\end{figure} 
+
+The question was now how the group should order, structure, and store the values they would get from OpenCV. One thing the group didn't like was the fact that pixels in OpenCV have to be accessed reversed; meaning that instead of the common RGB format (red, green and blue), OpenCV uses BGR (blue, green and red; see figure \ref{fig:opencv_matrix}). The same thing applies to to the coordinates X and Y that have to be written in the reversed order as arguments for the function \textbf{at()}.
 
 The group decided that they wanted to write their own class for pictures. This class should work in a similar way as the OpenCV matrix class called \textbf{Mat}. It should hold the values of the pixels in a way that is easy to understand, and it should contain the functions that can perform different image processing algorithms. This class was named \textbf{Picture} and used throughout the whole program.
 
