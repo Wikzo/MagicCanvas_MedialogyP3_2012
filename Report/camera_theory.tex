@@ -97,18 +97,25 @@ To avoid running into issues with variances in the illumination, it was decided 
 \item Building our own light system to light the scene.
 \end{itemize}
 
-The library's lightning consist on two different types of lamps: fluorescent lights and halogen spots. The problem when using the infrared camera in that scenario, was that the normal lighting and the halogen spots radiated too much IR light. This impeded having a decent contrast between background and the subject to track.
+\subsubsection{Using the library's lighting}
+The library's lighting consists of two different types of lamps: Fluorescent lights and very bright halogen spots. Using the infrared camera, the library's normal lighting was investigated. The investigation proved that too much IR light was emitted from the halogen spots, preventing a decent contrast between the background and the subject.
 
-To be able to have a higher contrast between the persons and the background, it was considered to redirect the light. It either could be by pointing to the background (the canvas, in this situation) or the visitors. But limiting the light to the persons passing by, required to position the lamps on an angle that it was not possible to. On the other hand, limiting the spots to illuminate the canvas would interfere with the projection of the images on the canvas.
+\subsubsection{Making adjustments to the lighting at the library}
+It was not possible to adjust the fluorescent lights, but the halogen spots could be pointed in a different direction. Using some material to direct the cone of light from the spots, as to create the largest contrast between background and subject was considered. Two options emerged, pointing the lights at the background, or pointing the lights at the subjects. These two cases offered two different problems. Limiting the cone of light to only hit the subjects was not possible due to the placement of the spots. On the other hand limiting the spots to illuminate the canvas would interfere with the projection of images, as the spots are very bright.
 
-The problem when bringing normal lights to the scene, was that even though it allowed to illuminate efficiently the persons and create a bigger contrast, it required to install the floor lamps on the corridor.
+\subsubsection{Bringing normal lights to the scene} 
+By bringing normal lights that emit a high amount of IR light, the subject could be illuminated in a sufficient manner, but this would require a setup to be constructed. One pitfall was the high amount of visible light emitted. This would once again interfere with the image projected on the canvas.
 
-These situations led the group to consider building a lighting system from scratch, allowing a tailored solution for the installation and avoiding the problems caused by the previous situations. The most simple way to achieve our purpose was by using a strip of infrared LEDs. It could be placed to light both the canvas and the persons, and create a high contrast between them. Furthermore, it turn out to be a good way to define a region of interest, thus easing the workload of the image processing.
+\subsubsection{Building our own light system to light the scene}
+Building a lighting system from scratch to light the scene would allow a tailored solution for the installation, removing the problems offered by the other solutions. By having a strip of bright infrared lights, and using this to light up the background. It should be possible to create a high contrast between the background and the subject of interest. Furthermore this provides us with the benefit of already having defined a region of interest, thus easing the workload of the image processing.
 
-\subsection{Building the LEDs}
-For illuminating the scene, several different alternatives were discussed and ultimately IR LEDs were chosen \fxnote{Refer to the chapter in which this is discussed} because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}. A 5mm with a cone of light of 16 degrees\fxnote{source is datasheet} and a 3mm with a cone of light of 130 degrees\fxnote{source is datasheet}.
+\subsection{Concluding on the setup}
+Using the default setup at the library did not provide a decent scene to be captured and processed by the program. The lights at the library were too diffuse, making adjustments to the lighting non viable. While the light could be controlled to only illuminate the background, the visible light emitted would shine too bright, making the image from the projector hard to see. Bringing normal lights would result in the same problem. This meant that the final decision was to create a custom infrared lighting for the project.
 
-During initial testing the focussed beam from the 5mm LED looked as though it might be too focussed, making it  difficult to create a bright line of unbroken illumination. For that reason a series of experiments were conducted: A setup that tested the light that the two LEDs offered were constructed and it was apparant that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
+\section{building the LEDs}
+For illuminating the scene IR LEDs were chosen because of their good illumination outside of the visible spectrum. For the project two different LEDs were tested, both emitting at roughly 880nm \citep{5mm_led} \citep{3mm_led}, a 5mm with a cone of light of 16 degrees and a 3mm with a cone of light of 130 degrees.
+
+During initial testing the light from the 5mm LED looked as though it might be too focussed, making it difficult to create a bright line of unbroken illumination, which was needed. For that reason a series of experiments were conducted: A setup that tested the light, that the two different LEDs offered were constructed and it was apparant that the broader LEDs did not focus the light enough, and thus did not create a high enough illumination, see figure \ref{fig:5_mm_test} and \ref{fig:3_mm_test}. Therefore the choice was made to go with the 5mm, 16 degree LEDs.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -118,7 +125,7 @@ During initial testing the focussed beam from the 5mm LED looked as though it mi
 \includegraphics[width=1.00\textwidth]{Pictures/Theory/3mm.jpg} % Højre billede
 \end{minipage} \\ % Captions og labels
 \begin{minipage}[t]{0.45\textwidth}
-\caption{5mm LED illuminates a sheet, that will later be used for projection.} % Venstre caption og label
+\caption{5mm LED illuminates a sheet.} % Venstre caption og label
 \label{fig:5_mm_test}
 \end{minipage} \hfill
 \begin{minipage}[t]{0.45\textwidth}
@@ -127,7 +134,7 @@ During initial testing the focussed beam from the 5mm LED looked as though it mi
 \end{minipage}
 \end{figure}
 
-Initially a broader strip of light was thought to be desirable, therefore a test was conducted where the LEDs had their lens sanded down in order to make the light less focussed. Figure \ref{fig:leds_sanded} shows an image where the LEDs in progression from left to right get more and more sanded down. As the figure illustrates the intensity of the light decreases as the LED-lens is sanded down. After conducting these tests,  it became clear that an unaltered LED performed better than the modified ones, providing a more intense illumination.
+While the 3mm LEDs quickly proved too weak, the 5mm LEDs were tested further in an experiment to see whether is was possible to improve their lighting properties. A test was conducted where the LEDs had their lens sanded down in order to make the light less focussed. Figure \ref{fig:leds_sanded} shows an image where the LEDs in progression from left to right get more and more sanded down. As the figure illustrates the intensity of the light decreases as the LED-lens is sanded down. After conducting these tests, it became clear that an unaltered 5mm LED performed better than the modified ones, providing a more intense illumination.
 
 \begin{figure} [htbp]
 \centering
@@ -136,5 +143,5 @@ Initially a broader strip of light was thought to be desirable, therefore a test
 \label{fig:leds_sanded}
 \end{figure}
 
-For ease of construction the LEDs were arranged into arrays of 8 LEDs connected in series, which in turn are connected in parallel. The LEDs have a forward voltage of 1.5V, which means that the power supply has to be able to supply at least 12V to power all 8 of them. Initially a small AC-DC power supply capable of supplying 12V at 600mA was used for testing purposes. However the total draw of a single LED array is 0,5A and for the project a total of 4 arrays were planned. The current far exceeded what could be supplied by the small AC-DC supply. Luckily the group managed to salvage a 300 watt computer power supply capable of supplying 12 volts at 8 amperes. After getting the power supply to work without being in a computer, terminals were soldered to LED-strips and the power supply allowing the LED-strips to plug into the power supply.
+For ease of construction the LEDs were arranged into arrays of 8 LEDs connected in series, which in turn are connected in parallel. The LEDs have a forward voltage of 1.5V, which means that the power supply has to be able to supply at least 12V to power all 8 of them. Initially a small AC-DC power supply capable of supplying 12V at 600mA was used for testing purposes. However the total draw of a single LED array is 0,5A and for the project a total of 4 arrays were planned. The current far exceeded what could be supplied by the small AC-DC supply. Luckily the group managed to salvage a 300 watt computer power supply capable of supplying 12 volts at 8 amperes. After getting the power supply to work without being in a computer, terminals were soldered to LED-strips and the power supply, allowing the LED-strips to plug into the power supply.
 
