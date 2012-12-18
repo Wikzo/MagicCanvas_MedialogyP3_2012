@@ -1,6 +1,6 @@
 \section{Camera theory}
 
-An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition} and is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. But in order to understand how this works it is necessary to have a basic understanding of the physics behind light.
+An image captured through a camera is the result of reflected light being detected on a camera sensor, see figure \ref{fig:light_cam}. This process is know as \textit{image acquisition}. The process is generally not something you think about when you capture an image with a camera, since it all happens automatically. In this section the basics of image acquisition using a digital camera will be explained. But in order to understand how this works it is necessary to have a basic understanding of the physics behind light.
 
 \begin{figure}[htbp] 
 \centering 
@@ -32,45 +32,39 @@ where {$C$} is the speed of light.
 E = \frac{hC}{\lambda}
 \label{eq:e_v} 
 \end{align}
-Where {$h$} is Planck's constant, which describes the proportional relationship between energy of a photon and an the corresponding electromagnetic waves frequency.
+Where {$h$} is Planck's constant, which describes the proportional relationship between the energy of a photon and the frequency of the corresponding electromagnetic wave.
 \end{itemize}
 
-The wavelength of the photon determines what color will be perceived. However, as known from physics, the speed of light is constant; thus changing the frequency will alter the wavelength and therefore the color perceived. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
-While different wavelengths correspond to different colors, these colors only remain defined within our perception. The reason we see ~600 nm light as yellow is because our eyes contain three types of optically sensitive cells, known as \textit{cones}, sensitive to three colors: red, green and blue. 600 nm lies between the green and red cells, thus both cells are firing and the perceived color becomes yellow \citep{perception_book}.
+The wavelength of the photon determines what color will be perceived. As known from physics, the speed of light is constant, thus changing the frequency will alter the wavelength and therefore the perceived color. The visible spectrum of light is only a fraction of the full spectrum of electromagnetic radiation, see figure \ref{fig:em_rad}. Light interacts additively, with a mix of equal parts of each wavelength resulting in white light. The light from the sun can be broken down into its component wavelengths by refracting the light in a prism. This yields the full spectrum of visible light, as seen in a rainbow.
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=1\textwidth]{Pictures/Theory/em_rad.png} 
-\caption{The full spectrum of electromagnetic radiation.} 
+\caption{Figure illustrating the full spectrum of electromagnetic radiation.} 
 \label{fig:em_rad} 
 \end{figure}
 
 \subsection{Digital image acquisition}
-When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye: in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that captures color images has three types of sensors in each pixel \citep{ip_book}.
+When capturing an image using a digital camera, light passes through a lens onto the sensor. This acts in much the same way as the human eye, in place of cones sensitive to specific wavelengths, a camera sensor has a physical matrix of pixel sensors (one for each pixel in the output image). A camera that can only capture black and white images has only one type of sensor in each physical pixel whereas a camera that can capture color images has three types of sensors in each pixel\citep{ip_book}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PRACTICAL LIGHTING PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Image acquisition in the project}
-In the project, two cameras were considered: a normal RGB webcam and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures, that has been mounted on the lens. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared.
+In the project, two cameras were considered: a normal RGB web camera and a similar camera with an infrared (IR) filter installed. The filter consists of a small strip of normal analogue film, used for analogue pictures. The film strip allows only infrared light to pass, thus making the only light that reaches the sensor infrared. This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light helps to avoid this problem.
+
 
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=0.5\textwidth]{Pictures/Theory/IR_filter.png} 
-\caption{The IR filter only allows infrared light to pass.} 
+\caption{Figure illustrating how the IR filter only allows infrared light to pass.} 
 \label{fig:ir_filter} 
 \end{figure}
 
-This is interesting, as it enables a larger degree of control over the illumination in the scene that is captured. Normally in a scene, controlling the lighting can prove a challenge, and in order to operate without error an image processing algorithm would have to take into account the variance in lighting that occurs naturally during a day cycle \citep{ip_book}. Working with infrared light eliminates this issue.
+\fxnote{CORRECT THE GOD DAMN PICTURE}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% Should the next sentences be here? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-\subsection{Infrared light}
-
-Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. It can be used to illuminate things without having a visible component to the light, but this requires a device able to capture IR. %Some cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
+%\subsection{Infrared light}
+%Infrared light lies right next to visible light in the electromagnetic spectrum, see figure \ref{fig:em_rad}. It can be used to illuminate things without having a visible component to the light, but this requires a device able to capture IR. %Some cameras are able to do this. A camera is designed to capture what a human eye can see, so in more expensive cameras infrared light is filtered out.
 
 
 
@@ -78,7 +72,11 @@ Infrared light lies right next to visible light in the electromagnetic spectrum,
 
 \subsection{Illuminating the scene}
 
-It is important that the lightning in the scene is constant. Imagine that the scene is captured with a normal webcam: this creates an RGB image (see figure \ref{fig:scene_light}). In this case, imagine a program that is intended to find the shelves. In order to speed things up, the image will be grayscaled and thresholded. Looking to the corresponding picture \ref{fig:scene_thresholded}, after the transformations the program will easily find the shelves on the right picture. But on the picture of the left, the program will not find the shelves due to the illumination.
+It is important that the lighting in the scene is constant. Figure \ref{fig:scene_light} illustrates the same scene captured at different illuminations. Imagine a program that is intended to find a the shelves in the image. 
+
+In figure \ref{fig:scene_thresholded} this 
+
+ Looking at the corresponding picture \ref{fig:scene_thresholded}, after the transformations the program will easily find the shelves on the right picture. But on the picture of the left, the program will not find the shelves due to the illumination.
 
 \begin{figure}[htbp] 
 \centering 
