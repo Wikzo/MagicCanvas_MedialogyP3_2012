@@ -18,6 +18,12 @@ edition = {Second edition},
 publisher = {Oxford University Press}
 }
 
+@book{motion_move,
+title = {Object Tracking: A Survey},
+author = "Alper Yilmaz AND Omar Javed AND Mubarak Shah",
+year = {2006}
+}
+
 @MISC{5mm_led,
    author = {SIEMENS},
    note = {Datasheet: SFH484/485 - GaAIAs INFRARED EMITTER},

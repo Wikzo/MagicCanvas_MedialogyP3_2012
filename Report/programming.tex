@@ -649,7 +649,7 @@ When trying to find a BLOB again, there are different approaches one can use. An
 
 This makes all the color informations disappeared. Also, almost all the information about the shape get discarded, since the camera just looks at a small strip of LEDs. This does just tell us the position of the BLOB in the X axis. By combining the current X position with one or more previous X positions, one can predict the movement that the BLOB will take on the X axis, and by that establish a connection between the BLOBs from frame to frame. 
 
-The following approach about predicting the movement is inspired by \citep{move_paper}.
+The following approach of predicting movement is inspired by \citep{motion_move}.
 
 The methods are highly dependent on the continuity of movement. The movement of BLOBs are predicted by looking at how the BLOB moved from the previous frame to the current frame. This is saved in a move vector. The theory is that when the move vector is added to the current position again, then we will get the new position.
  
@@ -717,24 +717,20 @@ bool Picture::person::refind(Picture& parent)
 	return found; //(10)
 }
 \end{lstlisting}
-This function contains the three priorities for where we would like to look for the blob: First the position is checked for where the blob should have move when it has move with a constant speed (1). The next priority is for when the object has stopped abrupt (2). The last priority for looking is several places. Starting from the position between the two previous points the function goes to both sides until it on one of the side hit the border for the maximum distance to move. This is done, by having a for-loop, that iterates through from 0 up(3). This number is then added (4)and subtracted (5)to the midpoint of the two first points. Like when looking for new persons, the program starts the startFireLoggingPersons() with the point the function has found to be true (red channel is 255)(6). If this function has set the persons position to to something that is not -1(7), it will end it self by setting bool found to true(8) in the loop breaking (9). In the end of the function it will return if the person was found or not (10).
+This function contains the three priorities for where we would like to look for the BLOB
 
+First the position is checked for where the BLOB should be when it would move with a constant speed (1). The next priority is when the object has stopped abruptly (2).
+
+The last priority is looking several places: starting from the position between the two previous points, the function goes to both sides until it on one of the side hits the border for the maximum distance to move. This is done by having a forloop that iterates  from 0 and up (3). This number is then added (4) and subtracted (5) to the midpoint of the two first points. Like when looking for new persons, the program starts the \textbf{startFireLoggingPersons()} with the point the function has found to be true (red channel is 255) (6). If this function has set the persons position to something that is not -1 (7), it will end itself by setting the boolean variable \textbf{found} to true (8), breaking the loop (9). In the end of the function it will return whether the person was found or not (10).
 
 \subsection{Occluded or exited}
-The last thing that can happen now is that the person can disappear. When a person disappears it can have three reasons: The persons blob is occluded by another blob (see figure \ref{fig:enterexit}), the person has exited (see figure \ref{fig:occlusion}) the picture or the system has made a mistake. In the main loop we have the logic, that tries to determine that. 
+The last thing that can happen now is that the person can disappear. When a person disappears, it is because one of three reasons: the person'ss BLOB is occluded, hidden, by another BLOB (see figure \ref{fig:enterexit}); the person has exited (see figure \ref{fig:occlusion}) the picture; or the system has made an error. This logic is implemented in the main loop.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1.00\textwidth]{Pictures/Design/enterexit.jpg}
-\caption{Illustration of how a Person B stays in the picture, while a Person A exits it. The Red and the blue bar show their detected blobs.}
+\caption{Illustration of how person B stays in the picture, while person A exits it. The red and the blue bar show their detected BLOBs.}
 \label{fig:enterexit}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Design/occluded.jpg}
-\caption{Illustration of how a Person B occludes a Person A. The Red and the blue bar show their detected blobs and on the last frame their purple occluded blob.}
-\label{fig:occlusion}
 \end{figure}
 
 \begin{lstlisting}
@@ -788,7 +784,16 @@ for(int i = 0; i < maxNumberOfPersons; i++) //(1)
 			currentPicture.p[i].notAddedToTheNewInitialMoveVectorProductYet = false; // <- and make shure that it isn't added again
 		}
 \end{lstlisting}
-This logic is looping through all the person objects of the current picture(1). At every person the program first finds out if the person was previously found, by asking if its position not is equal to -1(2). When the person was found in the previous frame, the program saves its \textbf{posX} in a float called \textbf{prePos}(3). After that the function that is supposed to find the old person is called in an if statement(4). If the person can't be found again, the function tests if the person is close enough to the border that it could have exited it(5). In this case the person gets deleted out of the person array, by setting its \textbf{posX} to -1(6). If the person on the other hand is so far away that it can't exit the picture the only logical explanation is that the person is occluded by another person. This is tested by the function \textbf{refindOccluded()}, which is positioned in a if statement like the \textbf{refind()} function(7). The \textbf{refindOccluded()} function is very similar to the refind() function just that it looks for values that are not 0 instead of some that are 255. It also sets the \textbf{xPos} value of the occluded blobs equal to each other, when an occlusion is detected.
+This logic is looping through all the \textbf{person} objects of the current picture (1). At every  the program first finds out if the person was previously found, by asking if its position is not equal to -1 (2). When the person was found in the previous frame, the program saves its \textbf{posX} in a float called \textbf{prePos} (3). After that, the function that is supposed to find the previous (old) person is called in an if statement (4). If the person can't be found again, the function tests if the person is close enough to the border that it could have exited it (5). In this case the person gets removed out of the \textbf{person} array, by setting its \textbf{posX} to -1 (6).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.00\textwidth]{Pictures/Design/occluded.jpg}
+\caption{Illustration of how person B occludes Person A. The red and the blue bar show their detected BLOBs, and on the last frame their purple occluded BLOB.}
+\label{fig:occlusion}
+\end{figure}
+
+If the person on the other hand is so far away that it can't exit the picture, the only logical explanation is that the person is occluded by another person. This is tested by the function \textbf{refindOccluded()}, which is positioned in a if statement like the \textbf{refind()} function (7). The \textbf{refindOccluded()} function is very similar to \textbf{refind()}, only that it looks for values that are not 0 instead of some that are 255. It also sets the \textbf{xPos} value of the occluded BLOBs equal to each other, when an occlusion is detected.
 \begin{lstlisting}
 bool Picture::person::refindOccluded(Picture& parent)
 {
@@ -827,50 +832,21 @@ bool Picture::person::refindOccluded(Picture& parent)
 	return found;
 }
 \end{lstlisting}
-If this function also returns false it means that there must have been a mistake with the person that is is disappeared magical out of the picture(8).
+If this function also returns false, it means that there must have been a mistake with the person and that it has disappeared out of the picture (8).
 
 \subsection{The move vector adaption}
-When configuring and setting the threshold values for the program it was often quit hard to find the optimal values at which the program would operate best. Especially when having to say how fast the persons initially moved into the frame. That's why the group decided to let the program it self measure how fast people where moving from the first frame to the second. Here we have to look at the rest of the loop that goes through the persons, that isn't explained yet. The idea was that when the program was running it would take the average of the initial move vector of all the person that walked into the picture and write that to a file. This file could be read the next time the program started.
-The way the average of the initial move vectors was taken, was by every time the person counter was raised, the measured actual initial move vector was added to the product of all the move vectors. For this the boolean notAddedToTeInitialMoveVectorProduct, which was set to true in the \textbf{lookForNewPersons()} function, is used. When finding a person again or trying to find the persons again this boolean is checked(9) and when found true the move vector gets added (10). In the most cases this works, the problem is just when a person is found and disapears in the next frame. To not to confuse the person counter system of the program, it was chosen to add the initial move vector the program started with again(11). 
+When configuring and setting the threshold values for the program, it was often somewhat hard to find the optimal values at which the program would operate best. This was especially the case when having to say how fast the person initially moved into the frame. That's why it was decided to let the program measure how fast people are moving from the first frame to the second.
 
-\section{Using Unity to handle the graphical output}
+Here we have to look at the rest of the loop that goes through the persons that aren't explained yet. The idea is that when the program is running, it would take the average of the initial move vector of all the persons that have walked into the picture, and write that to a file. This file could be read the next time the program started, getting a more accurate result.
 
-MOVEVECTOR SUBTRACT???
+The way the average of the initial move vectors is made is that every time the person \textbf{counter} is increased, the measured actual initial move vector is added to the product of all the move vectors. For this the boolean variable \textbf{notAddedToTeInitialMoveVectorProduct}, which was set to true in the \textbf{lookForNewPersons()} function, is used. When finding a person or multiple persons again, this boolean is checked (9) and when found true, the move vector gets added (10). In most cases this works; the problem is just when a person is found and disappears in the next frame. To not to confuse the person counter system in the program, it was chosen to add the initial move vector that the program started with again (11). 
 
 \section{Using Unity to handle the graphical output}\label{unityStart}
 After doing the initial prototype, the group realized that it would be difficult to use OpenCV to both extract the data from the camera and display it in some kind of graphical way. Since the program has to loop through a lot of data continuously, there was little resources left for it to actually display the results in an interesting way without being too slow. First the group thought about using multiple threads running in the program, but even then it would be hard to display more sophisticated graphics. OpenCV is not meant as a tool to display graphics, but more to for the analyzing/extracting part.
 
-Then the group came up with the idea of using Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages. Even though there are various APIs to get OpenCV and Unity communicate, it was decided for a much simpler approach using the Clipboard manager in Windows.
-
-\section{test/setup}
-the program has to reconfiger every hour
-
-\subsection{Heysa}
-Different possibilities (pros and cons)
-Show code and describe features
-Test individual features - e.g. why did we use threshold value X instead of Y?
-
-OpenCV
-Using Picture struct
-ROI
-Using ClipBoard Manager
-Unity - uses time of day to change stuff
-
-\begin{lstlisting}
-Mat MeanFilter(Mat input)
-{
-	// 5x5 kernel
-
-	// Make a temporary clone of the input image
-	Mat mean = input.clone();
-
-	int jegErSej = 42;
-}
-\end{lstlisting}
+Then the group came up with the idea of using Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages.
 
 \subsection{Getting a link between OpenCV and Unity}
-[this part should be just after "Using Unity to handle the graphical output"]
-
 It was first considered to make C++ write to a text file that could then be read by Unity. This approach was not used in the end, since it would need a lot of readings and writings to the hard drive - doing this repeatedly could destroy it. Also, there is a chance that there would be a mismatch with Unity trying to read the file while C++ is writing to it (the text file has to be opened, then written to, and finally closed). It was also found that this method was quite slow. Therefore it was decided to write to the Clipboard in Windows.
 
 The Clipboard acts as a short-term buffer to store temporary data in the RAM (Random Access Memory). Using copy and paste functionality, it can work like a gateway for transferring information from one program to another. \citep{clipboard_one}. This avoids writings/readings from a physical hard drive and won't wear it out, as well as being faster than saving to a text file on the computer.

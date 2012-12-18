@@ -85,21 +85,10 @@ Working with pixels in a image is similar to working with a coordinate system. T
 \label{fig:ip_IndexingAPicture}
 \end{figure}
 
-In OpenCV, images are stored in a matrix (see figure \ref{fig:opencv_matrix}). The size of the matrix holding the pixels, is the same as the size of the input image, in regards to the X- and Y-axis. Therefore when an image with a resolution of \textit{1024*1024} pixels is loaded, the highest coordinate assigned to pixels in the the matrix is (1023,1023).
-
-\fxnote{[WE NEED TO DESCRIBE OPENCV MATRICES BETTER!!! ... Max?]}
-
 \subsection{Working with color images}
 Now that a basic knowledge regarding images has been established, the next step into using images in calculations is to understand the basics of a color image.
 
 There are several formats for handling color images. In this report we will only describe RGB (red-green-blue), since this is the only format we will encounter. The main difference when talking about color and grayscale images, is that color images have 3 channels, compared to the single channel in grayscale images. Each of the three channels holds the value of a specific color for each pixel in relation to red, blue or green, which are the primary colors our eyes are sensitive to. Therefore, a color image does not describe the intensity of a specific color, but the amount of red, green and blue the pixels contain. In addition, equal amounts of red, green and blue will produce a gradient of grey. A pixel with each color channels holding a value of 255 produces a white pixel, and a pixel with the color channel values of 0 will produce a black pixel. This phenomenon is explained by the additive mixing of colors in RGB images\citep{ip_book}. Knowing the specific values of the red, green and blue channels within an image gives the user a great advantage, especially when performing image manipulations in programming.% To exclude a specific color in a mathematical operation, such as red, it is necessary to use thresholding to segment the pixels depending on values of the red channel (this will be described in \ref{sec:Thresholding}). The outcome in that case would be a picture with a limited/controlled amount of red.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=1.00\textwidth]{Pictures/Theory/opencv_matrix}
-\caption{OpenCV stores the pixel values in a matrix system. Picture from \citep{opencv}.}
-\label{fig:opencv_matrix}
-\end{figure} 
 
 \subsection{Binary images}
 In comparison to the above-mentioned where images are defined by bit depth and pixel information, binary pictures are represented by two colors only in form of black and white. Binary pictures are less resource demanding when performing mathematical operations as each pixel only can take only one of two values.
