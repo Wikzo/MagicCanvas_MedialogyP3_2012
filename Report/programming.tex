@@ -952,7 +952,7 @@ To get a little more interaction, a snow ball is placed in the scene (see figure
 \caption{The characters can push the snowball to make it grow. When it becomes big enough, it explodes into colorful fireworks.}
 \label{fig:snowball}
 \end{figure}
-As mentioned in \ref{spritesheet}, sheets of sprites were used to create a sense of motion. This was done by looping over an image containing multiple frames. Depending on which way the character is facing (left, right or idle), the animation will change. Without these animations the whole program would feel rigid and stiff.
+As mentioned in \ref{sec:unity_ani}, sheets of sprites were used to create a sense of motion. This was done by looping over an image containing multiple frames. Depending on which way the character is facing (left, right or idle), the animation will change. Without these animations the whole program would feel rigid and stiff.
 
 \section{Making an automatic batch file}
 One of the goals in the problem statement (\ref{problemStatement}) was to have the programs work as easily as possible. We could not expect the library staff to use a lot of time to turn everything on each day. Therefore we wanted everything to start automatically. This was done by creating a batch file that starts when Windows boots up. The batch file then opens the OpenCV program that initializes itself. After 15 seconds Unity opens and starts receiving data from the Clipboard. In the end, the only thing needed is just to turn on (and off) the computer; no additional input is required for the programs to start.
