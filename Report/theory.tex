@@ -64,7 +64,7 @@ The wavelength of the photon determines what color will be perceived. As the spe
 \begin{figure}[htbp] 
 \centering 
 \includegraphics[width=1\textwidth]{Pictures/Theory/em_rad.png} 
-\caption{Figure illustrating the full spectrum of electromagnetic radiation.} 
+\caption{Figure illustrating the full spectrum of electromagnetic radiation. Image from \citep{em_spectrum}.} 
 \label{fig:em_rad} 
 \end{figure}
 
@@ -312,7 +312,7 @@ The effect of opening can be seen on figure \ref{fig:Opening} where a circular k
 \end{figure}
 
 \subsubsection{Closing}\label{closing}
-When the size of the object is increased, but it is still important to constrain the measure as well as filling the holes of the objects, a good solution is to erode after the dilation. This is denoted \textit{closing} and uses eq. \ref{Closing}. As with the opening method, the size and shape of the kernel must be the same in order to obtain the desired result.
+When dilating, the sizes of the objects are increased. When just wanting to fill the holes it is important to constrain the measure. A good solution is to erode after the dilation. This is denoted \textit{closing} and uses equation \ref{Closing}. As with the opening method, the size and shape of the kernel must be the same in order to obtain the desired result.
 
 The effect of this operation can be seen in figure \ref{fig:Closing}: even though the holes are filled and the object maintains its original size, the noise of the background is still there. Therefore, it will be necessary to apply either closing or a BLOB analysis to delete those small objects.
 \begin{equation}
