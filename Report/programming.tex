@@ -1,14 +1,13 @@
 \chapter{Implementation}
-
-\section{Programming in OpenCV and Unity}
-Now that most of the design decisions have been described, it is time to go more in-depth with how the program was actually implemented. As mentioned earlier, the C++ programming language was used, along with the open source library \href{http://opencv.org/}{OpenCV} to work with image data, such as loading and writing to each individual pixel. While C++ was used to do the actual image processing part, it was decided to use \href{http://unity3d.com/}{Unity game engine} to display the actual result in an intuitive manner. This approach will be described in \ref{unityStart}.
+In this chapter we will describe how the program is implemented.
+As mentioned earlier, the C++ programming language was used, along with the open source library \href{http://opencv.org/}{OpenCV} to work with image data. While C++ was used to do the actual image processing part, it was decided to use the \href{http://unity3d.com/}{Unity game engine} to display the actual result in an intuitive manner. This approach will be described in \ref{unityStart}.
 
 \section{Writing the program from scratch}
-When the group started working on on the image processing part for the project, they were recommended by the supervisors to try to avoid using too much built-in functionality in OpenCV. Instead, they were told, they should try to write as much of the code themselves to get a better understanding of the underlying algorithms. Even if the program would be slower, in the end the group would walk away with more knowledge and experience if they programmed everything from scratch.
+When the group started working on the image processing, they were encouraged by the supervisors to avoid using built-in algorithms from OpenCV. Even if the program would be slower, in the end the group would walk away with more knowledge and experience if they programmed everything from scratch.
 
-The group decided to agree to this approach. Therefore the OpenCV library was used only for getting access to the pixel values, and to be able to show a result on the screen. From there they could write all the algorithms by themselves.
+The group decided to agree to this approach. Therefore the OpenCV library was only used for getting access to the pixel values, and to show a result on the screen. From there they could write all the algorithms by themselves.
 
-In the following we will not explain all the code written for this project, but instead focus on essential code snippets (the complete code is available in appendix \ref{appendixCode}). When we want to refer to a specific line of code, this will be done using a number inside parentheses like this: (0). Function names, classes, variables, etc. will have their names written in bold font, such as the \textbf{Picture} class.
+In the following we will not explain all the code written for this project, but instead focus on essential code snippets (the complete code is available via the appendix \ref{appendixCode}). When we want to refer to a specific line of code, this will be done using a number inside parentheses like this: (0). Function names, classes, variables, etc. will have their names written in bold font, such as: the \textbf{Picture} class.
 
 \subsection{The pixel system}
 In OpenCV a pixel value can be accessed by the function \textbf{at()}:
@@ -18,7 +17,7 @@ myOpenCVPicture.at<Vec3b>(y,x)[1]; // green
 myOpenCVPicture.at<Vec3b>(y,x)[2]; // red
 \end{lstlisting}
 
-This piece of code returns a pixel value of a picture called \textbf{myOpenCVPicture} at the position \textbf{(X, Y)}. In particular, the value that is returned is a 8-bit value that describes the green channel of the pixel. It returns the green channel, because the index number inside the square brackets is a '1'.
+This piece of code returns a pixel value of a picture called \textbf{myOpenCVPicture} at the position \textbf{(X, Y)}. In particular, the value that is returned is a 8-bit value that describes the color channels of the pixel. The index number inside the square brackets identify the channel accessed.
 
 \begin{figure}[htbp]
 \centering
@@ -64,13 +63,13 @@ void Picture::initialize(VideoCapture captureToStoreCamra)
 	}
 }
 \end{lstlisting}
-This code is one of the first functions that was written. The purpose of the function is to open an image with OpenCV, as well as writing the values of the opened picture to three two-dimensional arrays, that from there can be processed. These two-dimensional arrays are member variable of an object of type \textbf{Picture}, as well as the function is a member function.
+This code is one of the first functions that was written. The purpose of the function is to open an image with OpenCV, as well as writing the values of the opened picture to three two-dimensional arrays that from there can be processed. These two-dimensional arrays are member variables of an object of type \textbf{Picture}, as well as the function is a member function.
 
-The first thing this function does is that it streams a picture from a chosen a camera. Streams provides a character-based interface to read/write data from one place to another, for instance a text file or OpenCV's \textbf{VideoCapture} that allows for the use of webcams \citep{stream}. We store a temporary object of type type \textbf{Mat} and the name \textbf{tmp} (1). This \textbf{tmp} object is also a member of the class \textbf{Picture}. It is never used for image processing, just for reading either from an image file, or a capture for outputting the picture to the screen.
+The first thing this function does is that it streams a picture from a chosen camera. Streams provide a character-based interface to read/write data from one place to another, for instance a text file or OpenCV's \textbf{VideoCapture} that allows for the use of webcams \citep{stream}. We store a temporary object of type \textbf{Mat} and the name \textbf{tmp} (1). This \textbf{tmp} object is also a member of the class \textbf{Picture}. It is never used for image processing, just for reading either from an image file, or a capture for outputting the picture to the screen.
 
 The next thing the function does is that it saves the width and the height of the \textbf{Mat} object in the \textbf{Picture} object (2). From there the function creates the arrays of integers that hold the pixel values in all three channels (3). 
 
-When one then wants to access a pixel, one first has to write the picture's name, e.g. \textbf{myCustomPicture}. The next thing is to specify the color channel, for instance \textbf{pixelG}, which is a member variable of \textbf{myCustomPicture}. Lastly, the position of the pixel has to be chosen, by writing the position in the array, as shown in the following code:
+When one wants to access a pixel, one first has to write the picture's name, e.g. \textbf{myCustomPicture}. The next thing is to specify the color channel, for instance \textbf{pixelG}, which is a member variable of \textbf{myCustomPicture}. Lastly, the position of the pixel has to be chosen, by writing the position in the array, as shown in the following code:
 
 \begin{lstlisting}
 myCustomPicture.pixelG[x][y] // getting pixel access using the custom-written Picture class
@@ -100,21 +99,19 @@ void Picture::output(string windowName)
 	imshow(windowName, out); //(5)
 }
 \end{lstlisting}
-The check in the beginning looks if the programmer tries to output a picture that isn't existent, by checking if the picture's size is zero (1). If this is the case, the programmer gets the an error message with the text \textit{No picture is loaded}. Pressing a key will then close down the program (2). If, on the other hand, a picture is loaded correctly, the program will create a \textbf{Mat} object (3), write pixel values to it (4), and show the picture on the screen (5) in an output window.
-
-\textbf{INSERT PICTURE OF BLOB COLOR THING-YS HERE - Gustav} 
+The check in the beginning checks if the programmer tries to output a picture that does not exist, by checking if the picture's size is zero (1). If this is the case, the programmer gets an error message with the text \textit{No picture is loaded}. Pressing a key will then close down the program (2). If, on the other hand, a picture is loaded correctly, the program will create a \textbf{Mat} object (3), write pixel values to it (4), and show the picture on the screen (5) in an output window.
 
 \subsection{Structuring the functions}
-Another big advantage in having our own \textbf{Picture} class is that that each group member can work on a different function in the \textbf{Picture} class without disturbing somebody else who is working on another function. Even if a function doesn't work, it doesn't break the code as long as it is not called.
+Another big advantage in having our own \textbf{Picture} class is that each group member can work on a different function in the \textbf{Picture} class without disturbing somebody else who is working on another function. Even if a function does not work, it does not break the code as long as it is not called.
 
 \section{The structure of the program}\label{program_structure}
-The main structure of the program is very simple. It is basically divided in two part: the setup and the main loop. The setup is everything that just need to happen one time when the program starts.
+The main structure of the program is simple. It is basically divided into two parts: the setup and the main loop. The setup is everything that just needs to happen one time when the program starts.
 
-Then there is the main loop which is a while loop that constantly runs for while the program is open. The condition that is given in the main loop is \textbf{true}. This means that the loop is never exited, unless something in the loop makes stop, in this case by hitting the Escape key. This makes it possible to exit what would else be an infinite loop.
+Then there is the main loop which is a while loop that constantly runs while the program is open. The condition that is given in the main loop is \textbf{true}. This means that the loop is never exited, unless something in the loop makes it stop, in this case by hitting the Escape key. This makes it possible to exit what would otherwise be an infinite loop.
 
-Besides the main loop there is also a while loop in the setup, but this will be described a little later in \ref{backgroundConfig}.
+Besides the main loop there is also a while loop in the setup, but this will be described a  later in \ref{backgroundConfig}.
 
-It's important to note that it is bad programming practice to make the program allocate memory in the loop, since it will use more and more memory, unless the memory gets released again. That is why it would run out of memory very fast when the function \textbf{initialize()} would be called in the main loop. Since we still need to get new input from the camera, a function called \textbf{refresh()} was implemented. It does almost the same as \textbf{initialize()}, just that it instead of creating a new integer for each pixel value assigns the old integer a new pixel value, as shown in the following code snippet:
+It is important to note that it is bad programming practice to make the program allocate memory in the loop, since it will use more and more memory, unless the memory gets released again. That is why it would run out of memory very fast if the function \textbf{initialize()} would be called in the main loop. Since we still need to get new input from the camera, a function named \textbf{refresh()} was implemented. It does almost the same as \textbf{initialize()}, but instead of creating a new integer for each pixel value, it assigns the old integer a new pixel value, as shown in the following code snippet:
 
 \begin{lstlisting}
 void Picture::refresh(VideoCapture captureToStoreCamra)
@@ -144,22 +141,21 @@ void Picture::refresh(VideoCapture captureToStoreCamra)
 \end{lstlisting}
 
 \subsection{The downside of the custom-written pixel system}
-The decision to have all pixels in our own class might sound like a neat way getting access to the pixels easier, but on the other hand it also makes the program slower, since it has to go through all the color channels of each and every pixel in each frame. To circumvented this problem, and thereby achieve a faster framerate for the program, another system was implemented. This will be described later in \ref{forInOne}. 
+The decision to have all pixels in our own class might sound like a neat way of accessing the pixels, but on the other hand it also makes the program slower, since it has to go through all the color channels of each and every pixel in each frame. To circumvent this problem, and thereby achieve a faster frame rate for the program, another system was implemented. This will be described later in \ref{forInOne}. 
 
 \section{The preprocessing}
-\textbf{WHEN WE LOOK THIS THROUGH WE SHOULD READ THE LED PART BEFORE TO SE IF IT FITS - Max}
 
 \subsection{Region of Interest}
-Like mentioned in \ref{roi}, the group was only interested in the horizontal position of the person that would step into the camera's field of view. That is why the group had a narrow strip of LEDs where people are detected. That also means that just this part of the picture had to be analyzed. The result is a faster-running program, since only a part of the picture has to be analyzed.
+Like mentioned in \ref{sec:led_roi}, the group was only interested in the horizontal position of the person that would step into the camera's field of view. The region of interest was illuminated by a narrow strip of LEDs where people were detected. That also means that just this part of the picture had to be analyzed. The result is a faster-running program, since only a part of the picture has to be analyzed.
 
-This part is the the region of interest (ROI). This was implemented by initializing the picture in \textbf{setup()}, setting all the pixel values to 0, and in the main loop just refreshing the parts that are in the region of interest.
+The ROI was implemented by initializing the picture in \textbf{setup()}, setting all the pixel values to 0, and in the main loop just refreshing the parts that are in the region of interest.
  
 \subsection{Background subtraction}
 When the group started to make the program, it seemed like a good idea to have a reference picture of what the camera sees without people in the picture. This would then be used to background subtract in every frame. After that the group wanted to threshold the result to get a binary picture. 
 
-This approach worked fine, however, it was also quite slow, since the computer had to do it for every pixel value it received. That is why the group had to look into what of this process could be left out for optimizing the program.
+This approach worked fine, however, it was also quite slow, since the computer had to do the calculations for every pixel value it received. That is why the group had to look into which parts of this process could be left out for optimizing the program.
 
-The thing they knew was that the person would be darker than the background, since they had illuminated the background with external lights. That meant that they the program was not interested in what had become brighter in comparison to the reference picture. The other thing the group knew was that the camera just took infrared light, since the camera contained an IR filter, making most of the color information disappear (see figure \ref{fig:ir_max}). That's why it was chosen to use a single color channel.
+The thing the group knew was that the person would be darker than the background, since the background would be illuminated with external lights. That meant that the program was not interested in what had become brighter in comparison to the reference picture. The other thing the group knew was that the camera just took infrared light, since the camera contained an IR filter, making most of the color information disappear (see figure \ref{fig:ir_max}). That is why it was chosen to use a single color channel.
 
 \begin{figure}[htbp]
 \centering
@@ -168,7 +164,7 @@ The thing they knew was that the person would be darker than the background, sin
 \label{fig:ir_max}
 \end{figure}
 
-Another possibility would have been to put all the color channels together with different weight factors, like in the conversion from a color image to grayscale image. It was chosen not to do this, because the color channels were so similar that it wouldn't have improved the final result, and it would have meant that we had to read all color channels, making the program slower. 
+Another possibility would have been to put all the color channels together with different weight factors, like in the conversion from a color image to a grayscale image. It was chosen not to do this, because the color channels were so similar that it wouldn't have improved the final result, and it would have meant that we had to read all color channels, making the program slower. 
 
 \subsection{Optimizing the code}\label{forInOne}
 Having the previous sections in mind, we are now interested in the pixels inside the ROI that have become darker in comparison to the reference picture. Also, we would like to have the steps of reading all the pixels using OpenCV removed. This can all be written in code in a simple way, using fewer steps than needed before:
@@ -193,9 +189,7 @@ void Picture::refreshDiscradBGSubtractAndThreshholdForBnW(VideoCapture captureTo
 	}
 }
 \end{lstlisting}
-This function does four things, as described previously: reading in pixel values with help from OpenCV; doing thresholding; using the region of interest to discard unnecessary data; and background subtraction.
-
-\textbf{refreshDiscradBGSubtractAndThreshholdForBnW()} refreshes the picture, looking just at the region of interest, and performs calculations that provides the same result by using background subtraction and threshholding.
+This function does four things, as described previously: reading in pixel values with help from OpenCV; using the region of interest to discard unnecessary data; performing background subtraction; and performing thresholding.
 
 The first thing the function does is that it streams the current picture from the camera to a temporary \textbf{Mat} object called \textbf{tmp} (1). The next thing it does is that it loops through all the X values of the picture and through all the Y values that we are interested in (2). The Y values we are interested in are the ones that go from \textbf{heightOfLowerROI}, which is a parameter to the function, up to a specific percentage of the screen. For each of these coordinates the program checks if the red channel of the of the new picture is darker than the threshold value (3). If this is the case, the current pixel gets the maximum value, to show that this pixel has changed in comparison to the reference picture (4). If it hasn't changed enough, the pixel's value is set to to zero (5).
 
@@ -207,9 +201,9 @@ The first thing the function does is that it streams the current picture from th
 \end{figure}
 
 \section{Morphology}
-Because the group arranged the LEDs on a long strip in an interval of 4 centimetres (see figure \ref{fig:led_max}), there were some light gaps on the taken picture. This meant that some of the pixels that actually should have been detected as changed were detected as unchanged. This caused the program to detect some persons doubled, because they were separated, even though there was in fact only a single person in front of the camera.
+Because the group arranged the LEDs on a long strip in an interval of 4 centimetres (see figure \ref{fig:led_max}), there were some light gaps on the captured image. This meant that some of the pixels that actually should have been detected as changed were detected as unchanged. This caused the program to detect some persons doubled, because they were separated, even though there was in fact only a single person in front of the camera.
 
-The group solved this by applying morphology to the picture. Closing was applied to close the gaps within the persons. As mentioned in \ref{closing}, it consist of first dilating the picture and then eroding it. This is shown in the following code:
+The group solved this by applying morphology to the picture. Closing was applied to close the gaps within the persons. As mentioned in \ref{closing}, closing consists of first dilating the picture and then eroding it. This is shown in the following code:
 
 \begin{lstlisting}
 void Picture::dilate(int radius, Picture &tmpPicture)
@@ -275,19 +269,19 @@ void Picture::erode(int radius, Picture &tmpPicture)
 }
 
 \end{lstlisting}
-Both the erosion and dilation go through almost all the pixels in the picture. The pixels that are not analyzed are the ones that are too close to the edge of the picture, so the kernel would be empty for some of the values (1). There is various ways to circumvent this edge problem, but it was decided not to pursue these, since the pixel edges are not so important for the program, especially since the final output image will show something completely different thanks to Unity (more about this in \ref{unityStart}).
+Both the erosion and dilation go through almost all the pixels in the picture. The pixels that are not analyzed are the ones that are too close to the edge of the picture, so the kernel would be empty for some of the values (1). There are various ways to circumvent this edge problem, but it was decided not to pursue these, since the pixel edges are not  important for the program.
 
-At every pixel, the functions look around the given pixel with the chosen radius (2). The difference between the \textbf{erosion()} and \textbf{dilation()} is that for a pixel to be accepted in dilation, just a single pixel in the radius has to be true (3). With erosion, there can't be any pixels in the radius that are false (4). Other than that the two functions work the same way. While the program is still looking through the image, the output has to be stored in a buffer picture. This buffer picture holds the output, so the the original input picture is left intact (5). When the functions are finished with analyzing the picture, the output from the buffer picture gets written to the picture that the function is called from (6). 
+At every pixel, the functions look around the given pixel with the chosen radius (2). The difference between \textbf{erosion()} and \textbf{dilation()} is that for a pixel to be accepted in dilation, just a single pixel in the radius has to be \textbf{true} (3). With erosion, there can't be any pixels in the radius that are \textbf{false} (4). Other than that the two functions work the same way. While the program is still looking through the image, the output has to be stored in a buffer picture. This buffer picture holds the output, so the the original input picture is left intact (5). When the functions are finished with analyzing the picture, the output from the buffer picture gets written to the picture that the function is called from (6). 
 
 \section{The setup loop}
 \subsection{Take a background picture}\label{backgroundConfig}
 Like mentioned before in \ref{program_structure}, there is also a loop in the setup. This loop contains a while loop that has \textbf{true} as its condition. The loop is not supposed to end when the Escape key is pressed, but when it has figured out that there are no people in the picture. The reason for this is that it has to take a reference picture, which is the one used in the background subtraction.
 
-The function works under the assumption that people in front of the camera always move a little and aren't standing 100\%. The function has three thresholds. The first threshold is called \textbf{threshholdPixelChange} and is the value from which a pixel can be counted as changed.
+The function works under the assumption that people in front of the camera always move a little and are not standing 100\% still. The function has three thresholds. The first threshold is called \textbf{threshholdPixelChange} and is the value from which a pixel can be counted as changed.
 
 The second is \textbf{threshholdPixelsChanged} which is the threshold for how many pixels count as a person, since we are not interested if just a single pixel has changed.
 
-The third threshold, \textbf{threshholdFramesChanged}, is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row that have to taken without changes, so we can assume that nobody is on the picture. 
+The third threshold, \textbf{threshholdFramesChanged}, is set in case that a person should accidentally stand still for one frame. This threshold sets how many pictures in a row that needs to be captured without changes, before assuming that nobody is on the picture. 
 \begin{lstlisting}
 void configBG(Picture &BG, VideoCapture &camera1, int threshholdPixelChange, int threshholdPixelsChanged, int threshholdFramesChanged, int lroi)
 {
@@ -365,17 +359,17 @@ Before starting the while loop, \textbf{configBG()} configures the background; i
 
 In the while loop it refreshes the pictures with a time delay of 30 milliseconds (3), and it initializes a counter that holds how much each pixel is changed (4). It also has a variable that knows how many pixels that have been changed (5). After this the program goes through all pixel coordinates (6) and saves the difference between the pixel value of each channel in the variable \textbf{pixelChange} (7).
 
-When \textbf{pixelChange} is bigger than the threshold that classifies a pixel as being changed, the counter \textbf{pixelsChanged} gets raised by one (8). When all the pixels have been looked through, the program knows how many pixels have been changed. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up(9). When to many pixels have changed the counter gets set to zero (10).
+When \textbf{pixelChange} is bigger than the threshold that classifies a pixel as being changed, the counter \textbf{pixelsChanged} gets raised by one (8). When all the pixels have been looked through, the program knows how many pixels have been changed. When sufficiently few pixels have changed, which is set by the parameter \textbf{threshholdPixelsChanged}, the counter for frames that haven't changed gets counted up (9). When too many pixels have changed the counter gets set to zero (10).
  
-When enough pictures have been unchanged, the last part of the loop is entered (11). Here, first the  \textbf{Picture} object called \textbf{BG} gets refreshed (12). When this is done, we analyze two things on the picture. The first one is finding the brightest pixel's position in each column of the picture. The second is placing the region of interest. We find the brightest pixel by going through each pixel of each column (13). The brightest pixels ant their values are then stored (14). This gets saved in the integer array \textbf{brightestYatX[X]}. When feeding in an X value, it returns the Y position of the brightest pixel at that X position.
+When enough pictures have been unchanged, the last part of the loop is entered (11). Here, first the  \textbf{Picture} object called \textbf{BG} gets refreshed (12). When this is done, we analyze two things on the picture. The first one is finding the brightest pixel's position in each column of the picture. The second is placing the region of interest. We find the brightest pixel by going through each pixel of each column (13). The brightest pixels and their values are then stored (14). This gets saved in the integer array \textbf{brightestYatX[X]}. When feeding in an X value, it returns the Y position of the brightest pixel at that X position.
 
 To find out where the region of interest has to be placed, the program adds all Y positions of the brightest pixels (15) together and finds the average of them in the end (16). In the end there is a check that makes sure that the region of interest is in the frame (17).
 
 \subsection{The enter zone}
-Now the question might be why we are interested in the position of the brightest pixel in each column on the background picture. The answer to that is that when a person goes into the picture and produces pixels that have been changed in comparison to the background, the person will do that in front of the LEDs. If we are looking for this person, we don't want to look through all the pixels but only the ones where the LEDs are on the background picture. We are looking for the brightest pixel, because we hope to find the pixel at the position of each LED. We will come back to this \ref{findPerson}.
+Now the question might be why we are interested in the position of the brightest pixel in each column on the background picture. The answer to that is that when a person goes into the picture and produces pixels that have been changed in comparison to the background, the person will do that in front of the LEDs. If we are looking for this person, we don't want to look through all the pixels but only the ones where the LEDs are on the background picture. We are looking for the brightest pixel, because we hope to find the pixel at the position of each LED. We will come back to this in \ref{findPerson}.
 
 \section{Finding and analysing the BLOBs}
-Let's assume that we have examined a pixel that is found to be true or in other words changed in comparison to the background. The next thing would be to find the pixels that are connected to this single pixel, categorizing them as one object, also known as a BLOB (Binary Large Object). One method that is often used is recursion. That's why a recursive function, when called, could go from pixel to pixel and call itself:
+Let us assume that we have examined a pixel that is found to be true or in other words changed in comparison to the background. The next thing would be to find the pixels that are connected to this single pixel, categorizing them as one object, also known as a BLOB (Binary Large Object). One method that is often used is recursion. That's why a recursive function, when called, could go from pixel to pixel and call itself:
 \begin{lstlisting}
 void Picture::startFire(point startingPoint, Picture &tmpPicture)
 {
@@ -420,7 +414,7 @@ void Picture::findNextPoint(point currentPosition, Picture &tmpPicture)
 		}
 }
 \end{lstlisting}
-This function works just on smaller BLOBs. The problem was that for each pixel a new function was called causing a stack overflow. A stack overflow occurs when too much memory is used on the call stack and often results in the program crashing.
+This function works only on smaller BLOBs. The problem was that for each pixel a new function was called causing a stack overflow. A stack overflow occurs when too much memory is used on the call stack and often results in the program crashing.
 
 That is why there was a need to write a new function that wouldn't call itself multiple times, since it would make the program unstable and in the end stop working. To get a better overview, the logic behind behind the recursive function was written down on paper to be analyzed.
 
@@ -526,20 +520,20 @@ void Picture::startFireLoggingPersons(point startingPoint)
 \end{lstlisting}
 This is the function that replaced our previous recursive function.
 
-It somehow violates the pixel system we had until then. The different channels are not used to saving the color channels of the picture any longer. Instead, the states of the analysis of the pixels are saved in the color channels. When the red channel of the pixel has a value of 255, the pixel is found but not yet analyzed by the function. When it is 0, it means that nothing is found, and when it is another number, it is going to be analyzed.
+\textbf{startFireLoggingPersons()} somehow violates the pixel system we had until then. The different channels are not used for saving the color channels of the picture any longer. Instead, the states of the analysis of the pixels are saved in the color channels. When the red channel of the pixel has a value of 255, the pixel is found but not yet analyzed by the function. When it is 0, it means that nothing is found, and when it is another number, it is going to be analyzed. One can find the BLOB index number, as well as which pixel it belongs to, by subtracting 200 from its value. 
 
-One can find the BLOB index number, as well as which pixel it belongs to, by subtracting 200 from its value. The blue channel isn't used. The green channel is used to save the way that function goes with the four first forward-cases, so it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1). The count is assigned to the green channel of every pixel that is found forwards (2). When non of the four if statements (3) have become true, the function compares the counter in the green values around itself and goes to the biggest; in other words finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero, when going backwards(5).
+The blue channel isn't used. The green channel is used to save the way the function goes with the four first forward-cases, so that it in the following four cases knows which way the way back is. The function does that by counting the pixels with the \textbf{pixelCount} (1). The count is assigned to the green channel of every pixel that is found forwards (2). When non of the four if statements (3) have become true, the function compares the values in the green channel around itself and goes to the biggest; in other words it finds the position where it has been last (4). In order to not let the function go there again the green channel is set to zero, when going backwards (5).
 
-The function move through the pixels in all eight cases and updating the object \textbf{currentPosition}, which is a struct of type \textbf{point}. This struct contains two integers called \textbf{X} and \textbf{Y}. When the object move in a direction, X or Y are either increased or reduced (6).
+The function moves through the pixels in all eight cases and updates the object's \textbf{currentPosition}, which is a struct of type \textbf{point}. This struct contains two integers called \textbf{X} and \textbf{Y}. When the object moves in a direction, X or Y are either increased or reduced (6).
 
-After that, the while loop runs with the new given position. When calling the function, one has to put in the point where the function will start to analyze the BLOB, in this case called \textbf{startingPoint}. The starting point will in the beginning of the function be checked if it is found to be 255 in the red channel (7) and then be set to the \textbf{currentPosition} (8). While going through the BLOB, the function also saves some information about it: it counts how many pixels the BLOB consists of (9). We use this information to discard BLOBs that are too small to be considered as a person (10). If this is the case, the \textbf{personCounter} gets reset to what it was before the function was called, and the pixel values are set to zero. The function also saves the biggest and  smallest X positions of the BLOB (11). In case the \textbf{personCounter} is big enough, the average of these two number is stored in the \textbf{posX} and is later used to output where the person is positioned in front of the screen (12).
+After that, the while loop runs with the new given position. When calling the function, one has to put in the point where the function will start to analyze the BLOB, in this case called \textbf{startingPoint}. The starting point will in the beginning of the function be checked, if it is found to be 255 in the red channel (7) the function is allowed to continue. As the next operation \textbf{currentPosition} is set equal to the \textbf{startingPoint} (8). While going through the BLOB, the function also saves some information about it: it counts how many pixels the BLOB consists of (9). We use this information to discard BLOBs that are too small to be considered as a person (10). If this is the case, the \textbf{personCounter} gets reset to what it was before the function was called, and the pixel values are set to zero. The function also saves the biggest and  smallest X positions of the BLOB (11). In case the \textbf{personCounter} is big enough, the average of these two number is stored in the \textbf{posX} and is later used to output where the person is positioned in front of the screen (12).
 
 \section{Persons}
-Now it is possible categorize the pixels in BLOBs and assign them a number. The next question was how to keep track of where each person went from frame to frame. When we just would go through the whole picture in every frame, the BLOBs would always be numbered in the order they were found, from the upper left corner to the lower right corner.
+Now it is possible to categorize the pixels in BLOBs and assign them a number. The next question was how to keep track of where each person went from frame to frame. When we just would go through the whole picture in every frame, the BLOBs would always be numbered in the order they were found, from the upper left corner to the lower right corner.
 
-It was decided that the persons found in the picture should be stored in an array of found persons. From frame to frame, the persons would then have to be re-found, so there was a connection between the person from the previous frame to the current frame. It was important that the program first would try to re-find the persons, and then it would look for new persons among the BLOBs that hasn't been touched yet.
+It was decided that the persons found in the picture should be stored in an array of found persons. From frame to frame, the persons would then have to be re-found, so there was a connection between the person from the previous frame to the current frame. It was important that the program first would try to re-find the persons, and then it would look for new persons among the BLOBs that have not been touched yet.
 
-Another thing to be considered was when people should be allowed to enter the picture, and what should happen if a person from one frame to the next disappeared. Was it likely that the person reached the edge of the picture and then walked out of it? There was also a possibility for that the person was occluded, i.e. hidden, by another person. How to separate this case from the case of exiting the picture?
+Another thing to be considered was when people should be allowed to enter the picture, and what should happen if a person from one frame to the next disappeared. Was it likely that the person reached the edge of the picture and then walked out of it? There was also a possibility that the person was occluded by another person. How to separate this case from the case of exiting the picture?
 
 Here we will at first describe how a person is stored in the program, secondly how it is found in the beginning, and then how it is re-found. We structure it like this, even though in the main loop we first try to re-find the person and then look for new persons.
 
@@ -576,7 +570,7 @@ The \textbf{moveVector} (4) is the vector with which the person has moved from t
 Then there is \textbf{pId} (7), which is each person's id number in their own array. This array is also a member of the \textbf{Picture} class (8). The array allows for a maximum of 50 people, and since it is zero-based, \textbf{pId} is always between 0 and 49.
 
 \subsection{Finding new persons}\label{findPerson}
-When trying to find new persons, the group limited the search to looking at the left-most and the right-most pixels, since nobody could come from above or from the underneath the camera.
+When trying to find new persons, the group limited the search to looking at the left-most and the right-most pixels, since nobody could come from above or from underneath the camera.
 
 Since they also limited it to a region of interest, they also just had to look for new persons in this area. It was decided to only look at the brightest pixel where, hopefully, the LED strip was positioned.
 
