@@ -845,19 +845,19 @@ The way the average of the initial move vectors is made is that every time the p
 \section{Using Unity to handle the graphical output}\label{unityStart}
 After doing the initial prototype, the group realized that it would be difficult to use OpenCV to both extract the data from the camera and display it in some kind of graphical way. Since the program has to loop through a lot of data continuously, there was little resources left for it to actually display the results in an interesting way without being too slow. First the group thought about using multiple threads running in the program, but even then it would be hard to display more sophisticated graphics. OpenCV is not meant as a tool for displaying graphics, but more for the analyzing/extracting part.
 
-Then the group came up with the idea of using Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages.
+Then the group came up with the idea of using the Unity game engine to display the graphics based on the data from OpenCV. This had the added bonus of being able to use elements such as particle effects, physics and sound. Since some group members already had experience with Unity, it seemed a good choice. The only concern was how to send the data from OpenCV to Unity. OpenCV uses C++, while Unity uses \texttt{C\#}, JavaScript or Boo as scripting languages.
 
 \subsection{Getting a link between OpenCV and Unity}
-It was first considered to make C++ write to a text file that could then be read by Unity. This approach was not used in the end, since it would need a lot of readings and writings to the hard drive - doing this repeatedly could destroy it. Also, there is a chance that there would be a mismatch with Unity trying to read the file while C++ is writing to it (the text file has to be opened, then written to, and finally closed). It was also found that this method was quite slow. Therefore it was decided to write to the Clipboard in Windows.
+It was first considered to make C++ write to a text file that could then be read by Unity. This approach was not used in the end, since it would need a lot of reads and writes to the hard drive - doing this repeatedly could destroy it. Also, there is a chance that there would be a mismatch with Unity trying to read the file while C++ is writing to it (the text file has to be opened, then written to, and finally closed). It was also found that this method was quite slow. Therefore it was decided to write to the Clipboard in Windows.
 
-The Clipboard acts as a short-term buffer to store temporary data in the RAM (Random Access Memory). Using copy and paste functionality, it can work like a gateway for transferring information from one program to another. \citep{clipboard_one}. This avoids writings/readings from a physical hard drive and won't wear it out, as well as being faster than saving to a text file on the computer.
+The Clipboard acts as a short-term buffer to store temporary data in the RAM (Random Access Memory). Using copy and paste functionality, it can work like a carrier for transferring information from one program to another. \citep{clipboard_one}. This avoids writes/reads from a physical hard drive and will not wear it out, as well as being faster than saving to a text file on the computer.
 
-\subsubsection{Copy data from C++}
-In the C++ program a text line is saved as a string. This is done using the function \textbf{SetClipboardData()} where the data type has a format called CF\_TEXT that stores the data as text.\citep{clipboard_two} \citep{clipboard_three}. This string describes the information of where a person is currently located.
+\subsubsection{Copying data from C++}
+In the C++ program a text line is saved as a string. This is done using the function \textbf{SetClipboardData()} where the data type has a format called CF\_TEXT that stores the data as text \citep{clipboard_two} \citep{clipboard_three}. This string describes the information of where a person is currently located.
 
-First it assigns an unique ID name, showing what number of person it is, and then a floating point value between 0 (left) and 0.9 (right). If it is -1, it means that the person is currently not there, i.e. there is no person. The reason for this is to make it easier for Unity to move the characters around on the screen. If a position is different from -1, it means that it should be shown on the screen. Else if the position data is -1, the character will be moved outside of the screen area and not shown.
+First the C++ program assigns a unique ID name, and then a floating point value between 0 (left) and 1 (right). If the float is -1, it means that the person is currently not there, i.e. there is no person in front of the camera. The reason for this is to make it easier for Unity to move the characters around on the screen. If a position is different from -1, it means that it should be shown on the screen. Else if the position data is -1, the character will be moved outside of the screen area and not shown.
 
-Below is an example of the string that is copied to the Clipboard in the C++ program:
+Below is an example of the string that is copied to the Clipboard from the C++ program:
 
 q iObject\_1p0.1 iObject\_2p0.2 iObject\_3p0.3 iObject\_4p0.4 iObject\_5p0.5 iObject\_6p0.6 iObject\_7p0.7 iObject\_8p0.8 iObject\_9p0.9 iObject\_10p-1 q
 
@@ -866,13 +866,13 @@ Even though the program in theory could track more people, a finite number of 10
 \subsubsection{Reading data in Unity}
 In Unity, using \texttt{C\#}, the text is read from the Clipboard via the static function \textbf{GetSystemCopyBufferProperty()}. The first thing that happens is that whitespaces are removed. Then the string is split multiple times using different delimit characters such as the q's, i's and p's.
 
-'q' is simply used to start and end the string, so nothing before or after is used. This was to ensure that incorrect data would never be read in Unity, i.e. if there was any leftovers from the last time data was copied to the Clipboard. It made debugging easier, since it would produce an exception error if the data in the Clipboard didn't start and end with 'q'.
+'q' is simply used to start and end the string, so nothing before or after is used. This was to ensure that incorrect data would never be read in Unity, i.e. if there was any leftovers from the last time data was copied to the Clipboard. It made debugging easier, since it would produce an exception error if the data in the Clipboard did not start and end with 'q'.
 
-The character 'i' is used to identify each person and assign it a name. In this case the name consists of a number that increases for each person that has been in front of the camera. Doing this makes it easier to identify a specific character in Unity and check if it is moving as intended. The floating value after the 'p' is the actual position of the character, which is then translated into a coordinate system in Unity where 0.1 is to the left side and 0.9 is to the right side. As mentioned before, a -1 is an invalid value, meaning that the person is not present and will therefore be moved outside of the visible screen.
+The character 'i' is used to identify each person and assign it a name. In this case the name consists of a number that increases for each person that has been in front of the camera. Doing this makes it easier to identify a specific character in Unity and check if it is moving as intended. The floating value after the 'p' is the actual position of the character, which is then translated into a coordinate system in Unity where e.g. 0.1 is to the left side and 0.9 is to the right side. As mentioned before, a -1 is an invalid value, meaning that the person is not present and will therefore be moved outside of the visible screen.
 
-In the end, all the position data are stored in an array with the position data called \textbf{Position[]}. In this case Position[0] would be the character named "Object\_1" and have the position 0.1. Position[9], on the other hand, has a -1 and would therefore not be shown on the screen.
+In the end, all the position data are stored in an array with the position data called \textbf{Position[]}. In this case Position[0] would be the character named "Object\_1" and have the position 0.1. Position[9], on the other hand, has a -1 and would therefore not be shown on the screen. These values are then mapped to a coordinate system in Unity.
 
-It should be noted that these values are only for the X position. It was chosen not to use Y position to make it simpler, and since there is no depth, the Z axis is totally excluded (the program is held in 2D). However, the characters move somewhat randomly up and down in the Y direction every time the are moving around on the X direction - depending on what type of character it is. For instance, the angel character should float in the air, while the snowman should be on the ground. Doing this avoid having a lot of characters occluding each other, since more of the screen is being used (see figure \ref{fig:withoutRandomY} and \ref{fig:withRandomY}).
+It should be noted that these values are only for the X position. It was chosen not to use the Y position, and since there is no depth, the Z axis is totally excluded (the program is kept in two dimensions). However, the characters move somewhat randomly up and down in the Y direction every time they are moving around on the X direction - depending on what type of character it is. For instance, the angel character should float in the air, while the snowman should be on the ground. Doing this helps avoiding characters occluding each other, since more of the screen is being used (see figure \ref{fig:withoutRandomY} and \ref{fig:withRandomY}).
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -893,21 +893,21 @@ It should be noted that these values are only for the X position. It was chosen 
 
 Having this array of position data makes it easy to loop through a list of Unity game objects and move them around accordingly.
 
-Additional functionality was implemented to make the characters move more smoothly than simply jumping from point to point, which gave an effect as if they were teleporting. First of all a threshold value is used so a character will only move if the person moves enough for the system to trigger it. This means that if a person is standing still in front of the camera, the character on screen will not jump around due to the small changes in the decimal values (e.g. from 0.542 to 0.523 would not make the character move).
+Additional functionality was implemented to make the characters move more smoothly than simply jumping from point to point in a one-to-one relationship with the data from the Clipboard. First of all a threshold value is used so a character will only move if the person moves enough for the system to trigger it. This means that if a person is standing still in front of the camera, the character on screen will not jump around due to the small changes in the decimal values (e.g. from 0.542 to 0.523 would not make the character move).
 
 To make the characters move even more smoothly, it was chosen to de-synchronize the position data gathered from the camera and the character's actual position; a target system was implemented for this purpose. This works by at intervals finding a new target to move to, and then a character will gradually move towards that target. Then after a small period of time, the target will be updated. Like the threshold, it makes the characters move in a more natural line.
 
 \subsection{Using Unity to display the characters}
 The Unity game engine is typically used to make 3D games, but it is still possible to make programs in 2D, using 2D sprites/textures and an orthographic camera that doesn't display depth.
 
-The scene used for the game is quite simple. It consists of a background image showing mountains. To achieve a more dynamic look, a couple of elements are added to make the whole scene spring to life.
+The scene used is quite simple. It consists of a background image showing mountains. To achieve a more dynamic look, a couple of elements are added to make the whole scene spring to life.
 
-First there are are a collection of Christmas trees with some Christmas balls and bells hanging on top. Using built-in physics in Unity, these bounce back and forth, simulating the wind blowing. Along with this is the falling snow, which is made as an particle system in Unity. This ensures that even when there are nobody in front of the camera, the program still feels alive.
+First there are are a collection of Christmas trees with some Christmas balls and bells hanging on top. Using built-in physics in Unity, these bounce back and forth, simulating the wind blowing. Along with this is the falling snow, which is made as a particle system in Unity. This ensures that even when there are nobody in front of the camera, the program still feels alive.
 
 \subsection{Time manager and Santa Claus}
-As mentioned in chapter \ref{hjoerring}, the library is build on the theme of serendipity, e.g. to surprise and be new. When making the program, the group had an idea about having it change depending on the time of the day. Using the clock in Windows, the program could do something different at different times.
+As mentioned in chapter \ref{hjoerring}, the library is build on the theme of serendipity, i.e. to surprise and be new. When making the program, the group had an idea about having it change depending on the time of the day. Using the clock in Windows, the program could do something different at different times.
 
-In the program, the sun will gradually rise as time passes, as well as the light will become brighter/dimmer, just as it is happening outside. Figures \ref{fig:time1}, \ref{fig:time2} and \ref{fig:time3} illustrate this. One thing we needed to have in mind was the light setting. On a computer screen the image can be really bright and really dark, but on a canvas and a projector it is not easy to see a dark image. Therefore the brightness level was set a little higher than normal, so it would still be possible to see it properly on the canvas. It was important to have big contrasts, so everything would look more clear on the canvas.
+In the program, the sun will gradually rise as time passes, as well as the light will become brighter/dimmer, just as it is happening outside. Figures \ref{fig:time1}, \ref{fig:time2} and \ref{fig:time3} illustrate this. One thing we needed to have in mind was the light setting. On a computer screen the image can be really bright and really dark, but on a canvas and a projector it is not easy to see a dark image. Therefore the brightness level was set a little higher than normal, so it would still be possible to see it properly on the canvas.
 
 \begin{figure}[htbp]\centering
 	\begin{minipage}[b]{0.3\textwidth}\centering
@@ -933,7 +933,7 @@ In the program, the sun will gradually rise as time passes, as well as the light
 	\end{minipage}
 \end{figure}
 
-Another aspect is Santa Claus who will come at a randomly chosen time (see figure \ref{fig:santa}. When he arrives, jingle bell sounds play, as well as his iconic "ho ho ho" laughter. Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa doesn't come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
+Another aspect is Santa Claus who will come at a randomly-chosen time (see figure \ref{fig:santa}. When he arrives, jingle bell sounds play, as well as his iconic "ho ho ho" laughter. Santa will then drop packages that can be interacted with. This happens by moving into the objects, pushing them with the physics system in Unity. It should be noted that Santa does not come too often, since it would disturb other visitors at the library. In average, Santa Claus arrives once an hour.
 
 \begin{figure}[htbp]
 \centering
@@ -943,7 +943,7 @@ Another aspect is Santa Claus who will come at a randomly chosen time (see figur
 \end{figure}
 
 \subsection{Snow ball}
-To get a little more interaction, a snow ball is placed in the scene (see figure \ref{fig:snowball}). This can be pushed around by the characters, and it will gradually grow bigger and bigger until it at some time explodes and disappear for a short period of time.
+To get a little more interaction, a snow ball is placed in the scene (see figure \ref{fig:snowball}). This can be pushed around by the characters, and it will gradually grow bigger and bigger until it at some point explodes and disappears for a short period of time.
 
 
 \begin{figure}[htbp]
@@ -961,11 +961,11 @@ One of the goals in the problem statement (\ref{problemStatement}) was to have t
 During the setup at the library multiple things were learned. Since it was not possible to be at Hj{\o}rring Library every day, especially not in the beginning of the project, it was difficult to test the proper camera settings, etc. Therefore we needed to re-adjust some elements when we visited the library.
 
 \subsection{Use of LED strips}
-The original plan was to be able to track people in front of and behind the bookshelf (dubbed "den r{\o}de tr{\aa}d). Therefore two sets of LED strips was put up: one behind the canvas (see figure \ref{fig:behindShelf}) and one beneath the red bookshelf (see figure \ref{fig:frontShelf}).
+The original plan was to be able to track people in front of and behind the bookshelf (dubbed "den r{\o}de tr{\aa}d). Therefore two sets of LED strips were put up: one behind the canvas (see figure \ref{fig:behindShelf}) and one beneath the red bookshelf (see figure \ref{fig:frontShelf}).
 
-What the group hadn't have in mind was that the perspective that the camera would see (figure \ref{fig:camera_POV}). Since the program had already been written without this in mind, it was difficult to make it work with both LED strips. Due to lack of time it was decided to not use the LED strip in the background, but instead solely focus on the LED strip placed underneath the red bookshelf.
+What the group did not have in mind was the perspective that the camera would capture (figure \ref{fig:camera_POV}). Since the program had already been written without this in mind, it was difficult to make it work with both LED strips. Due to lack of time it was decided to not use the LED strip in the background, but instead solely focus on the LED strip placed underneath the red bookshelf.
 
-One thing that could be interesting to work on in the future would to be the background LED strip recognize hands. When trying out the program, it seemed intuitive to either jump or raise one's arms in the air. The LED strip could be used to track this, so the characters in the program could react accordingly. Sadly, there was no time to implement this idea.
+One thing that could be interesting to work on in the future would to be the make the background LED strip recognize hands. When trying out the program, it seemed intuitive to either jump or raise one's arms in the air. The LED strip could be used to track this, so the characters in the program could react accordingly. Sadly, there was no time to implement this idea.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -992,13 +992,11 @@ One thing that could be interesting to work on in the future would to be the bac
 \end{figure}
 
 \subsection{Santa Claus and his "ho ho ho" sound}
-As mentioned previously, it was important not to disturb visitors with too much sound. After having the program running for a few hours, one of the library staff members contacted us and asked if it was our program that kept making weird noises. It turned out that she was talking about the Santa Claus "ho ho ho" laughter, which, in her opinion, sounded like a deep and growling voice. Apparently the speakers in that we were using made the "ho ho ho" sound different than on our laptop computers. The staff member said that it was a little disturbing and that she thought kids would be afraid, since it sounded a little creepy. On top of that, it sounded like she was a little annoyed of the sound, since she was working close-by.
+As mentioned previously, it was important not to disturb visitors with too much sound. After having the program running for a few hours, one of the library staff members contacted us and asked if it was our program that kept making weird noises. It turned out that she was talking about the Santa Claus "ho ho ho" laughter, which, in her opinion, sounded like a deep and growling voice. Apparently the speakers that we were using made the "ho ho ho" sound different than on our laptop computers. The staff member said that it was a little disturbing and that she thought kids would be afraid, since it sounded a little creepy. On top of that, it sounded like she was a little annoyed of the sound, since she was working close-by.
 In the end the group decided to just get rid of the sound and only use jingle bells for Santa's appearance.
 
 \subsection{Shadows on canvas}
-An unexpected problem was the fact that when somebody stand in front of the camera and projector, it draws a rather big shadow on the canvas. When the group first went to Hj{\o}rring to research and look for the location, it didn't seem like it would be a problem.
-
-\textbf{[somebody, Johannes/Simon, needs to write a little more here!]}
+An unexpected problem was the fact that when somebody was standing in front of the camera and projector, it draws a rather big shadow on the canvas. When the group first went to Hj{\o}rring to research and look for the location, it didn't seem like it would be a problem.
 
 \begin{figure}[htbp] \centering
 \begin{minipage}[b]{0.45\textwidth} \centering
@@ -1019,10 +1017,10 @@ An unexpected problem was the fact that when somebody stand in front of the came
 
 When the final setup was built, it turned out that in the worst-case scenario the shadow would hide a lot of the graphics drawn on the canvas (figure \ref{fig:shadow_canvas}). To reduce the shadows, the projector was placed on top of a couple of boxes (see figure \ref{fig:projector_box}). However, to completely remove the shadows one needed to use a lot of boxes, or, alternatively, hang the projector in the ceiling. Due to time constraints this was not possible. Also, the library staff was afraid that the projector would be too unstable.
 
-\subsection{Need sound to draw attention}
-One thing that the group quickly learned while setting the equipment up was the fact that a lot of people didn't even realize the fact that they were interacting with the canvas when the walked past. Many people looked straight forward when they were walking, instead of looking to either sides.
+\subsection{Needing sound to draw attention}
+One thing that the group quickly learned while setting the equipment up was the fact that a lot of people didn't even realize the fact that they were interacting with the canvas when they walked past. Many people looked straight forward when they were walking, instead of looking to either sides.
 
-It was suggested to use sounds to draw attention to the canvas. An idea was to make a "magical fairy dust sound" play every time a person stepped into the scene. We tried this, but it didn't give a good result. One reasons was the fact that the speakers are placed inside the projector which is placed in the opposite side of the canvas. Figure \ref{fig:projector_audio} illustrates the problem.
+It was suggested to use sounds to draw attention to the canvas. An idea was to make a "magical fairy dust sound" play every time a person stepped into the scene. We tried this, but it didn't give a good result. One reasons was the fact that the speakers are placed inside the projector which is placed on the opposite side of the canvas. Figure \ref{fig:projector_audio} illustrates the problem.
 
 \begin{figure}[htbp]
 \centering
@@ -1031,23 +1029,20 @@ It was suggested to use sounds to draw attention to the canvas. An idea was to m
 \label{fig:projector_audio}
 \end{figure}
 
-The solution would be to place some external speakers near the canvas, but due to time constraints this wasn't implemented. Also, the sounds turned out to be a little disturbing, so in the end it was chosen to just drop them.
+The solution would be to place some external speakers near the canvas, but due to time constraints this was not implemented. Also, the sounds turned out to be a little disturbing, so in the end it was chosen to just drop them.
 
 \subsection{People walking too fast}
-Another reason why the canvas didn't draw proper attention when people walked past was the fact that it was quite slow to display the characters. In the beginning there was no real connection between a person walking and the character on-screen. This was due to multiple things: the camera having to process the data and send it to Unity, and the speed of the characters. It took some time for the characters to "cath up" on the actual person, so the character would be lagging behind. The solution was to teleport the character if the distance became too big.
+Another reason why the canvas did not draw proper attention when people walked past was the fact that it was quite slow to display the characters. In the beginning there was no real connection between a person walking and the character on-screen. This was due to multiple things: the C++ program having to process the data and send it to Unity, and the speed of the characters. It took some time for the characters to "catch up" to the actual person, so the character would be lagging behind. The solution was to teleport the character if the distance became too big.
 
 \subsection{Camera not steady}
-Initially there were some problems with the webcam moving just slightly. This would make the whole program malfunctioning, since the region of interest would change. To avoid this the webcam needed to be steadied with some strong tape. Also, the OpenCV program was modified to re-synchronize itself every hour. This would mean that if somebody accidentally touches either the camera or the LED strips (which happened surprisingly often), the program would re-adjust some time.
+Initially there were some problems with the webcam moving just slightly. This would make the whole program malfunction, since the region of interest would change. To avoid this the webcam needed to be steadied with some strong tape. Also, the OpenCV program was modified to re-synchronize itself every hour. This would mean that if somebody accidentally touches either the camera or the LED strips (which happened surprisingly often), the program would re-adjust after some time.
 
 The group needed to make a decision: how often should it re-configure itself? If it did it too often, the chances of people standing in front of the camera while it was trying to re-configure was bigger. On the other hand, if it does it less often, the time where it won't work properly would be longer. In the end an hour was chosen to be a good compromise.
 
-\textbf{[MAX should describe more why we chose an hour and not 2 hours, 5 hours, 5 min or something else!?]}
 
 \subsection{Programs crashing during the day}
 Before testing the program at the library, they hadn't run for more than a few minutes continuously. Since the goal was to let them run for a whole day (10:00-18:00), it was important that the programs would not crash. Initially, there were problems with both C++ and Unity.
 
-\textbf{[something about C++ crashing]}
+Even though the Unity program is quite simple, it turned out to hog a lot of memory over time. It took several days for the group to realize why. After multiple debugging sessions they found that apparently Unity does not deleted old textures and materials. As mentioned earlier, animations are done using sprite sheets. Doing this changes the material on a Unity object (a material describes how a texture should be displayed using a shader). Every time a new material is applied, i.e. when the animation needed to change, the old material was kept in the background. Over time, these materials stacked up. This meant that the RAM usage constantly increased until the program finally crashed.
 
-Even though the Unity program is quite simple, it turned out to hog a lot of memory over time. It took several days for the group to realize why. After multiple debugging sessions they found that apparently Unity does not deleted old textures and materials. As mentioned earlier, animations are done using sprite sheets. Doing this changes the material on a game object (a material describes how a texture should be displayed using a shader). Every time a new material is applied, i.e. when the animation needed to change, the old material was kept in the background. Over time, these materials stacked up. This meant that the RAM usage constantly increased until the program finally crashed.
-
-To resolve this problem proper deletion of the materials were implemented. It turned out that the {C\#} garbage collector didn't do this automatically, so we manually had to delete old instances of materials. This lead to more stable memory usage. Just to be sure that Unity doesn't use too much memory during a whole day, it was made so that it reloads itself every third hour. This only takes a fraction of a second, so it shouldn't disturb the interaction.
+To resolve this problem proper deletion of the materials were implemented. It turned out that the {C\#} garbage collector did not do this automatically, so we manually had to delete old instances of materials. This lead to more stable memory usage. Just to be sure that Unity does not use too much memory during a whole day, it was made so that it reloads itself every third hour. This only takes a fraction of a second, so it shouldn't disturb the interaction.
